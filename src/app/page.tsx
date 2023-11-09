@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import Logo from '@/app/assets/Logo_color 1.png';
+import Image from "next/image";
+import Logo from "@/app/assets/Logo_color 1.png";
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
               <Image
                 width={50}
                 height={50}
-                src={'https://images.unsplash.com/photo-1535024966840-e7424dc2635b?q=80&w=2000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
+                src={"https://images.unsplash.com/photo-1535024966840-e7424dc2635b?q=80&w=2000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
                 className='object-cover w-full h-screen'
                 alt=''
               />
@@ -21,7 +21,7 @@ export default function Home() {
                 BOAT BOOKING
               </h2>
               <p className="text-lg">
-                Welcome to our Boat Reservation Form! We're excited to help you plan your next water adventure. Please take a moment to provide us with some essential details, so we can ensure you have a smooth and enjoyable experience. Your responses will help us schedule your boat reservation and cater to your specific needs. Thank you for choosing us for your boating adventure!
+                Welcome to our Boat Reservation Form! We are excited to help you plan your next water adventure. Please take a moment to provide us with some essential details, so we can ensure you have a smooth and enjoyable experience. Your responses will help us schedule your boat reservation and cater to your specific needs. Thank you for choosing us for your boating adventure!
               </p>
             </div>
           </div>
