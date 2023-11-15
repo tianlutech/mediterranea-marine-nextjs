@@ -17,11 +17,22 @@
 }
 
 body {
+  /* Remove the following line to set the default text color to black */
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+
+  /* Set the background gradient */
+  background: linear-gradient(180deg, #B6814F 0%, #202945 100%);
+
+  /* Set the default text color to black */
+  color: black;
+}
+
+.greytext {
+  color: rgba(0, 0, 0, 0.40);
+}
+
+@media screen and (max-width: 767px) {
+  body {
+    overflow: auto; /* Allow scrolling on mobile devices */
+  }
 }
