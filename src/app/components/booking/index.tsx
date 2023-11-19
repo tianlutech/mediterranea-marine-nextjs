@@ -19,7 +19,7 @@ export default function Booking() {
     <>
       <TermsAndConditionModal isOpen={openTermModal} closeModal={closeModalTermModal} />
       <PrepaymentModal isOpen={openPrepaymentModal} closeModal={closePrepaymentModal} />
-      <div className="md:w-[77%] w-full md:p-6 p-2">
+      <div className="relative md:w-[77%] w-full md:p-6 p-2">
         <div className="justify-between w-full ">
           <div className="md:flex justify-between w-full ">
             {/* first form */}

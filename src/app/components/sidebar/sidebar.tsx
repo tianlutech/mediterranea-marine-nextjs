@@ -6,7 +6,7 @@ import SpainFlag from "@/app/assets/spain.png"
 
 export default function Sidebar() {
   return (
-    <div className="relative bg-white md:w-[23%] w-full h-full ">
+    <div className="relative bg-white md:w-[23%] w-full ">
       <div className="flex flex-col justify-center items-center my-4">
         <Image
           width={60}
