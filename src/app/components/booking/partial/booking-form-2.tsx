@@ -17,7 +17,7 @@ export default function BookingForm2() {
           <form className="" action="#">
             <div className="relative w-full">
               <label className="block px-2 absolute text-black bottom-[2.7rem] z-10 bg-white left-4 text-sm font-medium">Arrival time</label>
-              <CommonInput type="time" name="arrivalTime" id="arrivalTime" placeholder="Arrival time" />
+              <CommonInput type="time" name="arrivalTime" id="arrivalTime" placeholder="Arrival time" required={true} />
             </div>
             <div className="mt-6 flex items-baseline">
               <div className="flex items-center mb-4">
@@ -32,11 +32,11 @@ export default function BookingForm2() {
             <div className="flex justify-between w-full mt-2">
               <div className="relative w-[48%]">
                 <label className="block mb-2 md:text-sm text-xs font-medium text-gray-900 absolute z-10 md:bottom-[2.3rem] bottom-[1.7rem] bg-white md:left-4 left-1 px-2">Name of restaurant</label>
-                <CommonInput type="text" name="restaurant" id="restaurantName" placeholder="Name of the restaurant" />
+                <CommonInput type="text" name="restaurant" id="restaurantName" placeholder="Name of the restaurant" required={true} />
               </div>
               <div className="relative w-[48%]">
                 <label className="block px-2 absolute text-black md:bottom-[2.7rem] bottom-[2rem] z-10 bg-white md:left-4 left-2 md:text-sm text-xs font-medium">Booking time</label>
-                <CommonInput type="time" name="bookingTime" id="bookingTime" placeholder="Booking time" />
+                <CommonInput type="time" name="bookingTime" id="bookingTime" placeholder="Booking time" required={true} />
               </div>
             </div>
             <div className="mt-6 text-black flex">

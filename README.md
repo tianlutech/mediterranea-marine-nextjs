@@ -2,19 +2,13 @@
 
 Make a short briefing
 
-Link to the WIKI
 ### Set Up
 
-- Installation
-- How to connect to the backend (in local or staging)
-- Default users or how to create a default user.
-- Other requirements
-- Trouble shooting: Any issue that happens during set up
+- Installation (npm install or yarn install)
 
 ### Run
 
-- How to run the project
-- Other commands and their use. (Document the commands in your package.json)
+- How to run the project (npm run dev or yarn dev)
 
 ## Deployment
 
@@ -33,9 +27,6 @@ What main libraries are used, with a link to the documentation. (I'm not talking
 
 ### File Structure
 
-Which is the file structure
-
-How to contribute if I need to do a new model - controller.
 
 ### IU Components
 
@@ -44,9 +35,10 @@ Which are the reusable common components. We don't want buttons, cards or IU loo
 Which are the color code. 
 
 Components
- - AppCard
- - Default Button
- - App Table
+ - Booking
+ - common
+ - modal
+ - sidebar
 
 ### Application state
 
