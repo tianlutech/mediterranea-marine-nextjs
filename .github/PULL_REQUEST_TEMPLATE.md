@@ -1,6 +1,3 @@
-Note: The content of the Template is commented.
-See the raw file to see the comments
-
 ## Context
 
 <!-- Why you do this change? What do yoy try to achieve? -->
