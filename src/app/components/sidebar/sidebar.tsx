@@ -1,20 +1,24 @@
 import Image from "next/image";
 import Logo from "@/app/assets/Logo_color 1.png";
-import Boat from "@/app/assets/boat.png"
-import UkFlag from "@/app/assets/united-kingdom.png"
-import SpainFlag from "@/app/assets/spain.png"
+import Boat from "@/app/assets/boat.png";
+import UkFlag from "@/app/assets/united-kingdom.png";
+import SpainFlag from "@/app/assets/spain.png";
+import { useTranslation } from "react-i18next";
+import { useCallback } from "react";
 
 export default function Sidebar() {
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = useCallback(
+    (language: string) => {
+      i18n.changeLanguage(language);
+    },
+    [i18n]
+  );
   return (
     <div className="relative bg-white md:w-[23%] w-full ">
       <div className="flex flex-col justify-center items-center my-4">
-        <Image
-          width={60}
-          height={48}
-          src={Logo}
-          className="w-60"
-          alt="logo"
-        />
+        <Image width={60} height={48} src={Logo} className="w-60" alt="logo" />
         <div className="flex">
           <span className="text-black">Language: </span>
           <div className="flex ml-2">
@@ -22,6 +26,7 @@ export default function Sidebar() {
               width={60}
               height={48}
               src={SpainFlag}
+              onClick={() => changeLanguage("es")}
               className="w-7 cursor-pointer"
               alt="logo"
             />
@@ -29,6 +34,7 @@ export default function Sidebar() {
               width={60}
               height={48}
               src={UkFlag}
+              onClick={() => changeLanguage("en")}
               className="w-7 ml-2 cursor-pointer"
               alt="logo"
             />
@@ -56,10 +62,13 @@ export default function Sidebar() {
             We are excited to help you plan your next water adventure.
           </p>
           <p className="mb-6">
-            Please take a moment to provide us with some essential details, so we can ensure you have a smooth and enjoyable experience.
+            Please take a moment to provide us with some essential details, so
+            we can ensure you have a smooth and enjoyable experience.
           </p>
           <p className="mb-6">
-            Your responses will help us schedule your boat reservation and cater to your specific needs. Thank you for choosing us for your boating adventure!
+            Your responses will help us schedule your boat reservation and cater
+            to your specific needs. Thank you for choosing us for your boating
+            adventure!
           </p>
         </div>
       </div>
