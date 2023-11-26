@@ -6,14 +6,25 @@ import BookingForm2 from "./partial/booking-form-2"
 import TermsAndConditionModal from "@/app/components/common/modal/termsAndConditions"
 import PrepaymentModal from "@/app/components/common/modal/prepaymentModal"
 
-export default function Booking() {
+export default function Booking({ data, id }: { data: any, id: string }) {
   const [openTermModal, setOpenTermModal] = useState<boolean>(false)
   const [openPrepaymentModal, setOpenPrepaymentModal] = useState<boolean>(false)
+  const [formData, setFormData] = useState<any>(data)
   const closeModalTermModal = () => {
     setOpenTermModal(false)
   }
   const closePrepaymentModal = () => {
     setOpenPrepaymentModal(false)
+  }
+
+  const updateBookingDetails = async () => {
+    await fetch(`/api/bookingDetails/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(formData.properties),
+    })
+  }
+  if (!data) {
+    return
   }
   return (
     <>
@@ -23,9 +34,9 @@ export default function Booking() {
         <div className="justify-between w-full ">
           <div className="md:flex justify-between w-full ">
             {/* first form */}
-            <BookingForm1 />
+            <BookingForm1 data={formData} setData={setFormData} />
             {/* Second form */}
-            <BookingForm2 />
+            <BookingForm2 data={formData} setData={setFormData} />
           </div>
           {/* terms and policy */}
           <div>
@@ -42,7 +53,7 @@ export default function Booking() {
               </div>
             </div>
           </div>
-          <button onClick={() => setOpenPrepaymentModal(true)} type="button" className=" mt-6 text-white bg-buttonColor focus:ring-4 font-semibold rounded-lg text-lg px-10 py-3">Submit</button>
+          <button onClick={() => updateBookingDetails()} type="button" className=" mt-6 text-white bg-buttonColor focus:ring-4 font-semibold rounded-lg text-lg px-10 py-3">Submit</button>
         </div>
       </div>
     </>

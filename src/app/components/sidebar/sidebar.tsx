@@ -1,20 +1,41 @@
+"use client";
+
 import Image from "next/image";
 import Logo from "@/app/assets/Logo_color 1.png";
 import Boat from "@/app/assets/boat.png";
 import UkFlag from "@/app/assets/united-kingdom.png";
 import SpainFlag from "@/app/assets/spain.png";
 import { useTranslation } from "react-i18next";
-import { useCallback } from "react";
+import { useCallback, useState, useEffect } from "react";
 
-export default function Sidebar() {
+const fetchBoatDetails = async () => {
+  const res = await fetch("/api/boatInfo")
+  const data = await res.json()
+
+  return data
+}
+
+export default function Sidebar({ data }: { data: any }) {
   const { t, i18n } = useTranslation();
-
+  const [boatInfo, setBoatInfo] = useState<any>({})
+  const [boatImage, setBoatImage] = useState<any>({})
   const changeLanguage = useCallback(
     (language: string) => {
       i18n.changeLanguage(language);
     },
     [i18n]
   );
+
+  useEffect(() => {
+    fetchBoatDetails().then(data => {
+      if (!data) {
+        return
+      }
+      setBoatInfo(data.properties)
+      setBoatImage(data.cover.file.url)
+    });
+  }, []);
+
   return (
     <div className="relative bg-white md:w-[23%] w-full ">
       <div className="flex flex-col justify-center items-center my-4">
@@ -56,7 +77,7 @@ export default function Sidebar() {
         </div>
         <div className="px-4 py-4 text-textSecondaryColor">
           <p className="mb-6">
-            [Customer name] Welcome to our Boat [boat name] Reservation Form!
+            Welcome to our Boat {boatInfo.Nombre?.title[0].plain_text}  Reservation Form!
           </p>
           <p className="mb-6">
             We are excited to help you plan your next water adventure.
@@ -77,7 +98,7 @@ export default function Sidebar() {
         <Image
           width={60}
           height={45}
-          src={Boat}
+          src={boatImage}
           className="h-auto w-full"
           alt="boat"
         />

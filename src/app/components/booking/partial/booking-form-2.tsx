@@ -1,8 +1,14 @@
+"use client";
+
 import InfoSvg from "@/app/assets/svgs/InfoSvg";
 import PlayerSvg from "@/app/assets/svgs/PlayerSvg";
 import CommonInput from "@/app/components/common/inputs/input";
 import CommonSelect from "@/app/components/common/inputs/selectInput";
-export default function BookingForm2() {
+import { useEffect, useState } from "react";
+
+export default function BookingForm2({ data, setData }: { data: any, setData: any }) {
+  const [eatAtRestaurant, setEatAtRestaurant] = useState<any>(false)
+
   const miles = [
     "25 Nautical Miles - 250€",
     "25 Statute Miles - 350€",
@@ -10,6 +16,11 @@ export default function BookingForm2() {
     "25 Roman Miles - 550€",
     "25 Scandinavian Miles - 650€",
   ];
+  useEffect(() => {
+    if (!data) {
+      return
+    }
+  }, []);
   return (
     <div className="flex md:mt-0 mt-4 md:flex-row flex-col md:w-[49%] w-full">
       <div className="w-full bg-white rounded-lg">
@@ -17,14 +28,12 @@ export default function BookingForm2() {
           <form className="" action="#">
             <div className="relative w-full">
               <label className="block px-2 absolute text-black bottom-[2.7rem] z-10 bg-white left-4 text-sm font-medium">
-                Arrival time
+                Departure time
               </label>
-              <CommonInput
-                type="time"
-                name="arrivalTime"
-                id="arrivalTime"
-                placeholder="Arrival time"
-                required={true}
+              <CommonSelect
+                id="departureTime"
+                name="departureTime"
+                data={miles}
               />
             </div>
             <div className="mt-6 flex items-baseline">
@@ -34,7 +43,8 @@ export default function BookingForm2() {
                   type="radio"
                   value=""
                   name="default-radio"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  onChange={() => setEatAtRestaurant(false)}
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label className="ms-2 md:text-base text-sm  text-black">
                   We eat on board
@@ -42,43 +52,47 @@ export default function BookingForm2() {
               </div>
               <div className="flex items-center ml-10">
                 <input
-                  id="default-radio-2"
+                  id="default-radio-1"
                   type="radio"
                   value=""
                   name="default-radio"
-                  className="w-4 h-4 text-black bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  onChange={() => setEatAtRestaurant(true)}
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label className="ms-2 md:text-base text-sm  text-black">
                   We eat on a restaurant
                 </label>
               </div>
             </div>
-            <div className="flex justify-between w-full mt-2">
-              <div className="relative w-[48%]">
-                <label className="block mb-2 md:text-sm text-xs font-medium text-gray-900 absolute z-10 md:bottom-[2.3rem] bottom-[1.7rem] bg-white md:left-4 left-1 px-2">
-                  Name of restaurant
-                </label>
-                <CommonInput
-                  type="text"
-                  name="restaurant"
-                  id="restaurantName"
-                  placeholder="Name of the restaurant"
-                  required={true}
-                />
+            {eatAtRestaurant &&
+              <div className="flex justify-between w-full mt-2">
+                <div className="relative w-[48%]">
+                  <label className="block mb-2 md:text-sm text-xs font-medium text-gray-900 absolute z-10 md:bottom-[2.3rem] bottom-[1.7rem] bg-white md:left-4 left-1 px-2">
+                    Name of restaurant
+                  </label>
+                  <CommonInput
+                    type="text"
+                    name="restaurant"
+                    id="restaurantName"
+                    placeholder="Name of the restaurant"
+                    required={true}
+                  />
+                </div>
+                <div className="relative w-[48%]">
+                  <label className="block px-2 absolute text-black md:bottom-[2.7rem] bottom-[2rem] z-10 bg-white md:left-4 left-2 md:text-sm text-xs font-medium">
+                    Booking time
+                  </label>
+                  <CommonInput
+                    type="time"
+                    name="bookingTime"
+                    id="bookingTime"
+                    placeholder="Booking time"
+                    required={true}
+                  />
+                </div>
               </div>
-              <div className="relative w-[48%]">
-                <label className="block px-2 absolute text-black md:bottom-[2.7rem] bottom-[2rem] z-10 bg-white md:left-4 left-2 md:text-sm text-xs font-medium">
-                  Booking time
-                </label>
-                <CommonInput
-                  type="time"
-                  name="bookingTime"
-                  id="bookingTime"
-                  placeholder="Booking time"
-                  required={true}
-                />
-              </div>
-            </div>
+            }
+
             <div className="mt-6 text-black flex">
               <div>
                 <InfoSvg />
