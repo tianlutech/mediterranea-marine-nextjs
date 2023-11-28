@@ -1,12 +1,11 @@
 "use client";
 import Image from "next/image";
 import EmailImage from "@/app/assets/email 1.png"
+import Modal from "@/app/components/common/modal/modal"
+
 export default function SuccessModal({ isOpen, closeModal }: { isOpen: boolean, closeModal: any }) {
   return (
-    <div id="default-modal"
-      onClick={() => closeModal()}
-      aria-hidden="true"
-      className={`${isOpen ? "flex" : "hidden"} overflow-y-auto overflow-x-hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-75 backdrop-filter`}>
+    <Modal isOpen={isOpen} closeModal={closeModal}>
       <div style={{ background: "linear-gradient(180deg, #262D46 0%, #B07E50 100%)" }} className="relative p-2 md:w-[60%] w-[95%] bg-white text-center flex flex-col items-center text-white justify-center rounded-lg shadow">
         <Image
           width={60}
@@ -24,6 +23,6 @@ export default function SuccessModal({ isOpen, closeModal }: { isOpen: boolean, 
           </div>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 }

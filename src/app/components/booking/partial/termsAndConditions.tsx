@@ -1,4 +1,5 @@
 "use client";
+import Modal from "@/app/components/common/modal/modal"
 
 export default function CommonModal({
   isOpen,
@@ -8,12 +9,7 @@ export default function CommonModal({
   closeModal: any;
 }) {
   return (
-    <div
-      id="default-modal"
-      onClick={() => closeModal()}
-      aria-hidden="true"
-      className={`${isOpen ? "flex" : "hidden"} h-full overflow-y-auto overflow-x-hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-75 backdrop-filter`}
-    >
+    <Modal isOpen={isOpen} closeModal={closeModal}>
       <div className="relative p-2 md:w-[60%] w-full md:h-auto bg-white rounded-lg shadow">
         <div className="flex items-center justify-between px-4 pt-4 md:px-4 md:pt-4 ">
           <h3 className="text-xl font-semibold text-black">
@@ -84,6 +80,6 @@ export default function CommonModal({
           </button>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 }
