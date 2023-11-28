@@ -9,9 +9,9 @@ export default function Home() {
     <section className="gradient-form justify-center h-screen w-full text-black">
       <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
         <div className="flex md:flex-row flex-col justify-between w-full lg:flex lg:flex-wrap h-screen">
-          <Sidebar />
+          {/* <Sidebar /> */}
           {/* forms section */}
-          <Booking />
+          {/* <Booking /> */}
         </div>
       </div>
     </section>
