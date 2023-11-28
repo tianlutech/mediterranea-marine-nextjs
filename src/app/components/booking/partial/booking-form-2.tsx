@@ -26,14 +26,10 @@ export default function BookingForm2({ data, setData, boatInfo }: { data: any, s
   }
 
   // Define your price per mile and mile ranges
-  const pricePerMile: number = boatInfo.properties.MilePrice.number; // Example: 4 euros per mile
+  const pricePerMile: number = boatInfo?.properties?.MilePrice.number; // Example: 4 euros per mile
   const mileRanges = [25, 35]; // Example mile ranges
   const calculatedMiles = calculateBoatPrices(pricePerMile, mileRanges);
-  useEffect(() => {
-    if (!data) {
-      return
-    }
-  }, []);
+
   return (
     <div className="flex md:mt-0 mt-4 md:flex-row flex-col md:w-[49%] w-full">
       <div className="w-full bg-white rounded-lg">
