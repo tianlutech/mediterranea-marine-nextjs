@@ -1,3 +1,4 @@
+import { Booking } from "@/app/models/models";
 
 
 /**
@@ -12,11 +13,11 @@ export const fetchBookingDetails = async (id: string) => {
 
 /**
  * @param {string} id
- * @param {} formData
+ * @param {Booking} formData
  */
-export const updateBookingDetails = async (id: string, formData: any) => {
+export const updateBookingDetails = async (id: string, formData: Booking) => {
   await fetch(`/api/bookingDetails/${id}`, {
     method: "PUT",
-    body: JSON.stringify(formData.properties),
+    body: JSON.stringify(formData),
   })
 }

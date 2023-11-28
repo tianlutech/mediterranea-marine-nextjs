@@ -75,22 +75,7 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                   name="text"
                   id="firstname"
                   placeholder="First name"
-                  value={data?.properties["First Name"]?.rich_text[0]?.plain_text}
-                  onChange={(e: any) => setData({
-                    ...data,
-                    properties: {
-                      ...data.properties,
-                      "First Name": {
-                        ...data.properties["First Name"],
-                        rich_text: [
-                          {
-                            ...data.properties["First Name"].rich_text[0],
-                            plain_text: e.target.value,
-                          }
-                        ]
-                      }
-                    }
-                  })}
+                  value={data["First Name"]}
                   required={true}
                 />
               </FormWrapper>
@@ -103,22 +88,7 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                   name="text"
                   id="lastname"
                   placeholder="Last name"
-                  value={data?.properties["Last Name"]?.rich_text[0]?.plain_text}
-                  onChange={(e: any) => setData({
-                    ...data,
-                    properties: {
-                      ...data.properties,
-                      "Last Name": {
-                        ...data.properties["Last Name"],
-                        rich_text: [
-                          {
-                            ...data.properties["Last Name"].rich_text[0],
-                            plain_text: e.target.value,
-                          }
-                        ]
-                      }
-                    }
-                  })}
+                  value={data["Last Name"]}
                   required={true}
                 />
               </FormWrapper>
@@ -229,22 +199,7 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                 name="text"
                 id="billingAddress"
                 placeholder="Billing Address"
-                value={data?.properties["Billing Address"]?.rich_text[0]?.plain_text}
-                onChange={(e: any) => setData({
-                  ...data,
-                  properties: {
-                    ...data.properties,
-                    "Billing Address": {
-                      ...data.properties["Billing Address"],
-                      rich_text: [
-                        {
-                          ...data.properties["Billing Address"].rich_text[0],
-                          plain_text: e.target.value,
-                        }
-                      ]
-                    }
-                  }
-                })}
+                value={data["Billing Address"]}
                 required={true}
               />
             </div>
@@ -258,16 +213,7 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                   name="number"
                   id="adultNumber"
                   placeholder="Adult number"
-                  value={data?.properties["No Adults"]?.number}
-                  onChange={(e: any) => setData({
-                    ...data,
-                    properties: {
-                      ...data.properties,
-                      "No Adults": {
-                        ...data.properties["No Adults"].number
-                      }
-                    }
-                  })}
+                  value={data["No Adults"]}
                   required={false}
                 />
               </FormWrapper>
@@ -280,16 +226,7 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                   name="number"
                   id="kidsNumber"
                   placeholder="Kids number"
-                  value={data?.properties["No Childs"]?.number}
-                  onChange={(e: any) => setData({
-                    ...data,
-                    properties: {
-                      ...data.properties,
-                      "No Childs": {
-                        ...data.properties["No Childs"].number
-                      }
-                    }
-                  })}
+                  value={data["No Childs"]}
                   required={false}
                 />
               </FormWrapper>

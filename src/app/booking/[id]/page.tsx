@@ -11,6 +11,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
   const [boatInfo, setBoatInfo] = useState<any>({})
   useEffect(() => {
     fetchBookingDetails(params.id).then(data => {
+      console.log("=========data", data)
       setData(data)
     });
     fetchBoatDetails(params.id).then(data => {
@@ -25,7 +26,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
           <div className="flex md:flex-row flex-col justify-between w-full lg:flex lg:flex-wrap h-screen">
             <Sidebar boatInfo={boatInfo} />
             {/* forms section */}
-            {data.properties && <Booking data={data} id={params.id} boatInfo={boatInfo} />}
+            {data.booking && <Booking data={data.booking} id={params.id} boatInfo={boatInfo} />}
           </div>
         </div>
       </section>
