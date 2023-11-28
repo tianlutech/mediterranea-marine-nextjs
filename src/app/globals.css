@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  /* Remove the following line to set the default text color to black */
+  color: rgb(var(--foreground-rgb));
+
+  /* Set the background gradient */
+  background: linear-gradient(180deg, #B6814F 0%, #202945 100%);
+
+  /* Set the default text color to black */
+  color: black;
+}
+
+.greytext {
+  color: rgba(0, 0, 0, 0.40);
+}
+
+@media screen and (max-width: 767px) {
+  body {
+    overflow: auto; /* Allow scrolling on mobile devices */
+  }
+}
