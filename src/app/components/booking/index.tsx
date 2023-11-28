@@ -6,7 +6,7 @@ import BookingForm2 from "./partial/booking-form-2"
 import TermsAndConditionModal from "@/app/components/common/modal/termsAndConditions"
 import PrepaymentModal from "@/app/components/common/modal/prepaymentModal"
 
-export default function Booking({ data, id }: { data: any, id: string }) {
+export default function Booking({ data, id, boatInfo }: { data: any, id: string, boatInfo: any }) {
   const [openTermModal, setOpenTermModal] = useState<boolean>(false)
   const [openPrepaymentModal, setOpenPrepaymentModal] = useState<boolean>(false)
   const [formData, setFormData] = useState<any>(data)
@@ -36,7 +36,7 @@ export default function Booking({ data, id }: { data: any, id: string }) {
             {/* first form */}
             <BookingForm1 data={formData} setData={setFormData} />
             {/* Second form */}
-            <BookingForm2 data={formData} setData={setFormData} />
+            <BookingForm2 data={formData} setData={setFormData} boatInfo={boatInfo} />
           </div>
           {/* terms and policy */}
           <div>

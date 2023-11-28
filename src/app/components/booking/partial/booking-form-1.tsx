@@ -16,8 +16,10 @@ const FormWrapper = ({ children }: { children: React.ReactNode }) => {
 export default function BookingForm1({ data, setData }: { data: any, setData: any }) {
   const [photoIdFront, setPhotoIdFront] = useState<string>();
   const [photoIdFrontPreview, setPhotoIdFrontPreview] = useState<string>();
+  const [photoIdFrontSize, setPhotoIdFrontSize] = useState<string>();
   const [photoIdBack, setPhotoIdBack] = useState<string>();
   const [photoIdBackPreview, setPhotoIdBackPreview] = useState<string>();
+  const [photoIdBackSize, setPhotoIdBackSize] = useState<string>();
   const { t } = useTranslation();
   const IdFront = useRef<any>();
   const IdBack = useRef<any>();
@@ -32,6 +34,13 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       const fileUrl = URL.createObjectURL(file);
+      const fileSizeInBytes = file.size;
+      const fileSizeInKilobytes: any = (fileSizeInBytes / 1024).toFixed(1);
+      const fileSizeInMegabytes: any = (fileSizeInKilobytes / 1024).toFixed(1);
+      if (fileSizeInMegabytes < 1) {
+        setPhotoIdFrontSize(`${fileSizeInKilobytes} KB`)
+      }
+      setPhotoIdFrontSize(`${fileSizeInMegabytes} MB`)
       setPhotoIdFrontPreview(fileUrl);
       setPhotoIdFront(file.name); // Assuming you want to keep the file name
     }
@@ -40,8 +49,15 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       const fileUrl = URL.createObjectURL(file);
+      const fileSizeInBytes = file.size;
+      const fileSizeInKilobytes: any = (fileSizeInBytes / 1024).toFixed(1);
+      const fileSizeInMegabytes: any = (fileSizeInKilobytes / 1024).toFixed(1);
+      if (fileSizeInMegabytes < 1) {
+        setPhotoIdBackSize(`${fileSizeInKilobytes} KB`)
+      }
+      setPhotoIdBackSize(`${fileSizeInMegabytes} MB`)
       setPhotoIdBackPreview(fileUrl);
-      setPhotoIdBack(file.name); // Assuming you want to keep the file name
+      setPhotoIdBack(file.name);
     }
   };
   return (
@@ -138,25 +154,28 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                     <span className="greytext mt-2">JPG, PNG or PDF, file size no more than 10MB</span>
                   </div>
                 </div>
-                <div className="flex justify-between items-center mt-4 p-2 bg-bgColor1">
-                  <div className="flex justify-center items-center text-center">
-                    <div>
-                      {
-                        photoIdFrontPreview ?
-                          <Image
-                            width={20}
-                            height={20}
-                            src={photoIdFrontPreview}
-                            alt="idFront"
-                          />
-                          :
-                          <ImageSvg />
-                      }
+                {
+                  photoIdFront &&
+                  <div className="flex justify-between items-center mt-4 p-2 bg-bgColor1">
+                    <div className="flex justify-center items-center text-center">
+                      <div>
+                        {
+                          photoIdFrontPreview ?
+                            <Image
+                              width={20}
+                              height={20}
+                              src={photoIdFrontPreview}
+                              alt="idFront"
+                            />
+                            :
+                            <ImageSvg />
+                        }
+                      </div>
+                      <span className="text-black text-center md:ml-4 ml-2 md:text-base text-xs">{photoIdFront}</span>
                     </div>
-                    <span className="text-black text-center md:ml-4 ml-2 md:text-base text-xs">{photoIdFront || "Passport back.png"}</span>
+                    <span className="text-black md:text-base text-xs">{photoIdFrontSize}</span>
                   </div>
-                  <span className="text-black md:text-base text-xs">5.7 MB</span>
-                </div>
+                }
               </div>
             </div>
             <div onClick={onClickIdBack} className="relative w-full mt-6 border border-gray-300 p-[0.7rem] px-6 rounded-lg">
@@ -178,25 +197,27 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                     <span className="greytext mt-2">JPG, PNG or PDF, file size no more than 10MB</span>
                   </div>
                 </div>
-                <div className="flex justify-between items-center mt-4 p-2 bg-bgColor1">
-                  <div className="flex justify-center items-center text-center">
-                    <div>
-                      {
-                        photoIdBackPreview ?
-                          <Image
-                            width={20}
-                            height={20}
-                            src={photoIdBackPreview}
-                            alt="idFront"
-                          />
-                          :
-                          <ImageSvg />
-                      }
+                {photoIdBackPreview &&
+                  <div className="flex justify-between items-center mt-4 p-2 bg-bgColor1">
+                    <div className="flex justify-center items-center text-center">
+                      <div>
+                        {
+                          photoIdBackPreview ?
+                            <Image
+                              width={20}
+                              height={20}
+                              src={photoIdBackPreview}
+                              alt="idFront"
+                            />
+                            :
+                            <ImageSvg />
+                        }
+                      </div>
+                      <span className="text-black text-center md:ml-4 ml-2 md:text-base text-xs">{photoIdBack || "Passport back.png"}</span>
                     </div>
-                    <span className="text-black text-center md:ml-4 ml-2 md:text-base text-xs">{photoIdFront || "Passport back.png"}</span>
+                    <span className="text-black md:text-base text-xs">{photoIdBackSize}</span>
                   </div>
-                  <span className="text-black md:text-base text-xs">5.7 MB</span>
-                </div>
+                }
               </div>
             </div>
             <div className="relative w-full mt-6">

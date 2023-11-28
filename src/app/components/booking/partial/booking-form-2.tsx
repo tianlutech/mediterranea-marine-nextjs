@@ -6,16 +6,29 @@ import CommonInput from "@/app/components/common/inputs/input";
 import CommonSelect from "@/app/components/common/inputs/selectInput";
 import { useEffect, useState } from "react";
 
-export default function BookingForm2({ data, setData }: { data: any, setData: any }) {
+export default function BookingForm2({ data, setData, boatInfo }: { data: any, setData: any, boatInfo: any }) {
   const [eatAtRestaurant, setEatAtRestaurant] = useState<any>(false)
-
-  const miles = [
-    "25 Nautical Miles - 250€",
-    "25 Statute Miles - 350€",
-    "25 Metric Miles - 450€",
-    "25 Roman Miles - 550€",
-    "25 Scandinavian Miles - 650€",
+  const departureTime = [
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
   ];
+  const standUpPaddle = [
+    "SEABOB 2 - 250E",
+    "SUB 1 - 150E",
+    "SEABOB 1 - 150E",
+  ];
+  // Function to calculate boat prices
+  const calculateBoatPrices = (pricePerMile: number, mileRanges: any) => {
+    return mileRanges.map((miles: number) => `${miles} Nautical Miles - ${miles * pricePerMile}€`);
+  }
+
+  // Define your price per mile and mile ranges
+  const pricePerMile: number = boatInfo.properties.MilePrice.number; // Example: 4 euros per mile
+  const mileRanges = [25, 35]; // Example mile ranges
+  const calculatedMiles = calculateBoatPrices(pricePerMile, mileRanges);
   useEffect(() => {
     if (!data) {
       return
@@ -33,7 +46,7 @@ export default function BookingForm2({ data, setData }: { data: any, setData: an
               <CommonSelect
                 id="departureTime"
                 name="departureTime"
-                data={miles}
+                data={departureTime}
               />
             </div>
             <div className="mt-6 flex items-baseline">
@@ -42,6 +55,7 @@ export default function BookingForm2({ data, setData }: { data: any, setData: an
                   id="default-radio-1"
                   type="radio"
                   value=""
+                  checked={eatAtRestaurant == false}
                   name="default-radio"
                   onChange={() => setEatAtRestaurant(false)}
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
@@ -55,6 +69,7 @@ export default function BookingForm2({ data, setData }: { data: any, setData: an
                   id="default-radio-1"
                   type="radio"
                   value=""
+                  checked={eatAtRestaurant}
                   name="default-radio"
                   onChange={() => setEatAtRestaurant(true)}
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
@@ -117,7 +132,7 @@ export default function BookingForm2({ data, setData }: { data: any, setData: an
               <label className="block px-2 absolute text-black bottom-[2.7rem] z-10 bg-white left-4 text-sm font-medium">
                 Prepayment of fuel
               </label>
-              <CommonSelect id="miles" name="miles" data={miles} />
+              <CommonSelect id="miles" name="miles" data={calculatedMiles} />
             </div>
             <div className="mt-2 text-black flex">
               <div>
@@ -132,7 +147,7 @@ export default function BookingForm2({ data, setData }: { data: any, setData: an
                 <label className="block px-2 absolute text-black bottom-[2.7rem] z-10 bg-white left-4 text-sm font-medium">
                   Toy: Stand Up Paddle
                 </label>
-                <CommonSelect id="miles" name="miles" data={miles} />
+                <CommonSelect id="miles" name="miles" data={standUpPaddle} />
               </div>
               <div className="w-[8%]">
                 <PlayerSvg />
@@ -151,7 +166,7 @@ export default function BookingForm2({ data, setData }: { data: any, setData: an
                 <label className="block px-2 absolute text-black bottom-[2.7rem] z-10 bg-white left-4 text-sm font-medium">
                   Toy: SEABOB{" "}
                 </label>
-                <CommonSelect id="miles" name="miles" data={miles} />
+                <CommonSelect id="miles" name="miles" data={standUpPaddle} />
               </div>
               <div className="w-[8%]">
                 <PlayerSvg />
