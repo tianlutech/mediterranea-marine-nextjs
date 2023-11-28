@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Boat from "@/app/assets/boat.png";
+import Modal from "@/app/components/common/modal/modal"
 
 export default function PrepaymentModal({
   isOpen,
@@ -10,12 +11,7 @@ export default function PrepaymentModal({
   closeModal: any;
 }) {
   return (
-    <div
-      id="default-modal"
-      onClick={() => closeModal()}
-      aria-hidden="true"
-      className={`${isOpen ? "flex" : "hidden"} overflow-x-hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-75 backdrop-filter`}
-    >
+    <Modal isOpen={isOpen} closeModal={closeModal}>
       <div className="relative p-2 md:w-[60%] w-[95%] bg-white rounded-lg shadow">
         <div className="flex items-center justify-between px-4 pt-4 md:px-4 md:pt-4 ">
           <h3 className="text-xl font-semibold text-black">
@@ -108,6 +104,6 @@ export default function PrepaymentModal({
           </button>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 }
