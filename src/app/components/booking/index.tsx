@@ -3,8 +3,8 @@
 import { useState } from "react";
 import BookingForm1 from "./partial/booking-form-1"
 import BookingForm2 from "./partial/booking-form-2"
-import TermsAndConditionModal from "@/app/components/common/modal/termsAndConditions"
-import PrepaymentModal from "@/app/components/common/modal/prepaymentModal"
+import TermsAndConditionModal from "@/app/components/booking/partial/termsAndConditions"
+import PrepaymentModal from "@/app/components/booking/partial/prepaymentModal"
 
 export default function Booking({ data, id, boatInfo }: { data: any, id: string, boatInfo: any }) {
   const [openTermModal, setOpenTermModal] = useState<boolean>(false)

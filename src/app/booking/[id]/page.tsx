@@ -3,19 +3,9 @@
 import Sidebar from "@/app/components/sidebar/sidebar";
 import Booking from "@/app/components/booking";
 import { useEffect, useState } from "react";
+import { fetchBookingDetails } from "@/app/services/booking.service"
+import { fetchBoatDetails } from "@/app/services/boat.service";
 
-const fetchBookingDetails = async (id: string) => {
-  const res = await fetch(`/api/bookingDetails/${id}`)
-  const data = await res.json()
-
-  return data
-}
-const fetchBoatDetails = async (id: string) => {
-  const res = await fetch(`/api/boatInfo/${id}`)
-  const data = await res.json()
-
-  return data
-}
 export default function BookingPage({ params }: { params: { id: string } }) {
   const [data, setData] = useState<any>({});
   const [boatInfo, setBoatInfo] = useState<any>({})
