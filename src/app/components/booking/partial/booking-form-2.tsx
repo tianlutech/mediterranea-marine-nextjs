@@ -50,6 +50,8 @@ export default function BookingForm2({ data, setData, boatInfo }: { data: any, s
                 <CommonSelect
                   id="departureTime"
                   name="departureTime"
+                  value={data["Departure Time"]}
+                  onChange={(e) => setData({ ...data, "Departure Time": e.target.value })}
                   data={departureTime}
                 />
               </div>
@@ -136,7 +138,12 @@ export default function BookingForm2({ data, setData, boatInfo }: { data: any, s
                 <label className="block px-2 absolute text-black bottom-[2.7rem] z-10 bg-white left-4 text-sm font-medium">
                   Prepayment of fuel
                 </label>
-                <CommonSelect id="miles" name="miles" data={calculatedMiles} />
+                <CommonSelect
+                  id="miles" name="miles"
+                  data={calculatedMiles}
+                  value={data["Fuel Payment"]}
+                  onChange={(e) => setData({ ...data, "Fuel Payment": e.target.value })}
+                />
               </div>
               <div className="mt-2 text-black flex">
                 <div>
@@ -151,7 +158,12 @@ export default function BookingForm2({ data, setData, boatInfo }: { data: any, s
                   <label className="block px-2 absolute text-black bottom-[2.7rem] z-10 bg-white left-4 text-sm font-medium">
                     Toy: Stand Up Paddle
                   </label>
-                  <CommonSelect id="miles" name="miles" data={standUpPaddle} />
+                  <CommonSelect
+                    id="miles" name="miles"
+                    data={standUpPaddle}
+                    value={data["Toys"]}
+                    onChange={(e) => setData({ ...data, "Toys": e.target.value })}
+                  />
                 </div>
                 <div className="w-[8%]">
                   <PlayerSvg />
@@ -165,12 +177,18 @@ export default function BookingForm2({ data, setData, boatInfo }: { data: any, s
                   Click here to see the video of the SUP
                 </span>
               </div>
+
               <div className="relative w-full mt-6 flex justify-between items-center">
                 <div className="w-[90%]">
                   <label className="block px-2 absolute text-black bottom-[2.7rem] z-10 bg-white left-4 text-sm font-medium">
                     Toy: SEABOB{" "}
                   </label>
-                  <CommonSelect id="miles" name="miles" data={standUpPaddle} />
+                  <CommonSelect
+                    id="miles" name="miles"
+                    data={standUpPaddle}
+                    value={data["Toys"]}
+                    onChange={(e) => setData({ ...data, "Toys": e.target.value })}
+                  />
                 </div>
                 <div className="w-[8%]">
                   <PlayerSvg />
@@ -201,8 +219,8 @@ export default function BookingForm2({ data, setData, boatInfo }: { data: any, s
               </div>
             </form>
           </div>
-        </div>
-      </div>
+        </div >
+      </div >
     </>
   );
 }

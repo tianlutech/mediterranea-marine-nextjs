@@ -43,6 +43,7 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
       setPhotoIdFrontSize(`${fileSizeInMegabytes} MB`)
       setPhotoIdFrontPreview(fileUrl);
       setPhotoIdFront(file.name); // Assuming you want to keep the file name
+      setData({ ...data, "ID Front Picture": file })
     }
   };
   const onChangeIdBack = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,6 +59,7 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
       setPhotoIdBackSize(`${fileSizeInMegabytes} MB`)
       setPhotoIdBackPreview(fileUrl);
       setPhotoIdBack(file.name);
+      setData({ ...data, "ID Back Picture": file })
     }
   };
   return (
@@ -76,6 +78,7 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                   id="firstname"
                   placeholder="First name"
                   value={data["First Name"]}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, "First Name": e.target.value })}
                   required={true}
                 />
               </FormWrapper>
@@ -89,6 +92,7 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                   id="lastname"
                   placeholder="Last name"
                   value={data["Last Name"]}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, "Last Name": e.target.value })}
                   required={true}
                 />
               </FormWrapper>
@@ -102,6 +106,8 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                 name="email"
                 id="email"
                 placeholder="Email"
+                value={data["Email"]}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, "Email": e.target.value })}
                 required={true}
               />
             </div>
@@ -200,6 +206,7 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                 id="billingAddress"
                 placeholder="Billing Address"
                 value={data["Billing Address"]}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, "Billing Address": e.target.value })}
                 required={true}
               />
             </div>
@@ -214,6 +221,7 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                   id="adultNumber"
                   placeholder="Adult number"
                   value={data["No Adults"]}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, "No Adults": e.target.value })}
                   required={false}
                 />
               </FormWrapper>
@@ -227,6 +235,7 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                   id="kidsNumber"
                   placeholder="Kids number"
                   value={data["No Childs"]}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, "No Childs": e.target.value })}
                   required={false}
                 />
               </FormWrapper>

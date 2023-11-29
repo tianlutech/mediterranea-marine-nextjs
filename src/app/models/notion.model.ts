@@ -82,7 +82,7 @@ const parsePropertyToNotion = (property: unknown): NotionProperty => {
   if (typeof property === "number") {
     return {
       type: "number",
-      number: property,
+      number: +property,
     };
   }
 

@@ -6,9 +6,21 @@ import BookingForm2 from "./partial/booking-form-2"
 import PrepaymentModal from "@/app/components/booking/partial/prepaymentModal"
 import { updateBookingDetails } from "@/app/services/booking.service"
 
-export default function Booking({ data, id, boatInfo }: { data: any, id: string, boatInfo: any }) {
+export default function Booking({ data, id, boatInfo }: { data: {}, id: string, boatInfo: any }) {
   const [openPrepaymentModal, setOpenPrepaymentModal] = useState<boolean>(false)
-  const [formData, setFormData] = useState<any>(data)
+  const [formData, setFormData] = useState({
+    "First Name": "",
+    "Last Name": "",
+    "Email": "",
+    "Billing Address": "",
+    "No Adults": 0,
+    "No Childs": 0,
+    "ID Back Picture": "",
+    "ID Front Picture": "",
+    "Departure Time": "",
+    "Toys": "",
+    "Fuel Payment": ""
+  })
 
   const closePrepaymentModal = () => {
     setOpenPrepaymentModal(false)
@@ -39,7 +51,7 @@ export default function Booking({ data, id, boatInfo }: { data: any, id: string,
             <div className="mt-3">
               <div className="flex items-center">
                 <input id="checked-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                <label className="ms-2 text-sm">I gurantee that the information of the user is from a user that is going to go to the boat.</label>
+                <label className="ms-2 text-sm">I guarantee that the information of the user is from a user that is going to go to the boat.</label>
               </div>
             </div>
           </div>
