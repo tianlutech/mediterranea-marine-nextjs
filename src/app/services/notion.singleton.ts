@@ -1,45 +1,42 @@
-// import { Client } from "@notionhq/client";
-// import { Boat } from "../models/models";
-// import { parseNotionObject } from "../models/notion.model";
+import { Client } from "@notionhq/client";
+import { Boat, Booking } from "../models/models";
+import { parseNotionObject, NotionPage } from "../models/notion.model";
+import * as dotenv from "dotenv";
 
-// const notionDatabaseId: string | undefined = process.env.NOTION_DATABASE_ID;
-// const notionSecret: string | undefined = process.env.NOTION_SECRET;
+dotenv.config();
 
-// // Initialize a new client with the secret
-// const notion = new Client({ auth: notionSecret });
+const notionDatabaseId = process.env.NEXT_PUBLIC_NOTION_DATABASE_ID;
+const notionSecret = process.env.NEXT_PUBLIC_NOTION_SECRET;
 
-// export class NotionService {
-//   private notion;
-//   private static instance: NotionService;
+console.log("Notion Database ID:", process.env.NEXT_PUBLIC_NOTION_DATABASE_ID);
 
-//   static get() {
-//     if (!this.instance) {
-//       this.instance = new NotionService();
-//     }
+if (!notionDatabaseId || !notionSecret) {
+  throw new Error("Missing required parameters notionDatabaseId or notionSecret");
+}
 
-//     return this.instance;
-//   }
+// Initialize a new client with the secret
+const notion = new Client({ auth: notionSecret });
 
-//   private constructor() {
-//     if (!notionDatabaseId || !notionSecret) {
-//       throw new Error(
-//         "Missing required parameters notionDatabaseId pr notionSecret "
-//       );
-//     }
+export async function getBoatInfo(boatId: string) {
+  try {
+    const response = await notion.pages.retrieve({
+      page_id: boatId,
+    });
+    return parseNotionObject<Boat>(response as NotionPage);
+  } catch (error) {
+    console.error("Error retrieving page from Notion:", error);
+    return undefined;
+  }
+}
 
-//     this.notion = new Client({ auth: notionSecret });
-//   }
-
-//   public async getBoatInfo(boatId: string) {
-//     try {
-//       const response = await notion.pages.retrieve({
-//         page_id: boatId,
-//       });
-//       // const data = response.json();
-//       return parseNotionObject<Boat>(response);
-//     } catch (error) {
-//       console.error("Error retrieving page from Notion:", error);
-//       return undefined;
-//     }
-//   }
-// }
+export async function getBookingInfo(bookingId: string) {
+  try {
+    const response = await notion.pages.retrieve({
+      page_id: bookingId,
+    });
+    return parseNotionObject<Booking>(response as NotionPage);
+  } catch (error) {
+    console.error("Error retrieving page from Notion:", error);
+    return undefined;
+  }
+}

@@ -76,7 +76,7 @@ export default function BookingForm1({
             <div className="flex justify-between w-full">
               <FormWrapper>
                 <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 md:bottom-[1.8rem] bottom-[1.6rem] bg-white md:left-4 left-2 px-2">
-                  {t("input.first_name")}
+                  First name
                 </label>
                 <CommonInput
                   type="text"

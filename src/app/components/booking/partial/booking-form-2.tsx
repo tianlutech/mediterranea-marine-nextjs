@@ -179,7 +179,6 @@ export default function BookingForm2({
                 </div>
               </div>
               <div className="mt-2 text-black flex">
-                x
                 <div>
                   <InfoSvg />
                 </div>
@@ -187,7 +186,6 @@ export default function BookingForm2({
                   Click here to see the video of the SUP
                 </span>
               </div>
-
               <div className="relative w-full mt-6 flex justify-between items-center">
                 <div className="w-[90%]">
                   <label className="block px-2 absolute text-black bottom-[2.7rem] z-10 bg-white left-4 text-sm font-medium">

@@ -36,17 +36,11 @@ export default function Booking({
   const closePrepaymentModal = () => {
     setOpenPrepaymentModal(false);
   };
-  console.log("=====data", data);
   if (!data) {
     return;
   }
 
   const submitBooking = () => {
-    const valid = form.submit();
-
-    if (!valid) {
-      return;
-    }
     const { SUP, SEABOB, ID_Back_Picture, ID_Front_Picture, ...bookingData } =
       formData;
 

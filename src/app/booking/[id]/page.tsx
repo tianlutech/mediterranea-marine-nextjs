@@ -5,12 +5,13 @@ import Booking from "@/app/components/booking";
 import { useEffect, useState } from "react";
 import { fetchBookingDetails } from "@/app/services/booking.service"
 import { fetchBoatDetails } from "@/app/services/boat.service";
+import { getBookingInfo } from "@/app/services/notion.singleton"
 
 export default function BookingPage({ params }: { params: { id: string } }) {
   const [data, setData] = useState<any>({});
   const [boatInfo, setBoatInfo] = useState<any>({})
   useEffect(() => {
-    fetchBookingDetails(params.id).then(data => {
+    getBookingInfo(params.id).then(data => {
       console.log("=========data", data)
       setData(data)
     });
