@@ -4,8 +4,9 @@ import InfoSvg from "@/app/assets/svgs/InfoSvg";
 import PlayerSvg from "@/app/assets/svgs/PlayerSvg";
 import CommonInput from "@/app/components/common/inputs/input";
 import CommonSelect from "@/app/components/common/inputs/selectInput";
-import { useEffect, useState } from "react";
-import TermsAndConditionModal from "@/app/components/booking/partial/termsAndConditions";
+import { useState } from "react";
+import TermsAndConditionModal from "@/app/components/modals/termsAndConditions";
+import VideoModal from "../../modals/videoModal";
 
 export default function BookingForm2({
   data,
@@ -16,9 +17,10 @@ export default function BookingForm2({
   setData: any;
   boatInfo: any;
 }) {
-  const [eatAtRestaurant, setEatAtRestaurant] = useState<any>(false);
+  const [eatAtRestaurant, setEatAtRestaurant] = useState<boolean>(false);
   const [openTermModal, setOpenTermModal] = useState<boolean>(false);
-
+  const [videoModalOpen, setVideoModalOpen] = useState<boolean>(false);
+  const [videoLiknk, setVideoLink] = useState<string>("")
   const departureTime = ["13:00", "14:00", "15:00", "16:00", "17:00"];
   const standUpPaddle = ["SEABOB 2 - 250E", "SUB 1 - 150E", "SEABOB 1 - 150E"];
   const closeModalTermModal = () => {
@@ -31,6 +33,14 @@ export default function BookingForm2({
     );
   };
 
+  const openVideoModal = (link: string) => {
+    setVideoLink(link)
+    setVideoModalOpen(true)
+  }
+  const closeVideoModal = () => {
+    setVideoModalOpen(false)
+  }
+
   // Define your price per mile and mile ranges
   const pricePerMile: number = boatInfo?.properties?.MilePrice.number; // Example: 4 euros per mile
   const mileRanges = [25, 35]; // Example mile ranges
@@ -38,6 +48,7 @@ export default function BookingForm2({
 
   return (
     <>
+      <VideoModal isOpen={videoModalOpen} closeModal={closeVideoModal} videoSrc={videoLiknk} />
       <TermsAndConditionModal
         isOpen={openTermModal}
         closeModal={closeModalTermModal}
@@ -174,7 +185,7 @@ export default function BookingForm2({
                     onChange={(e) => setData({ ...data, SUP: e.target.value })}
                   />
                 </div>
-                <div className="w-[8%]">
+                <div onClick={() => openVideoModal("https://www.youtube.com/watch?v=ES2mShoQ3_Q")} className="cursor-pointer">
                   <PlayerSvg />
                 </div>
               </div>
@@ -201,7 +212,7 @@ export default function BookingForm2({
                     }
                   />
                 </div>
-                <div className="w-[8%]">
+                <div onClick={() => openVideoModal("https://www.youtube.com/watch?v=IKj0A5DDN0g")} className="cursor-pointer">
                   <PlayerSvg />
                 </div>
               </div>

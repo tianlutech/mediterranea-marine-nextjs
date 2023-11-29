@@ -3,9 +3,9 @@
 import { useState } from "react";
 import BookingForm1 from "./partial/booking-form-1";
 import BookingForm2 from "./partial/booking-form-2";
-import PrepaymentModal from "@/app/components/booking/partial/prepaymentModal";
-import { updateBookingDetails } from "@/app/services/booking.service";
+import PrepaymentModal from "@/app/components/modals/prepaymentModal";
 import { Booking, FileData } from "@/app/models/models";
+import { updatePage } from "@/app/api/notion/notion.api"
 
 export default function Booking({
   data,
@@ -53,7 +53,7 @@ export default function Booking({
       Toys: [formData["SUP"], formData["SEABOB"]].filter((value) => !!value),
     } as Partial<Booking>;
 
-    updateBookingDetails(id, data);
+    updatePage(id, data);
   };
   return (
     <>
