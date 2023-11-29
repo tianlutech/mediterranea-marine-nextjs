@@ -5,15 +5,21 @@ import CommonInput from "@/app/components/common/inputs/input";
 import CommonInputFile from "@/app/components/common/inputs/fileInput";
 import { useTranslation } from "react-i18next";
 import React, { FC, useRef, useState } from "react";
-import UploadSvg from "@/app/assets/svgs/UploadSvg"
-import ImageSvg from "@/app/assets/svgs/ImageSvg"
+import UploadSvg from "@/app/assets/svgs/UploadSvg";
+import ImageSvg from "@/app/assets/svgs/ImageSvg";
 import Image from "next/image";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
-  return <div className="relative w-[48%]">{children}</div>
+  return <div className="relative w-[48%]">{children}</div>;
 };
 
-export default function BookingForm1({ data, setData }: { data: any, setData: any }) {
+export default function BookingForm1({
+  data,
+  setData,
+}: {
+  data: any;
+  setData: any;
+}) {
   const [photoIdFront, setPhotoIdFront] = useState<string>();
   const [photoIdFrontPreview, setPhotoIdFrontPreview] = useState<string>();
   const [photoIdFrontSize, setPhotoIdFrontSize] = useState<string>();
@@ -38,12 +44,12 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
       const fileSizeInKilobytes: any = (fileSizeInBytes / 1024).toFixed(1);
       const fileSizeInMegabytes: any = (fileSizeInKilobytes / 1024).toFixed(1);
       if (fileSizeInMegabytes < 1) {
-        setPhotoIdFrontSize(`${fileSizeInKilobytes} KB`)
+        setPhotoIdFrontSize(`${fileSizeInKilobytes} KB`);
       }
-      setPhotoIdFrontSize(`${fileSizeInMegabytes} MB`)
+      setPhotoIdFrontSize(`${fileSizeInMegabytes} MB`);
       setPhotoIdFrontPreview(fileUrl);
       setPhotoIdFront(file.name); // Assuming you want to keep the file name
-      setData({ ...data, "ID Front Picture": file })
+      setData({ ...data, "ID Front Picture": file });
     }
   };
   const onChangeIdBack = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,12 +60,12 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
       const fileSizeInKilobytes: any = (fileSizeInBytes / 1024).toFixed(1);
       const fileSizeInMegabytes: any = (fileSizeInKilobytes / 1024).toFixed(1);
       if (fileSizeInMegabytes < 1) {
-        setPhotoIdBackSize(`${fileSizeInKilobytes} KB`)
+        setPhotoIdBackSize(`${fileSizeInKilobytes} KB`);
       }
-      setPhotoIdBackSize(`${fileSizeInMegabytes} MB`)
+      setPhotoIdBackSize(`${fileSizeInMegabytes} MB`);
       setPhotoIdBackPreview(fileUrl);
       setPhotoIdBack(file.name);
-      setData({ ...data, "ID Back Picture": file })
+      setData({ ...data, "ID Back Picture": file });
     }
   };
   return (
@@ -78,7 +84,9 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                   id="firstname"
                   placeholder="First name"
                   value={data["First Name"]}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, "First Name": e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setData({ ...data, "First Name": e.target.value })
+                  }
                   required={true}
                 />
               </FormWrapper>
@@ -92,7 +100,9 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                   id="lastname"
                   placeholder="Last name"
                   value={data["Last Name"]}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, "Last Name": e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setData({ ...data, "Last Name": e.target.value })
+                  }
                   required={true}
                 />
               </FormWrapper>
@@ -107,12 +117,19 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                 id="email"
                 placeholder="Email"
                 value={data["Email"]}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, "Email": e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setData({ ...data, Email: e.target.value })
+                }
                 required={true}
               />
             </div>
-            <div onClick={onClickIdFront} className="relative w-full mt-6 border border-gray-300 p-[0.7rem] px-6 rounded-lg">
-              <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 top-[-0.6rem] bg-white left-4 px-2">Identity / Passport Picture (Front)</label>
+            <div
+              onClick={onClickIdFront}
+              className="relative w-full mt-6 border border-gray-300 p-[0.7rem] px-6 rounded-lg"
+            >
+              <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 top-[-0.6rem] bg-white left-4 px-2">
+                Identity / Passport Picture (Front)
+              </label>
               <input
                 ref={IdFront}
                 type="file"
@@ -126,36 +143,47 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                     <UploadSvg />
                   </div>
                   <div className="flex flex-col ml-4">
-                    <span className="text-black">Select a file or drag and drop here</span>
-                    <span className="greytext mt-2">JPG, PNG or PDF, file size no more than 10MB</span>
+                    <span className="text-black">
+                      Select a file or drag and drop here
+                    </span>
+                    <span className="greytext mt-2">
+                      JPG, PNG or PDF, file size no more than 10MB
+                    </span>
                   </div>
                 </div>
-                {
-                  photoIdFront &&
+                {photoIdFront && (
                   <div className="flex justify-between items-center mt-4 p-2 bg-bgColor1">
                     <div className="flex justify-center items-center text-center">
                       <div>
-                        {
-                          photoIdFrontPreview ?
-                            <Image
-                              width={20}
-                              height={20}
-                              src={photoIdFrontPreview}
-                              alt="idFront"
-                            />
-                            :
-                            <ImageSvg />
-                        }
+                        {photoIdFrontPreview ? (
+                          <Image
+                            width={20}
+                            height={20}
+                            src={photoIdFrontPreview}
+                            alt="idFront"
+                          />
+                        ) : (
+                          <ImageSvg />
+                        )}
                       </div>
-                      <span className="text-black text-center md:ml-4 ml-2 md:text-base text-xs">{photoIdFront}</span>
+                      <span className="text-black text-center md:ml-4 ml-2 md:text-base text-xs">
+                        {photoIdFront}
+                      </span>
                     </div>
-                    <span className="text-black md:text-base text-xs">{photoIdFrontSize}</span>
+                    <span className="text-black md:text-base text-xs">
+                      {photoIdFrontSize}
+                    </span>
                   </div>
-                }
+                )}
               </div>
             </div>
-            <div onClick={onClickIdBack} className="relative w-full mt-6 border border-gray-300 p-[0.7rem] px-6 rounded-lg">
-              <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 top-[-0.6rem] bg-white left-4 px-2">Identity / Passport Picture (Back)</label>
+            <div
+              onClick={onClickIdBack}
+              className="relative w-full mt-6 border border-gray-300 p-[0.7rem] px-6 rounded-lg"
+            >
+              <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 top-[-0.6rem] bg-white left-4 px-2">
+                Identity / Passport Picture (Back)
+              </label>
               <input
                 ref={IdBack}
                 type="file"
@@ -169,31 +197,38 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                     <UploadSvg />
                   </div>
                   <div className="flex flex-col ml-4">
-                    <span className="text-black">Select a file or drag and drop here</span>
-                    <span className="greytext mt-2">JPG, PNG or PDF, file size no more than 10MB</span>
+                    <span className="text-black">
+                      Select a file or drag and drop here
+                    </span>
+                    <span className="greytext mt-2">
+                      JPG, PNG or PDF, file size no more than 10MB
+                    </span>
                   </div>
                 </div>
-                {photoIdBackPreview &&
+                {photoIdBackPreview && (
                   <div className="flex justify-between items-center mt-4 p-2 bg-bgColor1">
                     <div className="flex justify-center items-center text-center">
                       <div>
-                        {
-                          photoIdBackPreview ?
-                            <Image
-                              width={20}
-                              height={20}
-                              src={photoIdBackPreview}
-                              alt="idFront"
-                            />
-                            :
-                            <ImageSvg />
-                        }
+                        {photoIdBackPreview ? (
+                          <Image
+                            width={20}
+                            height={20}
+                            src={photoIdBackPreview}
+                            alt="idFront"
+                          />
+                        ) : (
+                          <ImageSvg />
+                        )}
                       </div>
-                      <span className="text-black text-center md:ml-4 ml-2 md:text-base text-xs">{photoIdBack || "Passport back.png"}</span>
+                      <span className="text-black text-center md:ml-4 ml-2 md:text-base text-xs">
+                        {photoIdBack || "Passport back.png"}
+                      </span>
                     </div>
-                    <span className="text-black md:text-base text-xs">{photoIdBackSize}</span>
+                    <span className="text-black md:text-base text-xs">
+                      {photoIdBackSize}
+                    </span>
                   </div>
-                }
+                )}
               </div>
             </div>
             <div className="relative w-full mt-6">
@@ -206,7 +241,9 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                 id="billingAddress"
                 placeholder="Billing Address"
                 value={data["Billing Address"]}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, "Billing Address": e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setData({ ...data, "Billing Address": e.target.value })
+                }
                 required={true}
               />
             </div>
@@ -221,7 +258,9 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                   id="adultNumber"
                   placeholder="Adult number"
                   value={data["No Adults"]}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, "No Adults": e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setData({ ...data, "No Adults": e.target.value })
+                  }
                   required={false}
                 />
               </FormWrapper>
@@ -235,7 +274,9 @@ export default function BookingForm1({ data, setData }: { data: any, setData: an
                   id="kidsNumber"
                   placeholder="Kids number"
                   value={data["No Childs"]}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, "No Childs": e.target.value })}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setData({ ...data, "No Childs": e.target.value })
+                  }
                   required={false}
                 />
               </FormWrapper>

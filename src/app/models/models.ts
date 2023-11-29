@@ -2,15 +2,16 @@ export type Captian = {};
 
 export type Boat = {};
 
+export type FileData = { name: string; url: ""; type: "file" | "external" };
+
 export type Booking = {
-  "ID Back Picture": Object;
   ID: string;
   "Total Payment": number;
   Client: Record<string, unknown>;
   Toys: String[];
   "Payment Deposit": number;
   Whatsapp: string;
-  "Departure Time": Date;
+  "Departure Time": string;
   "Fuel left": number;
   "Engine Hours": number;
   "No Childs": number;
@@ -18,7 +19,8 @@ export type Booking = {
   "First Name": string;
   "ID Number": string;
   "Total Passengers": number;
-  "ID Front Picture": Object;
+  "ID Front Picture": FileData;
+  "ID Back Picture": FileData;
   Rate: number;
   Captain: Captian;
   "No Adults": number;

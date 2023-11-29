@@ -1,5 +1,17 @@
+import { FileData } from "./models";
 export type NotionProperty = { type: string } & Record<string, unknown>;
 
+export type NotionFile = {
+  name: string;
+  type: "file" | "external";
+  file?: {
+    url: string;
+    expiry_time: Date;
+  };
+  external?: {
+    url: string;
+  };
+};
 export type NotionPage = {
   id: string;
   properties: Record<string, NotionProperty>;
@@ -24,7 +36,7 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
         .join(" ");
     case "date":
       return new Date(
-        (property["date"] as { start: string; end: string }).start
+        (property["date"] as { start: string; end: string })?.start
       );
     case "relation":
       return (property["relation"] as Array<{ id: string }>).map(
@@ -34,6 +46,11 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
       return (property["multi_select"] as Array<{ name: string }>).map(
         (relation) => relation.name
       );
+    case "files":
+      return (property["files"] as Array<NotionFile>).map((file) => ({
+        name: file.name,
+        url: file[file.type]?.url,
+      }));
     default:
       return "";
   }
@@ -51,7 +68,9 @@ export const parseObjectToNotion = <T extends Record<string, unknown>>(
   return object;
 };
 
-const parsePropertyToNotion = (property: unknown): NotionProperty => {
+const parsePropertyToNotion = (
+  property: unknown | ({ type: string } & Record<string, unknown>)
+): NotionProperty => {
   // This is a multi_select
   if (
     Array.isArray(property) &&
@@ -70,6 +89,16 @@ const parsePropertyToNotion = (property: unknown): NotionProperty => {
       type: "date",
       date: { start: property },
     };
+  }
+
+  const { type } = property as { type: string };
+  if (typeof type === "string") {
+    if (type === "external") {
+      return {
+        type: "files",
+        files: [property],
+      };
+    }
   }
 
   if (typeof property === "object") {

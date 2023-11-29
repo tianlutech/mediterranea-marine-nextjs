@@ -5,31 +5,31 @@ import PlayerSvg from "@/app/assets/svgs/PlayerSvg";
 import CommonInput from "@/app/components/common/inputs/input";
 import CommonSelect from "@/app/components/common/inputs/selectInput";
 import { useEffect, useState } from "react";
-import TermsAndConditionModal from "@/app/components/booking/partial/termsAndConditions"
+import TermsAndConditionModal from "@/app/components/booking/partial/termsAndConditions";
 
-export default function BookingForm2({ data, setData, boatInfo }: { data: any, setData: any, boatInfo: any }) {
-  const [eatAtRestaurant, setEatAtRestaurant] = useState<any>(false)
-  const [openTermModal, setOpenTermModal] = useState<boolean>(false)
+export default function BookingForm2({
+  data,
+  setData,
+  boatInfo,
+}: {
+  data: any;
+  setData: any;
+  boatInfo: any;
+}) {
+  const [eatAtRestaurant, setEatAtRestaurant] = useState<any>(false);
+  const [openTermModal, setOpenTermModal] = useState<boolean>(false);
 
-  const departureTime = [
-    "13:00",
-    "14:00",
-    "15:00",
-    "16:00",
-    "17:00",
-  ];
-  const standUpPaddle = [
-    "SEABOB 2 - 250E",
-    "SUB 1 - 150E",
-    "SEABOB 1 - 150E",
-  ];
+  const departureTime = ["13:00", "14:00", "15:00", "16:00", "17:00"];
+  const standUpPaddle = ["SEABOB 2 - 250E", "SUB 1 - 150E", "SEABOB 1 - 150E"];
   const closeModalTermModal = () => {
-    setOpenTermModal(false)
-  }
+    setOpenTermModal(false);
+  };
   // Function to calculate boat prices
   const calculateBoatPrices = (pricePerMile: number, mileRanges: any) => {
-    return mileRanges.map((miles: number) => `${miles} Nautical Miles - ${miles * pricePerMile}€`);
-  }
+    return mileRanges.map(
+      (miles: number) => `${miles} Nautical Miles - ${miles * pricePerMile}€`
+    );
+  };
 
   // Define your price per mile and mile ranges
   const pricePerMile: number = boatInfo?.properties?.MilePrice.number; // Example: 4 euros per mile
@@ -38,7 +38,10 @@ export default function BookingForm2({ data, setData, boatInfo }: { data: any, s
 
   return (
     <>
-      <TermsAndConditionModal isOpen={openTermModal} closeModal={closeModalTermModal} />
+      <TermsAndConditionModal
+        isOpen={openTermModal}
+        closeModal={closeModalTermModal}
+      />
       <div className="flex md:mt-0 mt-4 md:flex-row flex-col md:w-[49%] w-full">
         <div className="w-full bg-white rounded-lg">
           <div className="md:p-6 sm:p-8 p-6">
@@ -51,7 +54,9 @@ export default function BookingForm2({ data, setData, boatInfo }: { data: any, s
                   id="departureTime"
                   name="departureTime"
                   value={data["Departure Time"]}
-                  onChange={(e) => setData({ ...data, "Departure Time": e.target.value })}
+                  onChange={(e) =>
+                    setData({ ...data, "Departure Time": e.target.value })
+                  }
                   data={departureTime}
                 />
               </div>
@@ -85,7 +90,7 @@ export default function BookingForm2({ data, setData, boatInfo }: { data: any, s
                   </label>
                 </div>
               </div>
-              {eatAtRestaurant &&
+              {eatAtRestaurant && (
                 <div className="flex justify-between w-full mt-2">
                   <div className="relative w-[48%]">
                     <label className="block mb-2 md:text-sm text-xs font-medium text-gray-900 absolute z-10 md:bottom-[2.3rem] bottom-[1.7rem] bg-white md:left-4 left-1 px-2">
@@ -112,16 +117,16 @@ export default function BookingForm2({ data, setData, boatInfo }: { data: any, s
                     />
                   </div>
                 </div>
-              }
+              )}
 
               <div className="mt-6 text-black flex">
                 <div>
                   <InfoSvg />
                 </div>
                 <span className="text-sm ml-2">
-                  Is common for our clients to book in a restuarant, providing to
-                  us the restaurant name and the meal appointment can help our
-                  captian to adjust and apdat the route of your sail
+                  Is common for our clients to book in a restuarant, providing
+                  to us the restaurant name and the meal appointment can help
+                  our captian to adjust and apdat the route of your sail
                 </span>
               </div>
               <div className="relative w-full mt-6">
@@ -139,10 +144,13 @@ export default function BookingForm2({ data, setData, boatInfo }: { data: any, s
                   Prepayment of fuel
                 </label>
                 <CommonSelect
-                  id="miles" name="miles"
+                  id="miles"
+                  name="miles"
                   data={calculatedMiles}
                   value={data["Fuel Payment"]}
-                  onChange={(e) => setData({ ...data, "Fuel Payment": e.target.value })}
+                  onChange={(e) =>
+                    setData({ ...data, "Fuel Payment": e.target.value })
+                  }
                 />
               </div>
               <div className="mt-2 text-black flex">
@@ -159,10 +167,11 @@ export default function BookingForm2({ data, setData, boatInfo }: { data: any, s
                     Toy: Stand Up Paddle
                   </label>
                   <CommonSelect
-                    id="miles" name="miles"
+                    id="miles"
+                    name="miles"
                     data={standUpPaddle}
-                    value={data["Toys"]}
-                    onChange={(e) => setData({ ...data, "Toys": e.target.value })}
+                    value={data["SUP"]}
+                    onChange={(e) => setData({ ...data, SUP: e.target.value })}
                   />
                 </div>
                 <div className="w-[8%]">
@@ -170,6 +179,7 @@ export default function BookingForm2({ data, setData, boatInfo }: { data: any, s
                 </div>
               </div>
               <div className="mt-2 text-black flex">
+                x
                 <div>
                   <InfoSvg />
                 </div>
@@ -184,10 +194,13 @@ export default function BookingForm2({ data, setData, boatInfo }: { data: any, s
                     Toy: SEABOB{" "}
                   </label>
                   <CommonSelect
-                    id="miles" name="miles"
+                    id="miles"
+                    name="miles"
                     data={standUpPaddle}
-                    value={data["Toys"]}
-                    onChange={(e) => setData({ ...data, "Toys": e.target.value })}
+                    value={data["SEABOB"]}
+                    onChange={(e) =>
+                      setData({ ...data, SEABOB: e.target.value })
+                    }
                   />
                 </div>
                 <div className="w-[8%]">
@@ -213,14 +226,20 @@ export default function BookingForm2({ data, setData, boatInfo }: { data: any, s
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label className="ms-2 text-sm text-black">
-                    Read and Sign the <span onClick={() => setOpenTermModal(true)} className="text-blue-600">contract</span>
+                    Read and Sign the{" "}
+                    <span
+                      onClick={() => setOpenTermModal(true)}
+                      className="text-blue-600"
+                    >
+                      contract
+                    </span>
                   </label>
                 </div>
               </div>
             </form>
           </div>
-        </div >
-      </div >
+        </div>
+      </div>
     </>
   );
 }
