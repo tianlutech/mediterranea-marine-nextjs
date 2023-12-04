@@ -23,7 +23,7 @@ export default function Booking({
     useState<boolean>(false);
   const [agreePolicy, setAgreePolicy] = useState<boolean>(false)
   const [agreeGuaranty, setAgreeGuaranty] = useState<boolean>(false)
-  const [signedContract, setSignedContract] = useState<boolean>(false)
+  const [signedContract, setSignedContract] = useState<boolean>(true)
   const [formData, setFormData] = useState({
     "First Name": "",
     "Last Name": "",
@@ -194,6 +194,7 @@ export default function Booking({
               </div>
             </div>
             <button
+              disabled={agreePolicy && agreeGuaranty && signedContract}
               type="submit"
               className="mt-6 text-white bg-buttonColor focus:ring-4 font-semibold rounded-lg text-lg px-10 py-3"
             >
