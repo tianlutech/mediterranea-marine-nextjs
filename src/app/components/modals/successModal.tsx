@@ -5,7 +5,7 @@ import Modal from "@/app/components/common/modal/modal"
 
 export default function SuccessModal({ isOpen, closeModal }: { isOpen: boolean, closeModal: any }) {
   return (
-    <Modal isOpen={isOpen} closeModal={closeModal}>
+    <Modal isOpen={isOpen}>
       <div style={{ background: "linear-gradient(180deg, #262D46 0%, #B07E50 100%)" }} className="relative p-2 md:w-[60%] w-[95%] bg-white text-center flex flex-col items-center text-white justify-center rounded-lg shadow">
         <Image
           width={60}

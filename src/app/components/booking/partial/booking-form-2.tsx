@@ -4,22 +4,22 @@ import InfoSvg from "@/app/assets/svgs/InfoSvg";
 import PlayerSvg from "@/app/assets/svgs/PlayerSvg";
 import CommonInput from "@/app/components/common/inputs/input";
 import CommonSelect from "@/app/components/common/inputs/selectInput";
+import CommonLabel from "../../common/label/label";
 import { useState } from "react";
 import TermsAndConditionModal from "@/app/components/modals/termsAndConditions";
 import VideoModal from "../../modals/videoModal";
+import ErrorMessage from "./errorMessage"
 
 export default function BookingForm2({
   data,
   setData,
   boatInfo,
-  errors,
-  touched,
+  formik,
 }: {
   data: any;
   setData: any;
   boatInfo: any;
-  errors: any;
-  touched: any;
+  formik: any;
 }) {
   const [eatAtRestaurant, setEatAtRestaurant] = useState<boolean>(false);
   const [openTermModal, setOpenTermModal] = useState<boolean>(false);
@@ -83,9 +83,9 @@ export default function BookingForm2({
         <div className="w-full bg-white rounded-lg">
           <div className="md:p-6 sm:p-8 p-6">
             <div className="relative w-full">
-              <label className="block px-2 absolute text-black bottom-[2.7rem] z-10 bg-white left-4 text-sm font-medium">
+              <CommonLabel input="select" error={formik.errors["Departure Time"]}>
                 Departure time
-              </label>
+              </CommonLabel>
               <CommonSelect
                 id="departureTime"
                 name="departureTime"
@@ -95,6 +95,7 @@ export default function BookingForm2({
                 }
                 data={departureTime}
               />
+              <ErrorMessage formik={formik} name="Departure Time" />
             </div>
             <div className="mt-6 flex items-baseline">
               <div className="flex items-center mb-4">
@@ -175,9 +176,9 @@ export default function BookingForm2({
               ></textarea>
             </div>
             <div className="relative w-full mt-6">
-              <label className="block px-2 absolute text-black bottom-[2.7rem] z-10 bg-white left-4 text-sm font-medium">
+              <CommonLabel input="select" error={formik.errors["Fuel Payment"]}>
                 Prepayment of fuel
-              </label>
+              </CommonLabel>
               <CommonSelect
                 id="miles"
                 name="miles"
@@ -187,6 +188,7 @@ export default function BookingForm2({
                   setData({ ...data, "Fuel Payment": e.target.value })
                 }
               />
+              <ErrorMessage formik={formik} name="Fuel Payment" />
             </div>
             <div className="mt-2 text-black flex">
               <div>
@@ -217,10 +219,11 @@ export default function BookingForm2({
               <div>
                 <InfoSvg />
               </div>
-              <span className="text-sm ml-2">
+              <span className="text-sm ml-2" onClick={() => openVideoModal("https://www.youtube.com/watch?v=ES2mShoQ3_Q")}>
                 Click here to see the video of the SUP
               </span>
             </div>
+            <ErrorMessage formik={formik} name="SUP" />
             <div className="relative w-full mt-6 flex justify-between items-center">
               <div className="w-[90%]">
                 <label className="block px-2 absolute text-black bottom-[2.7rem] z-10 bg-white left-4 text-sm font-medium">
@@ -244,10 +247,11 @@ export default function BookingForm2({
               <div>
                 <InfoSvg />
               </div>
-              <span className="text-sm ml-2">
+              <span onClick={() => openVideoModal("https://www.youtube.com/watch?v=IKj0A5DDN0g")} className="text-sm ml-2">
                 Click chere to see a video of the SEABOB
               </span>
             </div>
+            <ErrorMessage formik={formik} name="SEABOB" />
             <div className="mt-6">
               <div className="flex items-center">
                 <input

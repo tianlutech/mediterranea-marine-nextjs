@@ -30,7 +30,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
   }
   useEffect(() => {
     getBookingDetails()
-  });
+  }, []);
 
   if (!data || !boatInfo) {
     return

@@ -9,7 +9,8 @@ import React, { FC, useRef, useState } from "react";
 import UploadSvg from "@/app/assets/svgs/UploadSvg";
 import ImageSvg from "@/app/assets/svgs/ImageSvg";
 import Image from "next/image";
-import { Formik, Form, Field } from "formik";
+import ErrorMessage from "./errorMessage"
+import { Condiment } from "next/font/google";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-[48%]">{children}</div>;
@@ -18,13 +19,11 @@ const FormWrapper = ({ children }: { children: React.ReactNode }) => {
 export default function BookingForm1({
   data,
   setData,
-  errors,
-  touched,
+  formik,
 }: {
   data: any;
   setData: any;
-  errors: any;
-  touched: any;
+  formik: any
 }) {
   const [photoIdFront, setPhotoIdFront] = useState<string>();
   const [photoIdFrontPreview, setPhotoIdFrontPreview] = useState<string>();
@@ -81,7 +80,7 @@ export default function BookingForm1({
           <form className="" action="#">
             <div className="flex justify-between w-full">
               <FormWrapper>
-                <CommonLabel error={errors["First Name"]}>
+                <CommonLabel input="text" error={formik.errors["First Name"]}>
                   First name
                 </CommonLabel>
                 <CommonInput
@@ -95,12 +94,10 @@ export default function BookingForm1({
                   }
                   required={true}
                 />
-                {errors["First Name"] && touched["First Name"] ? (
-                  <div className="error text-red-500">{errors["First Name"]}</div>
-                ) : null}
+                <ErrorMessage formik={formik} name="First Name" />
               </FormWrapper>
               <FormWrapper>
-                <CommonLabel error={errors["Last Name"]}>
+                <CommonLabel input="text" error={formik.errors["Last Name"]}>
                   Last name
                 </CommonLabel>
                 <CommonInput
@@ -114,13 +111,11 @@ export default function BookingForm1({
                   }
                   required={true}
                 />
-                {errors["Last Name"] && touched["Last Name"] ? (
-                  <div className="error text-red-500">{errors["Last Name"]}</div>
-                ) : null}
+                <ErrorMessage formik={formik} name="Last Name" />
               </FormWrapper>
             </div>
             <div className="relative w-full mt-6">
-              <CommonLabel error={errors["Last Name"]}>
+              <CommonLabel input="text" error={formik.errors["Email"]}>
                 Email
               </CommonLabel>
               <CommonInput
@@ -134,9 +129,7 @@ export default function BookingForm1({
                 }
                 required={true}
               />
-              {errors["Email"] && touched["Email"] ? (
-                <div className="error text-red-500">{errors["Email"]}</div>
-              ) : null}
+              <ErrorMessage formik={formik} name="Email" />
             </div>
             <div
               onClick={onClickIdFront}
@@ -147,6 +140,7 @@ export default function BookingForm1({
               </label>
               <input
                 ref={IdFront}
+                name="ID_Front_Picture"
                 type="file"
                 hidden
                 onChangeCapture={onChangeIdFront}
@@ -192,6 +186,7 @@ export default function BookingForm1({
                 )}
               </div>
             </div>
+            <ErrorMessage formik={formik} name="ID Front Picture" />
             <div
               onClick={onClickIdBack}
               className="relative w-full mt-6 border border-gray-300 p-[0.7rem] px-6 rounded-lg"
@@ -246,13 +241,14 @@ export default function BookingForm1({
                 )}
               </div>
             </div>
+            <ErrorMessage formik={formik} name="ID Back Picture" />
             <div className="relative w-full mt-6">
-              <label className="block mb-2 font-medium text-gray-900 absolute z-10 md:bottom-[1.8rem] bottom-[1.6rem] md:text-sm text-xs bg-white md:left-4 left-2 px-2">
+              <CommonLabel input="text" error={formik.errors["Last Name"]}>
                 Billing address
-              </label>
+              </CommonLabel>
               <CommonInput
                 type="text"
-                name="text"
+                name="Billing address"
                 id="billingAddress"
                 placeholder="Billing Address"
                 value={data["Billing Address"]}
@@ -261,12 +257,13 @@ export default function BookingForm1({
                 }
                 required={true}
               />
+              <ErrorMessage formik={formik} name="Billing Address" />
             </div>
             <div className="flex justify-between w-full mt-6">
               <FormWrapper>
-                <label className="block absolute px-2 text-black md:bottom-[2.4rem] bottom-[2rem] z-10 bg-white md:left-4 left-2 md:text-sm text-xs font-medium">
+                <CommonLabel input="text" error={formik.errors["No Adults"]}>
                   Adults passengers
-                </label>
+                </CommonLabel>
                 <CommonInput
                   type="number"
                   name="number"
@@ -278,11 +275,12 @@ export default function BookingForm1({
                   }
                   required={false}
                 />
+                <ErrorMessage formik={formik} name="No Adults" />
               </FormWrapper>
               <FormWrapper>
-                <label className="block px-2 absolute text-black md:bottom-[2.4rem] bottom-[2rem] z-10 bg-white md:left-4 left-2 md:text-sm text-xs  font-medium">
+                <CommonLabel input="text" error={formik.errors["No Childs"]}>
                   Kids passengers
-                </label>
+                </CommonLabel>
                 <CommonInput
                   type="number"
                   name="number"
@@ -294,6 +292,7 @@ export default function BookingForm1({
                   }
                   required={false}
                 />
+                <ErrorMessage formik={formik} name="No Childs" />
               </FormWrapper>
             </div>
             <div className="mt-6 text-black flex">
