@@ -60,7 +60,8 @@ export default function Booking({
   type Errors = {
     [Key in keyof Booking]?: string;
   };
-  const validate = (values: Booking) => {
+  const validate = () => {
+    const values = formData
     const errors: Errors = {};
     if (!values["First Name"]) {
       errors["First Name"] = "Required";
