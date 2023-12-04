@@ -7,10 +7,7 @@ export default function LoadingModal({
   isOpen: boolean;
 }) {
   return (
-    <div
-      aria-hidden="true"
-      className={`${isOpen ? "flex" : "hidden"} overflow-x-hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-75 backdrop-filter`}
-    >
+    <Modal isOpen={isOpen}>
       <div className="relative p-4 w-[10%] h-[10%]">
         <div className="relative p-4 text-centerrounded-lg shadow  sm:p-5">
           <div role="status">
@@ -22,6 +19,6 @@ export default function LoadingModal({
           </div>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 }

@@ -3,11 +3,13 @@
 import InfoSvg from "@/app/assets/svgs/InfoSvg";
 import CommonInput from "@/app/components/common/inputs/input";
 import CommonInputFile from "@/app/components/common/inputs/fileInput";
+import CommonLabel from "../../common/label/label";
 import { useTranslation } from "react-i18next";
 import React, { FC, useRef, useState } from "react";
 import UploadSvg from "@/app/assets/svgs/UploadSvg";
 import ImageSvg from "@/app/assets/svgs/ImageSvg";
 import Image from "next/image";
+import { Formik, Form, Field } from "formik";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-[48%]">{children}</div>;
@@ -16,9 +18,13 @@ const FormWrapper = ({ children }: { children: React.ReactNode }) => {
 export default function BookingForm1({
   data,
   setData,
+  errors,
+  touched,
 }: {
   data: any;
   setData: any;
+  errors: any;
+  touched: any;
 }) {
   const [photoIdFront, setPhotoIdFront] = useState<string>();
   const [photoIdFrontPreview, setPhotoIdFrontPreview] = useState<string>();
@@ -75,12 +81,12 @@ export default function BookingForm1({
           <form className="" action="#">
             <div className="flex justify-between w-full">
               <FormWrapper>
-                <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 md:bottom-[1.8rem] bottom-[1.6rem] bg-white md:left-4 left-2 px-2">
+                <CommonLabel error={errors["First Name"]}>
                   First name
-                </label>
+                </CommonLabel>
                 <CommonInput
                   type="text"
-                  name="text"
+                  name="First Name"
                   id="firstname"
                   placeholder="First name"
                   value={data["First Name"]}
@@ -89,14 +95,17 @@ export default function BookingForm1({
                   }
                   required={true}
                 />
+                {errors["First Name"] && touched["First Name"] ? (
+                  <div className="error text-red-500">{errors["First Name"]}</div>
+                ) : null}
               </FormWrapper>
               <FormWrapper>
-                <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 md:bottom-[1.8rem] bottom-[1.6rem] bg-white md:left-4 left-2 px-2">
+                <CommonLabel error={errors["Last Name"]}>
                   Last name
-                </label>
+                </CommonLabel>
                 <CommonInput
                   type="text"
-                  name="text"
+                  name="Last Name"
                   id="lastname"
                   placeholder="Last name"
                   value={data["Last Name"]}
@@ -105,15 +114,18 @@ export default function BookingForm1({
                   }
                   required={true}
                 />
+                {errors["Last Name"] && touched["Last Name"] ? (
+                  <div className="error text-red-500">{errors["Last Name"]}</div>
+                ) : null}
               </FormWrapper>
             </div>
             <div className="relative w-full mt-6">
-              <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 md:bottom-[1.8rem] bottom-[1.6rem] bg-white md:left-4 left-2 px-2">
+              <CommonLabel error={errors["Last Name"]}>
                 Email
-              </label>
+              </CommonLabel>
               <CommonInput
                 type="email"
-                name="email"
+                name="Email"
                 id="email"
                 placeholder="Email"
                 value={data["Email"]}
@@ -122,6 +134,9 @@ export default function BookingForm1({
                 }
                 required={true}
               />
+              {errors["Email"] && touched["Email"] ? (
+                <div className="error text-red-500">{errors["Email"]}</div>
+              ) : null}
             </div>
             <div
               onClick={onClickIdFront}
@@ -249,7 +264,7 @@ export default function BookingForm1({
             </div>
             <div className="flex justify-between w-full mt-6">
               <FormWrapper>
-                <label className="block absolute px-2 text-black md:bottom-[1.8rem] bottom-[2rem] z-10 bg-white md:left-4 left-2 md:text-sm text-xs font-medium">
+                <label className="block absolute px-2 text-black md:bottom-[2.4rem] bottom-[2rem] z-10 bg-white md:left-4 left-2 md:text-sm text-xs font-medium">
                   Adults passengers
                 </label>
                 <CommonInput

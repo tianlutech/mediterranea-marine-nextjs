@@ -15,18 +15,27 @@ export type NotionFile = {
 export type NotionPage = {
   id: string;
   properties: Record<string, NotionProperty>;
+  cover: NotionProperty;
 };
 
-export const parseNotionObject = <Type>(notionObject: NotionPage): Type => {
+export type NotionItem = {
+  title: string;
+  cover: string;
+}
+
+export const parseNotionObject = <Type extends NotionItem>(notionObject: NotionPage): Type => {
   const object = Object.keys(notionObject.properties).reduce((obj, key) => {
     obj[key] = parseNotionProperty(notionObject.properties[key]);
     return obj;
   }, {} as Record<string, unknown>);
-
+  object.cover = parseNotionProperty(notionObject.cover)
   return object as Type;
 };
 
 const parseNotionProperty = (property: NotionProperty): unknown => {
+  if(!property){
+    return ""
+  }
   switch (property.type) {
     case "number":
       return property["number"] as number;
@@ -51,6 +60,10 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
         name: file.name,
         url: file[file.type]?.url,
       }));
+    case "file":
+      return (property["file"] as {url: string}).url;
+    case "title":
+      return (property["title"]as Array<{plain_text: string}>)[0]?.plain_text || "";
     default:
       return "";
   }

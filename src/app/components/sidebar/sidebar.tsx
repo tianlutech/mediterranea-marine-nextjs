@@ -8,8 +8,6 @@ import SpainFlag from "@/app/assets/spain.png";
 import { useTranslation } from "react-i18next";
 import { useCallback, useState, useEffect } from "react";
 
-
-
 export default function Sidebar({ boatInfo }: { boatInfo: any }) {
   const { t, i18n } = useTranslation();
   const changeLanguage = useCallback(
@@ -18,6 +16,7 @@ export default function Sidebar({ boatInfo }: { boatInfo: any }) {
     },
     [i18n]
   );
+
   return (
     <div className="relative bg-white md:w-[23%] w-full ">
       <div className="flex flex-col justify-center items-center my-4">
@@ -59,7 +58,7 @@ export default function Sidebar({ boatInfo }: { boatInfo: any }) {
         </div>
         <div className="px-4 py-4 text-textSecondaryColor">
           <p className="mb-6">
-            Welcome to our Boat {boatInfo?.properties?.Nombre?.title[0].plain_text}  Reservation Form!
+            Welcome to our Boat {boatInfo?.Nombre}  Reservation Form!
           </p>
           <p className="mb-6">
             We are excited to help you plan your next water adventure.
@@ -80,7 +79,7 @@ export default function Sidebar({ boatInfo }: { boatInfo: any }) {
         <Image
           width={60}
           height={45}
-          src={boatInfo?.cover?.file.url}
+          src={boatInfo?.cover}
           className="h-auto w-full"
           alt="boat"
         />

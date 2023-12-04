@@ -6,7 +6,6 @@ export async function getBoatInfo(boatId: string) {
   try {
     const response = await fetch(`/api/notion?id=${encodeURIComponent(boatId)}`);
     const json = await response.json();
-    console.log("=======boat", json)
     return parseNotionObject<Boat>(json as NotionPage);
   } catch (error) {
     console.error("Error retrieving page from Notion:", error);

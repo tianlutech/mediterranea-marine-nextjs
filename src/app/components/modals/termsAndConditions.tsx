@@ -1,5 +1,7 @@
 "use client";
 import Modal from "@/app/components/common/modal/modal"
+import SignaturePad from "react-signature-canvas";
+import React, { useRef } from "react"
 
 export default function CommonModal({
   isOpen,
@@ -8,8 +10,14 @@ export default function CommonModal({
   isOpen: boolean;
   closeModal: any;
 }) {
+  const sigPad = useRef<SignaturePad>(null);
+  const clearSigPad = () => {
+    if (sigPad.current) {
+      sigPad.current.clear();
+    }
+  };
   return (
-    <Modal isOpen={isOpen} closeModal={closeModal}>
+    <Modal isOpen={isOpen}>
       <div className="relative p-2 md:w-[60%] w-full md:h-auto bg-white rounded-lg shadow">
         <div className="flex items-center justify-between px-4 pt-4 md:px-4 md:pt-4 ">
           <h3 className="text-xl font-semibold text-black">
@@ -69,7 +77,25 @@ export default function CommonModal({
             such damages so that the Client does not experience any damages.
           </p>
         </div>
-        <div className="flex items-center justify-end p-4 md:p-5 border-gray-200">
+        <div className="flex justify-between items-end p-4 md:p-5 border-gray-200">
+          <div className="flex items-end">
+            <div className="border border-1">
+              <SignaturePad
+                ref={sigPad}
+                penColor='black'
+                canvasProps={{ width: 300, height: 100, className: "sigCanvas" }}
+              />
+            </div>
+            <button
+              onClick={clearSigPad}
+              type="button"
+              className=" text-white font-medium rounded-lg text-sm px-2 text-center"
+            >
+              <svg fill="#000000" className="w-5 h-5" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                <path d="M960 0v213.333c411.627 0 746.667 334.934 746.667 746.667S1371.627 1706.667 960 1706.667 213.333 1371.733 213.333 960c0-197.013 78.4-382.507 213.334-520.747v254.08H640V106.667H53.333V320h191.04C88.64 494.08 0 720.96 0 960c0 529.28 430.613 960 960 960s960-430.72 960-960S1489.387 0 960 0" fill-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
           <button
             onClick={() => closeModal()}
             data-modal-hide="default-modal"

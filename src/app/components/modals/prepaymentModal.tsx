@@ -3,15 +3,23 @@ import Image from "next/image";
 import Boat from "@/app/assets/boat.png";
 import Modal from "@/app/components/common/modal/modal"
 
+
+interface Mile {
+  name: string;
+  value: number
+}
+
 export default function PrepaymentModal({
   isOpen,
   closeModal,
+  data
 }: {
   isOpen: boolean;
   closeModal: any;
+  data: any
 }) {
   return (
-    <Modal isOpen={isOpen} closeModal={closeModal}>
+    <Modal isOpen={isOpen}>
       <div className="relative p-2 md:w-[60%] w-[95%] bg-white rounded-lg shadow">
         <div className="flex items-center justify-between px-4 pt-4 md:px-4 md:pt-4 ">
           <h3 className="text-xl font-semibold text-black">
@@ -37,7 +45,7 @@ export default function PrepaymentModal({
               </p>
             </span>
             <div>
-              <div className="flex mt-4">
+              <div className="flex mt-4 items-center">
                 <input
                   id="default-radio-2"
                   type="radio"
@@ -49,30 +57,27 @@ export default function PrepaymentModal({
                   I want to conitinue without prepayment
                 </label>
               </div>
-              <div className="flex mt-4">
-                <input
-                  id="default-radio-2"
-                  type="radio"
-                  value=""
-                  name="default-radio"
-                  className="w-4 h-4 text-black bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                />
-                <label className="ms-2 text-base text-black">
-                  50 Nautical Miles - 470e
-                </label>
-              </div>
-              <div className="flex mt-4">
-                <input
-                  id="default-radio-2"
-                  type="radio"
-                  value=""
-                  name="default-radio"
-                  className="w-4 h-4 text-black bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                />
-                <label className="ms-2 text-base text-black">
-                  50 Nautical Miles - 470e
-                </label>
-              </div>
+              {
+                data.map((item: Mile, index: number) => {
+                  return (
+                    <div
+                      key={index}
+                      className="flex mt-4 items-center">
+                      <input
+                        id="default-radio-2"
+                        type="radio"
+                        value={item.value}
+                        name="default-radio"
+                        className="w-4 h-4 text-black bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      />
+                      <label className="ms-2 text-base text-black">
+                        {item.name}
+                      </label>
+                    </div>
+                  )
+
+                })
+              }
             </div>
           </div>
           <div className="md:w-[50%] w-full">
