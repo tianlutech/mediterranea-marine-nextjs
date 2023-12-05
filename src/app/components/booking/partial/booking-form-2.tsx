@@ -8,7 +8,7 @@ import CommonLabel from "../../common/label/label";
 import { useState } from "react";
 import TermsAndConditionModal from "@/app/components/modals/termsAndConditions";
 import VideoModal from "../../modals/videoModal";
-import ErrorMessage from "./errorMessage"
+import ErrorMessage from "./errorMessage";
 
 export default function BookingForm2({
   data,
@@ -24,57 +24,69 @@ export default function BookingForm2({
   const [eatAtRestaurant, setEatAtRestaurant] = useState<boolean>(false);
   const [openTermModal, setOpenTermModal] = useState<boolean>(false);
   const [videoModalOpen, setVideoModalOpen] = useState<boolean>(false);
-  const [videoLiknk, setVideoLink] = useState<string>("")
+  const [videoLiknk, setVideoLink] = useState<string>("");
   const departureTime = ["13:00", "14:00", "15:00", "16:00", "17:00"];
   const seaBob = [
     {
+      name: "None",
+      value: 0,
+    },
+    {
       name: "SEABOB 1 - 150E",
-      value: 150
+      value: 150,
     },
     {
       name: "SEABOB 2 - 250E",
-      value: 250
-    }
+      value: 250,
+    },
   ];
   const standUpPaddle = [
     {
+      name: "None",
+      value: 0,
+    },
+    {
       name: "SUP 1 - 150E",
-      value: 100
+      value: 100,
     },
     {
       name: "SUP 2 - 200E",
-      value: 200
-    }
+      value: 200,
+    },
   ];
   const closeModalTermModal = () => {
     setOpenTermModal(false);
   };
   // Function to calculate boat prices
   const calculateBoatPrices = (pricePerMile: number, mileRanges: any) => {
-    return mileRanges.map(
-      (miles: number) => ({
-        name: `${miles} Nautical Miles - ${miles * pricePerMile}€`,
-        value: miles * pricePerMile
-      })
-    );
+    return mileRanges.map((miles: number) => ({
+      name: miles
+        ? `${miles} Nautical Miles - ${miles * pricePerMile}€`
+        : "Don't prepay miles",
+      value: miles * pricePerMile,
+    }));
   };
 
   const openVideoModal = (link: string) => {
-    setVideoLink(link)
-    setVideoModalOpen(true)
-  }
+    setVideoLink(link);
+    setVideoModalOpen(true);
+  };
   const closeVideoModal = () => {
-    setVideoModalOpen(false)
-  }
+    setVideoModalOpen(false);
+  };
 
   // Define your price per mile and mile ranges
   const pricePerMile: number = boatInfo?.MilePrice; // Example: 4 euros per mile
-  const mileRanges = [25, 35]; // Example mile ranges
+  const mileRanges = [0, 25, 35]; // Example mile ranges
   const calculatedMiles = calculateBoatPrices(pricePerMile, mileRanges);
 
   return (
     <>
-      <VideoModal isOpen={videoModalOpen} closeModal={closeVideoModal} videoSrc={videoLiknk} />
+      <VideoModal
+        isOpen={videoModalOpen}
+        closeModal={closeVideoModal}
+        videoSrc={videoLiknk}
+      />
       <TermsAndConditionModal
         isOpen={openTermModal}
         closeModal={closeModalTermModal}
@@ -83,7 +95,10 @@ export default function BookingForm2({
         <div className="w-full bg-white rounded-lg">
           <div className="md:p-6 sm:p-8 p-6">
             <div className="relative w-full">
-              <CommonLabel input="select" error={formik.errors["Departure Time"]}>
+              <CommonLabel
+                input="select"
+                error={formik.errors["Departure Time"]}
+              >
                 Departure time
               </CommonLabel>
               <CommonSelect
@@ -160,9 +175,9 @@ export default function BookingForm2({
                 <InfoSvg />
               </div>
               <span className="text-sm ml-2">
-                Is common for our clients to book in a restuarant, providing
-                to us the restaurant name and the meal appointment can help
-                our captian to adjust and apdat the route of your sail
+                Is common for our clients to book in a restuarant, providing to
+                us the restaurant name and the meal appointment can help our
+                captian to adjust and apdat the route of your sail
               </span>
             </div>
             <div className="relative w-full mt-6">
@@ -211,7 +226,12 @@ export default function BookingForm2({
                   onChange={(e) => setData({ ...data, SUP: e.target.value })}
                 />
               </div>
-              <div onClick={() => openVideoModal("https://www.youtube.com/watch?v=ES2mShoQ3_Q")} className="cursor-pointer">
+              <div
+                onClick={() =>
+                  openVideoModal("https://www.youtube.com/watch?v=ES2mShoQ3_Q")
+                }
+                className="cursor-pointer"
+              >
                 <PlayerSvg />
               </div>
             </div>
@@ -219,7 +239,12 @@ export default function BookingForm2({
               <div>
                 <InfoSvg />
               </div>
-              <span className="text-sm ml-2" onClick={() => openVideoModal("https://www.youtube.com/watch?v=ES2mShoQ3_Q")}>
+              <span
+                className="text-sm ml-2"
+                onClick={() =>
+                  openVideoModal("https://www.youtube.com/watch?v=ES2mShoQ3_Q")
+                }
+              >
                 Click here to see the video of the SUP
               </span>
             </div>
@@ -234,12 +259,15 @@ export default function BookingForm2({
                   name="seabob"
                   data={seaBob}
                   value={data["SEABOB"]}
-                  onChange={(e) =>
-                    setData({ ...data, SEABOB: e.target.value })
-                  }
+                  onChange={(e) => setData({ ...data, SEABOB: e.target.value })}
                 />
               </div>
-              <div onClick={() => openVideoModal("https://www.youtube.com/watch?v=IKj0A5DDN0g")} className="cursor-pointer">
+              <div
+                onClick={() =>
+                  openVideoModal("https://www.youtube.com/watch?v=IKj0A5DDN0g")
+                }
+                className="cursor-pointer"
+              >
                 <PlayerSvg />
               </div>
             </div>
@@ -247,7 +275,12 @@ export default function BookingForm2({
               <div>
                 <InfoSvg />
               </div>
-              <span onClick={() => openVideoModal("https://www.youtube.com/watch?v=IKj0A5DDN0g")} className="text-sm ml-2">
+              <span
+                onClick={() =>
+                  openVideoModal("https://www.youtube.com/watch?v=IKj0A5DDN0g")
+                }
+                className="text-sm ml-2"
+              >
                 Click chere to see a video of the SEABOB
               </span>
             </div>

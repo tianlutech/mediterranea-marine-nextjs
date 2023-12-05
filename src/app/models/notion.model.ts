@@ -21,20 +21,22 @@ export type NotionPage = {
 export type NotionItem = {
   title: string;
   cover: string;
-}
+};
 
-export const parseNotionObject = <Type extends NotionItem>(notionObject: NotionPage): Type => {
+export const parseNotionObject = <Type extends NotionItem>(
+  notionObject: NotionPage
+): Type => {
   const object = Object.keys(notionObject.properties).reduce((obj, key) => {
     obj[key] = parseNotionProperty(notionObject.properties[key]);
     return obj;
   }, {} as Record<string, unknown>);
-  object.cover = parseNotionProperty(notionObject.cover)
+  object.cover = parseNotionProperty(notionObject.cover);
   return object as Type;
 };
 
 const parseNotionProperty = (property: NotionProperty): unknown => {
-  if(!property){
-    return ""
+  if (!property) {
+    return "";
   }
   switch (property.type) {
     case "number":
@@ -61,9 +63,12 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
         url: file[file.type]?.url,
       }));
     case "file":
-      return (property["file"] as {url: string}).url;
+      return (property["file"] as { url: string }).url;
     case "title":
-      return (property["title"]as Array<{plain_text: string}>)[0]?.plain_text || "";
+      return (
+        (property["title"] as Array<{ plain_text: string }>)[0]?.plain_text ||
+        ""
+      );
     default:
       return "";
   }
@@ -74,7 +79,10 @@ export const parseObjectToNotion = <T extends Record<string, unknown>>(
 ): Record<string, NotionProperty> => {
   const keys = Object.keys(item);
   const object = keys.reduce((obj, key) => {
-    obj[key] = parsePropertyToNotion(item[key]);
+    const value = parsePropertyToNotion(item[key]);
+    if (value) {
+      obj[key] = value;
+    }
     return obj;
   }, {} as Record<string, NotionProperty>);
 
@@ -83,7 +91,10 @@ export const parseObjectToNotion = <T extends Record<string, unknown>>(
 
 const parsePropertyToNotion = (
   property: unknown | ({ type: string } & Record<string, unknown>)
-): NotionProperty => {
+): NotionProperty | undefined => {
+  if (!property) {
+    return undefined;
+  }
   // This is a multi_select
   if (
     Array.isArray(property) &&
@@ -121,7 +132,7 @@ const parsePropertyToNotion = (
     };
   }
 
-  if (typeof property === "number") {
+  if (typeof property === "number" || !isNaN(+property)) {
     return {
       type: "number",
       number: +property,

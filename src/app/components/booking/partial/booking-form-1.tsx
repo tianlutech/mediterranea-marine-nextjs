@@ -9,9 +9,10 @@ import React, { FC, useRef, useState } from "react";
 import UploadSvg from "@/app/assets/svgs/UploadSvg";
 import ImageSvg from "@/app/assets/svgs/ImageSvg";
 import Image from "next/image";
-import ErrorMessage from "./errorMessage"
+import ErrorMessage from "./errorMessage";
 import { Condiment } from "next/font/google";
-import CloseSvg from "@/app/assets/svgs/CloseSvg"
+import CloseSvg from "@/app/assets/svgs/CloseSvg";
+import { Boat } from "@/app/models/models";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-[48%]">{children}</div>;
@@ -21,10 +22,12 @@ export default function BookingForm1({
   data,
   setData,
   formik,
+  boatInfo,
 }: {
   data: any;
   setData: any;
-  formik: any
+  formik: any;
+  boatInfo: Boat;
 }) {
   const [photoIdFront, setPhotoIdFront] = useState<string>("");
   const [photoIdFrontPreview, setPhotoIdFrontPreview] = useState<string>("");
@@ -55,7 +58,7 @@ export default function BookingForm1({
       setPhotoIdFrontSize(`${fileSizeInMegabytes} MB`);
       setPhotoIdFrontPreview(fileUrl);
       setPhotoIdFront(file.name); // Assuming you want to keep the file name
-      setData({ ...data, "ID Front Picture": file });
+      setData({ ...data, ID_Front_Picture: file });
     }
   };
   const onChangeIdBack = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,21 +74,21 @@ export default function BookingForm1({
       setPhotoIdBackSize(`${fileSizeInMegabytes} MB`);
       setPhotoIdBackPreview(fileUrl);
       setPhotoIdBack(file.name);
-      setData({ ...data, "ID Back Picture": file });
+      setData({ ...data, ID_Back_Picture: file });
     }
   };
   const removeFrontImage = () => {
-    setData({ ...data, "ID Front Picture": {} });
+    setData({ ...data, ID_Front_Picture: {} });
     setPhotoIdFrontSize("");
     setPhotoIdFrontPreview("");
     setPhotoIdFront("");
-  }
+  };
   const removeBackImage = () => {
-    setData({ ...data, "ID Back Picture": {} });
+    setData({ ...data, ID_Back_Picture: {} });
     setPhotoIdBackSize("");
     setPhotoIdBackPreview("");
     setPhotoIdBack("");
-  }
+  };
   return (
     <div className="flex md:flex-row flex-col md:w-[49%] w-full">
       <div className="w-full bg-white rounded-lg">
@@ -146,7 +149,10 @@ export default function BookingForm1({
             </div>
             <div className="relative">
               {photoIdFront && (
-                <div onClick={removeFrontImage} className="absolute cursor-pointer z-20 rounded-full bg-black w-5 bottom-11 right-4">
+                <div
+                  onClick={removeFrontImage}
+                  className="absolute cursor-pointer z-20 rounded-full bg-black w-5 bottom-11 right-4"
+                >
                   <CloseSvg />
                 </div>
               )}
@@ -207,10 +213,13 @@ export default function BookingForm1({
               </div>
             </div>
 
-            <ErrorMessage formik={formik} name="ID Front Picture" />
+            <ErrorMessage formik={formik} name="ID_Front_Picture" />
             <div className="relative">
               {photoIdBack && (
-                <div onClick={removeBackImage} className="absolute cursor-pointer z-20 rounded-full bg-black w-5 bottom-11 right-4">
+                <div
+                  onClick={removeBackImage}
+                  className="absolute cursor-pointer z-20 rounded-full bg-black w-5 bottom-11 right-4"
+                >
                   <CloseSvg />
                 </div>
               )}
@@ -269,7 +278,7 @@ export default function BookingForm1({
                 </div>
               </div>
             </div>
-            <ErrorMessage formik={formik} name="ID Back Picture" />
+            <ErrorMessage formik={formik} name="ID_Back_Picture" />
             <div className="relative w-full mt-6">
               <CommonLabel input="text" error={formik.errors["Last Name"]}>
                 Billing address
@@ -289,9 +298,7 @@ export default function BookingForm1({
             </div>
             <div className="flex justify-between w-full mt-6">
               <FormWrapper>
-                <CommonLabel input="text">
-                  Adults passengers
-                </CommonLabel>
+                <CommonLabel input="text">Adults passengers</CommonLabel>
                 <CommonInput
                   type="number"
                   name="number"
@@ -305,9 +312,7 @@ export default function BookingForm1({
                 />
               </FormWrapper>
               <FormWrapper>
-                <CommonLabel input="text">
-                  Kids passengers
-                </CommonLabel>
+                <CommonLabel input="text">Kids passengers</CommonLabel>
                 <CommonInput
                   type="number"
                   name="number"
@@ -326,8 +331,9 @@ export default function BookingForm1({
                 <InfoSvg />
               </div>
               <span className="text-sm ml-2">
-                We require to know this information to prepare the lifevest and
-                other equipment accordingly
+                This boat allows a maximum of {boatInfo["Max.Passengers"]}{" "}
+                passengers. We require to know this information to prepare the
+                lifevest and other equipment accordingly
               </span>
             </div>
           </form>
