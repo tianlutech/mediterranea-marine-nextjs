@@ -1,18 +1,18 @@
 "use client";
-import Modal from "@/app/components/common/modal/modal"
+import Modal from "@/app/components/common/modal/modal";
 import SignaturePad from "react-signature-canvas";
-import React, { useRef } from "react"
+import React, { useRef } from "react";
 
 export default function CommonModal({
   isOpen,
   closeModal,
   data,
-  setData
+  setData,
 }: {
   isOpen: boolean;
   closeModal: any;
   data: any;
-  setData: any
+  setData: any;
 }) {
   const sigPad = useRef<SignaturePad>(null);
   const clearSigPad = () => {
@@ -21,19 +21,34 @@ export default function CommonModal({
     }
   };
   const agreeContract = () => {
-    setData({ ...data, "signedContract": !data["signedContract"] })
-    closeModal()
-  }
+    setData({ ...data, signedContract: !data["signedContract"] });
+    closeModal();
+  };
   return (
     <Modal isOpen={isOpen}>
       <div className="relative p-2 md:w-[60%] w-full md:h-auto bg-white rounded-lg shadow">
         <div className="flex items-center justify-between px-4 pt-4 md:px-4 md:pt-4 ">
-          <h3 className="text-xl font-semibold text-black">
-            Contract
-          </h3>
-          <button onClick={() => closeModal()} type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
-            <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+          <h3 className="text-xl font-semibold text-black">Contract</h3>
+          <button
+            onClick={() => closeModal()}
+            type="button"
+            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            data-modal-hide="default-modal"
+          >
+            <svg
+              className="w-3 h-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 14"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+              />
             </svg>
           </button>
         </div>
@@ -90,8 +105,12 @@ export default function CommonModal({
             <div className="border border-1">
               <SignaturePad
                 ref={sigPad}
-                penColor='black'
-                canvasProps={{ width: 300, height: 100, className: "sigCanvas" }}
+                penColor="black"
+                canvasProps={{
+                  width: 300,
+                  height: 100,
+                  className: "sigCanvas",
+                }}
               />
             </div>
             <button
@@ -99,8 +118,16 @@ export default function CommonModal({
               type="button"
               className=" text-white font-medium rounded-lg text-sm px-2 text-center"
             >
-              <svg fill="#000000" className="w-5 h-5" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-                <path d="M960 0v213.333c411.627 0 746.667 334.934 746.667 746.667S1371.627 1706.667 960 1706.667 213.333 1371.733 213.333 960c0-197.013 78.4-382.507 213.334-520.747v254.08H640V106.667H53.333V320h191.04C88.64 494.08 0 720.96 0 960c0 529.28 430.613 960 960 960s960-430.72 960-960S1489.387 0 960 0" fill-rule="evenodd" />
+              <svg
+                fill="#000000"
+                className="w-5 h-5"
+                viewBox="0 0 1920 1920"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M960 0v213.333c411.627 0 746.667 334.934 746.667 746.667S1371.627 1706.667 960 1706.667 213.333 1371.733 213.333 960c0-197.013 78.4-382.507 213.334-520.747v254.08H640V106.667H53.333V320h191.04C88.64 494.08 0 720.96 0 960c0 529.28 430.613 960 960 960s960-430.72 960-960S1489.387 0 960 0"
+                  fillRule="evenodd"
+                />
               </svg>
             </button>
           </div>

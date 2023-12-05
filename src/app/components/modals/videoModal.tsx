@@ -1,6 +1,11 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import Modal from "@/app/components/common/modal/modal";
-import ReactPlayer from "react-player";
+import ReloadSvg from "@/app/assets/svgs/ReloadSvg";
+import dynamic from "next/dynamic";
+
+const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
 export default function VideoModal({
   isOpen,
@@ -14,32 +19,27 @@ export default function VideoModal({
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
-    if (!isOpen) {
-      setPlaying(false); // Pause the video when the modal is closed
-    } else {
-      setPlaying(true); // Play the video when the modal is open
-    }
+    setPlaying(isOpen); // Pause the video when the modal is closed
   }, [isOpen]);
 
   const closeModalView = () => {
-    setPlaying(true)
-    closeModal()
-  }
+    setPlaying(false);
+    closeModal();
+  };
 
   return (
-    <Modal isOpen={isOpen} >
+    <Modal isOpen={isOpen}>
       <div className="relative p-2 md:w-[50%] w-[95%] bg-white rounded-lg shadow">
-        <button onClick={() => closeModalView()} type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
-          <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-          </svg>
+        <button
+          onClick={() => closeModalView()}
+          type="button"
+          className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          data-modal-hide="default-modal"
+        >
+          <ReloadSvg />
         </button>
         <div className="flex justify-center items-center">
-          <ReactPlayer
-            url={videoSrc}
-            playing={playing}
-            controls
-          />
+          <ReactPlayer url={videoSrc} playing={playing} controls />
         </div>
       </div>
     </Modal>

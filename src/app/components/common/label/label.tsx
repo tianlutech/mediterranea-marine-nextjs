@@ -12,7 +12,7 @@ export default function CommonLabel({
     input === "text"
       ? "md:bottom-[1.8rem] bottom-[1.6rem]"
       : input === "select"
-      ? "md:bottom-[2.1rem] bottom-[1.6rem]"
+      ? "md:bottom-[1.3rem] bottom-[1.6rem]"
       : ""; // Add more conditions for other input types if needed
 
   // Adjust position if there is an error

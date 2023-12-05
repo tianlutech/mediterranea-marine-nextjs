@@ -54,18 +54,6 @@ export default function PrepaymentModal({
               </p>
             </span>
             <div>
-              <div className="flex mt-4 items-center">
-                <input
-                  id="default-radio-2"
-                  type="radio"
-                  value=""
-                  name="default-radio"
-                  className="w-4 h-4 text-black bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                />
-                <label className="ms-2 text-base text-black">
-                  I want to continue without prepayment
-                </label>
-              </div>
               {data.map((item, index: number) => {
                 return (
                   <div key={index} className="flex mt-4 items-center">
@@ -85,13 +73,15 @@ export default function PrepaymentModal({
             </div>
           </div>
           <div className="md:w-[50%] w-full">
-            <Image
-              width={40}
-              height={45}
-              src={Boat}
-              className="h-auto w-full"
-              alt="boat"
-            />
+            {Boat && (
+              <Image
+                width={40}
+                height={45}
+                src={Boat}
+                className="h-auto w-full"
+                alt="boat"
+              />
+            )}
           </div>
         </div>
         <div className="flex items-center justify-between p-4 md:p-5 border-gray-200 md:w-[50%] w-full">

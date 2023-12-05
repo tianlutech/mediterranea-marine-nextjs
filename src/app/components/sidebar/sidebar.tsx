@@ -2,13 +2,14 @@
 
 import Image from "next/image";
 import Logo from "@/app/assets/Logo_color 1.png";
-import Boat from "@/app/assets/boat.png";
+import BoatImage from "@/app/assets/boat.png";
 import UkFlag from "@/app/assets/united-kingdom.png";
 import SpainFlag from "@/app/assets/spain.png";
 import { useTranslation } from "react-i18next";
-import { useCallback, useState, useEffect } from "react";
+import { useCallback } from "react";
+import { Boat } from "@/app/models/models";
 
-export default function Sidebar({ boatInfo }: { boatInfo: any }) {
+export default function Sidebar({ boatInfo }: { boatInfo: Boat }) {
   const { t, i18n } = useTranslation();
   const changeLanguage = useCallback(
     (language: string) => {
@@ -48,17 +49,19 @@ export default function Sidebar({ boatInfo }: { boatInfo: any }) {
       </div>
       <div>
         <div className="w-full block md:hidden">
-          <Image
-            width={60}
-            height={45}
-            src={Boat}
-            className="h-auto w-full"
-            alt="boat"
-          />
+          {boatInfo && (
+            <Image
+              width={60}
+              height={45}
+              src={boatInfo.cover || BoatImage}
+              className="h-auto w-full"
+              alt="boat"
+            />
+          )}
         </div>
         <div className="px-4 py-4 text-textSecondaryColor">
           <p className="mb-6">
-            Welcome to our Boat {boatInfo?.Nombre}  Reservation Form!
+            Welcome to our Boat {boatInfo?.Nombre} Reservation Form!
           </p>
           <p className="mb-6">
             We are excited to help you plan your next water adventure.
@@ -79,7 +82,7 @@ export default function Sidebar({ boatInfo }: { boatInfo: any }) {
         <Image
           width={60}
           height={45}
-          src={boatInfo?.cover}
+          src={boatInfo?.cover || BoatImage}
           className="h-auto w-full"
           alt="boat"
         />

@@ -4,10 +4,11 @@ import { useState } from "react";
 import BookingForm1 from "./partial/booking-form-1";
 import BookingForm2 from "./partial/booking-form-2";
 import PrepaymentModal from "@/app/components/modals/prepaymentModal";
-import { Booking } from "@/app/models/models";
+import { Boat, Booking } from "@/app/models/models";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import { updateBookingInfo } from "@/app/services/notion.service";
+import { MILE_RANGES } from "@/app/models/consntats";
 
 export default function BookingComponent({
   data,
@@ -16,7 +17,7 @@ export default function BookingComponent({
 }: {
   data: {};
   id: string;
-  boatInfo: any;
+  boatInfo: Boat;
 }) {
   const [openPrepaymentModal, setOpenPrepaymentModal] =
     useState<boolean>(false);
@@ -89,7 +90,6 @@ export default function BookingComponent({
     }
 
     // Upload the files and convert them in { name: '', url: '', type: "external"}
-    console.log({ bookingData });
     const data = {
       ...bookingData,
       // "ID_Back_Picture": {} as FileData,
@@ -99,15 +99,19 @@ export default function BookingComponent({
 
     updateBookingInfo(id, data);
   };
-  const calculateBoatPrices = (pricePerMile: number, mileRanges: any) => {
+
+  // Function to calculate boat prices
+  const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
     return mileRanges.map((miles: number) => ({
-      name: `${miles} Nautical Miles - ${miles * pricePerMile}€`,
-      value: miles * pricePerMile,
+      name: miles
+        ? `${miles} Nautical Miles - ${miles * pricePerMile}€`
+        : "I want to continue without prepayment",
+      value: (miles * pricePerMile).toString(),
     }));
   };
-  const pricePerMile: number = boatInfo?.MilePrice;
-  const mileRanges = [25, 35]; // Example mile ranges
-  const calculatedMiles = calculateBoatPrices(pricePerMile, mileRanges);
+
+  const pricePerMile = +boatInfo?.MilePrice || 0;
+  const calculatedMiles = calculateBoatPrices(pricePerMile, MILE_RANGES);
 
   if (!data || !formik) {
     return;
@@ -134,7 +138,7 @@ export default function BookingComponent({
               <BookingForm2
                 data={formData}
                 setData={setFormData}
-                boatInfo={boatInfo}
+                miles={calculatedMiles}
                 formik={formik}
               />
             </div>

@@ -9,62 +9,30 @@ import { useState } from "react";
 import TermsAndConditionModal from "@/app/components/modals/termsAndConditions";
 import VideoModal from "../../modals/videoModal";
 import ErrorMessage from "./errorMessage";
+import {
+  DEPARTURES_TIMES,
+  STANDUP_PADDLE,
+  SEABOB,
+} from "@/app/models/consntats";
 
 export default function BookingForm2({
   data,
   setData,
-  boatInfo,
+  miles,
   formik,
 }: {
   data: any;
   setData: any;
-  boatInfo: any;
+  miles: Array<{ value: string; name: string }>;
   formik: any;
 }) {
   const [eatAtRestaurant, setEatAtRestaurant] = useState<string>("");
   const [openTermModal, setOpenTermModal] = useState<boolean>(false);
   const [videoModalOpen, setVideoModalOpen] = useState<boolean>(false);
   const [videoLiknk, setVideoLink] = useState<string>("");
-  const departureTime = ["13:00", "14:00", "15:00", "16:00", "17:00"];
-  const seaBob = [
-    {
-      name: "None",
-      value: "0",
-    },
-    {
-      name: "SEABOB 1 - 150E",
-      value: "150",
-    },
-    {
-      name: "SEABOB 2 - 250E",
-      value: "250",
-    },
-  ];
-  const standUpPaddle = [
-    {
-      name: "None",
-      value: "0",
-    },
-    {
-      name: "SUP 1 - 150E",
-      value: "100",
-    },
-    {
-      name: "SUP 2 - 200E",
-      value: "200",
-    },
-  ];
+
   const closeModalTermModal = () => {
     setOpenTermModal(false);
-  };
-  // Function to calculate boat prices
-  const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
-    return mileRanges.map((miles: number) => ({
-      name: miles
-        ? `${miles} Nautical Miles - ${miles * pricePerMile}€`
-        : "Don't prepay miles",
-      value: (miles * pricePerMile).toString(),
-    }));
   };
 
   const openVideoModal = (link: string) => {
@@ -74,11 +42,6 @@ export default function BookingForm2({
   const closeVideoModal = () => {
     setVideoModalOpen(false);
   };
-
-  // Define your price per mile and mile ranges
-  const pricePerMile: number = boatInfo?.MilePrice; // Example: 4 euros per mile
-  const mileRanges = [0, 25, 35]; // Example mile ranges
-  const calculatedMiles = calculateBoatPrices(pricePerMile, mileRanges);
 
   return (
     <>
@@ -110,7 +73,7 @@ export default function BookingForm2({
                 onChange={(e) =>
                   setData({ ...data, "Departure Time": e.target.value })
                 }
-                data={departureTime}
+                data={DEPARTURES_TIMES}
                 required
               />
               <ErrorMessage formik={formik} name="Departure Time" />
@@ -202,7 +165,7 @@ export default function BookingForm2({
               <CommonSelect
                 id="miles"
                 name="miles"
-                data={calculatedMiles}
+                data={miles}
                 value={data["Fuel Payment"]}
                 onChange={(e) =>
                   setData({ ...data, "Fuel Payment": e.target.value })
@@ -221,13 +184,16 @@ export default function BookingForm2({
             </div>
             <div className="relative w-full mt-6 flex justify-between items-center">
               <div className="w-[90%]">
-                <label className="block px-2 absolute text-black bottom-[2.7rem] z-10 bg-white left-4 text-sm font-medium">
+                <CommonLabel
+                  input="select"
+                  error={formik.errors["Departure Time"]}
+                >
                   Toy: Stand Up Paddle
-                </label>
+                </CommonLabel>
                 <CommonSelect
                   id="paddles"
                   name="paddles"
-                  data={standUpPaddle}
+                  data={STANDUP_PADDLE}
                   value={data["SUP"]}
                   onChange={(e) => setData({ ...data, SUP: e.target.value })}
                   required
@@ -258,13 +224,17 @@ export default function BookingForm2({
             <ErrorMessage formik={formik} name="SUP" />
             <div className="relative w-full mt-6 flex justify-between items-center">
               <div className="w-[90%]">
-                <label className="block px-2 absolute text-black bottom-[2.7rem] z-10 bg-white left-4 text-sm font-medium">
+                <CommonLabel
+                  input="select"
+                  error={formik.errors["Departure Time"]}
+                >
+                  {" "}
                   Toy: SEABOB{" "}
-                </label>
+                </CommonLabel>
                 <CommonSelect
                   id="seabob"
                   name="seabob"
-                  data={seaBob}
+                  data={SEABOB}
                   value={data["SEABOB"]}
                   onChange={(e) => setData({ ...data, SEABOB: e.target.value })}
                   required
@@ -294,17 +264,22 @@ export default function BookingForm2({
             </div>
             <ErrorMessage formik={formik} name="SEABOB" />
             <div className="mt-6">
-              <div onClick={() => { !data["signedContract"] && setOpenTermModal(true) }} className="flex items-center">
+              <div
+                onClick={() => {
+                  setOpenTermModal(true);
+                }}
+                className="flex items-center"
+              >
                 <input
                   id="checked-checkbox"
-                  checked={data["signedContract"]}
+                  defaultChecked={data["signedContract"]}
                   disabled={data["signedContract"]}
                   type="checkbox"
                   value=""
                   required
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
                 />
-                <label className="ms-2 text-sm text-black">
+                <label className="ms-2 text-sm text-black cursor-pointer">
                   Read and Sign the contract
                 </label>
               </div>
