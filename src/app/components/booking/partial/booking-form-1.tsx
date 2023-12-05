@@ -146,9 +146,7 @@ export default function BookingForm1({
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setData({ ...data, "No Childs": e.target.value })
                 }
-                min={1}
                 step={1}
-                required={false}
               />
             </FormWrapper>
           </div>

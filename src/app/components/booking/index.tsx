@@ -20,9 +20,6 @@ export default function BookingComponent({
 }) {
   const [openPrepaymentModal, setOpenPrepaymentModal] =
     useState<boolean>(false);
-  const [agreePolicy, setAgreePolicy] = useState<boolean>(false);
-  const [agreeGuaranty, setAgreeGuaranty] = useState<boolean>(false);
-  const [signedContract, setSignedContract] = useState<boolean>(true);
   const [formData, setFormData] = useState({
     "First Name": "",
     "Last Name": "",
@@ -37,6 +34,7 @@ export default function BookingComponent({
     SEABOB: "",
     "Fuel Payment": "",
     Comments: "",
+    signedContract: false,
   });
 
   const closePrepaymentModal = () => {
@@ -146,11 +144,9 @@ export default function BookingComponent({
               <div className="mt-6">
                 <div className="flex items-center">
                   <input
-                    checked={agreePolicy}
                     id="checked-checkbox"
                     type="checkbox"
                     value=""
-                    onClick={() => setAgreePolicy(!agreePolicy)}
                     required
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
@@ -162,10 +158,8 @@ export default function BookingComponent({
               <div className="mt-3">
                 <div className="flex items-center">
                   <input
-                    checked={agreeGuaranty}
                     id="checked-checkbox"
                     type="checkbox"
-                    onClick={() => setAgreeGuaranty(!agreeGuaranty)}
                     required
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
