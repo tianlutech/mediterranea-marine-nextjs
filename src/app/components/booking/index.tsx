@@ -4,14 +4,12 @@ import { useState } from "react";
 import BookingForm1 from "./partial/booking-form-1";
 import BookingForm2 from "./partial/booking-form-2";
 import PrepaymentModal from "@/app/components/modals/prepaymentModal";
-import { Booking, FileData } from "@/app/models/models";
-import { updatePage } from "@/app/api/notion/notion.api"
-import CommonInput from "../common/inputs/input";
+import { Booking } from "@/app/models/models";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
-import { updateBookingInfo } from "@/app/services/notion.service"
+import { updateBookingInfo } from "@/app/services/notion.service";
 
-export default function Booking({
+export default function BookingComponent({
   data,
   id,
   boatInfo,
@@ -44,13 +42,10 @@ export default function Booking({
     setOpenPrepaymentModal(false);
   };
 
-  type Errors = {
-    [Key in keyof Booking]?: string;
-  };
-
   const validate = () => {
-    const values = formData
-    const errors: Errors = {};
+    const values = formData;
+    const errors: Record<string, string> = {};
+
     if (!values["First Name"]) {
       errors["First Name"] = "Required";
     }
@@ -63,10 +58,10 @@ export default function Booking({
     if (!values["Billing Address"]) {
       errors["Billing Address"] = "Required";
     }
-    if (!values["ID Back Picture"]) {
-      errors["ID Back Picture"] = "Required";
+    if (!values["ID_Back_Picture"]) {
+      errors["ID_Back_Picture"] = "Required";
     }
-    if (!values["ID Front Picture"]) {
+    if (!values["ID_Front_Picture"]) {
       errors["ID Front Picture"] = "Required";
     }
     if (!values["Departure Time"]) {
@@ -88,48 +83,52 @@ export default function Booking({
     initialValues: formData,
     validate: validate,
     onSubmit: () => {
-      submitBooking()
+      submitBooking();
     },
   });
 
-  const totalPayment = +formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"];
+  const totalPayment =
+    +formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"];
+
   const submitBooking = () => {
-    const { ID_Back_Picture, ID_Front_Picture, ...bookingData } =
+    const { ID_Back_Picture, ID_Front_Picture, SEABOB, SUP, ...bookingData } =
       formData;
 
-    // Using the Unary + Operator
-    const toys = +bookingData["SUP"] + +bookingData["SEABOB"];
-
     if (+bookingData["No Adults"] + +bookingData["No Childs"] <= 0) {
-      return toast.error(`Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`)
+      return toast.error(
+        `Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
+      );
     }
 
-    if (+bookingData["No Adults"] + +bookingData["No Childs"] > boatInfo["Max.Passengers"]) {
-      return toast.error(`You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`)
+    if (
+      +bookingData["No Adults"] + +bookingData["No Childs"] >
+      boatInfo["Max.Passengers"]
+    ) {
+      return toast.error(
+        `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
+      );
     }
 
-    if (bookingData["Fuel Payment"] === 0) {
-      return setOpenPrepaymentModal(true)
+    if (+bookingData["Fuel Payment"] === 0) {
+      return setOpenPrepaymentModal(true);
     }
 
     // Upload the files and convert them in { name: '', url: '', type: "external"}
-
+    console.log({ bookingData });
     const data = {
       ...bookingData,
-      // "ID Back Picture": {} as FileData,
+      // "ID_Back_Picture": {} as FileData,
       // "ID Front Picture": {} as FileData,
-      Toys: [formData["SUP"], formData["SEABOB"]].filter((value) => !!value),
+      Toys: [SUP, SEABOB].filter((value) => !!value),
     } as unknown as Partial<Booking>;
 
     updateBookingInfo(id, data);
   };
   const calculateBoatPrices = (pricePerMile: number, mileRanges: any) => {
-    return mileRanges.map(
-      (miles: number) => ({
-        name: `${miles} Nautical Miles - ${miles * pricePerMile}€`,
-        value: miles * pricePerMile
-      })
-    );
+    return mileRanges.map((miles: number) => ({
+      name: `${miles} Nautical Miles - ${miles * pricePerMile}€`,
+      value: miles * pricePerMile,
+    }));
   };
   const pricePerMile: number = boatInfo?.MilePrice;
   const mileRanges = [25, 35]; // Example mile ranges
@@ -150,7 +149,12 @@ export default function Booking({
           <div className="justify-between w-full ">
             <div className="md:flex justify-between w-full ">
               {/* first form */}
-              <BookingForm1 data={formData} setData={setFormData} formik={formik} />
+              <BookingForm1
+                data={formData}
+                boatInfo={boatInfo}
+                setData={setFormData}
+                formik={formik}
+              />
               {/* Second form */}
               <BookingForm2
                 data={formData}

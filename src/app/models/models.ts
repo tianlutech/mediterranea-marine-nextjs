@@ -1,12 +1,17 @@
 import { NotionItem } from "./notion.model";
 
-export type Captian = NotionItem &  {};
+export type Captian = NotionItem & {};
 
-export type Boat = NotionItem & {};
+export type Boat = NotionItem & {
+  "Max.Passengers": number;
+  MilePrice: string;
+  code: string;
+  ID: string;
+};
 
 export type FileData = { name: string; url: ""; type: "file" | "external" };
 
-export type Booking = NotionItem &  {
+export type Booking = NotionItem & {
   ID: string;
   "Total Payment": number;
   Client: Record<string, unknown>;
