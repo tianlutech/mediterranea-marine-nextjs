@@ -22,9 +22,6 @@ export default function Booking({
 }) {
   const [openPrepaymentModal, setOpenPrepaymentModal] =
     useState<boolean>(false);
-  const [agreePolicy, setAgreePolicy] = useState<boolean>(false)
-  const [agreeGuaranty, setAgreeGuaranty] = useState<boolean>(false)
-  const [signedContract, setSignedContract] = useState<boolean>(true)
   const [formData, setFormData] = useState({
     "First Name": "",
     "Last Name": "",
@@ -38,6 +35,9 @@ export default function Booking({
     SUP: 0,
     SEABOB: 0,
     "Fuel Payment": 0,
+    agreePolicy: false,
+    agreeGuaranty: false,
+    signedContract: true
   });
 
   const closePrepaymentModal = () => {
@@ -164,11 +164,11 @@ export default function Booking({
               <div className="mt-6">
                 <div className="flex items-center">
                   <input
-                    checked={agreePolicy}
+                    checked={formData["agreePolicy"]}
                     id="checked-checkbox"
                     type="checkbox"
                     value=""
-                    onClick={() => setAgreePolicy(!agreePolicy)}
+                    onClick={() => setFormData({ ...formData, "agreePolicy": !formData["agreePolicy"] })}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label className="ms-2 text-sm cursor-pointer">
@@ -179,10 +179,10 @@ export default function Booking({
               <div className="mt-3">
                 <div className="flex items-center">
                   <input
-                    checked={agreeGuaranty}
+                    checked={formData["agreeGuaranty"]}
                     id="checked-checkbox"
                     type="checkbox"
-                    onClick={() => setAgreeGuaranty(!agreeGuaranty)}
+                    onClick={() => setFormData({ ...formData, "agreeGuaranty": !formData["agreeGuaranty"] })}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label className="ms-2 text-sm">
@@ -193,7 +193,7 @@ export default function Booking({
               </div>
             </div>
             <button
-              disabled={!agreePolicy || !agreeGuaranty || !signedContract}
+              disabled={!formData["agreePolicy"] || !formData["agreeGuaranty"] || !formData["signedContract"]}
               type="submit"
               className="mt-6 text-white bg-buttonColor focus:ring-4 font-semibold rounded-lg text-lg px-10 py-3"
             >
