@@ -21,7 +21,7 @@ export default function BookingForm2({
   boatInfo: any;
   formik: any;
 }) {
-  const [eatAtRestaurant, setEatAtRestaurant] = useState<boolean>(false);
+  const [eatAtRestaurant, setEatAtRestaurant] = useState<string>("");
   const [openTermModal, setOpenTermModal] = useState<boolean>(false);
   const [videoModalOpen, setVideoModalOpen] = useState<boolean>(false);
   const [videoLiknk, setVideoLink] = useState<string>("");
@@ -29,41 +29,41 @@ export default function BookingForm2({
   const seaBob = [
     {
       name: "None",
-      value: 0,
+      value: "0",
     },
     {
       name: "SEABOB 1 - 150E",
-      value: 150,
+      value: "150",
     },
     {
       name: "SEABOB 2 - 250E",
-      value: 250,
+      value: "250",
     },
   ];
   const standUpPaddle = [
     {
       name: "None",
-      value: 0,
+      value: "0",
     },
     {
       name: "SUP 1 - 150E",
-      value: 100,
+      value: "100",
     },
     {
       name: "SUP 2 - 200E",
-      value: 200,
+      value: "200",
     },
   ];
   const closeModalTermModal = () => {
     setOpenTermModal(false);
   };
   // Function to calculate boat prices
-  const calculateBoatPrices = (pricePerMile: number, mileRanges: any) => {
+  const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
     return mileRanges.map((miles: number) => ({
       name: miles
         ? `${miles} Nautical Miles - ${miles * pricePerMile}€`
         : "Don't prepay miles",
-      value: miles * pricePerMile,
+      value: (miles * pricePerMile).toString(),
     }));
   };
 
@@ -109,6 +109,7 @@ export default function BookingForm2({
                   setData({ ...data, "Departure Time": e.target.value })
                 }
                 data={departureTime}
+                required
               />
               <ErrorMessage formik={formik} name="Departure Time" />
             </div>
@@ -117,10 +118,11 @@ export default function BookingForm2({
                 <input
                   id="default-radio-1"
                   type="radio"
-                  value=""
-                  checked={eatAtRestaurant == false}
-                  name="default-radio"
-                  onChange={() => setEatAtRestaurant(false)}
+                  value="onBoat"
+                  checked={eatAtRestaurant === "onBoat"}
+                  name="eat-radio"
+                  onChange={() => setEatAtRestaurant("onBoat")}
+                  required
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label className="ms-2 md:text-base text-sm  text-black">
@@ -129,12 +131,12 @@ export default function BookingForm2({
               </div>
               <div className="flex items-center ml-10">
                 <input
-                  id="default-radio-1"
+                  id="eat-radio-1"
                   type="radio"
-                  value=""
-                  checked={eatAtRestaurant}
-                  name="default-radio"
-                  onChange={() => setEatAtRestaurant(true)}
+                  value="restaurant"
+                  checked={eatAtRestaurant === "restaurant"}
+                  name="eat-radio"
+                  onChange={() => setEatAtRestaurant("restaurant")}
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label className="ms-2 md:text-base text-sm  text-black">
@@ -142,7 +144,7 @@ export default function BookingForm2({
                 </label>
               </div>
             </div>
-            {eatAtRestaurant && (
+            {eatAtRestaurant === "restaurant" && (
               <div className="flex justify-between w-full mt-2">
                 <div className="relative w-[48%]">
                   <label className="block mb-2 md:text-sm text-xs font-medium text-gray-900 absolute z-10 md:bottom-[2.3rem] bottom-[1.7rem] bg-white md:left-4 left-1 px-2">
@@ -183,11 +185,12 @@ export default function BookingForm2({
             <div className="relative w-full mt-6">
               <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 bottom-[2.8rem] bg-white left-4 px-2">
                 General comments
-              </label>
+              </label>{" "}
               <textarea
                 id="message"
                 className="block p-2.5 w-full text-sm text-black rounded-lg border border-gray-300"
                 placeholder=""
+                onChange={(e) => setData({ ...data, Comments: e.target.value })}
               ></textarea>
             </div>
             <div className="relative w-full mt-6">
@@ -202,6 +205,7 @@ export default function BookingForm2({
                 onChange={(e) =>
                   setData({ ...data, "Fuel Payment": e.target.value })
                 }
+                required
               />
               <ErrorMessage formik={formik} name="Fuel Payment" />
             </div>
@@ -224,6 +228,7 @@ export default function BookingForm2({
                   data={standUpPaddle}
                   value={data["SUP"]}
                   onChange={(e) => setData({ ...data, SUP: e.target.value })}
+                  required
                 />
               </div>
               <div
@@ -260,6 +265,7 @@ export default function BookingForm2({
                   data={seaBob}
                   value={data["SEABOB"]}
                   onChange={(e) => setData({ ...data, SEABOB: e.target.value })}
+                  required
                 />
               </div>
               <div
@@ -291,6 +297,7 @@ export default function BookingForm2({
                   id="checked-checkbox"
                   type="checkbox"
                   value=""
+                  required
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label className="ms-2 text-sm text-black">

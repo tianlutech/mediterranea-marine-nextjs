@@ -5,13 +5,15 @@ export default function CommonSelect({
   onChange,
   value = "", // Set default value to an empty string
   placeholder = "Select an option",
+  required,
 }: {
   id: string;
   name: string;
-  data: Array<{ name: string; value: string }> | string[];
+  data: Array<{ name: string; value: string } | string>;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   value?: string; // Make value optional and provide default value
   placeholder?: string;
+  required?: boolean;
 }) {
   return (
     <select
@@ -19,6 +21,7 @@ export default function CommonSelect({
       name={name}
       value={value}
       onChange={onChange}
+      required={required}
       className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
     >
       {/* Add a placeholder option that is not selectable */}
@@ -39,7 +42,6 @@ export default function CommonSelect({
           </option>
         );
       })}
-      <option value={0}>None</option>
     </select>
   );
 }

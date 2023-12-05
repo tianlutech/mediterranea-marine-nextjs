@@ -36,6 +36,7 @@ export default function BookingComponent({
     SUP: "",
     SEABOB: "",
     "Fuel Payment": "",
+    Comments: "",
   });
 
   const closePrepaymentModal = () => {
@@ -45,43 +46,19 @@ export default function BookingComponent({
   const validate = () => {
     const values = formData;
     const errors: Record<string, string> = {};
-
-    if (!values["First Name"]) {
-      errors["First Name"] = "Required";
-    }
-    if (!values["Last Name"]) {
-      errors["Last Name"] = "Required";
-    }
-    if (!values["Email"]) {
-      errors["Email"] = "Required";
-    }
-    if (!values["Billing Address"]) {
-      errors["Billing Address"] = "Required";
-    }
     if (!values["ID_Back_Picture"]) {
       errors["ID_Back_Picture"] = "Required";
     }
     if (!values["ID_Front_Picture"]) {
       errors["ID Front Picture"] = "Required";
     }
-    if (!values["Departure Time"]) {
-      errors["Departure Time"] = "Required";
-    }
-    if (!values["SUP"]) {
-      errors["SUP"] = "Required";
-    }
-    if (!values["SEABOB"]) {
-      errors["SEABOB"] = "Required";
-    }
-    if (!values["Fuel Payment"]) {
-      errors["Fuel Payment"] = "Required";
-    }
+
     return errors;
   };
 
   const formik = useFormik({
     initialValues: formData,
-    validate: validate,
+    validate,
     onSubmit: () => {
       submitBooking();
     },
@@ -163,6 +140,7 @@ export default function BookingComponent({
                 formik={formik}
               />
             </div>
+
             {/* terms and policy */}
             <div>
               <div className="mt-6">
@@ -173,6 +151,7 @@ export default function BookingComponent({
                     type="checkbox"
                     value=""
                     onClick={() => setAgreePolicy(!agreePolicy)}
+                    required
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label className="ms-2 text-sm cursor-pointer">
@@ -187,6 +166,7 @@ export default function BookingComponent({
                     id="checked-checkbox"
                     type="checkbox"
                     onClick={() => setAgreeGuaranty(!agreeGuaranty)}
+                    required
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label className="ms-2 text-sm">
@@ -197,11 +177,10 @@ export default function BookingComponent({
               </div>
             </div>
             <button
-              disabled={!agreePolicy || !agreeGuaranty || !signedContract}
               type="submit"
               className="mt-6 text-white bg-buttonColor focus:ring-4 font-semibold rounded-lg text-lg px-10 py-3"
             >
-              {totalPayment > 0 ? `Pay ${totalPayment}` : "Submit"}
+              {totalPayment > 0 ? `Pay ${totalPayment}€ ` : "Submit"}
             </button>
           </div>
         </form>
