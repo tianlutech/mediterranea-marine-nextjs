@@ -2,7 +2,6 @@
 
 import Sidebar from "./components/sidebar/sidebar";
 import Booking from "./components/booking";
-import "./i18n";
 
 export default function Home() {
   return (

@@ -7,6 +7,7 @@ import CommonLabel from "../../common/label/label";
 import React from "react";
 import ErrorMessage from "./errorMessage";
 import { Boat } from "@/app/models/models";
+import { useTranslation } from "react-i18next";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-[48%]">{children}</div>;
@@ -23,6 +24,7 @@ export default function BookingForm1({
   formik: any;
   boatInfo: Boat;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="flex md:flex-row flex-col md:w-[49%] w-full">
       <div className="w-full bg-white rounded-lg">
@@ -30,7 +32,7 @@ export default function BookingForm1({
           <div className="flex justify-between w-full">
             <FormWrapper>
               <CommonLabel input="text" error={formik.errors["First Name"]}>
-                First name
+                {t("input.first_name")}
               </CommonLabel>
               <CommonInput
                 type="text"

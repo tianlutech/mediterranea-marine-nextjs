@@ -10,6 +10,9 @@ import { useFormik } from "formik";
 import { updateBookingInfo } from "@/app/services/notion.service";
 import { MILE_RANGES } from "@/app/models/consntats";
 
+import "../../i18n";
+import { useTranslation } from "react-i18next";
+
 export default function BookingComponent({
   data,
   id,
@@ -19,6 +22,8 @@ export default function BookingComponent({
   id: string;
   boatInfo: Boat;
 }) {
+  const { t } = useTranslation();
+
   const [openPrepaymentModal, setOpenPrepaymentModal] =
     useState<boolean>(false);
   const [formData, setFormData] = useState({

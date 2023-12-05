@@ -14,6 +14,7 @@ import {
   STANDUP_PADDLE,
   SEABOB,
 } from "@/app/models/consntats";
+import { useTranslation } from "react-i18next";
 
 export default function BookingForm2({
   data,
@@ -26,6 +27,8 @@ export default function BookingForm2({
   miles: Array<{ value: string; name: string }>;
   formik: any;
 }) {
+  const { t } = useTranslation();
+
   const [eatAtRestaurant, setEatAtRestaurant] = useState<string>("");
   const [openTermModal, setOpenTermModal] = useState<boolean>(false);
   const [videoModalOpen, setVideoModalOpen] = useState<boolean>(false);
