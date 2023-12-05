@@ -9,6 +9,7 @@ import { updatePage } from "@/app/api/notion/notion.api"
 import CommonInput from "../common/inputs/input";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
+import { updateBookingInfo } from "@/app/services/notion.service"
 
 export default function Booking({
   data,
@@ -62,12 +63,6 @@ export default function Booking({
     if (!values["Billing Address"]) {
       errors["Billing Address"] = "Required";
     }
-    if (!values["No Adults"]) {
-      errors["No Adults"] = "Required";
-    }
-    if (!values["No Childs"]) {
-      errors["No Childs"] = "Required";
-    }
     if (!values["ID Back Picture"]) {
       errors["ID Back Picture"] = "Required";
     }
@@ -105,6 +100,10 @@ export default function Booking({
     // Using the Unary + Operator
     const toys = +bookingData["SUP"] + +bookingData["SEABOB"];
 
+    if (+bookingData["No Adults"] + +bookingData["No Childs"] <= 0) {
+      return toast.error(`Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`)
+    }
+
     if (+bookingData["No Adults"] + +bookingData["No Childs"] > boatInfo["Max.Passengers"]) {
       return toast.error(`You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`)
     }
@@ -122,7 +121,7 @@ export default function Booking({
       Toys: [formData["SUP"], formData["SEABOB"]].filter((value) => !!value),
     } as unknown as Partial<Booking>;
 
-    updatePage(id, data);
+    updateBookingInfo(id, data);
   };
   const calculateBoatPrices = (pricePerMile: number, mileRanges: any) => {
     return mileRanges.map(
@@ -194,7 +193,7 @@ export default function Booking({
               </div>
             </div>
             <button
-              disabled={agreePolicy && agreeGuaranty && signedContract}
+              disabled={!agreePolicy || !agreeGuaranty || !signedContract}
               type="submit"
               className="mt-6 text-white bg-buttonColor focus:ring-4 font-semibold rounded-lg text-lg px-10 py-3"
             >

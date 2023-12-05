@@ -1,6 +1,6 @@
 import { Client } from "@notionhq/client";
 import { Boat, Booking } from "../models/models";
-import { parseNotionObject, NotionPage } from "../models/notion.model";
+import { parseNotionObject, NotionPage, parseObjectToNotion } from "../models/notion.model";
 
 export async function getBoatInfo(boatId: string) {
   try {
@@ -20,6 +20,28 @@ export async function getBookingInfo(bookingId: string) {
 
     const json = await response.json();
     return parseNotionObject<Booking>(json as NotionPage);
+  } catch (error) {
+    console.error("Error retrieving page from Notion:", error);
+    return undefined;
+  }
+}
+
+export async function updateBookingInfo(bookingId: string, data: any) {
+  try {
+    // Append the bookingId as a query parameter to the URL
+    const response = await fetch(`/api/notion?id=${encodeURIComponent(bookingId)}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        properties: parseObjectToNotion(data)}),
+    })
+    const json = await response.json();
+    
+    return parseNotionObject<Booking>(json as NotionPage);
+    return true;
   } catch (error) {
     console.error("Error retrieving page from Notion:", error);
     return undefined;

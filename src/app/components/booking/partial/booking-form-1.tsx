@@ -289,7 +289,7 @@ export default function BookingForm1({
             </div>
             <div className="flex justify-between w-full mt-6">
               <FormWrapper>
-                <CommonLabel input="text" error={formik.errors["No Adults"]}>
+                <CommonLabel input="text">
                   Adults passengers
                 </CommonLabel>
                 <CommonInput
@@ -303,10 +303,9 @@ export default function BookingForm1({
                   }
                   required={false}
                 />
-                <ErrorMessage formik={formik} name="No Adults" />
               </FormWrapper>
               <FormWrapper>
-                <CommonLabel input="text" error={formik.errors["No Childs"]}>
+                <CommonLabel input="text">
                   Kids passengers
                 </CommonLabel>
                 <CommonInput
@@ -320,7 +319,6 @@ export default function BookingForm1({
                   }
                   required={false}
                 />
-                <ErrorMessage formik={formik} name="No Childs" />
               </FormWrapper>
             </div>
             <div className="mt-6 text-black flex">

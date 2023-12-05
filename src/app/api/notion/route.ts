@@ -16,15 +16,33 @@ export async function GET(request: Request) {
   }
 }
 
-export async function PUT(
-  request: Request,
-  params: { pageId: string; properties: Record<string, unknown> }
-) {
+// Next.js API route to handle PUT requests
+export async function PUT(request: Request) {
   try {
-    const page = notion.updatePage(params.pageId, params.properties);
+    const url = new URL(request.url);
+    const pageId = url.searchParams.get("id");
+
+    
+    // Ensure the Content-Type is 'application/json' for correct parsing
+    if (request.headers.get("Content-Type") !== "application/json") {
+      throw new Error("Invalid Content-Type");
+    }
+
+    // Use request.json() to parse the request body as JSON
+    const body = await request.json();
+    const properties = body.properties;
+
+    // Make sure that pageId and properties are defined
+    if (!pageId || !properties) {
+      throw new Error("Missing pageId or properties");
+    }
+
+    const page = await notion.updatePage(pageId, properties);
     return new Response(JSON.stringify(page), { status: 200 });
   } catch (error) {
     console.error("Error retrieving page from Notion:", error);
-    return new Response(JSON.stringify(error), { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 }
+
+
