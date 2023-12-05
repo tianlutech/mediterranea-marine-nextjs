@@ -35,7 +35,7 @@ export default function BookingComponent({
     "Fuel Payment": 0,
     agreePolicy: false,
     agreeGuaranty: false,
-    signedContract: true
+    signedContract: false
   });
 
   const closePrepaymentModal = () => {
