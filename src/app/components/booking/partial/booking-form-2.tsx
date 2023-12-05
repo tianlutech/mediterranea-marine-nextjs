@@ -90,6 +90,8 @@ export default function BookingForm2({
       <TermsAndConditionModal
         isOpen={openTermModal}
         closeModal={closeModalTermModal}
+        data={data}
+        setData={setData}
       />
       <div className="flex md:mt-0 mt-4 md:flex-row flex-col md:w-[49%] w-full">
         <div className="w-full bg-white rounded-lg">
@@ -292,22 +294,18 @@ export default function BookingForm2({
             </div>
             <ErrorMessage formik={formik} name="SEABOB" />
             <div className="mt-6">
-              <div className="flex items-center">
+              <div onClick={() => { !data["signedContract"] && setOpenTermModal(true) }} className="flex items-center">
                 <input
                   id="checked-checkbox"
+                  checked={data["signedContract"]}
+                  disabled={data["signedContract"]}
                   type="checkbox"
                   value=""
                   required
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label className="ms-2 text-sm text-black">
-                  Read and Sign the{" "}
-                  <span
-                    onClick={() => setOpenTermModal(true)}
-                    className="text-blue-600"
-                  >
-                    contract
-                  </span>
+                  Read and Sign the contract
                 </label>
               </div>
             </div>

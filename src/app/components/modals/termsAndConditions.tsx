@@ -6,9 +6,13 @@ import React, { useRef } from "react"
 export default function CommonModal({
   isOpen,
   closeModal,
+  data,
+  setData
 }: {
   isOpen: boolean;
   closeModal: any;
+  data: any;
+  setData: any
 }) {
   const sigPad = useRef<SignaturePad>(null);
   const clearSigPad = () => {
@@ -16,6 +20,10 @@ export default function CommonModal({
       sigPad.current.clear();
     }
   };
+  const agreeContract = () => {
+    setData({ ...data, "signedContract": !data["signedContract"] })
+    closeModal()
+  }
   return (
     <Modal isOpen={isOpen}>
       <div className="relative p-2 md:w-[60%] w-full md:h-auto bg-white rounded-lg shadow">
@@ -97,7 +105,7 @@ export default function CommonModal({
             </button>
           </div>
           <button
-            onClick={() => closeModal()}
+            onClick={agreeContract}
             data-modal-hide="default-modal"
             type="button"
             className="text-white bg-buttonColor2 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
