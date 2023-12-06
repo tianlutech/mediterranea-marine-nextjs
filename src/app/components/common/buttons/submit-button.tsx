@@ -9,7 +9,7 @@ export default function SubmitButton({
   label: string;
   type?: "submit" | "button" | "reset" | undefined;
   loading?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }) {
   const onClickButton = (e: any) => {
     if (loading) {
