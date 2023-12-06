@@ -26,7 +26,14 @@ export default function SubmitButton({
       onClick={onClickButton}
       className="mt-6 text-white bg-buttonColor focus:ring-4 font-semibold rounded-lg text-lg px-10 py-3"
     >
-      {loading ? <SpinnerSVG color="" /> : label}
+      {loading ? <div className="flex justify-center items-center">
+        <div className="w-5 h-5 rounded-full animate-spin
+              border-r-4 border-solid border-blue-400
+              shadow-md">
+        </div>
+        <div className="absolute">
+        </div>
+      </div> : label}
     </button>
   );
 }
