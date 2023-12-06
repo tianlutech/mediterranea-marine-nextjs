@@ -123,6 +123,9 @@ export default function BookingForm2({
                     name="restaurant"
                     id="restaurantName"
                     placeholder="Name of the restaurant"
+                    onChange={(e: any) =>
+                      setData({ ...data, "Restaurant Name": e.target.value })
+                    }
                     required={true}
                   />
                 </div>
@@ -135,6 +138,15 @@ export default function BookingForm2({
                     name="bookingTime"
                     id="bookingTime"
                     placeholder="Booking time"
+                    onChange={(e: any) => {
+                      const date = new Date();
+                      const [hour, minutes] = e.target.value.split(
+                        ":"
+                      ) as string[];
+                      date.setHours(+hour, +minutes, 0, 0);
+                      console.log({ value: e.target.value, date });
+                      setData({ ...data, "Restaurant Time": date });
+                    }}
                     required={true}
                   />
                 </div>
@@ -269,20 +281,20 @@ export default function BookingForm2({
             <div className="mt-6">
               <div
                 onClick={() => {
-                  !data["signedContract"] && setOpenTermModal(true);
+                  setOpenTermModal(true);
                 }}
                 className="flex items-center"
               >
                 <input
                   id="checked-checkbox"
-                  checked={data["signedContract"]}
+                  defaultChecked={data["signedContract"]}
                   disabled={data["signedContract"]}
                   type="checkbox"
                   value=""
                   required
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
                 />
-                <label className={`ms-2 text-sm text-black ${data["signedContract"] ? "cursor-not-allowed" : "cursor-pointer"}`}>
+                <label className="ms-2 text-sm text-black cursor-pointer">
                   Read and Sign the contract
                 </label>
               </div>

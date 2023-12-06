@@ -40,4 +40,6 @@ export type Booking = NotionItem & {
   SEABOB: string;
   Email: string;
   Name: string;
+  "Restaurant Name": string;
+  "Restaurant Time": Date;
 };

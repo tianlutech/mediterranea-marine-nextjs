@@ -40,6 +40,8 @@ export default function BookingComponent({
     SEABOB: "",
     "Fuel Payment": "",
     Comments: "",
+    "Restuarant Name": "",
+    "Restaurant Time": "",
     signedContract: false,
   });
 
@@ -72,8 +74,14 @@ export default function BookingComponent({
     +formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"];
 
   const submitBooking = () => {
-    const { ID_Back_Picture, ID_Front_Picture, SEABOB, SUP, ...bookingData } =
-      formData;
+    const {
+      ID_Back_Picture,
+      ID_Front_Picture,
+      SEABOB,
+      SUP,
+      signedContract,
+      ...bookingData
+    } = formData;
 
     if (+bookingData["No Adults"] + +bookingData["No Childs"] <= 0) {
       return toast.error(
@@ -97,6 +105,7 @@ export default function BookingComponent({
     // Upload the files and convert them in { name: '', url: '', type: "external"}
     const data = {
       ...bookingData,
+
       // "ID_Back_Picture": {} as FileData,
       // "ID Front Picture": {} as FileData,
       Toys: [SUP, SEABOB].filter((value) => !!value),
@@ -160,7 +169,7 @@ export default function BookingComponent({
                     required
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
-                  <label className="ms-2 text-sm cursor-pointer">
+                  <label className="ms-2 text-sm cursor-pointer text-white">
                     I agree with the privacy policy
                   </label>
                 </div>
@@ -173,7 +182,7 @@ export default function BookingComponent({
                     required
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
-                  <label className="ms-2 text-sm">
+                  <label className="ms-2 text-sm text-white">
                     I guarantee that the information of the user is from a user
                     that is going to go to the boat.
                   </label>
