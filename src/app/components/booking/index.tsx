@@ -12,6 +12,7 @@ import { MILE_RANGES } from "@/app/models/consntats";
 
 import "../../i18n";
 import { useTranslation } from "react-i18next";
+import SubmitButton from "../common/buttons/submit-button";
 
 export default function BookingComponent({
   data,
@@ -26,6 +27,8 @@ export default function BookingComponent({
 
   const [openPrepaymentModal, setOpenPrepaymentModal] =
     useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [formData, setFormData] = useState({
     "First Name": "",
     "Last Name": "",
@@ -73,7 +76,7 @@ export default function BookingComponent({
   const totalPayment =
     +formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"];
 
-  const submitBooking = () => {
+  const submitBooking = async () => {
     const {
       ID_Back_Picture,
       ID_Front_Picture,
@@ -111,7 +114,9 @@ export default function BookingComponent({
       Toys: [SUP, SEABOB].filter((value) => !!value),
     } as unknown as Partial<Booking>;
 
-    updateBookingInfo(id, data);
+    setLoading(true);
+    await updateBookingInfo(id, data);
+    setLoading(false);
   };
 
   // Function to calculate boat prices
@@ -189,12 +194,10 @@ export default function BookingComponent({
                 </div>
               </div>
             </div>
-            <button
-              type="submit"
-              className="mt-6 text-white bg-buttonColor focus:ring-4 font-semibold rounded-lg text-lg px-10 py-3"
-            >
-              {totalPayment > 0 ? `Pay ${totalPayment}€ ` : "Submit"}
-            </button>
+            <SubmitButton
+              label={totalPayment > 0 ? `Pay ${totalPayment}€ ` : "Submit"}
+              loading={loading}
+            />
           </div>
         </form>
       </div>
