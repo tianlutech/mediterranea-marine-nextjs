@@ -29,7 +29,7 @@ export default function BookingComponent({
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [totalPayment, setTotalPayment] = useState<number>(0);
-  const [proceedWithNoFuel, setProceedWithNoFuel] = useState(false)
+  const [proceedWithNoFuel, setProceedWithNoFuel] = useState(false);
   const [formData, setFormData] = useState({
     "First Name": "",
     "Last Name": "",
@@ -74,10 +74,18 @@ export default function BookingComponent({
     },
   });
   useEffect(() => {
-    setTotalPayment(+formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"]);
-  }, [formData["Fuel Payment"], formData["SUP"], formData["SEABOB"]]);
+    setTotalPayment(
+      +formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"]
+    );
+  }, [formData]);
 
-  const submitBooking = async () => {
+  const updateNotion = async (formData: Record<string, unknown>) => {
+    console.log({ totalPayment });
+
+    if (totalPayment > 0) {
+      console.log("Fire Payment Here", totalPayment);
+    }
+
     const {
       ID_Back_Picture,
       ID_Front_Picture,
@@ -86,26 +94,6 @@ export default function BookingComponent({
       signedContract,
       ...bookingData
     } = formData;
-
-    if (+bookingData["No Adults"] + +bookingData["No Childs"] <= 0) {
-      return toast.error(
-        `Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
-      );
-    }
-
-    if (
-      +bookingData["No Adults"] + +bookingData["No Childs"] >
-      boatInfo["Max.Passengers"]
-    ) {
-      return toast.error(
-        `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
-      );
-    }
-    console.log("=====book", proceedWithNoFuel)
-
-    if (+bookingData["Fuel Payment"] === 0) {
-      return setOpenPrepaymentModal(true);
-    }
 
     // Upload the files and convert them in { name: '', url: '', type: "external"}
     const data = {
@@ -125,6 +113,29 @@ export default function BookingComponent({
     router.replace("/success");
   };
 
+  const submitBooking = async () => {
+    if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
+      return toast.error(
+        `Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
+      );
+    }
+
+    if (
+      +formData["No Adults"] + +formData["No Childs"] >
+      boatInfo["Max.Passengers"]
+    ) {
+      return toast.error(
+        `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
+      );
+    }
+
+    if (+formData["Fuel Payment"] === 0) {
+      return setOpenPrepaymentModal(true);
+    }
+
+    updateNotion(formData);
+  };
+
   // Function to calculate boat prices
   const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
     return mileRanges.map((miles: number) => ({
@@ -135,9 +146,8 @@ export default function BookingComponent({
     }));
   };
   const handlePrepayment = (additionalPayment: number) => {
-    setProceedWithNoFuel(true)
-    setTotalPayment(additionalPayment)
-    submitBooking()
+    setTotalPayment(additionalPayment);
+    submitBooking();
   };
 
   const pricePerMile = +boatInfo?.MilePrice || 0;
@@ -153,8 +163,14 @@ export default function BookingComponent({
         closeModal={closePrepaymentModal}
         data={calculatedMiles}
         totalPayment={totalPayment}
-        handlePrepayment={handlePrepayment}
-        submitBooking={submitBooking}
+        continuePayment={(fuelPayment) => {
+          const newData = {
+            ...formData,
+            ["Fuel Payment"]: fuelPayment.toString(),
+          };
+          setFormData(newData);
+          updateNotion(newData);
+        }}
       />
       <div className="relative md:w-[77%] w-full md:p-6 p-2">
         <form onSubmit={formik.handleSubmit}>

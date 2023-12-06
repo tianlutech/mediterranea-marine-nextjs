@@ -2,36 +2,37 @@
 import Image from "next/image";
 import Boat from "@/app/assets/boat.png";
 import Modal from "@/app/components/common/modal/modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function PrepaymentModal({
   isOpen,
   closeModal,
   data,
   totalPayment,
-  submitBooking,
-  handlePrepayment,
+  continuePayment,
 }: {
   isOpen: boolean;
   closeModal: () => void;
   data: Array<{ value: string; name: string }>;
   totalPayment: number;
-  submitBooking: () => void;
-  handlePrepayment: (value: number) => void;
+  continuePayment: (fuelPayment: number) => void;
 }) {
-  const [payment, setPayment] = useState(totalPayment)
+  const [payment, setPayment] = useState(totalPayment);
+  const [fuelPayment, setFuelPayment] = useState(0);
+
+  useEffect(() => {
+    setPayment(totalPayment);
+  }, [totalPayment]);
+
   const addFuel = (value: string) => {
-    const fuelPrice = parseInt(value)
-    if (fuelPrice > 0) {
-      setPayment(totalPayment + fuelPrice)
-      return
-    }
-    setPayment(totalPayment)
-  }
+    const fuelPrice = parseInt(value);
+    setFuelPayment(fuelPayment);
+    setPayment(totalPayment + fuelPrice);
+  };
   const proceedSubmission = () => {
-    handlePrepayment(payment)
-    closeModal()
-  }
+    continuePayment(fuelPayment);
+    closeModal();
+  };
   return (
     <Modal isOpen={isOpen} onClose={() => closeModal()}>
       <div className="relative p-2 md:w-[60%] w-[95%] bg-white rounded-lg shadow">
