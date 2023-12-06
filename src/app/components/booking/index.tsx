@@ -11,7 +11,7 @@ import { updateBookingInfo } from "@/app/services/notion.service";
 import { MILE_RANGES } from "@/app/models/constants";
 import "../../i18n";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import SubmitButton from "../common/buttons/submit-button";
 
 export default function BookingComponent({
@@ -24,7 +24,7 @@ export default function BookingComponent({
   boatInfo: Boat;
 }) {
   const { t } = useTranslation();
-  const router = useRouter()
+  const router = useRouter();
   const [openPrepaymentModal, setOpenPrepaymentModal] =
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -116,11 +116,11 @@ export default function BookingComponent({
 
     setLoading(true);
     const res = await updateBookingInfo(id, data);
-    setLoading(true);
-    if (!res === false) {
-      return
+    setLoading(false);
+    if (res === false) {
+      return;
     }
-    router.replace("/")
+    router.replace("/success");
   };
 
   // Function to calculate boat prices
