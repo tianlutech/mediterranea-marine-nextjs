@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BookingForm1 from "./partial/booking-form-1";
 import BookingForm2 from "./partial/booking-form-2";
 import PrepaymentModal from "@/app/components/modals/prepaymentModal";
@@ -28,7 +28,8 @@ export default function BookingComponent({
   const [openPrepaymentModal, setOpenPrepaymentModal] =
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [totalPayment, setTotalPayment] = useState<number>(0);
+  const [proceedWithNoFuel, setProceedWithNoFuel] = useState(false)
   const [formData, setFormData] = useState({
     "First Name": "",
     "Last Name": "",
@@ -72,9 +73,9 @@ export default function BookingComponent({
       submitBooking();
     },
   });
-
-  const totalPayment =
-    +formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"];
+  useEffect(() => {
+    setTotalPayment(+formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"]);
+  }, [formData["Fuel Payment"], formData["SUP"], formData["SEABOB"]]);
 
   const submitBooking = async () => {
     const {
@@ -100,6 +101,7 @@ export default function BookingComponent({
         `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
     }
+    console.log("=====book", proceedWithNoFuel)
 
     if (+bookingData["Fuel Payment"] === 0) {
       return setOpenPrepaymentModal(true);
@@ -132,6 +134,11 @@ export default function BookingComponent({
       value: (miles * pricePerMile).toString(),
     }));
   };
+  const handlePrepayment = (additionalPayment: number) => {
+    setProceedWithNoFuel(true)
+    setTotalPayment(additionalPayment)
+    submitBooking()
+  };
 
   const pricePerMile = +boatInfo?.MilePrice || 0;
   const calculatedMiles = calculateBoatPrices(pricePerMile, MILE_RANGES);
@@ -146,6 +153,8 @@ export default function BookingComponent({
         closeModal={closePrepaymentModal}
         data={calculatedMiles}
         totalPayment={totalPayment}
+        handlePrepayment={handlePrepayment}
+        submitBooking={submitBooking}
       />
       <div className="relative md:w-[77%] w-full md:p-6 p-2">
         <form onSubmit={formik.handleSubmit}>

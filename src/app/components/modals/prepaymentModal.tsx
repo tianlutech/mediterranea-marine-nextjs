@@ -2,18 +2,36 @@
 import Image from "next/image";
 import Boat from "@/app/assets/boat.png";
 import Modal from "@/app/components/common/modal/modal";
+import { useState } from "react";
 
 export default function PrepaymentModal({
   isOpen,
   closeModal,
   data,
   totalPayment,
+  submitBooking,
+  handlePrepayment,
 }: {
   isOpen: boolean;
-  closeModal: any;
+  closeModal: () => void;
   data: Array<{ value: string; name: string }>;
   totalPayment: number;
+  submitBooking: () => void;
+  handlePrepayment: (value: number) => void;
 }) {
+  const [payment, setPayment] = useState(totalPayment)
+  const addFuel = (value: string) => {
+    const fuelPrice = parseInt(value)
+    if (fuelPrice > 0) {
+      setPayment(totalPayment + fuelPrice)
+      return
+    }
+    setPayment(totalPayment)
+  }
+  const proceedSubmission = () => {
+    handlePrepayment(payment)
+    closeModal()
+  }
   return (
     <Modal isOpen={isOpen} onClose={() => closeModal()}>
       <div className="relative p-2 md:w-[60%] w-[95%] bg-white rounded-lg shadow">
@@ -64,7 +82,8 @@ export default function PrepaymentModal({
                       type="radio"
                       value={item.value}
                       name="default-radio"
-                      className="w-4 h-4 text-black bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      onClick={() => addFuel(item.value)}
+                      className="w-4 h-4"
                     />
                     <label className="ms-2 text-base text-black">
                       {item.name}
@@ -96,12 +115,12 @@ export default function PrepaymentModal({
             Back
           </button>
           <button
-            onClick={() => closeModal()}
+            onClick={() => proceedSubmission()}
             data-modal-hide="default-modal"
             type="button"
             className="text-white bg-buttonColor2 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
-            {totalPayment > 0 ? `Pay ${totalPayment}€ ` : "Submit"}
+            {payment > 0 ? `Pay ${payment}€ ` : "Submit"}
           </button>
         </div>
       </div>
