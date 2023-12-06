@@ -12,10 +12,10 @@ export default function PrepaymentModal({
   isOpen: boolean;
   closeModal: any;
   data: Array<{ value: string; name: string }>;
-  totalPayment: number
+  totalPayment: number;
 }) {
   return (
-    <Modal isOpen={isOpen}>
+    <Modal isOpen={isOpen} onClose={() => closeModal()}>
       <div className="relative p-2 md:w-[60%] w-[95%] bg-white rounded-lg shadow">
         <div className="flex items-center justify-between px-4 pt-4 md:px-4 md:pt-4 ">
           <h3 className="text-xl font-semibold text-black">Prepay your fuel</h3>

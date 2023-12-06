@@ -22,7 +22,7 @@ export const STANDUP_PADDLE = [
   },
   {
     name: "SUP 1 - 150E",
-    value: "100",
+    value: "150",
   },
   {
     name: "SUP 2 - 200E",
