@@ -127,6 +127,7 @@ export default function BookingComponent({
         isOpen={openPrepaymentModal}
         closeModal={closePrepaymentModal}
         data={calculatedMiles}
+        totalPayment={totalPayment}
       />
       <div className="relative md:w-[77%] w-full md:p-6 p-2">
         <form onSubmit={formik.handleSubmit}>

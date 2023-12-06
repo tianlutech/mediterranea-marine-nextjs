@@ -1,7 +1,7 @@
 "use client";
 import Modal from "@/app/components/common/modal/modal";
 import SignaturePad from "react-signature-canvas";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 export default function CommonModal({
   isOpen,
@@ -15,11 +15,34 @@ export default function CommonModal({
   setData: any;
 }) {
   const sigPad = useRef<SignaturePad>(null);
+  const [isSigned, setIsSigned] = useState(false);
+
   const clearSigPad = () => {
     if (sigPad.current) {
       sigPad.current.clear();
+      setIsSigned(false);
     }
   };
+
+  const checkSignature = () => {
+    setIsSigned(!!sigPad.current && !sigPad.current.isEmpty());
+  };
+
+  useEffect(() => {
+    if (sigPad.current && !sigPad.current.isEmpty()) {
+      setIsSigned(!sigPad.current.isEmpty());
+    }
+  }, [data]);
+
+  // will uncomment later if we need to use it
+  // const getSignatureImage = () => {
+  //   if (sigPad.current) {
+  //     const canvas = sigPad.current.getTrimmedCanvas();
+  //     return canvas.toDataURL("image/png");
+  //   }
+  //   return null;
+  // };
+
   const agreeContract = () => {
     setData({ ...data, signedContract: !data["signedContract"] });
     closeModal();
@@ -107,10 +130,11 @@ export default function CommonModal({
                 ref={sigPad}
                 penColor="black"
                 canvasProps={{
-                  width: 300,
-                  height: 100,
+                  width: 320,
+                  height: 120,
                   className: "sigCanvas",
                 }}
+                onEnd={checkSignature}
               />
             </div>
             <button
@@ -133,9 +157,10 @@ export default function CommonModal({
           </div>
           <button
             onClick={agreeContract}
+            disabled={!isSigned}
             data-modal-hide="default-modal"
             type="button"
-            className="text-white bg-buttonColor2 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            className={`text-white bg-buttonColor2 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ${isSigned ? "cursor-pointer" : "cursor-not-allowed"}`}
           >
             Contract
           </button>
