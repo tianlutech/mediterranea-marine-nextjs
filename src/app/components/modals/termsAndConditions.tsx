@@ -48,7 +48,7 @@ export default function CommonModal({
     closeModal();
   };
   return (
-    <Modal isOpen={isOpen}>
+    <Modal isOpen={isOpen} onClose={() => closeModal()}>
       <div className="relative p-2 md:w-[60%] w-full md:h-auto bg-white rounded-lg shadow">
         <div className="flex items-center justify-between px-4 pt-4 md:px-4 md:pt-4 ">
           <h3 className="text-xl font-semibold text-black">Contract</h3>
@@ -155,15 +155,18 @@ export default function CommonModal({
               </svg>
             </button>
           </div>
-          <button
-            onClick={agreeContract}
-            disabled={!isSigned}
-            data-modal-hide="default-modal"
-            type="button"
-            className={`text-white bg-buttonColor2 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ${isSigned ? "cursor-pointer" : "cursor-not-allowed"}`}
-          >
-            Contract
-          </button>
+          {isSigned && (
+            <button
+              onClick={agreeContract}
+              data-modal-hide="default-modal"
+              type="button"
+              className={`text-white bg-buttonColor2 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ${
+                isSigned ? "cursor-pointer" : "cursor-not-allowed"
+              }`}
+            >
+              Sign
+            </button>
+          )}
         </div>
       </div>
     </Modal>

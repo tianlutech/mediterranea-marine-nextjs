@@ -28,7 +28,7 @@ export default function VideoModal({
   };
 
   return (
-    <Modal isOpen={isOpen}>
+    <Modal isOpen={isOpen} onClose={() => closeModal()}>
       <div className="relative p-2 md:w-[50%] w-[95%] bg-white rounded-lg shadow">
         <button
           onClick={() => closeModalView()}
