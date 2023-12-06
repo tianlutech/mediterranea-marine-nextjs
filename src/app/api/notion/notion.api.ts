@@ -1,5 +1,6 @@
 import { Client } from "@notionhq/client";
 import { parseObjectToNotion } from "@/app/models/notion.model";
+import { UpdatePageParameters } from "@notionhq/client/build/src/api-endpoints";
 const notionSecret = process.env.NOTION_SECRET || undefined;
 
 // if (!notionSecret) {
@@ -20,7 +21,7 @@ export async function getPage(pageId: string) {
 
 export async function updatePage(
   pageId: string,
-  properties: Record<string, unknown>
+  properties: Record<string, any>
 ) {
   const page = await notion.pages.update({
     page_id: pageId,

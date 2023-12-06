@@ -22,7 +22,6 @@ export async function PUT(request: Request) {
     const url = new URL(request.url);
     const pageId = url.searchParams.get("id");
 
-    
     // Ensure the Content-Type is 'application/json' for correct parsing
     if (request.headers.get("Content-Type") !== "application/json") {
       throw new Error("Invalid Content-Type");
@@ -39,10 +38,10 @@ export async function PUT(request: Request) {
 
     const page = await notion.updatePage(pageId, properties);
     return new Response(JSON.stringify(page), { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error retrieving page from Notion:", error);
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+    return new Response(JSON.stringify({ error: error?.message || error }), {
+      status: 500,
+    });
   }
 }
-
-
