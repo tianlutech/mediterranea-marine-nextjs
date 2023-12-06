@@ -13,7 +13,7 @@ import {
   DEPARTURES_TIMES,
   STANDUP_PADDLE,
   SEABOB,
-} from "@/app/models/consntats";
+} from "@/app/models/constants";
 import { useTranslation } from "react-i18next";
 
 export default function BookingForm2({

@@ -8,10 +8,11 @@ import { Boat, Booking } from "@/app/models/models";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import { updateBookingInfo } from "@/app/services/notion.service";
-import { MILE_RANGES } from "@/app/models/consntats";
-
+import { MILE_RANGES } from "@/app/models/constants";
 import "../../i18n";
 import { useTranslation } from "react-i18next";
+import SuccessModal from "../modals/successModal";
+import { useRouter } from "next/router";
 
 export default function BookingComponent({
   data,
@@ -23,7 +24,7 @@ export default function BookingComponent({
   boatInfo: Boat;
 }) {
   const { t } = useTranslation();
-
+  const router = useRouter()
   const [openPrepaymentModal, setOpenPrepaymentModal] =
     useState<boolean>(false);
   const [formData, setFormData] = useState({
@@ -71,7 +72,7 @@ export default function BookingComponent({
   const totalPayment =
     +formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"];
 
-  const submitBooking = () => {
+  const submitBooking = async () => {
     const { ID_Back_Picture, ID_Front_Picture, SEABOB, SUP, ...bookingData } =
       formData;
 
@@ -102,7 +103,12 @@ export default function BookingComponent({
       Toys: [SUP, SEABOB].filter((value) => !!value),
     } as unknown as Partial<Booking>;
 
-    updateBookingInfo(id, data);
+    const res = await updateBookingInfo(id, data);
+
+    if (!res === false) {
+      return
+    }
+    router.replace("/")
   };
 
   // Function to calculate boat prices
