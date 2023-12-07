@@ -1,4 +1,5 @@
 import SpinnerSVG from "@/app/assets/svgs/SpinerSvg";
+import Spinner from "./spinner";
 
 export default function SubmitButton({
   label,
@@ -26,14 +27,7 @@ export default function SubmitButton({
       onClick={onClickButton}
       className="mt-6 text-white bg-buttonColor focus:ring-4 font-semibold rounded-lg text-lg px-10 py-3"
     >
-      {loading ? <div className="flex justify-center items-center">
-        <div className="w-5 h-5 rounded-full animate-spin
-              border-r-4 border-solid border-blue-400
-              shadow-md">
-        </div>
-        <div className="absolute">
-        </div>
-      </div> : label}
+      {loading ? <Spinner color="white" /> : label}
     </button>
   );
 }

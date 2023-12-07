@@ -77,7 +77,7 @@ export default function PrepaymentModal({
             <div>
               {data.map((item, index: number) => {
                 return (
-                  <div key={index} className="flex mt-4 items-center">
+                  <div key={index} className="flex mt-4 items-center mb-4">
                     <input
                       id="default-radio-2"
                       type="radio"
