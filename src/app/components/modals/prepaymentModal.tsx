@@ -3,6 +3,7 @@ import Image from "next/image";
 import Boat from "@/app/assets/boat.png";
 import Modal from "@/app/components/common/modal/modal";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function PrepaymentModal({
   isOpen,
@@ -17,6 +18,7 @@ export default function PrepaymentModal({
   totalPayment: number;
   continuePayment: (fuelPayment: number) => void;
 }) {
+  const { t } = useTranslation();
   const [payment, setPayment] = useState(totalPayment);
   const [fuelPayment, setFuelPayment] = useState(0);
 
@@ -65,13 +67,10 @@ export default function PrepaymentModal({
           <div className="md:w-[50%] w-full flex flex-col justify-center">
             <span className="text-black md:text-base text-sm">
               <p className="mb-6">
-                Selecting the option of prepaying the fuel will allow us the
-                provide you a better service: planning properly the navigation
-                route and improving your experience.
+                {t("prepayment_modal.prepayment_fuel_modal_p1")}
               </p>
               <p className="mb-6">
-                As well will reduce your cost and let you enjoy the trip being
-                relax on a fix cost of the fuel
+                {t("prepayment_modal.prepayment_fuel_modal_p2")}
               </p>
             </span>
             <div>
@@ -113,7 +112,7 @@ export default function PrepaymentModal({
             type="button"
             className="text-black border border-bgColor2 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
-            Back
+            {t("prepayment_modal.back")}
           </button>
           <button
             onClick={() => proceedSubmission()}

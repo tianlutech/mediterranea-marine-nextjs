@@ -25,5 +25,19 @@
     "read_and_sign_the_contract":"Leer y firmar el contrato",
     "i_agree_with_the_privacy_policy":"Estoy de acuerdo con la política de privacidad",
     "guarantee_label":"Garantizo que la información del usuario es de un usuario que va a ir al barco."
+  },
+  "prepayment_modal":{
+    "prepayment_fuel_modal_p1":"Seleccionar la opción de prepago del combustible nos permitirá brindarte un mejor servicio: planificar adecuadamente la ruta de navegación y mejorar tu experiencia.",
+    "prepayment_fuel_modal_p2":"Además, también reducirá sus costos y le permitirá disfrutar del viaje descansando con un costo fijo de combustible.",
+    "back":"Atrás"
+  },
+  "sidebar":{
+    "language":"Language",
+    "boat_booking":"RESERVA DE BARCO",
+    "welcome_to_our_boat":"Bienvenido a nuestro barco",
+    "reservation_form":"¡Formulario de reservación!",
+    "we_are_excited_to_help_you_plan_your_next_water_adventure":"Estamos encantados de ayudarle a planificar su próxima aventura acuática.",
+    "sidebar_p1":"Tómese un momento para brindarnos algunos detalles esenciales, para que podamos garantizar que tenga una experiencia fluida y agradable.",
+    "sidebar_p2":"Sus respuestas nos ayudarán a programar la reserva de su barco y satisfacer sus necesidades específicas. ¡Gracias por elegirnos para su aventura en bote!"
   }
 }
