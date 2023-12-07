@@ -49,7 +49,7 @@ export default function BookingForm1({
             </FormWrapper>
             <FormWrapper>
               <CommonLabel input="text" error={formik.errors["Last Name"]}>
-                Last name
+                {t("input.last_name")}
               </CommonLabel>
               <CommonInput
                 type="text"
@@ -67,7 +67,7 @@ export default function BookingForm1({
           </div>
           <div className="relative w-full mt-6">
             <CommonLabel input="text" error={formik.errors["Email"]}>
-              Email
+              {t("input.email")}
             </CommonLabel>
             <CommonInput
               type="email"
@@ -85,7 +85,7 @@ export default function BookingForm1({
           <>
             <CommonInputFile
               name="ID_Front_Picture"
-              label="Identity / Passport Picture (Front)"
+              label={t("input.ID_Front_Picture")}
               onRemove={() => setData({ ...data, ID_Front_Picture: {} })}
               onChange={(file) => setData({ ...data, ID_Front_Picture: file })}
               required
@@ -95,17 +95,16 @@ export default function BookingForm1({
           <>
             <CommonInputFile
               name="ID_Back_Picture"
-              label="Identity / Passport Picture (Back)"
+              label={t("input.ID_Back_Picture")}
               onRemove={() => setData({ ...data, ID_Back_Picture: {} })}
               onChange={(file) => setData({ ...data, ID_Back_Picture: file })}
               required
             />
-
             <ErrorMessage formik={formik} name="ID_Back_Picture" />
           </>
           <div className="relative w-full mt-6">
             <CommonLabel input="text" error={formik.errors["Last Name"]}>
-              Billing address
+              {t("input.billing_address")}
             </CommonLabel>
             <CommonInput
               type="text"
@@ -122,7 +121,7 @@ export default function BookingForm1({
           </div>
           <div className="flex justify-between w-full mt-6">
             <FormWrapper>
-              <CommonLabel input="text">Adults passengers</CommonLabel>
+              <CommonLabel input="text">{t("input.adult_passengers")}</CommonLabel>
               <CommonInput
                 type="number"
                 name="number"
@@ -138,7 +137,7 @@ export default function BookingForm1({
               />
             </FormWrapper>
             <FormWrapper>
-              <CommonLabel input="text">Kids passengers</CommonLabel>
+              <CommonLabel input="text">{t("input.kids_passengers")}</CommonLabel>
               <CommonInput
                 type="number"
                 name="number"

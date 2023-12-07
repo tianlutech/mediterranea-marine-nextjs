@@ -1,5 +1,29 @@
 {
    "input": {
-    "first_name": "Nombre"
+    "first_name": "Nombre",
+    "last_name":"Apellido",
+    "email":"Correo electrónico",
+    "ID_Front_Picture": "Fotografía de Identidad/Pasaporte (Frente)",
+    "ID_Back_Picture": "Fotografía de Identidad/Pasaporte (Volver)",
+    "billing_address":"Dirección de Envio",
+    "adult_passengers":"Pasajeros adultos",
+    "kids_passengers":"Pasajeros infantiles",
+    "select_file":"Seleccione un archivo o arrástrelo y suéltelo aquí",
+    "departure_time":"Hora de salida",
+    "we_eat_on_board":"Nosotros comemos a bordo",
+    "we_eat_on_a_restaurant":"Nosotros comemos en un restaurante",
+    "name_of_restaurant":"nombre del restaurante",
+    "booking_time":"hora de reserva",
+    "general_comments_info":"Es habitual que nuestros clientes reserven en un restaurante, facilitarnos el nombre del restaurante y la cita para la comida puede ayudar a nuestro capitán a ajustar y adaptar la ruta de su navegación.",
+    "general_comments":"Comentarios generales",
+    "prepayment_of_fuel":"Prepago de combustible",
+    "invitando_al_usuario_a_pagar_el_combustible_al_principio":"Invitando al usuario a pagar el combustible al principio.",
+    "toy_stand_up_paddle":"Juguete: Stand Up Paddle",
+    "toy_stand_up_paddle_info":"Haz clic aquí para ver el vídeo del SUP",
+    "toy_seabob":"Toy: SEABOB",
+    "toy_seabob_info":"Haga clic aquí para ver un vídeo del SEABOB",
+    "read_and_sign_the_contract":"Leer y firmar el contrato",
+    "i_agree_with_the_privacy_policy":"Estoy de acuerdo con la política de privacidad",
+    "guarantee_label":"Garantizo que la información del usuario es de un usuario que va a ir al barco."
   }
 }

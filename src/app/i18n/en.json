@@ -1,5 +1,29 @@
 {
    "input": {
-    "first_name": "First Name"
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "email": "Email",
+    "ID_Front_Picture": "Identity / Passport Picture (Front)",
+    "ID_Back_Picture": "Identity / Passport Picture (Back)",
+    "billing_address":"Billing address",
+    "adult_passengers":"Adults passengers",
+    "kids_passengers":"Kids passengers",
+    "select_file":"Select a file or drag and drop here",
+    "departure_time":"Departure time",
+    "we_eat_on_board":"We eat on board",
+    "we_eat_on_a_restaurant":"We eat on a restaurant",
+    "name_of_restaurant":"Name of restaurant",
+    "booking_time":"Booking time",
+    "general_comments_info":"Is common for our clients to book in a restaurant, providing tous the restaurant name and the meal appointment can help our captain to adjust and adapt the route of your sail",
+    "general_comments":"General comments",
+    "prepayment_of_fuel":"Prepayment of fuel",
+    "invitando_al_usuario_a_pagar_el_combustible_al_principio":"inviting the user to pay the fuel at the beginning.",
+    "toy_stand_up_paddle":"Toy: Stand Up Paddle",
+    "toy_stand_up_paddle_info":"Click here to see the video of the SUP",
+    "toy_seabob":"Juguete: SEABOB",
+    "toy_seabob_info":"Click chere to see a video of the SEABOB",
+    "read_and_sign_the_contract":"Read and Sign the contract",
+    "i_agree_with_the_privacy_policy":"I agree with the privacy policy",
+    "guarantee_label":"I guarantee that the information of the user is from a user that is going to go to the boat."
   }
 }

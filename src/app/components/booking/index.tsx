@@ -80,8 +80,6 @@ export default function BookingComponent({
   }, [formData]);
 
   const updateNotion = async (formData: Record<string, unknown>) => {
-    console.log({ totalPayment });
-
     if (totalPayment > 0) {
       console.log("Fire Payment Here", totalPayment);
     }
@@ -204,7 +202,7 @@ export default function BookingComponent({
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label className="ms-2 text-sm cursor-pointer text-white">
-                    I agree with the privacy policy
+                    {t("input.i_agree_with_the_privacy_policy")}
                   </label>
                 </div>
               </div>
@@ -217,8 +215,7 @@ export default function BookingComponent({
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label className="ms-2 text-sm text-white">
-                    I guarantee that the information of the user is from a user
-                    that is going to go to the boat.
+                    {t("input.guarantee_label")}
                   </label>
                 </div>
               </div>
