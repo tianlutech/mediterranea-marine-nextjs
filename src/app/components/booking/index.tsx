@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import { updateBookingInfo } from "@/app/services/notion.service";
 import { MILE_RANGES } from "@/app/models/constants";
 import "../../i18n";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
 import SubmitButton from "../common/buttons/submit-button";
 
@@ -80,8 +80,6 @@ export default function BookingComponent({
   }, [formData]);
 
   const updateNotion = async (formData: Record<string, unknown>) => {
-    console.log({ totalPayment });
-
     if (totalPayment > 0) {
       console.log("Fire Payment Here", totalPayment);
     }
@@ -137,14 +135,16 @@ export default function BookingComponent({
   };
 
   // Function to calculate boat prices
+  // Function to calculate boat prices
   const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
     return mileRanges.map((miles: number) => ({
       name: miles
-        ? `${miles} Nautical Miles - ${miles * pricePerMile}€`
-        : "I want to continue without prepayment",
+        ? `${miles} ` + t("input.nautical_miles") + " - " + `${miles * pricePerMile}€`
+        : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
   };
+
   const handlePrepayment = (additionalPayment: number) => {
     setTotalPayment(additionalPayment);
     submitBooking();
@@ -204,7 +204,7 @@ export default function BookingComponent({
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label className="ms-2 text-sm cursor-pointer text-white">
-                    I agree with the privacy policy
+                    {t("input.i_agree_with_the_privacy_policy")}
                   </label>
                 </div>
               </div>
@@ -217,14 +217,13 @@ export default function BookingComponent({
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label className="ms-2 text-sm text-white">
-                    I guarantee that the information of the user is from a user
-                    that is going to go to the boat.
+                    {t("input.guarantee_label")}
                   </label>
                 </div>
               </div>
             </div>
             <SubmitButton
-              label={totalPayment > 0 ? `Pay ${totalPayment}€ ` : "Submit"}
+              label={totalPayment > 0 ? t("input.pay") + ` ${totalPayment}€ ` : t("input.submit")}
               loading={loading}
             />
           </div>

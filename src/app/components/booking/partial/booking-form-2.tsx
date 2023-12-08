@@ -14,7 +14,7 @@ import {
   STANDUP_PADDLE,
   SEABOB,
 } from "@/app/models/constants";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 export default function BookingForm2({
   data,
@@ -67,7 +67,7 @@ export default function BookingForm2({
                 input="select"
                 error={formik.errors["Departure Time"]}
               >
-                Departure time
+                {t("input.departure_time")}
               </CommonLabel>
               <CommonSelect
                 id="departureTime"
@@ -94,7 +94,7 @@ export default function BookingForm2({
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label className="ms-2 md:text-base text-sm  text-black">
-                  We eat on board
+                  {t("input.we_eat_on_board")}
                 </label>
               </div>
               <div className="flex items-center ml-10">
@@ -108,7 +108,7 @@ export default function BookingForm2({
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label className="ms-2 md:text-base text-sm  text-black">
-                  We eat on a restaurant
+                  {t("input.we_eat_on_a_restaurant")}
                 </label>
               </div>
             </div>
@@ -116,13 +116,13 @@ export default function BookingForm2({
               <div className="flex justify-between w-full mt-2">
                 <div className="relative w-[48%]">
                   <label className="block mb-2 md:text-sm text-xs font-medium text-gray-900 absolute z-10 md:bottom-[2.3rem] bottom-[1.7rem] bg-white md:left-4 left-1 px-2">
-                    Name of restaurant
+                    {t("input.name_of_restaurant")}
                   </label>
                   <CommonInput
                     type="text"
                     name="restaurant"
                     id="restaurantName"
-                    placeholder="Name of the restaurant"
+                    placeholder={t("input.name_of_restaurant")}
                     onChange={(e: any) =>
                       setData({ ...data, "Restaurant Name": e.target.value })
                     }
@@ -131,20 +131,19 @@ export default function BookingForm2({
                 </div>
                 <div className="relative w-[48%]">
                   <label className="block px-2 absolute text-black md:bottom-[2.7rem] bottom-[2rem] z-10 bg-white md:left-4 left-2 md:text-sm text-xs font-medium">
-                    Booking time
+                    {t("input.booking_time")}
                   </label>
                   <CommonInput
                     type="time"
                     name="bookingTime"
                     id="bookingTime"
-                    placeholder="Booking time"
+                    placeholder={t("input.booking_time")}
                     onChange={(e: any) => {
                       const date = new Date();
                       const [hour, minutes] = e.target.value.split(
                         ":"
                       ) as string[];
                       date.setHours(+hour, +minutes, 0, 0);
-                      console.log({ value: e.target.value, date });
                       setData({ ...data, "Restaurant Time": date });
                     }}
                     required={true}
@@ -157,14 +156,12 @@ export default function BookingForm2({
                 <InfoSvg />
               </div>
               <span className="text-sm ml-2">
-                Is common for our clients to book in a restuarant, providing to
-                us the restaurant name and the meal appointment can help our
-                captian to adjust and apdat the route of your sail
+                {t("input.general_comments_info")}
               </span>
             </div>
             <div className="relative w-full mt-6">
               <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 bottom-[2.8rem] bg-white left-4 px-2">
-                General comments
+                {t("input.general_comments")}
               </label>{" "}
               <textarea
                 id="message"
@@ -175,7 +172,7 @@ export default function BookingForm2({
             </div>
             <div className="relative w-full mt-6">
               <CommonLabel input="select" error={formik.errors["Fuel Payment"]}>
-                Prepayment of fuel
+                {t("input.prepayment_of_fuel")}
               </CommonLabel>
               <CommonSelect
                 id="miles"
@@ -194,7 +191,7 @@ export default function BookingForm2({
                 <InfoSvg />
               </div>
               <span className="text-sm ml-2">
-                inviting the user to pay the fuel at the beginning.
+                {t("prepayment_modal.prepayment_fuel_modal_p1")}
               </span>
             </div>
             <div className="relative w-full mt-6 flex justify-between items-center">
@@ -203,7 +200,7 @@ export default function BookingForm2({
                   input="select"
                   error={formik.errors["Departure Time"]}
                 >
-                  Toy: Stand Up Paddle
+                  {t("input.toy_stand_up_paddle")}
                 </CommonLabel>
                 <CommonSelect
                   id="paddles"
@@ -233,7 +230,7 @@ export default function BookingForm2({
                   openVideoModal("https://www.youtube.com/watch?v=ES2mShoQ3_Q")
                 }
               >
-                Click here to see the video of the SUP
+                {t("input.toy_stand_up_paddle_info")}
               </span>
             </div>
             <ErrorMessage formik={formik} name="SUP" />
@@ -244,7 +241,7 @@ export default function BookingForm2({
                   error={formik.errors["Departure Time"]}
                 >
                   {" "}
-                  Toy: SEABOB{" "}
+                  {t("input.toy_seabob")}{" "}
                 </CommonLabel>
                 <CommonSelect
                   id="seabob"
@@ -274,7 +271,7 @@ export default function BookingForm2({
                 }
                 className="text-sm ml-2"
               >
-                Click chere to see a video of the SEABOB
+                {t("input.toy_seabob_info")}
               </span>
             </div>
             <ErrorMessage formik={formik} name="SEABOB" />
@@ -296,7 +293,7 @@ export default function BookingForm2({
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
                 />
                 <label className="ms-2 text-sm text-black cursor-pointer">
-                  Read and Sign the contract
+                  {t("input.read_and_sign_the_contract")}
                 </label>
               </div>
             </div>

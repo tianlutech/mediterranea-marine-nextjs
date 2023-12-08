@@ -7,7 +7,7 @@ import CommonLabel from "../../common/label/label";
 import React from "react";
 import ErrorMessage from "./errorMessage";
 import { Boat } from "@/app/models/models";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-[48%]">{children}</div>;
@@ -38,7 +38,7 @@ export default function BookingForm1({
                 type="text"
                 name="FirstName"
                 id="firstname"
-                placeholder="First name"
+                placeholder={t("input.first_name")}
                 value={data["First Name"]}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setData({ ...data, "First Name": e.target.value })
@@ -49,13 +49,13 @@ export default function BookingForm1({
             </FormWrapper>
             <FormWrapper>
               <CommonLabel input="text" error={formik.errors["Last Name"]}>
-                Last name
+                {t("input.last_name")}
               </CommonLabel>
               <CommonInput
                 type="text"
                 name="Last Name"
                 id="lastname"
-                placeholder="Last name"
+                placeholder={t("input.last_name")}
                 value={data["Last Name"]}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setData({ ...data, "Last Name": e.target.value })
@@ -67,13 +67,13 @@ export default function BookingForm1({
           </div>
           <div className="relative w-full mt-6">
             <CommonLabel input="text" error={formik.errors["Email"]}>
-              Email
+              {t("input.email")}
             </CommonLabel>
             <CommonInput
               type="email"
               name="Email"
               id="email"
-              placeholder="Email"
+              placeholder={t("input.email")}
               value={data["Email"]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setData({ ...data, Email: e.target.value })
@@ -85,7 +85,7 @@ export default function BookingForm1({
           <>
             <CommonInputFile
               name="ID_Front_Picture"
-              label="Identity / Passport Picture (Front)"
+              label={t("input.ID_Front_Picture")}
               onRemove={() => setData({ ...data, ID_Front_Picture: {} })}
               onChange={(file) => setData({ ...data, ID_Front_Picture: file })}
               required
@@ -95,23 +95,22 @@ export default function BookingForm1({
           <>
             <CommonInputFile
               name="ID_Back_Picture"
-              label="Identity / Passport Picture (Back)"
+              label={t("input.ID_Back_Picture")}
               onRemove={() => setData({ ...data, ID_Back_Picture: {} })}
               onChange={(file) => setData({ ...data, ID_Back_Picture: file })}
               required
             />
-
             <ErrorMessage formik={formik} name="ID_Back_Picture" />
           </>
           <div className="relative w-full mt-6">
             <CommonLabel input="text" error={formik.errors["Last Name"]}>
-              Billing address
+              {t("input.billing_address")}
             </CommonLabel>
             <CommonInput
               type="text"
               name="Billing address"
               id="billingAddress"
-              placeholder="Billing Address"
+              placeholder={t("input.billing_address")}
               value={data["Billing Address"]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setData({ ...data, "Billing Address": e.target.value })
@@ -122,7 +121,9 @@ export default function BookingForm1({
           </div>
           <div className="flex justify-between w-full mt-6">
             <FormWrapper>
-              <CommonLabel input="text">Adults passengers</CommonLabel>
+              <CommonLabel input="text">
+                {t("input.adult_passengers")}
+              </CommonLabel>
               <CommonInput
                 type="number"
                 name="number"
@@ -138,7 +139,9 @@ export default function BookingForm1({
               />
             </FormWrapper>
             <FormWrapper>
-              <CommonLabel input="text">Kids passengers</CommonLabel>
+              <CommonLabel input="text">
+                {t("input.kids_passengers")}
+              </CommonLabel>
               <CommonInput
                 type="number"
                 name="number"
@@ -157,9 +160,8 @@ export default function BookingForm1({
               <InfoSvg />
             </div>
             <span className="text-sm ml-2">
-              This boat allows a maximum of {boatInfo["Max.Passengers"]}{" "}
-              passengers. We require to know this information to prepare the
-              lifevest and other equipment accordingly
+              {t("input.boat_passenger_info1")} {boatInfo["Max.Passengers"]}{" "}
+              {t("input.boat_passenger_info2")}
             </span>
           </div>
         </div>

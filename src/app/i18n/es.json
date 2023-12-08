@@ -1,5 +1,53 @@
 {
    "input": {
-    "first_name": "Nombre"
+    "first_name": "Nombre",
+    "last_name":"Apellidos",
+    "email":"Correo electrónico",
+    "ID_Front_Picture": "Fotografía de Identidad/Pasaporte (Frontal)",
+    "ID_Back_Picture": "Fotografía de Identidad/Pasaporte (Posterior)",
+    "billing_address":"Dirección de Envío",
+    "adult_passengers":"Pasajeros Adultos",
+    "kids_passengers":"Pasajeros Infantiles",
+    "select_file":"Seleccione un archivo o arrástrelo y suéltelo aquí",
+    "departure_time":"Hora de salida",
+    "we_eat_on_board":"Comemos a bordo",
+    "we_eat_on_a_restaurant":"Reserva en restaurante",
+    "name_of_restaurant":"Restaurante",
+    "booking_time":"Hora",
+    "general_comments_info":"Es habitual que nuestros clientes tengan una reserva en un restaurante, facilitarnos la reserve puede ayudar a nuestro capitán a ajustar y adaptar la ruta de su navegación.",
+    "general_comments":"Comentarios generales",
+    "prepayment_of_fuel":"Prepago de combustible",
+    "invitando_al_usuario_a_pagar_el_combustible_al_principio":"Invitando al usuario a pagar el combustible al principio.",
+    "toy_stand_up_paddle":"Juguete: Stand Up Paddle",
+    "toy_stand_up_paddle_info":"Haz clic aquí para ver el vídeo del SUP",
+    "toy_seabob":"Toy: SEABOB",
+    "toy_seabob_info":"Haga clic aquí para ver un vídeo del SEABOB",
+    "read_and_sign_the_contract":"Leer y firmar el contrato",
+    "i_agree_with_the_privacy_policy":"Estoy de acuerdo con la política de privacidad",
+    "guarantee_label":"Garantizo que la información del usuario es de un usuario que va a ir al barco.",
+    "select_option":"Seleccione una opción",
+    "file_sizes":"JPG, PNG o PDF, tamaño de archivo no superior a 10 MB",
+    "boat_passenger_info1":"Este barco permite un máximo de",
+    "boat_passenger_info2":"Pasajeros. Necesitamos conocer esta información para preparar el chaleco salvavidas y otros equipos en consecuencia.",
+    "continue_without_prepayment":"Quiero continuar sin prepago",
+    "none_option":"Ninguno",
+    "submit":"Entregar",
+    "pay":"Pagar",
+    "nautical_miles":"Millas Náuticas"
+  },
+  "prepayment_modal":{
+    "prepay_your_fuel":"Prepaga tu combustible",
+    "prepayment_fuel_modal_p1":"Seleccionar la opción de prepago del combustible nos permitirá brindarte un mejor servicio: planificar adecuadamente la ruta de navegación y mejorar tu experiencia.",
+    "prepayment_fuel_modal_p2":"Además, también reducirá sus costos y le permitirá disfrutar del viaje descansando con un costo fijo de combustible.",
+    "back":"Atrás"
+  },
+  "sidebar":{
+    "language":"Language",
+    "boat_booking":"RESERVA",
+    "welcome_to_our_boat":"Bienvenido a nuestro barco",
+    "reservation_form":"Formulario de reserva",
+    "we_are_excited_to_help_you_plan_your_next_water_adventure":"Estamos encantados de ayudarle a planificar su próxima aventura acuática.",
+    "sidebar_p1":"Tómese un momento para brindarnos algunos detalles esenciales, para que podamos garantizar que tenga una experiencia fluida y agradable.",
+    "sidebar_p2":"Sus respuestas nos ayudarán a programar la reserva de su barco y satisfacer sus necesidades específicas. ¡Gracias por elegirnos para su aventura!"
   }
 }
