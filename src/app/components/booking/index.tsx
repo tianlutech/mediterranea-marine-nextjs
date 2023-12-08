@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import { updateBookingInfo } from "@/app/services/notion.service";
 import { MILE_RANGES } from "@/app/models/constants";
 import "../../i18n";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
 import SubmitButton from "../common/buttons/submit-button";
 
@@ -135,14 +135,16 @@ export default function BookingComponent({
   };
 
   // Function to calculate boat prices
+  // Function to calculate boat prices
   const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
     return mileRanges.map((miles: number) => ({
       name: miles
-        ? `${miles} Nautical Miles - ${miles * pricePerMile}€`
-        : "I want to continue without prepayment",
+        ? `${miles} ` + t("input.nautical_miles") + " - " + `${miles * pricePerMile}€`
+        : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
   };
+
   const handlePrepayment = (additionalPayment: number) => {
     setTotalPayment(additionalPayment);
     submitBooking();
@@ -221,7 +223,7 @@ export default function BookingComponent({
               </div>
             </div>
             <SubmitButton
-              label={totalPayment > 0 ? `Pay ${totalPayment}€ ` : "Submit"}
+              label={totalPayment > 0 ? t("input.pay") + ` ${totalPayment}€ ` : t("input.submit")}
               loading={loading}
             />
           </div>

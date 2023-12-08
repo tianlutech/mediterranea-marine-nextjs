@@ -5,7 +5,7 @@ import Logo from "@/app/assets/Logo_color 1.png";
 import BoatImage from "@/app/assets/boat.png";
 import UkFlag from "@/app/assets/united-kingdom.png";
 import SpainFlag from "@/app/assets/spain.png";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { useCallback } from "react";
 import { Boat } from "@/app/models/models";
 
@@ -23,7 +23,7 @@ export default function Sidebar({ boatInfo }: { boatInfo: Boat }) {
       <div className="flex flex-col justify-center items-center my-4">
         <Image width={60} height={48} src={Logo} className="w-60" alt="logo" />
         <div className="flex">
-          <span className="text-black">Language: </span>
+          <span className="text-black">{t("sidebar.language")}</span>
           <div className="flex ml-2">
             <Image
               width={60}
@@ -45,7 +45,9 @@ export default function Sidebar({ boatInfo }: { boatInfo: Boat }) {
         </div>
       </div>
       <div className="bg-chocolate py-4 flex justify-center items-center">
-        <span className="font-extrabold text-3xl text-white">BOAT BOOKING</span>
+        <span className="font-extrabold text-3xl text-white">
+          {t("sidebar.boat_booking")}
+        </span>
       </div>
       <div>
         <div className="w-full block md:hidden">
@@ -59,22 +61,18 @@ export default function Sidebar({ boatInfo }: { boatInfo: Boat }) {
             />
           )}
         </div>
-        <div className="px-4 py-4 text-textSecondaryColor">
+        <div className="px-4 py-4 text-textSecondaryColor lg:text-base text-sm">
           <p className="mb-6">
-            Welcome to our Boat {boatInfo?.Nombre} Reservation Form!
+            {t("sidebar.boat_booking")} {boatInfo?.Nombre}{" "}
+            {t("sidebar.reservation_form")}
           </p>
           <p className="mb-6">
-            We are excited to help you plan your next water adventure.
+            {t(
+              "sidebar.we_are_excited_to_help_you_plan_your_next_water_adventure"
+            )}
           </p>
-          <p className="mb-6">
-            Please take a moment to provide us with some essential details, so
-            we can ensure you have a smooth and enjoyable experience.
-          </p>
-          <p className="mb-6">
-            Your responses will help us schedule your boat reservation and cater
-            to your specific needs. Thank you for choosing us for your boating
-            adventure!
-          </p>
+          <p className="mb-6">{t("sidebar.sidebar_p1")}</p>
+          <p className="mb-6">{t("sidebar.sidebar_p2")}</p>
         </div>
       </div>
 

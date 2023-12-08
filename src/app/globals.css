@@ -17,15 +17,25 @@
 }
 
 body {
-  /* Remove the following line to set the default text color to black */
-  color: rgb(var(--foreground-rgb));
+  /* Set the default text color to black */
+  color: black;
 
   /* Set the background gradient */
   background: linear-gradient(180deg, #B6814F 0%, #202945 100%);
+  
+  /* Ensure the background covers the entire screen */
+  background-size: cover;
 
-  /* Set the default text color to black */
-  color: black;
+  /* Ensure the background doesn't repeat */
+  background-repeat: no-repeat;
+
+  /* Optional: Keep the background fixed while scrolling */
+  background-attachment: fixed;
+
+  /* Remove the following line to set the default text color to black */
+  color: rgb(var(--foreground-rgb));
 }
+
 
 .greytext {
   color: rgba(0, 0, 0, 0.40);
