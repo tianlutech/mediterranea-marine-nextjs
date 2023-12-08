@@ -35,8 +35,8 @@ export default function PrepaymentModal({
   };
   return (
     <Modal isOpen={isOpen} onClose={() => closeModal()}>
-      <div className="relative p-2 md:w-[60%] w-[95%] bg-white rounded-lg shadow">
-        <div className="flex items-center justify-between px-4 pt-4 md:px-4 md:pt-4 ">
+      <div className="relative p-2 md:w-[60%] bg-white rounded-lg shadow overflow-y-scroll pt-0 w-[95%] h-[95%]">
+        <div className="flex items-center justify-between px-4 pt-4 md:px-4 md:pt-4 sticky top-0 bg-white">
           <h3 className="text-xl font-semibold text-black">Prepay your fuel</h3>
           <button
             onClick={() => closeModal()}
