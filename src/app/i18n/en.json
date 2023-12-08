@@ -31,7 +31,8 @@
     "continue_without_prepayment":"I want to continue without prepayment",
     "none_option":"None",
     "submit":"Submit",
-    "pay":"Pay"
+    "pay":"Pay",
+    "nautical_miles":"Nautical Miles"
   },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepay your fuel",

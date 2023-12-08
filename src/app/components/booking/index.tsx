@@ -139,7 +139,7 @@ export default function BookingComponent({
   const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
     return mileRanges.map((miles: number) => ({
       name: miles
-        ? `${miles} Nautical Miles - ${miles * pricePerMile}€`
+        ? `${miles} ` + t("input.nautical_miles") + " - " + `${miles * pricePerMile}€`
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
@@ -223,7 +223,7 @@ export default function BookingComponent({
               </div>
             </div>
             <SubmitButton
-              label={totalPayment > 0 ? `Pay ${totalPayment}€ ` : "Submit"}
+              label={totalPayment > 0 ? t("input.pay") + ` ${totalPayment}€ ` : t("input.submit")}
               loading={loading}
             />
           </div>
