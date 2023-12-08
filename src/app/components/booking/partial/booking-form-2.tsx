@@ -14,7 +14,7 @@ import {
   STANDUP_PADDLE,
   SEABOB,
 } from "@/app/models/constants";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 export default function BookingForm2({
   data,
@@ -122,7 +122,7 @@ export default function BookingForm2({
                     type="text"
                     name="restaurant"
                     id="restaurantName"
-                    placeholder="Name of the restaurant"
+                    placeholder={t("input.name_of_restaurant")}
                     onChange={(e: any) =>
                       setData({ ...data, "Restaurant Name": e.target.value })
                     }
@@ -137,14 +137,13 @@ export default function BookingForm2({
                     type="time"
                     name="bookingTime"
                     id="bookingTime"
-                    placeholder="Booking time"
+                    placeholder={t("input.booking_time")}
                     onChange={(e: any) => {
                       const date = new Date();
                       const [hour, minutes] = e.target.value.split(
                         ":"
                       ) as string[];
                       date.setHours(+hour, +minutes, 0, 0);
-                      console.log({ value: e.target.value, date });
                       setData({ ...data, "Restaurant Time": date });
                     }}
                     required={true}
@@ -192,7 +191,7 @@ export default function BookingForm2({
                 <InfoSvg />
               </div>
               <span className="text-sm ml-2">
-                {t("input.invitando_al_usuario_a_pagar_el_combustible_al_principio")}
+                {t("prepayment_modal.prepayment_fuel_modal_p1")}
               </span>
             </div>
             <div className="relative w-full mt-6 flex justify-between items-center">

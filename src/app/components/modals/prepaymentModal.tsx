@@ -3,7 +3,7 @@ import Image from "next/image";
 import Boat from "@/app/assets/boat.png";
 import Modal from "@/app/components/common/modal/modal";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 export default function PrepaymentModal({
   isOpen,
@@ -37,9 +37,9 @@ export default function PrepaymentModal({
   };
   return (
     <Modal isOpen={isOpen} onClose={() => closeModal()}>
-      <div className="relative p-2 md:w-[60%] w-[95%] bg-white rounded-lg shadow">
-        <div className="flex items-center justify-between px-4 pt-4 md:px-4 md:pt-4 ">
-          <h3 className="text-xl font-semibold text-black">Prepay your fuel</h3>
+      <div className="relative p-2 md:w-[60%] w-[95%] bg-white rounded-lg shadow overflow-y-scroll pt-0 h-[95%]">
+        <div className="flex items-center justify-between px-4 pt-4 md:px-4 md:pt-4 sticky top-0 bg-white">
+          <h3 className="text-xl font-semibold text-black">{t("prepayment_modal.prepay_your_fuel")}</h3>
           <button
             onClick={() => closeModal()}
             type="button"
@@ -120,7 +120,7 @@ export default function PrepaymentModal({
             type="button"
             className="text-white bg-buttonColor2 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
-            {payment > 0 ? `Pay ${payment}€ ` : "Submit"}
+            {payment > 0 ? t("input.pay") + ` ${payment}€ ` : t("input.submit")}
           </button>
         </div>
       </div>

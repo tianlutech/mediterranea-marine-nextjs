@@ -2,12 +2,13 @@
 
 import Sidebar from "@/app/components/sidebar/sidebar";
 import Booking from "@/app/components/booking";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { getBookingInfo, getBoatInfo } from "@/app/services/notion.service";
 import LoadingModal from "@/app/components/modals/loadingModal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLoadScript } from "@react-google-maps/api";
+import router from "next/router";
 
 export default function BookingPage({ params }: { params: { id: string } }) {
   const [data, setData] = useState<any>({});
@@ -29,14 +30,15 @@ export default function BookingPage({ params }: { params: { id: string } }) {
   });
   useEffect(() => {
     const getBookingDetails = async () => {
-      await getBookingInfo(params.id).then((data: any) => {
-        if (!data) {
-          return;
-        }
-        getBoatDetails(data);
-        setData(data);
-        setLoading(false);
-      });
+      const data = await getBookingInfo(params.id);
+      if (!data) {
+        router.replace("/");
+
+        return;
+      }
+      await getBoatDetails(data);
+      setData(data);
+      setLoading(false);
     };
 
     getBookingDetails();

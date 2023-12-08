@@ -39,7 +39,7 @@ export default function BookingForm1({
                 type="text"
                 name="FirstName"
                 id="firstname"
-                placeholder="First name"
+                placeholder={t("input.first_name")}
                 value={data["First Name"]}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setData({ ...data, "First Name": e.target.value })
@@ -56,7 +56,7 @@ export default function BookingForm1({
                 type="text"
                 name="Last Name"
                 id="lastname"
-                placeholder="Last name"
+                placeholder={t("input.last_name")}
                 value={data["Last Name"]}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setData({ ...data, "Last Name": e.target.value })
@@ -74,7 +74,7 @@ export default function BookingForm1({
               type="email"
               name="Email"
               id="email"
-              placeholder="Email"
+              placeholder={t("input.email")}
               value={data["Email"]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setData({ ...data, Email: e.target.value })
@@ -119,7 +119,9 @@ export default function BookingForm1({
           </div>
           <div className="flex justify-between w-full mt-6">
             <FormWrapper>
-              <CommonLabel input="text">{t("input.adult_passengers")}</CommonLabel>
+              <CommonLabel input="text">
+                {t("input.adult_passengers")}
+              </CommonLabel>
               <CommonInput
                 type="number"
                 name="number"
@@ -135,7 +137,9 @@ export default function BookingForm1({
               />
             </FormWrapper>
             <FormWrapper>
-              <CommonLabel input="text">{t("input.kids_passengers")}</CommonLabel>
+              <CommonLabel input="text">
+                {t("input.kids_passengers")}
+              </CommonLabel>
               <CommonInput
                 type="number"
                 name="number"
@@ -154,9 +158,8 @@ export default function BookingForm1({
               <InfoSvg />
             </div>
             <span className="text-sm ml-2">
-              This boat allows a maximum of {boatInfo["Max.Passengers"]}{" "}
-              passengers. We require to know this information to prepare the
-              lifevest and other equipment accordingly
+              {t("input.boat_passenger_info1")} {boatInfo["Max.Passengers"]}{" "}
+              {t("input.boat_passenger_info2")}
             </span>
           </div>
         </div>
