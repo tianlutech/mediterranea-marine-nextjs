@@ -17,7 +17,8 @@ const config: Config = {
         chocolate: "#B6814F",
         textSecondaryColor: "#848484",
         bgColor1: "#F5F5F5",
-        buttonColor: "#B6814F"
+        buttonColor: "#B6814F",
+        buttonColor2: "#202945"
       }
     },
   },
