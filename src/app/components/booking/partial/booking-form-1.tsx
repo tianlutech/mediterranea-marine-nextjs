@@ -8,6 +8,8 @@ import React from "react";
 import ErrorMessage from "./errorMessage";
 import { Boat } from "@/app/models/models";
 import { useTranslation } from "react-i18next";
+import PlaceAutoComplete from "../../addressAutoComplete/addressAutoComplete";
+import { useLoadScript } from "@react-google-maps/api";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-[48%]">{children}</div>;
@@ -25,6 +27,15 @@ export default function BookingForm1({
   boatInfo: Boat;
 }) {
   const { t } = useTranslation();
+  // will change to ours and put in env file
+  const apiKey = "AIzaSyAhYiRdgtBGRipCTmf8-qDY_ZaJjMZd86Y";
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: apiKey,
+    libraries: ["places"],
+  });
+  if (!isLoaded) {
+    return
+  }
   return (
     <div className="flex md:flex-row flex-col md:w-[49%] w-full">
       <div className="w-full bg-white rounded-lg">
@@ -106,18 +117,15 @@ export default function BookingForm1({
             <CommonLabel input="text" error={formik.errors["Last Name"]}>
               {t("input.billing_address")}
             </CommonLabel>
-            <CommonInput
-              type="text"
-              name="Billing address"
-              id="billingAddress"
-              placeholder="Billing Address"
-              value={data["Billing Address"]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setData({ ...data, "Billing Address": e.target.value })
-              }
-              required={true}
+            <PlaceAutoComplete
+              setLatLng={(position: {
+                lat: number;
+                lng: number;
+                address: string;
+              }) => {
+                setData({ ...data, "Billing Address": position.address })
+              }}
             />
-            <ErrorMessage formik={formik} name="Billing Address" />
           </div>
           <div className="flex justify-between w-full mt-6">
             <FormWrapper>

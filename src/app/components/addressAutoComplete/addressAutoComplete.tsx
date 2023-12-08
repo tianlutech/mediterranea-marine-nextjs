@@ -35,16 +35,15 @@ export default function PlaceAutoComplete({ setLatLng }: Props) {
     <Combobox as="div" onChange={handleSelect}>
       <div className="relative mt-1">
         <Combobox.Input
-          className="mt-2 w-full rounded-lg border border-gray-300 shadow-md focus:border-gray-300 focus:outline-none  focus:ring-yellow-gradient"
+          className="w-full border md:text-sm text-xs border-gray-300 text-black text-start p-[0.7rem] md:px-8 px-4 rounded-lg"
           onChange={(e) => setValue(e.target.value)}
           value={value}
           // disabled={!ready}
           placeholder="Search for a location"
         />
         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"></Combobox.Button>
-
         {status === "OK" && (
-          <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1  ring-opacity-5 focus:outline-none sm:text-sm ">
+          <Combobox.Options className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1  ring-opacity-5 focus:outline-none sm:text-sm ">
             {data.map(({ place_id, description }) => (
               <Combobox.Option
                 key={place_id}
