@@ -7,7 +7,7 @@ import CommonLabel from "../../common/label/label";
 import React from "react";
 import ErrorMessage from "./errorMessage";
 import { Boat } from "@/app/models/models";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-[48%]">{children}</div>;
@@ -121,7 +121,9 @@ export default function BookingForm1({
           </div>
           <div className="flex justify-between w-full mt-6">
             <FormWrapper>
-              <CommonLabel input="text">{t("input.adult_passengers")}</CommonLabel>
+              <CommonLabel input="text">
+                {t("input.adult_passengers")}
+              </CommonLabel>
               <CommonInput
                 type="number"
                 name="number"
@@ -137,7 +139,9 @@ export default function BookingForm1({
               />
             </FormWrapper>
             <FormWrapper>
-              <CommonLabel input="text">{t("input.kids_passengers")}</CommonLabel>
+              <CommonLabel input="text">
+                {t("input.kids_passengers")}
+              </CommonLabel>
               <CommonInput
                 type="number"
                 name="number"

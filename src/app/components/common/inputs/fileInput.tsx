@@ -52,11 +52,12 @@ export default function CommonInputFile({
     setPhotoName("");
   };
 
-  const onClickIdFront = () => {
+  const onClick = (e: any) => {
+    console.log({ Click: e, inputRef });
     (inputRef.current as any).click();
   };
   return (
-    <div className="relative cursor-pointer " onClick={onClickIdFront}>
+    <div className="relative cursor-pointer " onClick={onClick}>
       {photoPreview && (
         <div
           onClick={removeImage}

@@ -14,7 +14,7 @@ import {
   STANDUP_PADDLE,
   SEABOB,
 } from "@/app/models/constants";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 export default function BookingForm2({
   data,
@@ -191,7 +191,7 @@ export default function BookingForm2({
                 <InfoSvg />
               </div>
               <span className="text-sm ml-2">
-                {t("input.invitando_al_usuario_a_pagar_el_combustible_al_principio")}
+                {t("prepayment_modal.prepayment_fuel_modal_p1")}
               </span>
             </div>
             <div className="relative w-full mt-6 flex justify-between items-center">

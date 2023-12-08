@@ -6,7 +6,7 @@ import Spinner from "../common/buttons/spinner";
 export default function LoadingModal({ isOpen }: { isOpen: boolean }) {
   return (
     <Modal isOpen={isOpen}>
-      <div className="flex items-center justify-center w-full h-full fixed top-0 left-0 z-50">
+      <div className="flex items-center justify-center w-full h-full bg-white fixed top-0 left-0 z-50">
         <Spinner size={20}>
           <BoatSvg />
         </Spinner>
