@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import { updateBookingInfo } from "@/app/services/notion.service";
 import { MILE_RANGES } from "@/app/models/constants";
 import "../../i18n";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
 import SubmitButton from "../common/buttons/submit-button";
 

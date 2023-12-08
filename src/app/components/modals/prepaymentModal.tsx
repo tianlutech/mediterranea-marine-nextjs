@@ -3,7 +3,7 @@ import Image from "next/image";
 import Boat from "@/app/assets/boat.png";
 import Modal from "@/app/components/common/modal/modal";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 export default function PrepaymentModal({
   isOpen,
