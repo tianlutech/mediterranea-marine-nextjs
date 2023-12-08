@@ -8,7 +8,7 @@ import React from "react";
 import ErrorMessage from "./errorMessage";
 import { Boat } from "@/app/models/models";
 import { useTranslation } from "react-i18next";
-import PlaceAutoComplete from "../../addressAutoComplete/addressAutoComplete";
+import PlaceAutoComplete from "../../common/addressAutoComplete/addressAutoComplete";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-[48%]">{children}</div>;
