@@ -9,7 +9,6 @@ import ErrorMessage from "./errorMessage";
 import { Boat } from "@/app/models/models";
 import { useTranslation } from "react-i18next";
 import PlaceAutoComplete from "../../addressAutoComplete/addressAutoComplete";
-import { useLoadScript } from "@react-google-maps/api";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-[48%]">{children}</div>;
@@ -27,15 +26,6 @@ export default function BookingForm1({
   boatInfo: Boat;
 }) {
   const { t } = useTranslation();
-  // will change to ours and put in env file
-  const apiKey = "AIzaSyAhYiRdgtBGRipCTmf8-qDY_ZaJjMZd86Y";
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: apiKey,
-    libraries: ["places"],
-  });
-  if (!isLoaded) {
-    return
-  }
   return (
     <div className="flex md:flex-row flex-col md:w-[49%] w-full">
       <div className="w-full bg-white rounded-lg">

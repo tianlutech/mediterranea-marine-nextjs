@@ -7,17 +7,26 @@ import { getBookingInfo, getBoatInfo } from "@/app/services/notion.service";
 import LoadingModal from "@/app/components/modals/loadingModal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useLoadScript } from "@react-google-maps/api";
 
 export default function BookingPage({ params }: { params: { id: string } }) {
   const [data, setData] = useState<any>({});
   const [boatInfo, setBoatInfo] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
+  // will change to ours and put in env file
+
+  const apiKey = "AIzaSyAhYiRdgtBGRipCTmf8-qDY_ZaJjMZd86Y";
 
   const getBoatDetails = async (data: any) => {
     await getBoatInfo(data.Boat[0]).then((data) => {
       setBoatInfo(data);
     });
   };
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: apiKey,
+    libraries: ["places"],
+  });
   useEffect(() => {
     const getBookingDetails = async () => {
       await getBookingInfo(params.id).then((data: any) => {
@@ -35,6 +44,10 @@ export default function BookingPage({ params }: { params: { id: string } }) {
 
   if (!data || !boatInfo) {
     return;
+  }
+
+  if (!isLoaded) {
+    return
   }
   return (
     <>
