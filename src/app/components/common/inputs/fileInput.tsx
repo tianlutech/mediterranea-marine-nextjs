@@ -4,6 +4,7 @@ import ImageSvg from "@/app/assets/svgs/ImageSvg";
 import CloseSvg from "@/app/assets/svgs/CloseSvg";
 import { useRef, useState } from "react";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
 export default function CommonInputFile({
   label,
@@ -19,7 +20,7 @@ export default function CommonInputFile({
   onRemove: () => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
-
+  const { t } = useTranslation();
   const [photoPreview, setPhotoPreview] = useState<string>("");
   const [photoFontSize, setPhotoFontSize] = useState<string>("");
   const [photoName, setPhotoName] = useState<string>("");
@@ -84,10 +85,10 @@ export default function CommonInputFile({
             </div>
             <div className="flex flex-col ml-4">
               <span className="text-black">
-                Select a file or drag and drop here
+                {t("input.select_file")}
               </span>
               <span className="greytext mt-2">
-                JPG, PNG or PDF, file size no more than 10MB
+                {t("input.file_sizes")}
               </span>
             </div>
           </div>

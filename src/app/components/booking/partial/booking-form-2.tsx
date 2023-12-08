@@ -122,7 +122,7 @@ export default function BookingForm2({
                     type="text"
                     name="restaurant"
                     id="restaurantName"
-                    placeholder="Name of the restaurant"
+                    placeholder={t("input.name_of_restaurant")}
                     onChange={(e: any) =>
                       setData({ ...data, "Restaurant Name": e.target.value })
                     }
@@ -137,14 +137,13 @@ export default function BookingForm2({
                     type="time"
                     name="bookingTime"
                     id="bookingTime"
-                    placeholder="Booking time"
+                    placeholder={t("input.booking_time")}
                     onChange={(e: any) => {
                       const date = new Date();
                       const [hour, minutes] = e.target.value.split(
                         ":"
                       ) as string[];
                       date.setHours(+hour, +minutes, 0, 0);
-                      console.log({ value: e.target.value, date });
                       setData({ ...data, "Restaurant Time": date });
                     }}
                     required={true}

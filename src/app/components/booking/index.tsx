@@ -135,14 +135,16 @@ export default function BookingComponent({
   };
 
   // Function to calculate boat prices
+  // Function to calculate boat prices
   const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
     return mileRanges.map((miles: number) => ({
       name: miles
         ? `${miles} Nautical Miles - ${miles * pricePerMile}€`
-        : "I want to continue without prepayment",
+        : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
   };
+
   const handlePrepayment = (additionalPayment: number) => {
     setTotalPayment(additionalPayment);
     submitBooking();

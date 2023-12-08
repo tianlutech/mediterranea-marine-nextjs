@@ -24,9 +24,18 @@
     "toy_seabob_info":"Click chere to see a video of the SEABOB",
     "read_and_sign_the_contract":"Read and Sign the contract",
     "i_agree_with_the_privacy_policy":"I agree with the privacy policy",
-    "guarantee_label":"I guarantee that the information of the user is from a user that is going to go to the boat."
+    "guarantee_label":"I guarantee that the information of the user is from a user that is going to go to the boat.",
+    "select_option":"Select an option",
+    "file_sizes":"JPG, PNG or PDF, file size no more than 10MB",
+    "boat_passenger_info1":"This boat allows a maximum of",
+    "boat_passenger_info2":"passengers. We require to know this information to prepare the lifevest and other equipment accordingly",
+    "continue_without_prepayment":"I want to continue without prepayment",
+    "none_option":"None",
+    "submit":"Submit",
+    "pay":"Pay"
   },
   "prepayment_modal":{
+    "prepay_your_fuel":"Prepay your fuel",
     "prepayment_fuel_modal_p1":"Selecting the option of prepaying the fuel will allow us the provide you a better service: planning properly the navigation route and improving your experience.",
     "prepayment_fuel_modal_p2":"As well will reduce your cost and let you enjoy the trip being relax on a fix cost of the fuel",
     "back":"Back"

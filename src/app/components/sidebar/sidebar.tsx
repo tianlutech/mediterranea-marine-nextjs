@@ -59,7 +59,7 @@ export default function Sidebar({ boatInfo }: { boatInfo: Boat }) {
             />
           )}
         </div>
-        <div className="px-4 py-4 text-textSecondaryColor">
+        <div className="px-4 py-4 text-textSecondaryColor lg:text-base text-sm">
           <p className="mb-6">
             {t("sidebar.boat_booking")} {boatInfo?.Nombre} {t("sidebar.reservation_form")}
           </p>
