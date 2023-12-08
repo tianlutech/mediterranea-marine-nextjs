@@ -49,8 +49,8 @@ export default function CommonModal({
   };
   return (
     <Modal isOpen={isOpen} onClose={() => closeModal()}>
-      <div className="relative p-2 md:w-[60%] w-full md:h-auto bg-white rounded-lg shadow">
-        <div className="flex items-center justify-between px-4 pt-4 md:px-4 md:pt-4 ">
+      <div className="relative p-2 md:w-[60%] md:h-auto bg-white rounded-lg shadow overflow-y-scroll pt-0 w-[95%] h-[95%]">
+        <div className="flex items-center justify-between px-4 pt-6 md:px-4 md:pt-4 sticky top-0 bg-white">
           <h3 className="text-xl font-semibold text-black">Contract</h3>
           <button
             onClick={() => closeModal()}
@@ -123,14 +123,14 @@ export default function CommonModal({
             such damages so that the Client does not experience any damages.
           </p>
         </div>
-        <div className="flex justify-between items-end p-4 md:p-5 border-gray-200">
+        <div className="flex flex-wrap justify-between items-end p-4 md:p-5 border-gray-200">
           <div className="flex items-end">
             <div className="border border-1">
               <SignaturePad
                 ref={sigPad}
                 penColor="black"
                 canvasProps={{
-                  width: 320,
+                  width: 300,
                   height: 120,
                   className: "sigCanvas",
                 }}
@@ -160,9 +160,8 @@ export default function CommonModal({
               onClick={agreeContract}
               data-modal-hide="default-modal"
               type="button"
-              className={`text-white bg-buttonColor2 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ${
-                isSigned ? "cursor-pointer" : "cursor-not-allowed"
-              }`}
+              className={`text-white bg-buttonColor2 focus:ring-4 mt-4 md:mt-0 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ${isSigned ? "cursor-pointer" : "cursor-not-allowed"
+                }`}
             >
               Sign
             </button>
