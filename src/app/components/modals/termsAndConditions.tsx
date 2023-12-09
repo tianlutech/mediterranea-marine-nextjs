@@ -1,5 +1,5 @@
 "use client";
-import Modal from "@/app/components/common/modal/modal";
+import Modal from "@/app/components/common/containers/modal/modal";
 import SignaturePad from "react-signature-canvas";
 import React, { useRef, useState, useEffect } from "react";
 

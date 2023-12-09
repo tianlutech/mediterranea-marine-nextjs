@@ -12,7 +12,7 @@ import { MILE_RANGES } from "@/app/models/constants";
 import "../../i18n";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
-import SubmitButton from "../common/buttons/submit-button";
+import SubmitButton from "../common/containers/buttons/submit-button";
 
 export default function BookingComponent({
   data,

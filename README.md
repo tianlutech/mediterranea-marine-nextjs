@@ -40,6 +40,9 @@ Components
  - modal
  - sidebar
 
+### Env variables
+ - Google API key
+
 ### Application state
 
 What information we have in the applications state or context (Which is share with all the application)

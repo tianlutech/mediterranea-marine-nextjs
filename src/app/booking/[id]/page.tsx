@@ -16,7 +16,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState<boolean>(true);
   // will change to ours and put in env file
 
-  const apiKey: string = process.env.NEXT_PUBLIC_apiKey || ""
+  const apiKey: string = process.env.NEXT_PUBLIC_GOOGLE_API_KEY || ""
 
   const getBoatDetails = async (data: any) => {
     await getBoatInfo(data.Boat[0]).then((data) => {

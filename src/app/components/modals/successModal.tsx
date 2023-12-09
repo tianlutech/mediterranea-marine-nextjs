@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import EmailImage from "@/app/assets/email 1.png"
-import Modal from "@/app/components/common/modal/modal"
+import Modal from "@/app/components/common/containers/modal/modal"
 
 export default function SuccessModal({ isOpen, closeModal }: { isOpen: boolean, closeModal: any }) {
   return (

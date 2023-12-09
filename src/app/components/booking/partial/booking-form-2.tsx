@@ -4,7 +4,7 @@ import InfoSvg from "@/app/assets/svgs/InfoSvg";
 import PlayerSvg from "@/app/assets/svgs/PlayerSvg";
 import CommonInput from "@/app/components/common/inputs/input";
 import CommonSelect from "@/app/components/common/inputs/selectInput";
-import CommonLabel from "../../common/label/label";
+import CommonLabel from "../../common/containers/label/label";
 import { useState } from "react";
 import TermsAndConditionModal from "@/app/components/modals/termsAndConditions";
 import VideoModal from "../../modals/videoModal";

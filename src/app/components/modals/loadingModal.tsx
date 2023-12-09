@@ -1,7 +1,7 @@
 "use client";
-import Modal from "@/app/components/common/modal/modal";
+import Modal from "@/app/components/common/containers/modal/modal";
 import BoatSvg from "@/app/assets/svgs/BoatSvg";
-import Spinner from "../common/buttons/spinner";
+import Spinner from "../common/containers/buttons/spinner";
 
 export default function LoadingModal({ isOpen }: { isOpen: boolean }) {
   return (
