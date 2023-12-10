@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Boat from "@/app/assets/boat.png";
-import Modal from "@/app/components/common/containers/modal/modal";
+import Modal from "@/app/components/common/containers/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 
@@ -39,7 +39,9 @@ export default function PrepaymentModal({
     <Modal isOpen={isOpen} onClose={() => closeModal()}>
       <div className="relative p-2 md:w-[60%] w-[95%] bg-white rounded-lg shadow overflow-y-scroll pt-0 h-[95%]">
         <div className="flex items-center justify-between px-4 pt-4 md:px-4 md:pt-4 sticky top-0 bg-white">
-          <h3 className="text-xl font-semibold text-black">{t("prepayment_modal.prepay_your_fuel")}</h3>
+          <h3 className="text-xl font-semibold text-black">
+            {t("prepayment_modal.prepay_your_fuel")}
+          </h3>
           <button
             onClick={() => closeModal()}
             type="button"

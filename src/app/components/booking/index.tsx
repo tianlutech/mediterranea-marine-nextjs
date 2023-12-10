@@ -12,7 +12,7 @@ import { MILE_RANGES } from "@/app/models/constants";
 import "../../i18n";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
-import SubmitButton from "../common/containers/buttons/submit-button";
+import SubmitButton from "../common/containers/submit-button";
 
 export default function BookingComponent({
   data,
@@ -139,7 +139,10 @@ export default function BookingComponent({
   const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
     return mileRanges.map((miles: number) => ({
       name: miles
-        ? `${miles} ` + t("input.nautical_miles") + " - " + `${miles * pricePerMile}€`
+        ? `${miles} ` +
+          t("input.nautical_miles") +
+          " - " +
+          `${miles * pricePerMile}€`
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
@@ -223,7 +226,11 @@ export default function BookingComponent({
               </div>
             </div>
             <SubmitButton
-              label={totalPayment > 0 ? t("input.pay") + ` ${totalPayment}€ ` : t("input.submit")}
+              label={
+                totalPayment > 0
+                  ? t("input.pay") + ` ${totalPayment}€ `
+                  : t("input.submit")
+              }
               loading={loading}
             />
           </div>

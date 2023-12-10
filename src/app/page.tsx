@@ -2,7 +2,7 @@
 
 import Sidebar from "./components/sidebar/sidebar";
 import Booking from "./components/booking";
-import Modal from "./components/common/containers/modal/modal";
+import Modal from "./components/common/containers/modal";
 import BoatSvg from "./assets/svgs/BoatSvg";
 
 export default function Home() {
