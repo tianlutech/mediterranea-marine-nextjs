@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Modal from "@/app/components/common/containers/modal/modal";
+import Modal from "@/app/components/common/containers/modal";
 import ReloadSvg from "@/app/assets/svgs/ReloadSvg";
 import dynamic from "next/dynamic";
 
