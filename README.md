@@ -41,7 +41,9 @@ Components
  - sidebar
 
 ### Env variables
- - Google API key
+ - NOTION_SECRET
+ - NOTION_DATABASE_ID
+ - NEXT_PUBLIC_GOOGLE_API_KEY
 
 ### Application state
 
