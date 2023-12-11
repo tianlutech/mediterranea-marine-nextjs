@@ -13,7 +13,7 @@ import "../../i18n";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
 import SubmitButton from "../common/containers/buttons/submit-button";
-
+import { validateAddress } from "@/app/services/google.service";
 export default function BookingComponent({
   data,
   id,
@@ -112,6 +112,13 @@ export default function BookingComponent({
   };
 
   const submitBooking = async () => {
+    // validate address first
+    const res = await validateAddress(formData["Billing Address"])
+
+    if (res === false) {
+      return
+    }
+
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
       return toast.error(
         `Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
