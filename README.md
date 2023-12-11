@@ -18,7 +18,7 @@ URL of the existing environments
 
 ### Stack
 
-What main libraries are used, with a link to the documentation. (I'm not talking about all the dependencies, but I am talking about the most important 3rd parties)
+What main libraries are used, with a link to the documentation? (I'm not talking about all the dependencies, but I am talking about the most important 3rd parties)
 
 - Tailwind
 - Form Validation
@@ -30,9 +30,9 @@ What main libraries are used, with a link to the documentation. (I'm not talking
 
 ### IU Components
 
-Which are the reusable common components. We don't want buttons, cards or IU look different across the portal.
+Which are the reusable common components, We don't want buttons, cards, or IU to look different across the portal.
 
-Which are the color code. 
+Which is the color code? 
 
 Components
  - Booking
@@ -41,12 +41,15 @@ Components
  - sidebar
 
 ### Env variables
- - NOTION_SECRET
- - NOTION_DATABASE_ID
- - NEXT_PUBLIC_GOOGLE_API_KEY
+
+All the values are also accessible from the [credentials page](https://www.notion.so/tianlu/Mediterranea-Marina-Credentials-218f712be104457e8e865f3037471d86?pvs=4) page.
+
+ - NOTION_SECRET: Notion Integration to save data in the notion database. The key is in Marina Mediterranea Notion
+ - NOTION_DATABASE_ID: Booking Database ID. Can get through Notion Marina Mediterranea Notion, via the [URL](https://www.notion.so/0aac587c9c8a4ad9b52c7a138efb3111?v=478876de6de64c12b88331d2efc05d44&pvs=4) you can get the Id.
+ - NEXT_PUBLIC_GOOGLE_API_KEY: We use it to complete and validate the user address. 
 
 ### Application state
 
-What information we have in the applications state or context (Which is share with all the application)
+What information do we have in the application state or context (Which is shared with all the applications)
 
-For example: User login information [Local Storage]
+For example User login information [Local Storage]
