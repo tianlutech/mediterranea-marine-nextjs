@@ -53,7 +53,6 @@ export default function CommonInputFile({
   };
 
   const onClick = (e: any) => {
-    console.log({ Click: e, inputRef });
     (inputRef.current as any).click();
   };
   return (
