@@ -14,6 +14,8 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
 import SubmitButton from "../common/containers/submit-button";
 import { validateAddress } from "@/app/services/google.service";
+import { uploadFile } from "@/app/services/googleDrive.service";
+
 export default function BookingComponent({
   data,
   id,
@@ -52,6 +54,11 @@ export default function BookingComponent({
   const closePrepaymentModal = () => {
     setOpenPrepaymentModal(false);
   };
+
+  const page = async (file: any) => {
+    const data = await uploadFile(file)
+    return data
+  }
 
   const validate = () => {
     const values = formData;
@@ -112,33 +119,35 @@ export default function BookingComponent({
   };
 
   const submitBooking = async () => {
+    const uploadImageResponse = await page(formData["ID_Back_Picture"])
+    console.log("=======file", uploadImageResponse)
     // validate address first
-    const res = await validateAddress(formData["Billing Address"])
+    // const res = await validateAddress(formData["Billing Address"])
 
-    if (res === false) {
-      return
-    }
+    // if (res === false) {
+    //   return
+    // }
 
-    if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
-      return toast.error(
-        `Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
-      );
-    }
+    // if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
+    //   return toast.error(
+    //     `Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
+    //   );
+    // }
 
-    if (
-      +formData["No Adults"] + +formData["No Childs"] >
-      boatInfo["Max.Passengers"]
-    ) {
-      return toast.error(
-        `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
-      );
-    }
+    // if (
+    //   +formData["No Adults"] + +formData["No Childs"] >
+    //   boatInfo["Max.Passengers"]
+    // ) {
+    //   return toast.error(
+    //     `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
+    //   );
+    // }
 
-    if (+formData["Fuel Payment"] === 0) {
-      return setOpenPrepaymentModal(true);
-    }
+    // if (+formData["Fuel Payment"] === 0) {
+    //   return setOpenPrepaymentModal(true);
+    // }
 
-    updateNotion(formData);
+    // updateNotion(formData);
   };
 
   // Function to calculate boat prices
