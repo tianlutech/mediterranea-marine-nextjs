@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLoadScript } from "@react-google-maps/api";
 import router from "next/router";
+import { getData } from "@/app/services/googleDrive.service";
 
 export default function BookingPage({ params }: { params: { id: string } }) {
   const [data, setData] = useState<any>({});
@@ -28,6 +29,11 @@ export default function BookingPage({ params }: { params: { id: string } }) {
     googleMapsApiKey: apiKey,
     libraries: ["places"],
   });
+  // const page = async () => {
+  //   const data = await getData()
+  //   console.log(data)
+  //   return null
+  // }
   useEffect(() => {
     const getBookingDetails = async () => {
       const data = await getBookingInfo(params.id);
