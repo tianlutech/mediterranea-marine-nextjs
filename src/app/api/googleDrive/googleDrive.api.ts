@@ -9,18 +9,20 @@ export const uploadFile = async (auth: any, file: File) => {
 
   try {
     const buffer = Buffer.from(await file.arrayBuffer());
+    const googleDriveFolderId = process.env.NEXT_PUBLIC_GOOGLE_DRIVE_FOLDER_ID
 
     const res = await drive.files.create({
       requestBody: {
         name: file.name,
         mimeType: file.type,
+        parents: [`${googleDriveFolderId}`]
       },
       media: {
         mimeType: file.type,
         body: Readable.from(buffer),
       },
     });
-    console.log(res.data);
+    return res.data
   } catch (error: any) {
     console.error("Error fetching files:", error.message);
     return null;

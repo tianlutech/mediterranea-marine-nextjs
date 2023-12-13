@@ -49,5 +49,8 @@
     "we_are_excited_to_help_you_plan_your_next_water_adventure":"Estamos encantados de ayudarle a planificar su próxima aventura acuática.",
     "sidebar_p1":"Tómese un momento para brindarnos algunos detalles esenciales, para que podamos garantizar que tenga una experiencia fluida y agradable.",
     "sidebar_p2":"Sus respuestas nos ayudarán a programar la reserva de su barco y satisfacer sus necesidades específicas. ¡Gracias por elegirnos para su aventura!"
+  },
+  "error": {
+    "upload_image":"There has been an error while uploading files"
   }
 }

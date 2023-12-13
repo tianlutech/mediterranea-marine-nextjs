@@ -46,7 +46,8 @@ All the values are also accessible from the [credentials page](https://www.notio
 
  - NOTION_SECRET: Notion Integration to save data in the notion database. The key is in Marina Mediterranea Notion
  - NOTION_DATABASE_ID: Booking Database ID. Can get through Notion Marina Mediterranea Notion, via the [URL](https://www.notion.so/0aac587c9c8a4ad9b52c7a138efb3111?v=478876de6de64c12b88331d2efc05d44&pvs=4) you can get the Id.
- - NEXT_PUBLIC_GOOGLE_API_KEY: We use it to complete and validate the user address. 
+ - NEXT_PUBLIC_GOOGLE_API_KEY: We use it to complete and validate the user address.
+ - NEXT_PUBLIC_GOOGLE_DRIVE_FOLDER_ID: You ca get it in the google drive when click on share and copy link [URL](https://drive.google.com/drive/u/0/folders/1cSvd3MvYsZ9LCRtI038Mz5IjWWcYIEv1) THE Id is from after /folder
 
 ### Application state
 

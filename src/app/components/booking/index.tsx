@@ -119,38 +119,41 @@ export default function BookingComponent({
   };
 
   const submitBooking = async () => {
-    const uploadImageResponse = await page(formData["ID_Back_Picture"])
-    console.log("=======file", uploadImageResponse)
+    const uploadIdFrontResponse = await page(formData["ID_Front_Picture"])
+    const uploadIdBackImageResponse = await page(formData["ID_Back_Picture"])
+    if (!uploadIdFrontResponse.id || !uploadIdBackImageResponse.id) {
+      toast.error(t("error.upload_image"))
+      return
+    }
     // validate address first
-    // const res = await validateAddress(formData["Billing Address"])
+    const res = await validateAddress(formData["Billing Address"])
 
-    // if (res === false) {
-    //   return
-    // }
+    if (res === false) {
+      return
+    }
 
-    // if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
-    //   return toast.error(
-    //     `Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
-    //   );
-    // }
+    if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
+      return toast.error(
+        `Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
+      );
+    }
 
-    // if (
-    //   +formData["No Adults"] + +formData["No Childs"] >
-    //   boatInfo["Max.Passengers"]
-    // ) {
-    //   return toast.error(
-    //     `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
-    //   );
-    // }
+    if (
+      +formData["No Adults"] + +formData["No Childs"] >
+      boatInfo["Max.Passengers"]
+    ) {
+      return toast.error(
+        `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
+      );
+    }
 
-    // if (+formData["Fuel Payment"] === 0) {
-    //   return setOpenPrepaymentModal(true);
-    // }
+    if (+formData["Fuel Payment"] === 0) {
+      return setOpenPrepaymentModal(true);
+    }
 
-    // updateNotion(formData);
+    updateNotion(formData);
   };
 
-  // Function to calculate boat prices
   // Function to calculate boat prices
   const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
     return mileRanges.map((miles: number) => ({
