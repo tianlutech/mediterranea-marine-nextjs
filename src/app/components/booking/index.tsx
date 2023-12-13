@@ -12,8 +12,8 @@ import { MILE_RANGES } from "@/app/models/constants";
 import "../../i18n";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
-import SubmitButton from "../common/buttons/submit-button";
-
+import SubmitButton from "../common/containers/submit-button";
+import { validateAddress } from "@/app/services/google.service";
 export default function BookingComponent({
   data,
   id,
@@ -112,6 +112,13 @@ export default function BookingComponent({
   };
 
   const submitBooking = async () => {
+    // validate address first
+    const res = await validateAddress(formData["Billing Address"])
+
+    if (res === false) {
+      return
+    }
+
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
       return toast.error(
         `Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
@@ -139,7 +146,10 @@ export default function BookingComponent({
   const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
     return mileRanges.map((miles: number) => ({
       name: miles
-        ? `${miles} ` + t("input.nautical_miles") + " - " + `${miles * pricePerMile}€`
+        ? `${miles} ` +
+        t("input.nautical_miles") +
+        " - " +
+        `${miles * pricePerMile}€`
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
@@ -223,7 +233,11 @@ export default function BookingComponent({
               </div>
             </div>
             <SubmitButton
-              label={totalPayment > 0 ? t("input.pay") + ` ${totalPayment}€ ` : t("input.submit")}
+              label={
+                totalPayment > 0
+                  ? t("input.pay") + ` ${totalPayment}€ `
+                  : t("input.submit")
+              }
               loading={loading}
             />
           </div>
