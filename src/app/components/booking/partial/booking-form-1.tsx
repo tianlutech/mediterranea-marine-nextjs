@@ -3,11 +3,12 @@
 import InfoSvg from "@/app/assets/svgs/InfoSvg";
 import CommonInput from "@/app/components/common/inputs/input";
 import CommonInputFile from "@/app/components/common/inputs/fileInput";
-import CommonLabel from "../../common/label/label";
+import CommonLabel from "../../common/containers/label";
 import React from "react";
 import ErrorMessage from "./errorMessage";
 import { Boat } from "@/app/models/models";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "react-i18next";
+import PlaceAutoComplete from "../../common/inputs/addressAutoComplete";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-[48%]">{children}</div>;
@@ -106,18 +107,15 @@ export default function BookingForm1({
             <CommonLabel input="text" error={formik.errors["Last Name"]}>
               {t("input.billing_address")}
             </CommonLabel>
-            <CommonInput
-              type="text"
-              name="Billing address"
-              id="billingAddress"
-              placeholder={t("input.billing_address")}
-              value={data["Billing Address"]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setData({ ...data, "Billing Address": e.target.value })
-              }
-              required={true}
+            <PlaceAutoComplete
+              setLatLng={(position: {
+                lat: number;
+                lng: number;
+                address: string;
+              }) => {
+                setData({ ...data, "Billing Address": position.address });
+              }}
             />
-            <ErrorMessage formik={formik} name="Billing Address" />
           </div>
           <div className="flex justify-between w-full mt-6">
             <FormWrapper>
