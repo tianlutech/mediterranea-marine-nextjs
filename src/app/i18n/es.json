@@ -33,7 +33,8 @@
     "none_option":"Ninguno",
     "submit":"Enviar",
     "pay":"Pagar",
-    "nautical_miles":"Millas Náuticas"
+    "nautical_miles":"Millas Náuticas",
+    "id_number":"Número de identificación"
   },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepaga tu combustible",

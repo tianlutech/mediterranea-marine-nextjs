@@ -49,15 +49,17 @@ export default function BookingComponent({
     "Restuarant Name": "",
     "Restaurant Time": "",
     signedContract: false,
+    "Id Number": ""
   });
 
   const closePrepaymentModal = () => {
     setOpenPrepaymentModal(false);
   };
 
-  const page = async (file: any) => {
-    const data = await uploadFile(file)
-    return data
+  const page = async (file: File, slag: string) => {
+    const id = formData["Id Number"]
+    const response = await uploadFile(file, boatInfo.Nombre, id, slag)
+    return response
   }
 
   const validate = () => {
@@ -119,8 +121,8 @@ export default function BookingComponent({
   };
 
   const submitBooking = async () => {
-    const uploadIdFrontResponse = await page(formData["ID_Front_Picture"])
-    const uploadIdBackImageResponse = await page(formData["ID_Back_Picture"])
+    const uploadIdFrontResponse = await page(formData["ID_Front_Picture"], "front")
+    const uploadIdBackImageResponse = await page(formData["ID_Back_Picture"], "back")
     if (!uploadIdFrontResponse.id || !uploadIdBackImageResponse.id) {
       toast.error(t("error.upload_image"))
       return

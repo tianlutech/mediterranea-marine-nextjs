@@ -2,6 +2,12 @@ import { NotionItem } from "./notion.model";
 
 export type Captian = NotionItem & {};
 
+export type FileBody = {
+  boatName: string;
+  slag: string;
+  id: string
+}
+
 export type Boat = NotionItem & {
   "Max.Passengers": number;
   MilePrice: string;
@@ -42,4 +48,5 @@ export type Booking = NotionItem & {
   Name: string;
   "Restaurant Name": string;
   "Restaurant Time": Date;
+  "Id Number": string
 };

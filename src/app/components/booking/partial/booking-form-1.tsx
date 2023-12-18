@@ -67,21 +67,21 @@ export default function BookingForm1({
             </FormWrapper>
           </div>
           <div className="relative w-full mt-6">
-            <CommonLabel input="text" error={formik.errors["Email"]}>
-              {t("input.email")}
+            <CommonLabel input="text" error={formik.errors["Id Number"]}>
+              {t("input.id_number")}
             </CommonLabel>
             <CommonInput
-              type="email"
-              name="Email"
-              id="email"
-              placeholder={t("input.email")}
-              value={data["Email"]}
+              type="text"
+              name="Id Number"
+              id="idnumber"
+              placeholder={t("input.id_number")}
+              value={data["Id Number"]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setData({ ...data, Email: e.target.value })
+                setData({ ...data, "Id Number": e.target.value })
               }
               required={true}
             />
-            <ErrorMessage formik={formik} name="Email" />
+            <ErrorMessage formik={formik} name="Id Number" />
           </div>
           <>
             <CommonInputFile

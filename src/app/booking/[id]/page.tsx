@@ -28,11 +28,6 @@ export default function BookingPage({ params }: { params: { id: string } }) {
     googleMapsApiKey: apiKey,
     libraries: ["places"],
   });
-  // const page = async () => {
-  //   const data = await getData()
-  //   console.log(data)
-  //   return null
-  // }
   useEffect(() => {
     const getBookingDetails = async () => {
       const data = await getBookingInfo(params.id);

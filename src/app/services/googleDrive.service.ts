@@ -1,7 +1,10 @@
-export const uploadFile = async (file: File) => {
+export const uploadFile = async (file: File, boatName: string, id: string ,slag: string) => {
   try {
     const formData = new FormData();
-    formData.append("file", file); // Assuming 'file' is a File object
+    formData.append("file", file);
+    formData.append("boatName", boatName);
+    formData.append("id", id);
+    formData.append("slag", slag);
 
     const response = await fetch("/api/googleDrive", {
       method: "POST",
