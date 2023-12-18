@@ -2,16 +2,18 @@ import { google } from "googleapis"
 import * as googleDrive from "./googleDrive.api"
 import { FileBody } from "@/app/models/models";
 
+import { credentials } from "@/app/config/credentials"
+
 const auth = new google.auth.GoogleAuth({
   // your credentials to authenticate
-  keyFile: process.cwd() + "/src/app/config/credentials.json",
+  // keyFile: process.cwd() + "/src/app/config/credentials.json",
+  credentials: credentials,
   // the actions you are permissed to perform using this API, in this case
   // all CRUD operations are permissed, check out
   // [ https://developers.google.com/drive/api/guides/api-specific-auth ]
   // for more advice on scopes
   scopes: ["https://www.googleapis.com/auth/drive"],
 })
-
 // Define the function to handle the POST request
 export async function POST(request: Request) {
   try {

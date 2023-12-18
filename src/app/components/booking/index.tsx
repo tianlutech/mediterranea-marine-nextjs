@@ -49,7 +49,7 @@ export default function BookingComponent({
     "Restuarant Name": "",
     "Restaurant Time": "",
     signedContract: false,
-    "Id Number": ""
+    "ID Number": ""
   });
 
   const closePrepaymentModal = () => {
@@ -57,7 +57,7 @@ export default function BookingComponent({
   };
 
   const page = async (file: File, slag: string) => {
-    const id = formData["Id Number"]
+    const id = formData["ID Number"]
     const response = await uploadFile(file, boatInfo.Nombre, id, slag)
     return response
   }
@@ -89,10 +89,6 @@ export default function BookingComponent({
   }, [formData]);
 
   const updateNotion = async (formData: Record<string, unknown>) => {
-    if (totalPayment > 0) {
-      console.log("Fire Payment Here", totalPayment);
-    }
-
     const {
       ID_Back_Picture,
       ID_Front_Picture,

@@ -2,6 +2,21 @@ import { NotionItem } from "./notion.model";
 
 export type Captian = NotionItem & {};
 
+export type FileMetadata = {
+  name: string;
+  mimeType: string;
+  parents: string[];
+}
+
+export type DataFolder = {
+  id: String
+}
+
+export type DriveFolder = {
+  data: FileMetadata
+}
+
+
 export type FileBody = {
   boatName: string;
   slag: string;
@@ -48,5 +63,4 @@ export type Booking = NotionItem & {
   Name: string;
   "Restaurant Name": string;
   "Restaurant Time": Date;
-  "Id Number": string
 };
