@@ -48,7 +48,12 @@ All the values are also accessible from the [credentials page](https://www.notio
  - NOTION_DATABASE_ID: Booking Database ID. Can get through Notion Marina Mediterranea Notion, via the [URL](https://www.notion.so/0aac587c9c8a4ad9b52c7a138efb3111?v=478876de6de64c12b88331d2efc05d44&pvs=4) you can get the Id.
  - NEXT_PUBLIC_GOOGLE_API_KEY: We use it to complete and validate the user address.
  - NEXT_PUBLIC_GOOGLE_DRIVE_FOLDER_ID: You ca get it in the google drive when click on share and copy link [URL](https://drive.google.com/drive/u/0/folders/1cSvd3MvYsZ9LCRtI038Mz5IjWWcYIEv1) THE Id is from after /folder
-
+- NEXT_PUBLIC_GOOGLE_PROJECT_ID: we use it in google drive api we find this in the credentials json file from  the google console
+- NEXT_PUBLIC_GOOGLE_PRIVATE_KEY_ID: we use it in google drive api we find this in the credentials json file from  the google console
+- NEXT_PUBLIC_GOOGLE_PRIVATE_KEY: we use it in google drive api we find this in the credentials json file from  the google console
+- NEXT_PUBLIC_GOOGLE_CLIENT_EMAIL: we use it in google drive api we find this in the credentials json file from  the google console
+- NEXT_PUBLIC_GOOGLE_CLIENT_ID: we use it in google drive api we find this in the credentials json file from  the google console
+- NEXT_PUBLIC_GOOGLE_CLIENT_X509_CERT_URL: we use it in google drive api we find this in the credentials json file from  the google console
 ### Application state
 
 What information do we have in the application state or context (Which is shared with all the applications)
