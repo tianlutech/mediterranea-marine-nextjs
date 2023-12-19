@@ -51,6 +51,7 @@
     "sidebar_p2":"Your responses will help us schedule your boat reservation and cater to your specific needs. Thank you for choosing us for your boating adventure!"
   },
   "error": {
-    "upload_image":"There has been an error while uploading files"
+    "upload_front_image":"There has been an error while uploading front id picture",
+    "upload_back_image":"There has been an error while uploading back id picture"
   }
 }

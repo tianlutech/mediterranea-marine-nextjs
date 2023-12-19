@@ -2,7 +2,7 @@ import { google } from "googleapis"
 import * as googleDrive from "./googleDrive.api"
 import { FileBody } from "@/app/models/models";
 
-import { credentials } from "@/app/config/credentials"
+import { credentials } from "../config/credentials"
 
 const auth = new google.auth.GoogleAuth({
   // your credentials to authenticate

@@ -52,6 +52,7 @@
     "sidebar_p2":"Sus respuestas nos ayudarán a programar la reserva de su barco y satisfacer sus necesidades específicas. ¡Gracias por elegirnos para su aventura!"
   },
   "error": {
-    "upload_image":"There has been an error while uploading files"
+    "upload_image":"Se ha producido un error al cargar la imagen de identificación frontal.",
+    "upload_back_image":"Se ha producido un error al cargar la imagen de identificación posterior."
   }
 }

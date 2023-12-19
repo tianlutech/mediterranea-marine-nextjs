@@ -56,7 +56,7 @@ export default function BookingComponent({
     setOpenPrepaymentModal(false);
   };
 
-  const page = async (file: File, slag: string) => {
+  const storeIdImage = async (file: File, slag: string) => {
     const id = formData["ID Number"]
     const response = await uploadFile(file, boatInfo.Nombre, id, slag)
     return response
@@ -117,10 +117,16 @@ export default function BookingComponent({
   };
 
   const submitBooking = async () => {
-    const uploadIdFrontResponse = await page(formData["ID_Front_Picture"], "front")
-    const uploadIdBackImageResponse = await page(formData["ID_Back_Picture"], "back")
-    if (!uploadIdFrontResponse.id || !uploadIdBackImageResponse.id) {
+    const uploadIdFrontResponse = await storeIdImage(formData["ID_Front_Picture"], "front")
+    const uploadIdBackImageResponse = await storeIdImage(formData["ID_Back_Picture"], "back")
+
+    if (!uploadIdFrontResponse.id) {
       toast.error(t("error.upload_image"))
+      return
+    }
+
+    if (!uploadIdBackImageResponse.id) {
+      toast.error(t("upload_front_image"))
       return
     }
     // validate address first
