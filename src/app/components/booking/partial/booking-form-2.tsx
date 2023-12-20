@@ -14,6 +14,7 @@ import {
   STANDUP_PADDLE,
   SEABOB,
 } from "@/app/models/constants";
+import { Boat } from "@/app/models/models";
 import { useTranslation } from "next-i18next";
 
 export default function BookingForm2({
@@ -21,11 +22,13 @@ export default function BookingForm2({
   setData,
   miles,
   formik,
+  boatInfo,
 }: {
   data: any;
   setData: any;
   miles: Array<{ value: string; name: string }>;
   formik: any;
+  boatInfo: Boat;
 }) {
   const { t } = useTranslation();
 
@@ -57,6 +60,7 @@ export default function BookingForm2({
         isOpen={openTermModal}
         closeModal={closeModalTermModal}
         data={data}
+        boat={boatInfo}
         setData={setData}
       />
       <div className="flex md:mt-0 mt-4 md:flex-row flex-col md:w-[49%] w-full">

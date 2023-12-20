@@ -199,6 +199,7 @@ export default function BookingComponent({
                 setData={setFormData}
                 miles={calculatedMiles}
                 formik={formik}
+                boatInfo={boatInfo}
               />
             </div>
 
