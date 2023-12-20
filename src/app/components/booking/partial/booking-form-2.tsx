@@ -14,7 +14,7 @@ import {
   STANDUP_PADDLE,
   SEABOB,
 } from "@/app/models/constants";
-import { Boat } from "@/app/models/models";
+import { Boat, Booking } from "@/app/models/models";
 import { useTranslation } from "next-i18next";
 
 export default function BookingForm2({
@@ -30,7 +30,7 @@ export default function BookingForm2({
   miles: Array<{ value: string; name: string }>;
   formik: any;
   boatInfo: Boat;
-  bookingInfo: {}
+  bookingInfo: Booking
 }) {
   const { t } = useTranslation();
 
@@ -50,7 +50,6 @@ export default function BookingForm2({
   const closeVideoModal = () => {
     setVideoModalOpen(false);
   };
-
   return (
     <>
       <VideoModal
@@ -285,14 +284,14 @@ export default function BookingForm2({
             <div className="mt-6">
               <div
                 onClick={() => {
-                  !data["signedContract"] && setOpenTermModal(true);
+                  !data["signedContract"] && data["Departure Time"] !== "" && setOpenTermModal(true);
                 }}
                 className="flex items-center"
               >
                 <input
                   id="checked-checkbox"
                   checked={data["signedContract"]}
-                  disabled={data["signedContract"]}
+                  disabled={data["signedContract"] || !data["Departure Time"]}
                   type="checkbox"
                   value=""
                   readOnly

@@ -19,14 +19,16 @@ export default function CommonModal({
   data: any;
   setData: any;
   boat: Boat;
-  bookingInfo: any
+  bookingInfo: Booking
 }) {
   const sigPad = useRef<SignaturePad>(null);
   const [isSigned, setIsSigned] = useState(false);
   const [departureMaximumHour, setDepartureMaximumHour] = useState("")
-  const bookingDateYear = moment("Thu Dec 07 2023 02:00:00 GMT+0200").format("YYYY")
-  const bookingDateMonth = moment("Thu Dec 07 2023 02:00:00 GMT+0200").format("MM")
-  const bookingDateDay = moment("Thu Dec 07 2023 02:00:00 GMT+0200").format("HH")
+  const date = bookingInfo["Date"]
+  const bookingDateYear = moment(date).format("YYYY")
+  const bookingDateMonth = moment(date).format("MM")
+  const bookingDateDay = moment(date).format("HH")
+
   const clearSigPad = () => {
     if (sigPad.current) {
       sigPad.current.clear();
@@ -37,7 +39,6 @@ export default function CommonModal({
   const checkSignature = () => {
     setIsSigned(!!sigPad.current && !sigPad.current.isEmpty());
   };
-
   const maximumDepartureTime = () => {
     // Split the time string into hours and minutes
     var parts = data["Departure Time"].split(":");
@@ -62,19 +63,18 @@ export default function CommonModal({
   }
 
   useEffect(() => {
+    if (sigPad.current && !sigPad.current.isEmpty()) {
+      setIsSigned(!sigPad.current.isEmpty());
+    }
+  }, [data]);
+
+  useEffect(() => {
     if (data["Departure Time"] === "") {
-      toast.error("add departure time first")
       closeModal();
       return
     }
     maximumDepartureTime()
   })
-
-  useEffect(() => {
-    if (sigPad.current && !sigPad.current.isEmpty()) {
-      setIsSigned(!sigPad.current.isEmpty());
-    }
-  }, [data]);
 
   // will uncomment later if we need to use it
   // const getSignatureImage = () => {
@@ -126,7 +126,7 @@ export default function CommonModal({
             NAME: {boat?.Nombre}
           </p>
           <p className="">
-            BRAND AND MODEL: xxxxxxxx
+            BRAND AND MODEL: {boat.Code}
           </p>
           <p className="">
             REGISTRATION PLATE: {boat.RegistrationPlate}
@@ -400,12 +400,6 @@ export default function CommonModal({
             And in order for this to be recorded and to have the appropriate effects and proof of compliance, the parties
             sign this document, in duplicate copies and for a single purpose, in the place and on the date indicated in the
             heading.
-          </p>
-          <p className="font-bold my-12">
-            MANAGER
-          </p>
-          <p className="font-bold my-12">
-            CAPTAIN
           </p>
           <title>
             LESSEE
