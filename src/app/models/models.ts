@@ -5,7 +5,7 @@ export type Captian = NotionItem & {};
 export type Boat = NotionItem & {
   "Max.Passengers": number;
   MilePrice: string;
-  code: string;
+  Code: string;
   ID: string;
   Nombre: string;
   RegistrationPlate: string;

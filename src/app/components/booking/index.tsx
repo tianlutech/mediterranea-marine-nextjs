@@ -19,7 +19,7 @@ export default function BookingComponent({
   id,
   boatInfo,
 }: {
-  data: {};
+  data: Booking;
   id: string;
   boatInfo: Boat;
 }) {
