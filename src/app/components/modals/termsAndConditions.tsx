@@ -2,23 +2,31 @@
 import Modal from "@/app/components/common/containers/modal";
 import SignaturePad from "react-signature-canvas";
 import React, { useRef, useState, useEffect } from "react";
-import { Boat } from "@/app/models/models";
+import { Boat, Booking } from "@/app/models/models";
+import moment from "moment"
+import { toast } from "react-toastify";
+
 export default function CommonModal({
   isOpen,
   closeModal,
   data,
   setData,
   boat,
+  bookingInfo,
 }: {
   isOpen: boolean;
   closeModal: any;
   data: any;
   setData: any;
   boat: Boat;
+  bookingInfo: any
 }) {
   const sigPad = useRef<SignaturePad>(null);
   const [isSigned, setIsSigned] = useState(false);
-
+  const [departureMaximumHour, setDepartureMaximumHour] = useState("")
+  const bookingDateYear = moment("Thu Dec 07 2023 02:00:00 GMT+0200").format("YYYY")
+  const bookingDateMonth = moment("Thu Dec 07 2023 02:00:00 GMT+0200").format("MM")
+  const bookingDateDay = moment("Thu Dec 07 2023 02:00:00 GMT+0200").format("HH")
   const clearSigPad = () => {
     if (sigPad.current) {
       sigPad.current.clear();
@@ -29,6 +37,38 @@ export default function CommonModal({
   const checkSignature = () => {
     setIsSigned(!!sigPad.current && !sigPad.current.isEmpty());
   };
+
+  const maximumDepartureTime = () => {
+    // Split the time string into hours and minutes
+    var parts = data["Departure Time"].split(":");
+    var hours = parseInt(parts[0], 10);
+    var minutes = parseInt(parts[1], 10);
+
+    // Add hours
+    hours += 8;
+
+    // Ensure that hours do not exceed 24
+    if (hours > 21) {
+      hours = 21;
+    }
+
+    // Formatting hours and minutes to two digits
+    var formattedHours = hours.toString().padStart(2, "0");
+    var formattedMinutes = minutes.toString().padStart(2, "0");
+
+    // Returning the formatted time string
+    const time = formattedHours + ":" + formattedMinutes
+    setDepartureMaximumHour(time)
+  }
+
+  useEffect(() => {
+    if (data["Departure Time"] === "") {
+      toast.error("add departure time first")
+      closeModal();
+      return
+    }
+    maximumDepartureTime()
+  })
 
   useEffect(() => {
     if (sigPad.current && !sigPad.current.isEmpty()) {
@@ -44,7 +84,6 @@ export default function CommonModal({
   //   }
   //   return null;
   // };
-
   const agreeContract = () => {
     setData({ ...data, signedContract: !data["signedContract"] });
     closeModal();
@@ -90,7 +129,7 @@ export default function CommonModal({
             BRAND AND MODEL: xxxxxxxx
           </p>
           <p className="">
-            REGISTRATION PLATE: xxxxxx
+            REGISTRATION PLATE: {boat.RegistrationPlate}
           </p>
           <p className="mt-6">
             II.- That said vessel is in perfect condition for navigation and provided with all the necessary documentation
@@ -118,10 +157,10 @@ export default function CommonModal({
             The lease period includes:
           </p>
           <p className="text-sm">
-            From: XXX hours of the day XXX of XXX of 2024
+            From: {data["Departure Time"]} of the day {bookingDateDay} of {bookingDateMonth} of {bookingDateYear}
           </p>
           <p className="text-sm">
-            Until: XXX hours of the day XXX of XXX of 2024
+            Until: {departureMaximumHour} hours of the day {bookingDateDay} of {bookingDateMonth} of {bookingDateYear}
           </p>
           <title>
             THIRD. – FUEL CONSUMPTION AND ALL-INCLUSIVE CLAUSES

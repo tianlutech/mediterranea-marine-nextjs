@@ -8,6 +8,7 @@ export type Boat = NotionItem & {
   code: string;
   ID: string;
   Nombre: string;
+  RegistrationPlate: string;
 };
 
 export type FileData = { name: string; url: ""; type: "file" | "external" };

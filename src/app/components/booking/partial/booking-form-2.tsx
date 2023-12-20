@@ -23,12 +23,14 @@ export default function BookingForm2({
   miles,
   formik,
   boatInfo,
+  bookingInfo
 }: {
   data: any;
   setData: any;
   miles: Array<{ value: string; name: string }>;
   formik: any;
   boatInfo: Boat;
+  bookingInfo: {}
 }) {
   const { t } = useTranslation();
 
@@ -57,6 +59,7 @@ export default function BookingForm2({
         videoSrc={videoLiknk}
       />
       <TermsAndConditionModal
+        bookingInfo={bookingInfo}
         isOpen={openTermModal}
         closeModal={closeModalTermModal}
         data={data}
