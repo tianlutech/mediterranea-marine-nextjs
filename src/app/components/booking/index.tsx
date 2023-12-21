@@ -113,10 +113,10 @@ export default function BookingComponent({
 
   const submitBooking = async () => {
     // validate address first
-    const res = await validateAddress(formData["Billing Address"])
+    const res = await validateAddress(formData["Billing Address"]);
 
     if (res === false) {
-      return
+      return;
     }
 
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
@@ -147,9 +147,9 @@ export default function BookingComponent({
     return mileRanges.map((miles: number) => ({
       name: miles
         ? `${miles} ` +
-        t("input.nautical_miles") +
-        " - " +
-        `${miles * pricePerMile}€`
+          t("input.nautical_miles") +
+          " - " +
+          `${miles * pricePerMile}€`
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));

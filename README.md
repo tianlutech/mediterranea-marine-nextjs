@@ -47,6 +47,22 @@ All the values are also accessible from the [credentials page](https://www.notio
  - NOTION_SECRET: Notion Integration to save data in the notion database. The key is in Marina Mediterranea Notion
  - NOTION_DATABASE_ID: Booking Database ID. Can get through Notion Marina Mediterranea Notion, via the [URL](https://www.notion.so/0aac587c9c8a4ad9b52c7a138efb3111?v=478876de6de64c12b88331d2efc05d44&pvs=4) you can get the Id.
  - NEXT_PUBLIC_GOOGLE_API_KEY: We use it to complete and validate the user address. 
+ 
+#### Google Drive Integration
+You can get this credentials from [Google Account](https://console.cloud.google.com/iam-admin/serviceaccounts/details/117612497145206698360/keys?authuser=7&project=eco-limiter-407915)
+
+This credentials are used to upload files to google drive
+
+GOOGLE_PROJECT_ID=
+GOOGLE_PRIVATE_KEY_ID=
+GOOGLE_PRIVATE_KEY=
+GOOGLE_CLIENT_EMAIL=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_X509_CERT_URL=
+
+The folder where we upload the pictures, you get it 
+EXAMPLE https://drive.google.com/drive/u/7/folders/{GOOGLE_DRIVE_FOLDER_ID}
+GOOGLE_DRIVE_FOLDER_ID=
 
 ### Application state
 
