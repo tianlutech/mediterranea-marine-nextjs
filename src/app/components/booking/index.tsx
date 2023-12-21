@@ -21,7 +21,7 @@ export default function BookingComponent({
   id,
   boatInfo,
 }: {
-  data: {};
+  data: Booking;
   id: string;
   boatInfo: Boat;
 }) {
@@ -211,10 +211,12 @@ export default function BookingComponent({
               />
               {/* Second form */}
               <BookingForm2
+                bookingInfo={data}
                 data={formData}
                 setData={setFormData}
                 miles={calculatedMiles}
                 formik={formik}
+                boatInfo={boatInfo}
               />
             </div>
 

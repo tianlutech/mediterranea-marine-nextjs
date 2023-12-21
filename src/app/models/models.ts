@@ -26,9 +26,10 @@ export type FileBody = {
 export type Boat = NotionItem & {
   "Max.Passengers": number;
   MilePrice: string;
-  code: string;
+  Code: string;
   ID: string;
   Nombre: string;
+  RegistrationPlate: string;
 };
 
 export type FileData = { name: string; url: ""; type: "file" | "external" };
