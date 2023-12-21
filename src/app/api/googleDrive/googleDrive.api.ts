@@ -13,7 +13,7 @@ export const uploadFile = async (auth: any, file: File, body: FileBody) => {
   try {
     const buffer = Buffer.from(await file.arrayBuffer());
 
-    const googleDriveFolderId = process.env.NEXT_PUBLIC_GOOGLE_DRIVE_FOLDER_ID
+    const googleDriveFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID
     const date = moment(Date.now()).format("DD-MM-YYYY")
     const { boatName, id, slag} = body
 
@@ -22,7 +22,6 @@ export const uploadFile = async (auth: any, file: File, body: FileBody) => {
       mimeType: "application/vnd.google-apps.folder",
       parents: [`${googleDriveFolderId}`]
     };
-
     const folder = await drive.files.create({
       requestBody: fileMetadata,
       fields: "id",

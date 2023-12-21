@@ -14,6 +14,7 @@ const auth = new google.auth.GoogleAuth({
   // for more advice on scopes
   scopes: ["https://www.googleapis.com/auth/drive"],
 })
+
 // Define the function to handle the POST request
 export async function POST(request: Request) {
   try {
@@ -38,6 +39,7 @@ export async function POST(request: Request) {
 
     // Call your function to handle the file upload
     const result = await googleDrive.uploadFile(auth, file, body);
+    
     return new Response(JSON.stringify(result), {
       status: 200,
       headers: { "Content-Type": "application/json" },

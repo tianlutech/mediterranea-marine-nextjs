@@ -117,16 +117,20 @@ export default function BookingComponent({
   };
 
   const submitBooking = async () => {
+    setLoading(true);
+
     const uploadIdFrontResponse = await storeIdImage(formData["ID_Front_Picture"], "front")
     const uploadIdBackImageResponse = await storeIdImage(formData["ID_Back_Picture"], "back")
 
     if (!uploadIdFrontResponse.id) {
       toast.error(t("error.upload_image"))
+      setLoading(false);
       return
     }
 
     if (!uploadIdBackImageResponse.id) {
       toast.error(t("upload_front_image"))
+      setLoading(false);
       return
     }
     // validate address first
