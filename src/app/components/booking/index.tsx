@@ -14,6 +14,8 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
 import SubmitButton from "../common/containers/submit-button";
 import { validateAddress } from "@/app/services/google.service";
+import { uploadFile } from "@/app/services/googleDrive.service";
+
 export default function BookingComponent({
   data,
   id,
@@ -47,11 +49,18 @@ export default function BookingComponent({
     "Restuarant Name": "",
     "Restaurant Time": "",
     signedContract: false,
+    "ID Number": ""
   });
 
   const closePrepaymentModal = () => {
     setOpenPrepaymentModal(false);
   };
+
+  const storeIdImage = async (file: File, slag: string) => {
+    const id = formData["ID Number"]
+    const response = await uploadFile(file, boatInfo.Nombre, id, slag)
+    return response
+  }
 
   const validate = () => {
     const values = formData;
@@ -80,10 +89,6 @@ export default function BookingComponent({
   }, [formData]);
 
   const updateNotion = async (formData: Record<string, unknown>) => {
-    if (totalPayment > 0) {
-      console.log("Fire Payment Here", totalPayment);
-    }
-
     const {
       ID_Back_Picture,
       ID_Front_Picture,
@@ -112,6 +117,18 @@ export default function BookingComponent({
   };
 
   const submitBooking = async () => {
+    const uploadIdFrontResponse = await storeIdImage(formData["ID_Front_Picture"], "front")
+    const uploadIdBackImageResponse = await storeIdImage(formData["ID_Back_Picture"], "back")
+
+    if (!uploadIdFrontResponse.id) {
+      toast.error(t("error.upload_image"))
+      return
+    }
+
+    if (!uploadIdBackImageResponse.id) {
+      toast.error(t("upload_front_image"))
+      return
+    }
     // validate address first
     const res = await validateAddress(formData["Billing Address"])
 
@@ -141,7 +158,6 @@ export default function BookingComponent({
     updateNotion(formData);
   };
 
-  // Function to calculate boat prices
   // Function to calculate boat prices
   const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
     return mileRanges.map((miles: number) => ({
