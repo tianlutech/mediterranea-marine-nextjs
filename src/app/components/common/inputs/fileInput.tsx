@@ -79,17 +79,13 @@ export default function CommonInputFile({
           required={required}
         />
         <div>
-          <div className="flex mt-3">
+          <div className="flex mt-6">
             <div>
               <UploadSvg />
             </div>
             <div className="flex flex-col ml-4">
-              <span className="text-black">
-                {t("input.select_file")}
-              </span>
-              <span className="greytext mt-2">
-                {t("input.file_sizes")}
-              </span>
+              <span className="text-black">{t("input.select_file")}</span>
+              <span className="greytext mt-2">{t("input.file_sizes")}</span>
             </div>
           </div>
           {photoName && (
