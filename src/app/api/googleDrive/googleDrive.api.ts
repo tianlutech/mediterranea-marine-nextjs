@@ -27,7 +27,7 @@ export const uploadFile = async (auth: any, file: File, body: FileBody) => {
     });
 
     if (!folder.data.id) {
-      return;
+      return { error: "Error creating the folder" };
     }
 
     const res = await drive.files.create({
@@ -44,6 +44,6 @@ export const uploadFile = async (auth: any, file: File, body: FileBody) => {
     return res.data;
   } catch (error: any) {
     console.error("Error fetching files:", error.message);
-    return null;
+    return { error: error.message };
   }
 };
