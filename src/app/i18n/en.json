@@ -32,7 +32,8 @@
     "none_option":"None",
     "submit":"Submit",
     "pay":"Pay",
-    "nautical_miles":"Nautical Miles"
+    "nautical_miles":"Nautical Miles",
+    "id_number":"ID Number"
   },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepay your fuel",
@@ -48,5 +49,9 @@
     "we_are_excited_to_help_you_plan_your_next_water_adventure":"We are excited to help you plan your next water adventure.",
     "sidebar_p1":"Please take a moment to provide us with some essential details, so we can ensure you have a smooth and enjoyable experience.",
     "sidebar_p2":"Your responses will help us schedule your boat reservation and cater to your specific needs. Thank you for choosing us for your boating adventure!"
+  },
+  "error": {
+    "upload_front_image":"There has been an error while uploading front id picture",
+    "upload_back_image":"There has been an error while uploading back id picture"
   }
 }

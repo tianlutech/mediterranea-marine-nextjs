@@ -14,6 +14,7 @@ import {
   STANDUP_PADDLE,
   SEABOB,
 } from "@/app/models/constants";
+import { Boat, Booking } from "@/app/models/models";
 import { useTranslation } from "next-i18next";
 
 export default function BookingForm2({
@@ -21,11 +22,15 @@ export default function BookingForm2({
   setData,
   miles,
   formik,
+  boatInfo,
+  bookingInfo
 }: {
   data: any;
   setData: any;
   miles: Array<{ value: string; name: string }>;
   formik: any;
+  boatInfo: Boat;
+  bookingInfo: Booking
 }) {
   const { t } = useTranslation();
 
@@ -45,7 +50,6 @@ export default function BookingForm2({
   const closeVideoModal = () => {
     setVideoModalOpen(false);
   };
-
   return (
     <>
       <VideoModal
@@ -54,9 +58,11 @@ export default function BookingForm2({
         videoSrc={videoLiknk}
       />
       <TermsAndConditionModal
+        bookingInfo={bookingInfo}
         isOpen={openTermModal}
         closeModal={closeModalTermModal}
         data={data}
+        boat={boatInfo}
         setData={setData}
       />
       <div className="flex md:mt-0 mt-4 md:flex-row flex-col md:w-[49%] w-full">
@@ -278,14 +284,14 @@ export default function BookingForm2({
             <div className="mt-6">
               <div
                 onClick={() => {
-                  !data["signedContract"] && setOpenTermModal(true);
+                  !data["signedContract"] && data["Departure Time"] !== "" && setOpenTermModal(true);
                 }}
                 className="flex items-center"
               >
                 <input
                   id="checked-checkbox"
                   checked={data["signedContract"]}
-                  disabled={data["signedContract"]}
+                  disabled={data["signedContract"] || !data["Departure Time"]}
                   type="checkbox"
                   value=""
                   readOnly

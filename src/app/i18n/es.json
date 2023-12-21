@@ -33,7 +33,8 @@
     "none_option":"Ninguno",
     "submit":"Enviar",
     "pay":"Pagar",
-    "nautical_miles":"Millas Náuticas"
+    "nautical_miles":"Millas Náuticas",
+    "id_number":"Número de identificación"
   },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepaga tu combustible",
@@ -49,5 +50,9 @@
     "we_are_excited_to_help_you_plan_your_next_water_adventure":"Estamos encantados de ayudarle a planificar su próxima aventura acuática.",
     "sidebar_p1":"Tómese un momento para brindarnos algunos detalles esenciales, para que podamos garantizar que tenga una experiencia fluida y agradable.",
     "sidebar_p2":"Sus respuestas nos ayudarán a programar la reserva de su barco y satisfacer sus necesidades específicas. ¡Gracias por elegirnos para su aventura!"
+  },
+  "error": {
+    "upload_image":"Se ha producido un error al cargar la imagen de identificación frontal.",
+    "upload_back_image":"Se ha producido un error al cargar la imagen de identificación posterior."
   }
 }

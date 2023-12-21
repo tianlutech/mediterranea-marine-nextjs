@@ -2,12 +2,34 @@ import { NotionItem } from "./notion.model";
 
 export type Captian = NotionItem & {};
 
+export type FileMetadata = {
+  name: string;
+  mimeType: string;
+  parents: string[];
+}
+
+export type DataFolder = {
+  id: String
+}
+
+export type DriveFolder = {
+  data: FileMetadata
+}
+
+
+export type FileBody = {
+  boatName: string;
+  slag: string;
+  id: string
+}
+
 export type Boat = NotionItem & {
   "Max.Passengers": number;
   MilePrice: string;
-  code: string;
+  Code: string;
   ID: string;
   Nombre: string;
+  RegistrationPlate: string;
 };
 
 export type FileData = { name: string; url: ""; type: "file" | "external" };
