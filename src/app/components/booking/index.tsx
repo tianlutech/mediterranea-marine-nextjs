@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import SubmitButton from "../common/containers/submit-button";
 import { validateAddress } from "@/app/services/google.service";
 import { uploadFile } from "@/app/services/googleDrive.service";
-
+import SumupWidget from "@/app/components/modals/sumupWidget"
 export default function BookingComponent({
   data,
   id,
@@ -32,6 +32,7 @@ export default function BookingComponent({
   const [loading, setLoading] = useState<boolean>(false);
   const [totalPayment, setTotalPayment] = useState<number>(0);
   const [proceedWithNoFuel, setProceedWithNoFuel] = useState(false);
+  const [openPaymentModal, setOpenPaymentModal] = useState(false)
   const [formData, setFormData] = useState({
     "First Name": "",
     "Last Name": "",
@@ -159,6 +160,10 @@ export default function BookingComponent({
       return setOpenPrepaymentModal(true);
     }
 
+    if (totalPayment > 0) {
+      return setOpenPaymentModal(true);
+    }
+
     updateNotion(formData);
   };
 
@@ -188,6 +193,7 @@ export default function BookingComponent({
   }
   return (
     <>
+      <SumupWidget isOpen={openPaymentModal} />
       <PrepaymentModal
         isOpen={openPrepaymentModal}
         closeModal={closePrepaymentModal}
