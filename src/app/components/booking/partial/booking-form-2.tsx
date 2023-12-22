@@ -23,14 +23,14 @@ export default function BookingForm2({
   miles,
   formik,
   boatInfo,
-  bookingInfo
+  bookingInfo,
 }: {
   data: any;
   setData: any;
-  miles: Array<{ value: string; name: string }>;
+  miles: Array<{ value: string; label: string }>;
   formik: any;
   boatInfo: Boat;
-  bookingInfo: Booking
+  bookingInfo: Booking;
 }) {
   const { t } = useTranslation();
 
@@ -284,7 +284,9 @@ export default function BookingForm2({
             <div className="mt-6">
               <div
                 onClick={() => {
-                  !data["signedContract"] && data["Departure Time"] !== "" && setOpenTermModal(true);
+                  !data["signedContract"] &&
+                    data["Departure Time"] !== "" &&
+                    setOpenTermModal(true);
                 }}
                 className="flex items-center"
               >

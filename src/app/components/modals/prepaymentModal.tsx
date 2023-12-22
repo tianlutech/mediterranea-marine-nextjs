@@ -14,7 +14,7 @@ export default function PrepaymentModal({
 }: {
   isOpen: boolean;
   closeModal: () => void;
-  data: Array<{ value: string; name: string }>;
+  data: Array<{ value: string; label: string }>;
   totalPayment: number;
   continuePayment: (fuelPayment: number) => void;
 }) {
@@ -88,7 +88,7 @@ export default function PrepaymentModal({
                       className="w-4 h-4"
                     />
                     <label className="ms-2 text-base text-black">
-                      {item.name}
+                      {item.label}
                     </label>
                   </div>
                 );

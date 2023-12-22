@@ -49,7 +49,7 @@ export default function BookingComponent({
     "Restuarant Name": "",
     "Restaurant Time": "",
     signedContract: false,
-    "ID Number": ""
+    "ID Number": "",
   });
 
   const closePrepaymentModal = () => {
@@ -57,10 +57,10 @@ export default function BookingComponent({
   };
 
   const storeIdImage = async (file: File, slag: string) => {
-    const id = formData["ID Number"]
-    const response = await uploadFile(file, boatInfo.Nombre, id, slag)
-    return response
-  }
+    const id = formData["ID Number"];
+    const response = await uploadFile(file, boatInfo.Nombre, id, slag);
+    return response;
+  };
 
   const validate = () => {
     const values = formData;
@@ -89,6 +89,29 @@ export default function BookingComponent({
   }, [formData]);
 
   const updateNotion = async (formData: Record<string, unknown>) => {
+    setLoading(true);
+
+    const uploadIdFrontResponse = await storeIdImage(
+      formData["ID_Front_Picture"] as File,
+      "front"
+    );
+    const uploadIdBackImageResponse = await storeIdImage(
+      formData["ID_Back_Picture"] as File,
+      "back"
+    );
+
+    if (!uploadIdFrontResponse.id) {
+      toast.error(t("error.upload_image"));
+      setLoading(false);
+      return;
+    }
+
+    if (!uploadIdBackImageResponse.id) {
+      toast.error(t("upload_front_image"));
+      setLoading(false);
+      return;
+    }
+
     const {
       ID_Back_Picture,
       ID_Front_Picture,
@@ -116,28 +139,23 @@ export default function BookingComponent({
     router.replace("/success");
   };
 
+  const uploadTest = async () => {
+    const uploadIdFrontResponse = await storeIdImage(
+      formData["ID_Front_Picture"],
+      "front"
+    );
+    const uploadIdBackImageResponse = await storeIdImage(
+      formData["ID_Back_Picture"],
+      "back"
+    );
+  };
+
   const submitBooking = async () => {
-    setLoading(true);
-
-    const uploadIdFrontResponse = await storeIdImage(formData["ID_Front_Picture"], "front")
-    const uploadIdBackImageResponse = await storeIdImage(formData["ID_Back_Picture"], "back")
-
-    if (!uploadIdFrontResponse.id) {
-      toast.error(t("error.upload_image"))
-      setLoading(false);
-      return
-    }
-
-    if (!uploadIdBackImageResponse.id) {
-      toast.error(t("upload_front_image"))
-      setLoading(false);
-      return
-    }
     // validate address first
-    const res = await validateAddress(formData["Billing Address"])
+    const res = await validateAddress(formData["Billing Address"]);
 
     if (res === false) {
-      return
+      return;
     }
 
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
@@ -165,11 +183,11 @@ export default function BookingComponent({
   // Function to calculate boat prices
   const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
     return mileRanges.map((miles: number) => ({
-      name: miles
+      label: miles
         ? `${miles} ` +
-        t("input.nautical_miles") +
-        " - " +
-        `${miles * pricePerMile}€`
+          t("input.nautical_miles") +
+          " - " +
+          `${miles * pricePerMile}€`
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
@@ -255,6 +273,8 @@ export default function BookingComponent({
               </div>
             </div>
             <SubmitButton
+              type="button"
+              onClick={uploadTest}
               label={
                 totalPayment > 0
                   ? t("input.pay") + ` ${totalPayment}€ `
