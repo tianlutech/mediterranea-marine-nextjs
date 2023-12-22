@@ -304,6 +304,15 @@ export default function BookingForm2({
                   {t("input.read_and_sign_the_contract")}
                 </label>
               </div>
+              <div className="ml-6">
+                {
+                  data["signedContract"] || !data["Departure Time"] ?
+                    <label className="text-black text-sm">
+                      {t("input.complete_field")}
+                    </label>
+                    : ""
+                }
+              </div>
             </div>
           </div>
         </div>
