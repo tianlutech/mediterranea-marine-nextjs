@@ -8,7 +8,11 @@ import { Boat, Booking } from "@/app/models/models";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import { updateBookingInfo } from "@/app/services/notion.service";
-import { MILE_RANGES } from "@/app/models/constants";
+import {
+  MILE_RANGES,
+  SEABOB as SEABOB_TOY,
+  STANDUP_PADDLE,
+} from "@/app/models/constants";
 import "../../i18n";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
@@ -62,22 +66,8 @@ export default function BookingComponent({
     return response;
   };
 
-  const validate = () => {
-    const values = formData;
-    const errors: Record<string, string> = {};
-    if (!values["ID_Back_Picture"]) {
-      errors["ID_Back_Picture"] = "Required";
-    }
-    if (!values["ID_Front_Picture"]) {
-      errors["ID Front Picture"] = "Required";
-    }
-
-    return errors;
-  };
-
   const formik = useFormik({
     initialValues: formData,
-    validate,
     onSubmit: () => {
       submitBooking();
     },
@@ -120,12 +110,18 @@ export default function BookingComponent({
     } = formData;
 
     // Upload the files and convert them in { name: '', url: '', type: "external"}
+    const seaBobName = SEABOB_TOY.find(
+      (seabob) => seabob.value === SEABOB
+    )?.name;
+
+    const paddle = STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name;
+
     const data = {
       ...bookingData,
 
       // "ID_Back_Picture": {} as FileData,
       // "ID Front Picture": {} as FileData,
-      Toys: [SUP, SEABOB].filter((value) => !!value),
+      Toys: [paddle, seaBobName].filter((value) => !!value),
     } as unknown as Partial<Booking>;
     const res = await updateBookingInfo(id, data);
     setLoading(false);
@@ -143,6 +139,12 @@ export default function BookingComponent({
       return;
     }
 
+    console.log({ formData });
+    if (!formData["signedContract"]) {
+      return toast.error(
+        "Please click on the check box read and sign the contract"
+      );
+    }
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
       return toast.error(
         `Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
@@ -170,9 +172,9 @@ export default function BookingComponent({
     return mileRanges.map((miles: number) => ({
       label: miles
         ? `${miles} ` +
-        t("input.nautical_miles") +
-        " - " +
-        `${miles * pricePerMile}€`
+          t("input.nautical_miles") +
+          " - " +
+          `${miles * pricePerMile}€`
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));

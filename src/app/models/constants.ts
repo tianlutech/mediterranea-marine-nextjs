@@ -31,12 +31,12 @@ export const SEABOB = [
     value: "0",
   },
   {
-    name: "SEABOB - 1",
+    name: "1 SEABOB",
     label: "SEABOB 1 - 250E",
     value: "250",
   },
   {
-    name: "SEABOB - 2",
+    name: "2 SEABOB",
     label: "SEABOB 2 - 250E",
     value: "250",
   },
@@ -48,12 +48,12 @@ export const STANDUP_PADDLE = [
     value: "0",
   },
   {
-    name: "SUP 1",
+    name: "1 SUP",
     label: "SUP 1 - 50E",
     value: "50",
   },
   {
-    name: "SUP 2",
+    name: "2 SUP",
     label: "SUP 2 - 100E",
     value: "100",
   },
