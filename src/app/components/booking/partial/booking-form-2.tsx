@@ -306,7 +306,7 @@ export default function BookingForm2({
               </div>
               <div className="ml-6">
                 {
-                  data["signedContract"] || !data["Departure Time"] ?
+                  !data["signedContract"] || !data["Departure Time"] ?
                     <label className="text-black text-sm">
                       {t("input.complete_field")}
                     </label>
