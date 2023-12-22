@@ -91,14 +91,11 @@ export default function BookingComponent({
   const updateNotion = async (formData: Record<string, unknown>) => {
     setLoading(true);
 
-    const uploadIdFrontResponse = await storeIdImage(
-      formData["ID_Front_Picture"] as File,
-      "front"
-    );
-    const uploadIdBackImageResponse = await storeIdImage(
-      formData["ID_Back_Picture"] as File,
-      "back"
-    );
+    const [uploadIdFrontResponse, uploadIdBackImageResponse] =
+      await Promise.all([
+        storeIdImage(formData["ID_Front_Picture"] as File, "front"),
+        storeIdImage(formData["ID_Back_Picture"] as File, "back"),
+      ]);
 
     if (!uploadIdFrontResponse.id) {
       toast.error(t("error.upload_image"));
@@ -129,25 +126,12 @@ export default function BookingComponent({
       // "ID Front Picture": {} as FileData,
       Toys: [SUP, SEABOB].filter((value) => !!value),
     } as unknown as Partial<Booking>;
-
-    setLoading(true);
     const res = await updateBookingInfo(id, data);
     setLoading(false);
     if (res === false) {
       return;
     }
     router.replace("/success");
-  };
-
-  const uploadTest = async () => {
-    const uploadIdFrontResponse = await storeIdImage(
-      formData["ID_Front_Picture"],
-      "front"
-    );
-    const uploadIdBackImageResponse = await storeIdImage(
-      formData["ID_Back_Picture"],
-      "back"
-    );
   };
 
   const submitBooking = async () => {
@@ -273,8 +257,6 @@ export default function BookingComponent({
               </div>
             </div>
             <SubmitButton
-              type="button"
-              onClick={uploadTest}
               label={
                 totalPayment > 0
                   ? t("input.pay") + ` ${totalPayment}€ `
