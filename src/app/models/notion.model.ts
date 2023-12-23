@@ -1,5 +1,18 @@
-import { FileData } from "./models";
-export type NotionProperty = { type: string } & Record<string, unknown>;
+export type NotionType =
+  | "ID"
+  | "title"
+  | "cover"
+  | "number"
+  | "rich_text"
+  | "date"
+  | "files"
+  | "relation"
+  | "multi_select"
+  | "title"
+  | "files"
+  | "file";
+
+export type NotionProperty = { type: NotionType } & Record<string, unknown>;
 
 export type NotionFile = {
   name: string;
@@ -18,18 +31,65 @@ export type NotionPage = {
   cover: NotionProperty;
 };
 
-export type NotionItem = {
-  title: string;
-  cover: string;
+/**
+ * To be use as decorator
+ * @param type =
+ * @returns
+ */
+export const NotionType = (type: NotionType) => {
+  return function (target: any, key: string) {
+    // console.log({ target, key });
+    const metadataKey = Symbol("notion");
+    target[metadataKey] = target[metadataKey] || {};
+    target[metadataKey][key] = type;
+    // Reflect.defineProperty(target.constructor, key, { value: "value" });
+  };
 };
 
+class MyClass {
+  @NotionType("rich_text")
+  property1: string = "value1";
+
+  @NotionType("number")
+  property2: number = 42;
+}
+
+export class NotionItem {
+  title: string = "";
+  cover: string = "";
+
+  getNotionTypes() {
+    // Get all symbols associated with the instance
+    const symbols = Object.getOwnPropertySymbols(
+      Object.getPrototypeOf(this) as any
+    );
+
+    // Retrieve values associated with each symbol
+    const symbolValues = symbols.map((symbol) => {
+      const data = (this as any)[symbol];
+      return {
+        property: Object.keys(data)[0] as string,
+        type: Object.values(data)[0] as string,
+      };
+    });
+
+    return symbolValues;
+  }
+  getNotionType(propertyName: string): string | undefined {
+    const symbolValues = this.getNotionTypes();
+    return symbolValues.find((value) => value.property === propertyName)?.type;
+  }
+}
+
 export const parseNotionObject = <Type extends NotionItem>(
+  instance: Type,
   notionObject: NotionPage
 ): Type => {
   const object = Object.keys(notionObject.properties).reduce((obj, key) => {
     obj[key] = parseNotionProperty(notionObject.properties[key]);
     return obj;
-  }, {} as Record<string, unknown>);
+  }, instance as Record<string, unknown>);
+
   object.cover = parseNotionProperty(notionObject.cover);
   return object as Type;
 };
@@ -74,87 +134,74 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
   }
 };
 
-export const parseObjectToNotion = <T extends Record<string, unknown>>(
-  item: Partial<T>
-): Record<string, NotionProperty> => {
-  const keys = Object.keys(item);
-  const object = keys.reduce((obj, key) => {
-    const value = parsePropertyToNotion(item[key]);
-    if (value) {
-      obj[key] = value;
-    }
-    return obj;
-  }, {} as Record<string, NotionProperty>);
-
-  return object;
-};
-
-const parsePropertyToNotion = (
-  property: unknown | ({ type: string } & Record<string, unknown>)
-): NotionProperty | undefined => {
-  if (!property) {
-    return undefined;
-  }
-  // This is a multi_select
-  if (
-    Array.isArray(property) &&
-    property.every((item) => typeof item === "string")
-  ) {
-    return {
-      type: "multi_select",
-      multi_select: property.map((item) => ({
-        name: item,
-      })),
-    };
-  }
-
-  if (property instanceof Date) {
-    return {
-      type: "date",
-      date: { start: property },
-    };
-  }
-
-  const { type } = property as { type: string };
-  if (typeof type === "string") {
-    if (type === "external") {
-      return {
-        type: "files",
-        files: [property],
-      };
-    }
-  }
-
-  if (typeof property === "object") {
-    return {
-      type: "relation",
-      relation: property,
-    };
-  }
-
-  if (typeof property === "number" || !isNaN(+property)) {
-    return {
-      type: "number",
-      number: +property,
-    };
-  }
-
-  // if (typeof property === "select") {
-  //   return {
-  //     type: "select",
-  //     select: property,
-  //   };
-  // }
-
-  // Default case
-  // if (typeof property === "string") {
-  return {
+const propToNotion: Record<string, (value: any) => NotionProperty> = {
+  multi_select: (value: unknown[]) => ({
+    type: "multi_select",
+    multi_select: value.map((item) => ({
+      name: item,
+    })),
+  }),
+  date: (value: Date) => ({
+    type: "date",
+    date: { start: value },
+  }),
+  number: (value: number) => ({
+    type: "number",
+    number: +value,
+  }),
+  files: (value: string[]) => ({
+    type: "files",
+    files: value.map((url) => ({
+      name: value,
+      type: "external",
+      external: {
+        url,
+      },
+    })),
+  }),
+  file: (value: string) => ({
+    type: "files",
+    files: [
+      {
+        name: value,
+        type: "external",
+        external: {
+          url: value,
+        },
+      },
+    ],
+  }),
+  rich_text: (value: string) => ({
     type: "rich_text",
     rich_text: [
       {
         type: "text",
-        text: { content: property },
+        text: { content: value },
       },
     ],
-  };
+  }),
+  relation: (value: Object) => ({
+    type: "relation",
+    relation: value,
+  }),
+};
+
+export const parseObjectToNotion = <T extends NotionItem>(
+  item: T
+): Record<string, NotionProperty> => {
+  const notionProperties = item.getNotionTypes();
+
+  const object = notionProperties.reduce((obj, notionProp) => {
+    const value = (item as Record<string, unknown>)[notionProp.property];
+    const parser = propToNotion[notionProp.type];
+
+    if (!value || !parser) {
+      return obj;
+    }
+
+    obj[notionProp.property] = parser(value);
+    return obj;
+  }, {} as Record<string, NotionProperty>);
+
+  return object;
 };

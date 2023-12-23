@@ -1,4 +1,4 @@
-import { google, drive_v3 } from "googleapis";
+import { google } from "googleapis";
 import moment from "moment";
 import fs from "fs";
 import { Readable } from "stream";

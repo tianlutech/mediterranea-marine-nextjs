@@ -63,7 +63,11 @@ export default function BookingComponent({
   const storeIdImage = async (file: File, slag: string) => {
     const id = formData["ID Number"];
     const response = await uploadFile(file, boatInfo.Nombre, id, slag);
-    return response;
+    if (!response.id) {
+      return "";
+    }
+    const url = `https://drive.google.com/file/d/${response.id}/view`;
+    return url;
   };
 
   const formik = useFormik({
@@ -88,13 +92,13 @@ export default function BookingComponent({
         storeIdImage(formData["ID_Back_Picture"] as File, "back"),
       ]);
 
-    if (!uploadIdFrontResponse.id) {
+    if (!uploadIdFrontResponse) {
       toast.error(t("error.upload_image"));
       setLoading(false);
       return;
     }
 
-    if (!uploadIdBackImageResponse.id) {
+    if (!uploadIdBackImageResponse) {
       toast.error(t("upload_front_image"));
       setLoading(false);
       return;
@@ -110,20 +114,19 @@ export default function BookingComponent({
     } = formData;
 
     // Upload the files and convert them in { name: '', url: '', type: "external"}
-    const seaBobName = SEABOB_TOY.find(
-      (seabob) => seabob.value === SEABOB
-    )?.name;
+    const seaBobName =
+      SEABOB_TOY.find((seabob) => seabob.value === SEABOB)?.name || "";
 
-    const paddle = STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name;
+    const paddle = STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
 
-    const data = {
+    const booking = new Booking({
       ...bookingData,
-
-      // "ID_Back_Picture": {} as FileData,
-      // "ID Front Picture": {} as FileData,
+      "ID Back Picture": uploadIdBackImageResponse,
+      "ID Front Picture": uploadIdFrontResponse,
       Toys: [paddle, seaBobName].filter((value) => !!value),
-    } as unknown as Partial<Booking>;
-    const res = await updateBookingInfo(id, data);
+    });
+
+    const res = await updateBookingInfo(id, booking);
     setLoading(false);
     if (res === false) {
       return;
@@ -139,7 +142,6 @@ export default function BookingComponent({
       return;
     }
 
-    console.log({ formData });
     if (!formData["signedContract"]) {
       return toast.error(
         "Please click on the check box read and sign the contract"
