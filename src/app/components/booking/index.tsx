@@ -19,7 +19,9 @@ import { useRouter } from "next/navigation";
 import SubmitButton from "../common/containers/submit-button";
 import { validateAddress } from "@/app/services/google.service";
 import { uploadFile } from "@/app/services/googleDrive.service";
-import SumupWidget from "@/app/components/modals/sumupWidget"
+import SumupWidget from "@/app/components/modals/sumupWidget";
+import { generateCheckoutId } from "@/app/services/sumup.service";
+
 export default function BookingComponent({
   data,
   id,
@@ -35,6 +37,7 @@ export default function BookingComponent({
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [totalPayment, setTotalPayment] = useState<number>(0);
+  const [checkoutId, setCheckoutId] = useState("")
   const [proceedWithNoFuel, setProceedWithNoFuel] = useState(false);
   const [openPaymentModal, setOpenPaymentModal] = useState(false)
   const [formData, setFormData] = useState({
@@ -148,6 +151,7 @@ export default function BookingComponent({
         "Please click on the check box read and sign the contract"
       );
     }
+
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
       return toast.error(
         `Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
@@ -168,20 +172,30 @@ export default function BookingComponent({
     }
 
     if (totalPayment > 0) {
-      return setOpenPaymentModal(true);
+      getCheckoutId()
+      return
     }
-
     updateNotion(formData);
   };
+
+  const getCheckoutId = async () => {
+    const response = await generateCheckoutId(totalPayment.toString())
+    if (!response) {
+      return
+    }
+    setOpenPaymentModal(true)
+    setCheckoutId(response.id)
+    return response
+  }
 
   // Function to calculate boat prices
   const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
     return mileRanges.map((miles: number) => ({
       label: miles
         ? `${miles} ` +
-          t("input.nautical_miles") +
-          " - " +
-          `${miles * pricePerMile}€`
+        t("input.nautical_miles") +
+        " - " +
+        `${miles * pricePerMile}€`
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
@@ -200,7 +214,7 @@ export default function BookingComponent({
   }
   return (
     <>
-      <SumupWidget isOpen={openPaymentModal} />
+      <SumupWidget isOpen={openPaymentModal} checkoutId={checkoutId} />
       <PrepaymentModal
         isOpen={openPrepaymentModal}
         closeModal={closePrepaymentModal}
