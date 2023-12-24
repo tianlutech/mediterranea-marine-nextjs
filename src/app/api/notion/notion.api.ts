@@ -13,19 +13,29 @@ const notionSecret = process.env.NOTION_SECRET || undefined;
 const notion = new Client({ auth: notionSecret });
 
 export async function getPage(pageId: string) {
-  const response = await notion.pages.retrieve({
-    page_id: pageId,
-  });
-  return response;
+  try {
+    const response = await notion.pages.retrieve({
+      page_id: pageId,
+    });
+    return { result: response };
+  } catch (error: any) {
+    console.error("Get Notion Page Error:", error.message);
+    return { error: error.message };
+  }
 }
 
 export async function updatePage(
   pageId: string,
   properties: Record<string, any>
 ) {
-  const page = await notion.pages.update({
-    page_id: pageId,
-    properties,
-  });
-  return page;
+  try {
+    const page = await notion.pages.update({
+      page_id: pageId,
+      properties,
+    });
+    return { result: page };
+  } catch (error: any) {
+    console.error("Get Notion Page Error:", error.message);
+    return { error: error.message };
+  }
 }

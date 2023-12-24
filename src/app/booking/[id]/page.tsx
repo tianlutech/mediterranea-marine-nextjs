@@ -1,7 +1,7 @@
 "use client";
 
 import Sidebar from "@/app/components/sidebar/sidebar";
-import Booking from "@/app/components/booking";
+import BookingComponent from "@/app/components/booking";
 import { Suspense, useEffect, useState } from "react";
 import { getBookingInfo, getBoatInfo } from "@/app/services/notion.service";
 import LoadingModal from "@/app/components/modals/loadingModal";
@@ -16,7 +16,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState<boolean>(true);
   // will change to ours and put in env file
 
-  const apiKey: string = process.env.NEXT_PUBLIC_GOOGLE_API_KEY || ""
+  const apiKey: string = process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "";
 
   const getBoatDetails = async (data: any) => {
     await getBoatInfo(data.Boat[0]).then((data) => {
@@ -36,6 +36,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
 
         return;
       }
+
       await getBoatDetails(data);
       setData(data);
       setLoading(false);
@@ -49,7 +50,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
   }
 
   if (!isLoaded) {
-    return
+    return;
   }
   return (
     <>
@@ -60,7 +61,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
           <div className="flex md:flex-row flex-col justify-between w-full lg:flex lg:flex-wrap h-screen">
             <Sidebar boatInfo={boatInfo} />
             {/* forms section */}
-            <Booking data={data} id={params.id} boatInfo={boatInfo} />
+            <BookingComponent data={data} id={params.id} boatInfo={boatInfo} />
           </div>
         </div>
       </section>
