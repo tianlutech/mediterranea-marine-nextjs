@@ -2,7 +2,13 @@ import { useState } from "react";
 import Modal from "@/app/components/common/containers/modal";
 import Script from "next/script";
 
-export default function SumupWidget({ isOpen, checkoutId }: { isOpen: boolean, checkoutId: string }) {
+export default function SumupWidget({
+  isOpen,
+  checkoutId,
+}: {
+  isOpen: boolean;
+  checkoutId: string;
+}) {
   const [isScriptLoaded, setScriptLoaded] = useState(false);
 
   const handleScriptLoad = () => {
@@ -10,7 +16,7 @@ export default function SumupWidget({ isOpen, checkoutId }: { isOpen: boolean, c
       id: "sumup-card",
       checkoutId,
       onResponse: function (type: any, body: any) {
-        return
+        return;
       },
     });
   };
