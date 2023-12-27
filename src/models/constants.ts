@@ -1,3 +1,10 @@
+export const NOTION_DATABASES = {
+  BOOKINGS: "0aac587c9c8a4ad9b52c7a138efb3111",
+  DEPARTURE_SLOTS: "497d7a3a4699435091b112c70ab982f5",
+  FUEL: "67efc31683b44e61b037d49cc79f49a8",
+  CAPTAINS: "ba114e3cae854159803fde2ae3861d71",
+};
+
 export const MILE_RANGES = [0, 25, 35]; // Example mile ranges
 
 export const DEPARTURES_TIMES = [

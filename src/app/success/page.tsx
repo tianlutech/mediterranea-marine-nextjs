@@ -8,7 +8,7 @@ import LoadingModal from "@/components/modals/loadingModal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Image from "next/image";
-import EmailImage from "@/assets/email 1.png";
+import EmailImage from "@src/assets/email 1.png";
 
 export default function successPage() {
   return (

@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 import BookingForm1 from "./partial/booking-form-1";
 import BookingForm2 from "./partial/booking-form-2";
 import PrepaymentModal from "@/components/modals/prepaymentModal";
-import { Boat, Booking } from "@/models/models";
+import { Boat, Booking, DepartureTime } from "@/models/models";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
-import { updateBookingInfo } from "@/services/notion.service";
+import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
 import {
   MILE_RANGES,
   SEABOB as SEABOB_TOY,
@@ -21,6 +21,7 @@ import { validateAddress } from "@/services/google.service";
 import { uploadFile } from "@/services/googleDrive.service";
 import SumupWidget from "@/components/modals/sumupWidget";
 import { generateCheckoutId } from "@/services/sumup.service";
+import moment from "moment";
 
 export default function BookingComponent({
   data,
@@ -127,15 +128,31 @@ export default function BookingComponent({
       SEABOB_TOY.find((seabob) => seabob.value === SEABOB)?.name || "";
 
     const paddle = STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
+    const departureTime = moment(
+      `${moment(data.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]}`
+    );
 
     const booking = new Booking({
       ...bookingData,
+      Name: `${boatInfo.Nombre} - ${departureTime.format("DD-MM-YY HH:mm")}`,
       "ID Back Picture": uploadIdBackImageResponse,
       "ID Front Picture": uploadIdFrontResponse,
       Toys: [paddle, seaBobName].filter((value) => !!value),
+      SubmitedFormAt: new Date(),
     });
 
     const res = await updateBookingInfo(id, booking);
+
+    /**
+     * Create a Time Slot so no one can book at the same time
+     */
+    createTimeSlot(
+      new DepartureTime({
+        Booking: [id],
+        Boat: [boatInfo.id],
+        Date: departureTime,
+      })
+    );
     setLoading(false);
     if (res === false) {
       return;
