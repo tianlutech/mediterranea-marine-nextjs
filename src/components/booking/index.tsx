@@ -38,8 +38,6 @@ export default function BookingComponent({
   const [loading, setLoading] = useState<boolean>(false);
   const [totalPayment, setTotalPayment] = useState<number>(0);
   const [checkoutId, setCheckoutId] = useState("");
-  const [proceedWithNoFuel, setProceedWithNoFuel] = useState(false);
-  const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [formData, setFormData] = useState({
     "First Name": "",
     "Last Name": "",
@@ -88,13 +86,6 @@ export default function BookingComponent({
   }, [formData]);
 
   const updateNotion = async (formData: Record<string, unknown>) => {
-    setLoading(true);
-
-    if (totalPayment > 0) {
-      getCheckoutId();
-      return;
-    }
-
     const [uploadIdFrontResponse, uploadIdBackImageResponse] =
       await Promise.all([
         storeIdImage(formData["ID_Front_Picture"] as File, "front"),
@@ -144,20 +135,24 @@ export default function BookingComponent({
   };
 
   const submitBooking = async () => {
+    setLoading(true)
     // validate address first
     const res = await validateAddress(formData["Billing Address"]);
 
     if (res === false) {
+      setLoading(false)
       return;
     }
 
     if (!formData["signedContract"]) {
+      setLoading(false)
       return toast.error(
         "Please click on the check box read and sign the contract"
       );
     }
 
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
+      setLoading(false)
       return toast.error(
         `Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
@@ -167,16 +162,20 @@ export default function BookingComponent({
       +formData["No Adults"] + +formData["No Childs"] >
       boatInfo["Max.Passengers"]
     ) {
+      setLoading(false)
       return toast.error(
         `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
     }
 
     if (+formData["Fuel Payment"] === 0) {
+      setLoading(false)
       return setOpenPrepaymentModal(true);
     }
-
-    updateNotion(formData);
+    if (totalPayment > 0) {
+      getCheckoutId();
+      return
+    }
   };
 
   const getCheckoutId = async () => {
@@ -193,9 +192,9 @@ export default function BookingComponent({
     return mileRanges.map((miles: number) => ({
       label: miles
         ? `${miles} ` +
-          t("input.nautical_miles") +
-          " - " +
-          `${miles * pricePerMile}€`
+        t("input.nautical_miles") +
+        " - " +
+        `${miles * pricePerMile}€`
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
@@ -206,6 +205,10 @@ export default function BookingComponent({
     submitBooking();
   };
 
+  const proceedToNotion = () => {
+    setCheckoutId("")
+    updateNotion(formData);
+  }
   const pricePerMile = +boatInfo?.MilePrice || 0;
   const calculatedMiles = calculateBoatPrices(pricePerMile, MILE_RANGES);
 
@@ -217,7 +220,7 @@ export default function BookingComponent({
       <SumupWidget
         isOpen={checkoutId ? true : false}
         checkoutId={checkoutId}
-        onClose={() => setOpenPaymentModal(false)}
+        onClose={() => proceedToNotion()}
       />
       <PrepaymentModal
         isOpen={openPrepaymentModal}
