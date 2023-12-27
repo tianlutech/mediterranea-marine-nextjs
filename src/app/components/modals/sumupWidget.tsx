@@ -20,16 +20,16 @@ export default function SumupWidget({
       },
     });
   };
-
+  if (!isOpen) {
+    return null
+  }
   return (
     <>
-      {isOpen && (
-        <Script
-          src="https://gateway.sumup.com/gateway/ecom/card/v2/sdk.js"
-          strategy="afterInteractive"
-          onLoad={handleScriptLoad}
-        />
-      )}
+      <Script
+        src="https://gateway.sumup.com/gateway/ecom/card/v2/sdk.js"
+        strategy="afterInteractive"
+        onLoad={handleScriptLoad}
+      />
       <Modal isOpen={isOpen}>
         <div id="sumup-card"></div>
       </Modal>
