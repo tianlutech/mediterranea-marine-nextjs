@@ -1,5 +1,5 @@
 import { Client } from "@notionhq/client";
-import { Boat, Booking, DepartureTime } from "../models/models";
+import { Boat, Booking, Captain, DepartureTime } from "../models/models";
 import {
   parseNotionObject,
   NotionPage,
@@ -153,5 +153,69 @@ export async function updateBookingInfo(bookingId: string, data: Booking) {
   } catch (error) {
     console.error("Error retrieving page from Notion:", error);
     return undefined;
+  }
+}
+
+export async function getBoats() {
+  try {
+    // Append the bookingId as a query parameter to the URL
+    const response = await fetch(
+      `/api/notion/database?databaseId=${encodeURIComponent(
+        NOTION_DATABASES.BOATS
+      )}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const json = await response.json();
+    if (json.error) {
+      console.error(json.error);
+      return [];
+    }
+
+    const results = json.results.map((item: NotionPage) =>
+      parseNotionObject(new Boat(), item)
+    ) as Boat[];
+
+    return results;
+  } catch (error) {
+    console.error("Error retrieving page from Notion:", error);
+    return [];
+  }
+}
+
+export async function getCaptains() {
+  try {
+    // Append the bookingId as a query parameter to the URL
+    const response = await fetch(
+      `/api/notion/database?databaseId=${encodeURIComponent(
+        NOTION_DATABASES.CAPTAINS
+      )}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const json = await response.json();
+    if (json.error) {
+      console.error(json.error);
+      return [];
+    }
+
+    const results = json.results.map((item: NotionPage) =>
+      parseNotionObject(new Captain(), item)
+    ) as Captain[];
+
+    return results;
+  } catch (error) {
+    console.error("Error retrieving page from Notion:", error);
+    return [];
   }
 }

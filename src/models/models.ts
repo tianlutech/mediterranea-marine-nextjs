@@ -44,6 +44,15 @@ export class Boat extends NotionItem {
   bussySlots: string[] = [];
 }
 
+export class Captain extends NotionItem {
+  constructor(obj: object = {}) {
+    super(obj);
+    Object.assign(this, obj);
+  }
+  @NotionType("title")
+  "Name": string = "";
+}
+
 export class Booking extends NotionItem {
   constructor(obj: object = {}) {
     super(obj);
