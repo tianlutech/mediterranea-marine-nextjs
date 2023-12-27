@@ -8,8 +8,13 @@ import SpainFlag from "@/assets/spain.png";
 import { useTranslation } from "next-i18next";
 import { useCallback } from "react";
 import { Boat } from "@/models/models";
+import "../../i18n";
+interface SidebarProps {
+  boatInfo: Boat;
+  feedBackText?: string;
+}
 
-export default function Sidebar({ boatInfo }: { boatInfo: Boat }) {
+export default function Sidebar({ boatInfo, feedBackText }: SidebarProps) {
   const { t, i18n } = useTranslation();
   const changeLanguage = useCallback(
     (language: string) => {
@@ -75,7 +80,6 @@ export default function Sidebar({ boatInfo }: { boatInfo: Boat }) {
           <p className="mb-6">{t("sidebar.sidebar_p2")}</p>
         </div>
       </div>
-
       <div className="w-full absolute bottom-0 md:block hidden">
         <Image
           width={60}

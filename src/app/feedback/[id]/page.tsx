@@ -1,22 +1,15 @@
 "use client";
 
 import Sidebar from "@/components/sidebar/sidebar";
-import BookingComponent from "@/components/booking";
-import { useEffect, useState } from "react";
 import { getBookingInfo, getBoatInfo } from "@/services/notion.service";
-import LoadingModal from "@/components/modals/loadingModal";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useLoadScript } from "@react-google-maps/api";
+import { useEffect, useState } from "react";
 import router from "next/router";
+import FeedbackForm from "@/components/feedback";
 
-export default function BookingPage({ params }: { params: { id: string } }) {
-  const [data, setData] = useState<any>({});
+export default function UserFeedbackPage({ params }: { params: { id: string } }) {
   const [boatInfo, setBoatInfo] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
-  // will change to ours and put in env file
-
-  const apiKey: string = process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "";
+  const [data, setData] = useState<any>({});
 
   const getBoatDetails = async (data: any) => {
     await getBoatInfo(data.Boat[0]).then((data) => {
@@ -24,10 +17,6 @@ export default function BookingPage({ params }: { params: { id: string } }) {
     });
   };
 
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: apiKey,
-    libraries: ["places"],
-  });
   useEffect(() => {
     const getBookingDetails = async () => {
       const data = await getBookingInfo(params.id);
@@ -48,20 +37,13 @@ export default function BookingPage({ params }: { params: { id: string } }) {
   if (!data || !boatInfo) {
     return;
   }
-
-  if (!isLoaded) {
-    return;
-  }
   return (
     <>
-      <ToastContainer />
-      <LoadingModal isOpen={loading} />
       <section className="gradient-form justify-center h-screen w-full text-black">
         <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
-          <div className="flex md:flex-row flex-col justify-between w-full lg:flex lg:flex-wrap h-screen">
+          <div className="flex md:flex-row flex-col w-full lg:flex lg:flex-wrap h-screen">
             <Sidebar boatInfo={boatInfo} />
-            {/* forms section */}
-            <BookingComponent data={data} id={params.id} boatInfo={boatInfo} />
+            <FeedbackForm data={data} setData={setData} boatInfo={boatInfo} />
           </div>
         </div>
       </section>
