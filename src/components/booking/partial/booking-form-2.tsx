@@ -1,20 +1,16 @@
 "use client";
 
-import InfoSvg from "@/app/assets/svgs/InfoSvg";
-import PlayerSvg from "@/app/assets/svgs/PlayerSvg";
-import CommonInput from "@/app/components/common/inputs/input";
-import CommonSelect from "@/app/components/common/inputs/selectInput";
+import InfoSvg from "@/assets/svgs/InfoSvg";
+import PlayerSvg from "@/assets/svgs/PlayerSvg";
+import CommonInput from "@/components/common/inputs/input";
+import CommonSelect from "@/components/common/inputs/selectInput";
 import CommonLabel from "../../common/containers/label";
 import { useState } from "react";
-import TermsAndConditionModal from "@/app/components/modals/termsAndConditions";
+import TermsAndConditionModal from "@/components/modals/termsAndConditions";
 import VideoModal from "../../modals/videoModal";
 import ErrorMessage from "./errorMessage";
-import {
-  DEPARTURES_TIMES,
-  STANDUP_PADDLE,
-  SEABOB,
-} from "@/app/models/constants";
-import { Boat, Booking } from "@/app/models/models";
+import { DEPARTURES_TIMES, STANDUP_PADDLE, SEABOB } from "@/models/constants";
+import { Boat, Booking } from "@/models/models";
 import { useTranslation } from "next-i18next";
 
 export default function BookingForm2({
@@ -305,13 +301,13 @@ export default function BookingForm2({
                 </label>
               </div>
               <div className="ml-6">
-                {
-                  !data["signedContract"] || !data["Departure Time"] ?
-                    <label className="text-black text-sm">
-                      {t("input.complete_field")}
-                    </label>
-                    : ""
-                }
+                {!data["signedContract"] || !data["Departure Time"] ? (
+                  <label className="text-black text-sm">
+                    {t("input.complete_field")}
+                  </label>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </div>

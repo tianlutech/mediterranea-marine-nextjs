@@ -3,24 +3,24 @@
 import { useState, useEffect } from "react";
 import BookingForm1 from "./partial/booking-form-1";
 import BookingForm2 from "./partial/booking-form-2";
-import PrepaymentModal from "@/app/components/modals/prepaymentModal";
-import { Boat, Booking } from "@/app/models/models";
+import PrepaymentModal from "@/components/modals/prepaymentModal";
+import { Boat, Booking } from "@/models/models";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
-import { updateBookingInfo } from "@/app/services/notion.service";
+import { updateBookingInfo } from "@/services/notion.service";
 import {
   MILE_RANGES,
   SEABOB as SEABOB_TOY,
   STANDUP_PADDLE,
-} from "@/app/models/constants";
+} from "@/models/constants";
 import "../../i18n";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
 import SubmitButton from "../common/containers/submit-button";
-import { validateAddress } from "@/app/services/google.service";
-import { uploadFile } from "@/app/services/googleDrive.service";
-import SumupWidget from "@/app/components/modals/sumupWidget";
-import { generateCheckoutId } from "@/app/services/sumup.service";
+import { validateAddress } from "@/services/google.service";
+import { uploadFile } from "@/services/googleDrive.service";
+import SumupWidget from "@/components/modals/sumupWidget";
+import { generateCheckoutId } from "@/services/sumup.service";
 
 export default function BookingComponent({
   data,
@@ -37,9 +37,9 @@ export default function BookingComponent({
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [totalPayment, setTotalPayment] = useState<number>(0);
-  const [checkoutId, setCheckoutId] = useState("")
+  const [checkoutId, setCheckoutId] = useState("");
   const [proceedWithNoFuel, setProceedWithNoFuel] = useState(false);
-  const [openPaymentModal, setOpenPaymentModal] = useState(false)
+  const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [formData, setFormData] = useState({
     "First Name": "",
     "Last Name": "",
@@ -172,30 +172,30 @@ export default function BookingComponent({
     }
 
     if (totalPayment > 0) {
-      getCheckoutId()
-      return
+      getCheckoutId();
+      return;
     }
     updateNotion(formData);
   };
 
   const getCheckoutId = async () => {
-    const response = await generateCheckoutId(totalPayment.toString())
+    const response = await generateCheckoutId(totalPayment.toString());
     if (!response) {
-      return
+      return;
     }
-    setOpenPaymentModal(true)
-    setCheckoutId(response.id)
-    return response
-  }
+    setOpenPaymentModal(true);
+    setCheckoutId(response.id);
+    return response;
+  };
 
   // Function to calculate boat prices
   const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
     return mileRanges.map((miles: number) => ({
       label: miles
         ? `${miles} ` +
-        t("input.nautical_miles") +
-        " - " +
-        `${miles * pricePerMile}€`
+          t("input.nautical_miles") +
+          " - " +
+          `${miles * pricePerMile}€`
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
@@ -214,7 +214,11 @@ export default function BookingComponent({
   }
   return (
     <>
-      <SumupWidget isOpen={openPaymentModal} checkoutId={checkoutId} />
+      <SumupWidget
+        isOpen={openPaymentModal}
+        checkoutId={checkoutId}
+        onClose={() => setOpenPaymentModal(false)}
+      />
       <PrepaymentModal
         isOpen={openPrepaymentModal}
         closeModal={closePrepaymentModal}

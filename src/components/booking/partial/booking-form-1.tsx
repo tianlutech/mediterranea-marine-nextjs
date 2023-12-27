@@ -1,12 +1,12 @@
 "use client";
 
-import InfoSvg from "@/app/assets/svgs/InfoSvg";
-import CommonInput from "@/app/components/common/inputs/input";
-import CommonInputFile from "@/app/components/common/inputs/fileInput";
+import InfoSvg from "@/assets/svgs/InfoSvg";
+import CommonInput from "@/components/common/inputs/input";
+import CommonInputFile from "@/components/common/inputs/fileInput";
 import CommonLabel from "../../common/containers/label";
 import React from "react";
 import ErrorMessage from "./errorMessage";
-import { Boat } from "@/app/models/models";
+import { Boat } from "@/models/models";
 import { useTranslation } from "react-i18next";
 import PlaceAutoComplete from "../../common/inputs/addressAutoComplete";
 

@@ -2,8 +2,8 @@ import { google } from "googleapis";
 import moment from "moment";
 import fs from "fs";
 import { Readable } from "stream";
-import { FileBody } from "@/app/models/models";
-import { FileMetadata } from "@/app/models/models";
+import { FileBody } from "@/models/models";
+import { FileMetadata } from "@/models/models";
 
 // abel am not sure about the type of this auth
 export const uploadFile = async (auth: any, file: File, body: FileBody) => {

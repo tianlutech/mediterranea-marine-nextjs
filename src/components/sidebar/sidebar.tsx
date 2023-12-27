@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import Logo from "@/app/assets/Logo_color 1.png";
-import BoatImage from "@/app/assets/boat.png";
-import UkFlag from "@/app/assets/united-kingdom.png";
-import SpainFlag from "@/app/assets/spain.png";
+import Logo from "@/assets/Logo_color 1.png";
+import BoatImage from "@/assets/boat.png";
+import UkFlag from "@/assets/united-kingdom.png";
+import SpainFlag from "@/assets/spain.png";
 import { useTranslation } from "next-i18next";
 import { useCallback } from "react";
-import { Boat } from "@/app/models/models";
+import { Boat } from "@/models/models";
 
 export default function Sidebar({ boatInfo }: { boatInfo: Boat }) {
   const { t, i18n } = useTranslation();

@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
-import Boat from "@/app/assets/boat.png";
-import Modal from "@/app/components/common/containers/modal";
+import Boat from "@/assets/boat.png";
+import Modal from "@/components/common/containers/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 

@@ -1,8 +1,8 @@
 "use client";
-import Modal from "@/app/components/common/containers/modal";
+import Modal from "@/components/common/containers/modal";
 import SignaturePad from "react-signature-canvas";
 import React, { useRef, useState, useEffect } from "react";
-import { Boat, Booking } from "@/app/models/models";
+import { Boat, Booking } from "@/models/models";
 import moment from "moment";
 import { toast } from "react-toastify";
 

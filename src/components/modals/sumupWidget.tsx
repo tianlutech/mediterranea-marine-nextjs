@@ -1,21 +1,22 @@
 import { useState } from "react";
-import Modal from "@/app/components/common/containers/modal";
+import Modal from "@/components/common/containers/modal";
 import Script from "next/script";
 
 export default function SumupWidget({
   isOpen,
   checkoutId,
+  onClose,
 }: {
   isOpen: boolean;
   checkoutId: string;
+  onClose: () => void;
 }) {
-  const [isScriptLoaded, setScriptLoaded] = useState(false);
-
   const handleScriptLoad = () => {
     window.SumUpCard?.mount({
       id: "sumup-card",
       checkoutId,
       onResponse: function (type: any, body: any) {
+        console.log({ type, body });
         return;
       },
     });
@@ -30,7 +31,7 @@ export default function SumupWidget({
           onLoad={handleScriptLoad}
         />
       )}
-      <Modal isOpen={isOpen}>
+      <Modal isOpen={isOpen} onClose={() => onClose()}>
         <div id="sumup-card"></div>
       </Modal>
     </>
