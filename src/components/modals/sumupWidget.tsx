@@ -6,10 +6,12 @@ export default function SumupWidget({
   isOpen,
   checkoutId,
   onClose,
+  onPaid,
 }: {
   isOpen: boolean;
   checkoutId: string;
   onClose: () => void;
+  onPaid?: () => void;
 }) {
   const handleScriptLoad = () => {
     window.SumUpCard?.mount({
@@ -17,20 +19,22 @@ export default function SumupWidget({
       checkoutId,
       onResponse: function (type: any, body: any) {
         console.log({ type, body });
+        onPaid?.();
         return;
       },
     });
   };
-
+  if (!isOpen) {
+    return null;
+  }
   return (
     <>
-      {isOpen && (
-        <Script
-          src="https://gateway.sumup.com/gateway/ecom/card/v2/sdk.js"
-          strategy="afterInteractive"
-          onLoad={handleScriptLoad}
-        />
-      )}
+      <Script
+        src="https://gateway.sumup.com/gateway/ecom/card/v2/sdk.js"
+        strategy="afterInteractive"
+        onLoad={handleScriptLoad}
+      />
+
       <Modal isOpen={isOpen} onClose={() => onClose()}>
         <div id="sumup-card"></div>
       </Modal>

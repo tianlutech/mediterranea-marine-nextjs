@@ -90,6 +90,11 @@ export default function BookingComponent({
   const updateNotion = async (formData: Record<string, unknown>) => {
     setLoading(true);
 
+    if (totalPayment > 0) {
+      getCheckoutId();
+      return;
+    }
+
     const [uploadIdFrontResponse, uploadIdBackImageResponse] =
       await Promise.all([
         storeIdImage(formData["ID_Front_Picture"] as File, "front"),
@@ -171,10 +176,6 @@ export default function BookingComponent({
       return setOpenPrepaymentModal(true);
     }
 
-    if (totalPayment > 0) {
-      getCheckoutId();
-      return;
-    }
     updateNotion(formData);
   };
 
@@ -183,7 +184,6 @@ export default function BookingComponent({
     if (!response) {
       return;
     }
-    setOpenPaymentModal(true);
     setCheckoutId(response.id);
     return response;
   };
@@ -215,7 +215,7 @@ export default function BookingComponent({
   return (
     <>
       <SumupWidget
-        isOpen={openPaymentModal}
+        isOpen={checkoutId ? true : false}
         checkoutId={checkoutId}
         onClose={() => setOpenPaymentModal(false)}
       />

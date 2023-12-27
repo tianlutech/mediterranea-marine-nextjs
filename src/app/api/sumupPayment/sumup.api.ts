@@ -1,13 +1,9 @@
-import axios from "axios"
-
-type response = {
-  id: string,
-  status: string
-}
+import { v4 as uuidv4 } from "uuid";
 
 const pay_to_email = process.env.PAY_TO_EMAIL
+const secret_key = process.env.SUMUP_SECRET_KEY
 export async function getCheckoutId(amount: string) {
-  const referenceId = Math.floor(100000 + Math.random() * 900000)
+  const referenceId = uuidv4()
   try {
     const apiUrl = "https://api.sumup.com/v0.1/checkouts"
 
@@ -16,7 +12,7 @@ export async function getCheckoutId(amount: string) {
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": "Bearer sup_sk_om3EX5ZZhebf3h5esIYDaaNi8YT1I0ZKb"
+        "Authorization": `Bearer ${secret_key}`
       },
       body: JSON.stringify({ 
         checkout_reference: referenceId,

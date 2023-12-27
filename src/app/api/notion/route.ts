@@ -11,7 +11,7 @@ export async function GET(request: Request) {
     const result = await notion.getPage(id); // Make sure getPage is an async function or remove await
     return new Response(JSON.stringify(result), { status: 200 });
   } catch (error) {
-    console.error("Error retrieving page from Notion:", error);
+    console.error(error);
     return new Response(JSON.stringify(error), { status: 500 });
   }
 }
