@@ -46,6 +46,10 @@ export default function BookingForm2({
   const closeVideoModal = () => {
     setVideoModalOpen(false);
   };
+
+  const departureTimes = DEPARTURES_TIMES.filter(
+    (timeSlot) => !boatInfo.bussySlots.includes(timeSlot)
+  );
   return (
     <>
       <VideoModal
@@ -78,7 +82,7 @@ export default function BookingForm2({
                 onChange={(e) =>
                   setData({ ...data, "Departure Time": e.target.value })
                 }
-                data={DEPARTURES_TIMES}
+                data={departureTimes}
                 required
               />
               <ErrorMessage formik={formik} name="Departure Time" />

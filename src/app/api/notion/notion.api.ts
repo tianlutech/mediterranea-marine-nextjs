@@ -1,6 +1,4 @@
 import { Client } from "@notionhq/client";
-import { parseObjectToNotion } from "@/models/notion.model";
-import { UpdatePageParameters } from "@notionhq/client/build/src/api-endpoints";
 const notionSecret = process.env.NOTION_SECRET || undefined;
 
 // if (!notionSecret) {
@@ -17,6 +15,7 @@ export async function getPage(pageId: string) {
     const response = await notion.pages.retrieve({
       page_id: pageId,
     });
+
     return { result: response };
   } catch (error: any) {
     console.error("Get Notion Page Error:", error.message);
@@ -36,6 +35,44 @@ export async function updatePage(
     return { result: page };
   } catch (error: any) {
     console.error("Get Notion Page Error:", error.message);
+    return { error: error.message };
+  }
+}
+
+export async function queryDatabase({
+  databaseId,
+  filter,
+}: {
+  databaseId: string;
+  filter: Record<string, unknown>;
+}) {
+  try {
+    const response = await notion.databases.query({
+      database_id: databaseId,
+      filter: filter as any, // Filter object is complex to define
+    });
+    return { result: response };
+  } catch (error: any) {
+    console.error("Query Database :", error.message);
+    return { error: error.message };
+  }
+}
+
+export async function createDatabaseItem({
+  databaseId,
+  properties,
+}: {
+  databaseId: string;
+  properties: Record<string, unknown>;
+}) {
+  try {
+    const response = await notion.pages.create({
+      parent: { database_id: databaseId, type: "database_id" },
+      properties: properties as any,
+    });
+    return { result: response };
+  } catch (error: any) {
+    console.error("Create Item in Database :", error.message);
     return { error: error.message };
   }
 }

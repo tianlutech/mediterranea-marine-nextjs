@@ -1,3 +1,6 @@
+import moment from "moment";
+import { isArray } from "util";
+
 export type NotionType =
   | "ID"
   | "title"
@@ -46,18 +49,13 @@ export const NotionType = (type: NotionType) => {
   };
 };
 
-class MyClass {
-  @NotionType("rich_text")
-  property1: string = "value1";
-
-  @NotionType("number")
-  property2: number = 42;
-}
-
 export class NotionItem {
-  title: string = "";
+  id: string = "";
   cover: string = "";
 
+  constructor(obj: object = {}) {
+    Object.assign(this, obj);
+  }
   getNotionTypes() {
     // Get all symbols associated with the instance
     const symbols = Object.getOwnPropertySymbols(
@@ -91,6 +89,7 @@ export const parseNotionObject = <Type extends NotionItem>(
   }, instance as Record<string, unknown>);
 
   object.cover = parseNotionProperty(notionObject.cover);
+  object.id = notionObject.id;
   return object as Type;
 };
 
@@ -135,6 +134,10 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
 };
 
 const propToNotion: Record<string, (value: any) => NotionProperty> = {
+  title: (value: string) => ({
+    type: "title",
+    title: [{ type: "text", text: { content: value } }],
+  }),
   multi_select: (value: unknown[]) => ({
     type: "multi_select",
     multi_select: value.map((item) => ({
@@ -143,7 +146,14 @@ const propToNotion: Record<string, (value: any) => NotionProperty> = {
   }),
   date: (value: Date) => ({
     type: "date",
-    date: { start: value },
+    date: { start: moment(value).toISOString() },
+  }),
+  range: ([start, end]: Date[]) => ({
+    type: "date",
+    date: {
+      start: moment(start).toISOString(),
+      end: moment(end).toISOString(),
+    },
   }),
   number: (value: number) => ({
     type: "number",
@@ -180,10 +190,11 @@ const propToNotion: Record<string, (value: any) => NotionProperty> = {
       },
     ],
   }),
-  relation: (value: Object) => ({
-    type: "relation",
-    relation: value,
-  }),
+  relation: (value: string[] | string) => {
+    value = Array.isArray(value) ? value : [value];
+
+    return { type: "relation", relation: value.map((id) => ({ id })) };
+  },
 };
 
 export const parseObjectToNotion = <T extends NotionItem>(
@@ -194,7 +205,6 @@ export const parseObjectToNotion = <T extends NotionItem>(
   const object = notionProperties.reduce((obj, notionProp) => {
     const value = (item as Record<string, unknown>)[notionProp.property];
     const parser = propToNotion[notionProp.type];
-
     if (!value || !parser) {
       return obj;
     }
