@@ -209,9 +209,9 @@ export default function BookingComponent({
     return mileRanges.map((miles: number) => ({
       label: miles
         ? `${miles} ` +
-        t("input.nautical_miles") +
-        " - " +
-        `${miles * pricePerMile}€`
+          t("input.nautical_miles") +
+          " - " +
+          `${miles * pricePerMile}€`
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
