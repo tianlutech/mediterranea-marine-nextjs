@@ -24,6 +24,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/_app.js", "src/app/assets/boat.ico", "src/app/assets/boat.ico"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/_app.js", "src/assets/boat.ico", "src/assets/boat.ico"],
   "exclude": ["node_modules"]
 }

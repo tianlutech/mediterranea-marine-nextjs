@@ -1,5 +1,5 @@
 import { Client } from "@notionhq/client";
-import { parseObjectToNotion } from "@/app/models/notion.model";
+import { parseObjectToNotion } from "@/models/notion.model";
 import { UpdatePageParameters } from "@notionhq/client/build/src/api-endpoints";
 const notionSecret = process.env.NOTION_SECRET || undefined;
 

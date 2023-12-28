@@ -1,8 +1,8 @@
-import { google } from "googleapis"
-import * as googleDrive from "./googleDrive.api"
-import { FileBody } from "@/app/models/models";
+import { google } from "googleapis";
+import * as googleDrive from "./googleDrive.api";
+import { FileBody } from "@/models/models";
 
-import { credentials } from "../config/credentials"
+import { credentials } from "../config/credentials";
 
 const auth = new google.auth.GoogleAuth({
   // your credentials to authenticate
@@ -13,7 +13,7 @@ const auth = new google.auth.GoogleAuth({
   // [ https://developers.google.com/drive/api/guides/api-specific-auth ]
   // for more advice on scopes
   scopes: ["https://www.googleapis.com/auth/drive"],
-})
+});
 
 // Define the function to handle the POST request
 export async function POST(request: Request) {
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
       boatName: data.get("boatName"),
       id: data.get("id"),
       slag: data.get("slag"),
-    }
+    };
 
     // If there's no file in the FormData, return an error response
     if (!file) {
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 
     // Call your function to handle the file upload
     const result = await googleDrive.uploadFile(auth, file, body);
-    
+
     return new Response(JSON.stringify(result), {
       status: 200,
       headers: { "Content-Type": "application/json" },

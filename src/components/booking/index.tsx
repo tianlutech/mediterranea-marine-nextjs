@@ -3,22 +3,24 @@
 import { useState, useEffect } from "react";
 import BookingForm1 from "./partial/booking-form-1";
 import BookingForm2 from "./partial/booking-form-2";
-import PrepaymentModal from "@/app/components/modals/prepaymentModal";
-import { Boat, Booking } from "@/app/models/models";
+import PrepaymentModal from "@/components/modals/prepaymentModal";
+import { Boat, Booking } from "@/models/models";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
-import { updateBookingInfo } from "@/app/services/notion.service";
+import { updateBookingInfo } from "@/services/notion.service";
 import {
   MILE_RANGES,
   SEABOB as SEABOB_TOY,
   STANDUP_PADDLE,
-} from "@/app/models/constants";
+} from "@/models/constants";
 import "../../i18n";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
 import SubmitButton from "../common/containers/submit-button";
-import { validateAddress } from "@/app/services/google.service";
-import { uploadFile } from "@/app/services/googleDrive.service";
+import { validateAddress } from "@/services/google.service";
+import { uploadFile } from "@/services/googleDrive.service";
+import SumupWidget from "@/components/modals/sumupWidget";
+import { generateCheckoutId } from "@/services/sumup.service";
 
 export default function BookingComponent({
   data,
@@ -35,7 +37,7 @@ export default function BookingComponent({
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [totalPayment, setTotalPayment] = useState<number>(0);
-  const [proceedWithNoFuel, setProceedWithNoFuel] = useState(false);
+  const [checkoutId, setCheckoutId] = useState("");
   const [formData, setFormData] = useState({
     "First Name": "",
     "Last Name": "",
@@ -84,8 +86,6 @@ export default function BookingComponent({
   }, [formData]);
 
   const updateNotion = async (formData: Record<string, unknown>) => {
-    setLoading(true);
-
     const [uploadIdFrontResponse, uploadIdBackImageResponse] =
       await Promise.all([
         storeIdImage(formData["ID_Front_Picture"] as File, "front"),
@@ -135,19 +135,24 @@ export default function BookingComponent({
   };
 
   const submitBooking = async () => {
+    setLoading(true)
     // validate address first
     const res = await validateAddress(formData["Billing Address"]);
 
     if (res === false) {
+      setLoading(false)
       return;
     }
 
     if (!formData["signedContract"]) {
+      setLoading(false)
       return toast.error(
         "Please click on the check box read and sign the contract"
       );
     }
+
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
+      setLoading(false)
       return toast.error(
         `Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
@@ -157,16 +162,29 @@ export default function BookingComponent({
       +formData["No Adults"] + +formData["No Childs"] >
       boatInfo["Max.Passengers"]
     ) {
+      setLoading(false)
       return toast.error(
         `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
     }
 
     if (+formData["Fuel Payment"] === 0) {
+      setLoading(false)
       return setOpenPrepaymentModal(true);
     }
+    if (totalPayment > 0) {
+      getCheckoutId();
+      return
+    }
+  };
 
-    updateNotion(formData);
+  const getCheckoutId = async () => {
+    const response = await generateCheckoutId(totalPayment.toString());
+    if (!response) {
+      return;
+    }
+    setCheckoutId(response.id);
+    return response;
   };
 
   // Function to calculate boat prices
@@ -174,9 +192,9 @@ export default function BookingComponent({
     return mileRanges.map((miles: number) => ({
       label: miles
         ? `${miles} ` +
-          t("input.nautical_miles") +
-          " - " +
-          `${miles * pricePerMile}€`
+        t("input.nautical_miles") +
+        " - " +
+        `${miles * pricePerMile}€`
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
@@ -187,6 +205,10 @@ export default function BookingComponent({
     submitBooking();
   };
 
+  const proceedToNotion = () => {
+    setCheckoutId("")
+    updateNotion(formData);
+  }
   const pricePerMile = +boatInfo?.MilePrice || 0;
   const calculatedMiles = calculateBoatPrices(pricePerMile, MILE_RANGES);
 
@@ -195,6 +217,11 @@ export default function BookingComponent({
   }
   return (
     <>
+      <SumupWidget
+        isOpen={checkoutId ? true : false}
+        checkoutId={checkoutId}
+        onClose={() => proceedToNotion()}
+      />
       <PrepaymentModal
         isOpen={openPrepaymentModal}
         closeModal={closePrepaymentModal}

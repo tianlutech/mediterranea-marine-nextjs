@@ -1,10 +1,10 @@
 "use client";
 
-import Sidebar from "@/app/components/sidebar/sidebar";
-import BookingComponent from "@/app/components/booking";
+import Sidebar from "@/components/sidebar/sidebar";
+import BookingComponent from "@/components/booking";
 import { Suspense, useEffect, useState } from "react";
-import { getBookingInfo, getBoatInfo } from "@/app/services/notion.service";
-import LoadingModal from "@/app/components/modals/loadingModal";
+import { getBookingInfo, getBoatInfo } from "@/services/notion.service";
+import LoadingModal from "@/components/modals/loadingModal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLoadScript } from "@react-google-maps/api";

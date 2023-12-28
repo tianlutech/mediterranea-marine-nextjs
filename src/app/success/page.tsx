@@ -1,18 +1,23 @@
 "use client";
 
-import Sidebar from "@/app/components/sidebar/sidebar";
-import Booking from "@/app/components/booking";
+import Sidebar from "@/components/sidebar/sidebar";
+import Booking from "@/components/booking";
 import { useEffect, useState } from "react";
-import { getBookingInfo, getBoatInfo } from "@/app/services/notion.service";
-import LoadingModal from "@/app/components/modals/loadingModal";
+import { getBookingInfo, getBoatInfo } from "@/services/notion.service";
+import LoadingModal from "@/components/modals/loadingModal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Image from "next/image";
-import EmailImage from "@/app/assets/email 1.png"
+import EmailImage from "@/assets/email 1.png";
 
 export default function successPage() {
   return (
-    <div style={{ background: "linear-gradient(180deg, #262D46 0%, #B07E50 100%)" }} className="relative p-2 w-full h-screen bg-white text-center flex flex-col items-center text-white justify-center">
+    <div
+      style={{
+        background: "linear-gradient(180deg, #262D46 0%, #B07E50 100%)",
+      }}
+      className="relative p-2 w-full h-screen bg-white text-center flex flex-col items-center text-white justify-center"
+    >
       <Image
         width={60}
         height={45}
