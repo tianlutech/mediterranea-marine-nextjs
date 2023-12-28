@@ -8,7 +8,11 @@ import FeedbackForm from "@/components/feedback";
 import { Boat, Booking } from "@/models/models";
 import LoadingModal from "@/components/modals/loadingModal";
 
-export default function UserFeedbackPage({ params }: { params: { id: string } }) {
+export default function UserFeedbackPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const [boatInfo, setBoatInfo] = useState<Boat | null>();
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<Booking>();
@@ -21,9 +25,7 @@ export default function UserFeedbackPage({ params }: { params: { id: string } })
         return;
       }
 
-      const [boatDetails] = await Promise.all([
-        getBoatInfo(data.Boat[0]),
-      ]);
+      const [boatDetails] = await Promise.all([getBoatInfo(data.Boat[0])]);
 
       if (!boatDetails) {
         router.replace("/");
@@ -31,7 +33,7 @@ export default function UserFeedbackPage({ params }: { params: { id: string } })
       }
 
       setData(data);
-      setBoatInfo(boatDetails)
+      setBoatInfo(boatDetails);
       setLoading(false);
     };
 
@@ -54,7 +56,7 @@ export default function UserFeedbackPage({ params }: { params: { id: string } })
       <section className="gradient-form justify-center h-screen w-full text-black">
         <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
           <div className="flex md:flex-row flex-col w-full lg:flex lg:flex-wrap h-screen">
-            <Sidebar boatInfo={boatInfo} />
+            <Sidebar />
             <FeedbackForm data={data} boatInfo={boatInfo} />
           </div>
         </div>

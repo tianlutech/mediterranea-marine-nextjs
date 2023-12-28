@@ -18,28 +18,29 @@ export default function SumupWidget({
       checkoutId,
       onResponse: function (type: any, body: any) {
         if (type === "success") {
-          onClose()
-          return
+          onClose();
+          return;
         }
         if (type !== "sent" && type !== "success") {
-          toast.error("Something went wrong")
-          return
+          toast.error("Something went wrong");
+          return;
         }
         return;
       },
     });
   };
+  if (!isOpen) {
+    return null;
+  }
   return (
     <>
-      {
-        isOpen &&
-        <Script
-          src="https://gateway.sumup.com/gateway/ecom/card/v2/sdk.js"
-          strategy="afterInteractive"
-          onLoad={handleScriptLoad}
-        />
-      }
-      <Modal isOpen={isOpen} onClose={() => onClose()}>
+      <Script
+        src="https://gateway.sumup.com/gateway/ecom/card/v2/sdk.js"
+        strategy="afterInteractive"
+        onLoad={handleScriptLoad}
+      />
+
+      <Modal isOpen={isOpen}>
         <div id="sumup-card"></div>
       </Modal>
     </>

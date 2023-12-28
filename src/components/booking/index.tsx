@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 import BookingForm1 from "./partial/booking-form-1";
 import BookingForm2 from "./partial/booking-form-2";
 import PrepaymentModal from "@/components/modals/prepaymentModal";
-import { Boat, Booking } from "@/models/models";
+import { Boat, Booking, DepartureTime } from "@/models/models";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
-import { updateBookingInfo } from "@/services/notion.service";
+import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
 import {
   MILE_RANGES,
   SEABOB as SEABOB_TOY,
@@ -21,6 +21,7 @@ import { validateAddress } from "@/services/google.service";
 import { uploadFile } from "@/services/googleDrive.service";
 import SumupWidget from "@/components/modals/sumupWidget";
 import { generateCheckoutId } from "@/services/sumup.service";
+import moment from "moment";
 
 export default function BookingComponent({
   data,
@@ -118,15 +119,31 @@ export default function BookingComponent({
       SEABOB_TOY.find((seabob) => seabob.value === SEABOB)?.name || "";
 
     const paddle = STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
+    const departureTime = moment(
+      `${moment(data.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]}`
+    );
 
     const booking = new Booking({
       ...bookingData,
+      Name: `${boatInfo.Nombre} - ${departureTime.format("DD-MM-YY HH:mm")}`,
       "ID Back Picture": uploadIdBackImageResponse,
       "ID Front Picture": uploadIdFrontResponse,
       Toys: [paddle, seaBobName].filter((value) => !!value),
+      SubmittedFormAt: new Date(),
     });
 
     const res = await updateBookingInfo(id, booking);
+
+    /**
+     * Create a Time Slot so no one can book at the same time
+     */
+    createTimeSlot(
+      new DepartureTime({
+        Booking: [id],
+        Boat: [boatInfo.id],
+        Date: departureTime,
+      })
+    );
     setLoading(false);
     if (res === false) {
       return;
@@ -135,24 +152,24 @@ export default function BookingComponent({
   };
 
   const submitBooking = async () => {
-    setLoading(true)
+    setLoading(true);
     // validate address first
     const res = await validateAddress(formData["Billing Address"]);
 
     if (res === false) {
-      setLoading(false)
+      setLoading(false);
       return;
     }
 
     if (!formData["signedContract"]) {
-      setLoading(false)
+      setLoading(false);
       return toast.error(
         "Please click on the check box read and sign the contract"
       );
     }
 
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
-      setLoading(false)
+      setLoading(false);
       return toast.error(
         `Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
@@ -162,19 +179,19 @@ export default function BookingComponent({
       +formData["No Adults"] + +formData["No Childs"] >
       boatInfo["Max.Passengers"]
     ) {
-      setLoading(false)
+      setLoading(false);
       return toast.error(
         `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
     }
 
     if (+formData["Fuel Payment"] === 0) {
-      setLoading(false)
+      setLoading(false);
       return setOpenPrepaymentModal(true);
     }
     if (totalPayment > 0) {
       getCheckoutId();
-      return
+      return;
     }
   };
 
@@ -206,9 +223,9 @@ export default function BookingComponent({
   };
 
   const proceedToNotion = () => {
-    setCheckoutId("")
+    setCheckoutId("");
     updateNotion(formData);
-  }
+  };
   const pricePerMile = +boatInfo?.MilePrice || 0;
   const calculatedMiles = calculateBoatPrices(pricePerMile, MILE_RANGES);
 
@@ -232,7 +249,16 @@ export default function BookingComponent({
             ...formData,
             ["Fuel Payment"]: fuelPayment.toString(),
           };
+
+          const total =
+            +newData["Fuel Payment"] + +newData["SUP"] + +newData["SEABOB"];
+
           setFormData(newData);
+
+          if (total > 0) {
+            getCheckoutId();
+            return;
+          }
           updateNotion(newData);
         }}
       />
