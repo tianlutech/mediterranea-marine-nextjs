@@ -11,10 +11,10 @@ import { Boat } from "@/models/models";
 import "../../i18n";
 interface SidebarProps {
   boatInfo: Boat;
-  feedBackText?: string;
+  text?: string;
 }
 
-export default function Sidebar({ boatInfo, feedBackText }: SidebarProps) {
+export default function Sidebar({ boatInfo, text }: SidebarProps) {
   const { t, i18n } = useTranslation();
   const changeLanguage = useCallback(
     (language: string) => {

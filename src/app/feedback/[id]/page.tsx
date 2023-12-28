@@ -5,29 +5,24 @@ import { getBookingInfo, getBoatInfo } from "@/services/notion.service";
 import { useEffect, useState } from "react";
 import router from "next/router";
 import FeedbackForm from "@/components/feedback";
+import { Boat, Booking } from "@/models/models";
 
 export default function UserFeedbackPage({ params }: { params: { id: string } }) {
-  const [boatInfo, setBoatInfo] = useState<any>({});
+  const [boatInfo, setBoatInfo] = useState<Boat | null>();
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<any>({});
 
-  const getBoatDetails = async (data: any) => {
-    await getBoatInfo(data.Boat[0]).then((data) => {
-      setBoatInfo(data);
-    });
-  };
-
   useEffect(() => {
     const getBookingDetails = async () => {
-      const data = await getBookingInfo(params.id);
+      const data: Booking | undefined = await getBookingInfo(params.id);
       if (!data) {
         router.replace("/");
-
         return;
       }
 
-      await getBoatDetails(data);
+      const boatInformation = await getBoatInfo(data.Boat[0]);
       setData(data);
+      setBoatInfo(boatInformation)
       setLoading(false);
     };
 

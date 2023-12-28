@@ -5,23 +5,21 @@ import CommonInput from "@/components/common/inputs/input";
 import CommonInputFile from "@/components/common/inputs/fileInput";
 import CommonLabel from "../common/containers/label";
 import React from "react";
-import { Boat } from "@/models/models";
+import { Boat, Booking } from "@/models/models";
 import { useTranslation } from "react-i18next";
 import StarRatings from "react-star-ratings";
 import SubmitButton from "../common/containers/submit-button";
 import { useEffect, useState } from "react";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
-  return <div className="relative w-[48%]">{children}</div>;
+  return <div className="relative">{children}</div>;
 };
 
 export default function FeedbackForm({
   data,
-  setData,
   boatInfo,
 }: {
-  data: any;
-  setData: any;
+  data: Booking;
   boatInfo: Boat;
 }) {
   const { t } = useTranslation();
@@ -34,9 +32,9 @@ export default function FeedbackForm({
   return (
     <div className="flex md:w-[77%] w-full  justify-center items-center md:p-6 p-2">
       <div className="bg-white rounded-lg">
-        <p className="text-black flex items-center justify-center mt-4 font-semibold text-xl">Treatment Received Feedback Form</p>
+        <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm mx-6">Treatment Received Feedback Form</p>
         <div className="md:p-6 sm:p-8 p-6">
-          <div className="flex justify-between w-full mt-6">
+          <div className="w-full mt-6">
             <FormWrapper>
               <CommonLabel input="text">
                 {t("input.engine_hours")}
@@ -47,14 +45,13 @@ export default function FeedbackForm({
                 id="engineHours"
                 placeholder={t("input.engine_hours")}
                 value={data["No Adults"]} //Abel this I will change while integrating
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setData({ ...data, "No Adults": e.target.value })
-                }
                 min={1}
                 step={1}
                 required={true}
               />
             </FormWrapper>
+          </div>
+          <div className="w-full mt-6">
             <FormWrapper>
               <CommonLabel input="text">
                 {t("input.fuel_left")}
@@ -63,11 +60,8 @@ export default function FeedbackForm({
                 type="number"
                 name="number"
                 id="fuelLeft"
-                placeholder="Fuel left"
+                placeholder="%"
                 value={data["No Childs"]} //Abel this I will change while integrating
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setData({ ...data, "No Childs": e.target.value })
-                }
                 step={1}
               />
 
