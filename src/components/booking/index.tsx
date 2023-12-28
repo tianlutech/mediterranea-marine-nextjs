@@ -138,7 +138,7 @@ export default function BookingComponent({
       "ID Back Picture": uploadIdBackImageResponse,
       "ID Front Picture": uploadIdFrontResponse,
       Toys: [paddle, seaBobName].filter((value) => !!value),
-      SubmitedFormAt: new Date(),
+      SubmittedFormAt: new Date(),
     });
 
     const res = await updateBookingInfo(id, booking);

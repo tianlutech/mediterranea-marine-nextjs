@@ -201,7 +201,7 @@ export const parseObjectToNotion = <T extends NotionItem>(
   item: T
 ): Record<string, NotionProperty> => {
   const notionProperties = item.getNotionTypes();
-  console.log({ notionProperties, item });
+
   const object = notionProperties.reduce((obj, notionProp) => {
     const value = (item as Record<string, unknown>)[notionProp.property];
     const parser = propToNotion[notionProp.type];

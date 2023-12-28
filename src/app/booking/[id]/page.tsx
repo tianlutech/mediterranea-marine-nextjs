@@ -13,14 +13,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLoadScript } from "@react-google-maps/api";
 import router from "next/router";
-import { Booking, DepartureTime } from "@/models/models";
+import { Booking, Boat } from "@/models/models";
 import moment from "moment";
 
 const libraries = ["places"] as "places"[];
 
 export default function BookingPage({ params }: { params: { id: string } }) {
-  const [data, setData] = useState<any>(null);
-  const [boatInfo, setBoatInfo] = useState<any>(null);
+  const [data, setData] = useState<Booking | null>(null);
+  const [boatInfo, setBoatInfo] = useState<Boat | null>(null);
 
   const [loading, setLoading] = useState<boolean>(true);
   // will change to ours and put in env file
