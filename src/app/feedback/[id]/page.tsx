@@ -6,7 +6,11 @@ import { useEffect, useState } from "react";
 import router from "next/router";
 import FeedbackForm from "@/components/feedback";
 
-export default function UserFeedbackPage({ params }: { params: { id: string } }) {
+export default function UserFeedbackPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const [boatInfo, setBoatInfo] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<any>({});
@@ -42,7 +46,7 @@ export default function UserFeedbackPage({ params }: { params: { id: string } })
       <section className="gradient-form justify-center h-screen w-full text-black">
         <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
           <div className="flex md:flex-row flex-col w-full lg:flex lg:flex-wrap h-screen">
-            <Sidebar boatInfo={boatInfo} />
+            <Sidebar />
             <FeedbackForm data={data} setData={setData} boatInfo={boatInfo} />
           </div>
         </div>
