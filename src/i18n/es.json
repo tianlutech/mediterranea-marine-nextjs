@@ -35,7 +35,10 @@
     "pay":"Pagar",
     "nautical_miles":"Millas Náuticas",
     "id_number":"Número de identificación",
-    "complete_field":"Complete todos los campos para firmar el contrato."
+    "complete_field":"Complete todos los campos para firmar el contrato.",
+    "engine_hours":"Horas de motor",
+    "fuel_left":"Combustible restante",
+    "client_happiness":"Felicidad del cliente"
   },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepaga tu combustible",

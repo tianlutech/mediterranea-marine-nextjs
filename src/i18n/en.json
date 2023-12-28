@@ -34,7 +34,10 @@
     "pay":"Pay",
     "nautical_miles":"Nautical Miles",
     "id_number":"ID Number",
-    "complete_field":"Complete all fields to sign the contract"
+    "complete_field":"Complete all fields to sign the contract",
+    "engine_hours":"Engine Hours",
+    "fuel_left":"Fuel Left",
+    "client_happiness":"Client Happiness"
   },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepay your fuel",
