@@ -29,7 +29,6 @@ export const uploadFile = async (auth: any, file: File, body: FileBody) => {
     if (!folder.data.id) {
       return { error: "Error creating the folder" };
     }
-
     const res = await drive.files.create({
       requestBody: {
         name: file.name,

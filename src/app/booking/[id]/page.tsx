@@ -2,14 +2,14 @@
 
 import Sidebar from "@/components/sidebar/sidebar";
 import BookingComponent from "@/components/booking";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getBookingInfo,
   getBoatInfo,
   getBookedTimeSlots,
 } from "@/services/notion.service";
 import LoadingModal from "@/components/modals/loadingModal";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLoadScript } from "@react-google-maps/api";
 import router from "next/router";

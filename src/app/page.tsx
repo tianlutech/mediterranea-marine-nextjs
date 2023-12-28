@@ -19,7 +19,7 @@ export default function Home() {
           onClick={() => goHome()}
         >
           <BoatSvg />
-          <span className="italic text-xl text-black">Mediterranea Marine</span>
+          <span className="italic text-xl">Mediterranea Marine</span>
         </div>
       </Modal>
     </>
