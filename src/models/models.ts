@@ -101,7 +101,7 @@ export class Booking extends NotionItem {
   "No Adults": number;
 
   @NotionType("relation")
-  Boat?: Boat;
+  Boat?: string[];
 
   @NotionType("rich_text")
   "Billing Address": string = "";
