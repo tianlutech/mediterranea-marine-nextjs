@@ -37,7 +37,8 @@
     "complete_field":"Complete all fields to sign the contract",
     "engine_hours":"Engine Hours",
     "fuel_left":"Fuel Left",
-    "client_happiness":"Client Happiness"
+    "client_happiness":"Client Happiness",
+    "recommendation_text":"If the rating for the client is high (3 starts or more), send him a recommendation requests."
   },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepay your fuel",

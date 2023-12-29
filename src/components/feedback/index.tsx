@@ -67,6 +67,16 @@ export default function FeedbackForm({
 
             </FormWrapper>
           </div>
+          <div className="relative w-full mt-6">
+            <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 bottom-[2.8rem] bg-white left-4 px-2">
+              {t("input.general_comments")}
+            </label>{" "}
+            <textarea
+              id="message"
+              className="block p-2.5 w-full text-sm text-black rounded-lg border border-gray-300"
+              placeholder=""
+            ></textarea>
+          </div>
           <div className="mt-3">
             <p className="text-black mb-2">
               {t("input.client_happiness")}
@@ -80,6 +90,19 @@ export default function FeedbackForm({
               starDimension="30px"
               name="rating"
             />
+          </div>
+          <div className="mt-3">
+            <div className="flex items-center">
+              <input
+                id="checked-checkbox"
+                type="checkbox"
+                required
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              />
+              <label className="ms-2 text-sm text-black">
+                {t("input.recommendation_text")}
+              </label>
+            </div>
           </div>
           <SubmitButton
             label="Submit"

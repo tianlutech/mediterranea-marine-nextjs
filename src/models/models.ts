@@ -23,10 +23,6 @@ export type FileBody = {
 };
 
 export class Boat extends NotionItem {
-  constructor(obj: object = {}) {
-    super(obj);
-    Object.assign(this, obj);
-  }
   @NotionType("number")
   "Max.Passengers": number;
   @NotionType("rich_text")
@@ -39,28 +35,13 @@ export class Boat extends NotionItem {
   Nombre: string = "";
   @NotionType("rich_text")
   RegistrationPlate: string = "";
-
-  // Client Side Injected data Format time HH:mm
-  bussySlots: string[] = [];
-}
-
-export class Captain extends NotionItem {
-  constructor(obj: object = {}) {
-    super(obj);
-    Object.assign(this, obj);
-  }
-  @NotionType("title")
-  "Name": string = "";
 }
 
 export class Booking extends NotionItem {
-  constructor(obj: object = {}) {
-    super(obj);
+  constructor(obj: Partial<Booking> = {}) {
+    super();
     Object.assign(this, obj);
   }
-
-  @NotionType("title")
-  Name: string = "";
 
   @NotionType("ID")
   ID: string = "";
@@ -135,21 +116,11 @@ export class Booking extends NotionItem {
   Email: string = "";
 
   @NotionType("rich_text")
+  Name: string = "";
+
+  @NotionType("rich_text")
   "Restaurant Name": string = "";
 
   @NotionType("date")
   "Restaurant Time"?: Date;
-}
-
-export class DepartureTime extends NotionItem {
-  constructor(obj: object = {}) {
-    super(obj);
-    Object.assign(this, obj);
-  }
-  @NotionType("relation")
-  Boat: string[] = [];
-  @NotionType("date")
-  Date?: Date;
-  @NotionType("relation")
-  Booking: string[] = [];
 }
