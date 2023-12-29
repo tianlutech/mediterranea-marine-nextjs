@@ -64,8 +64,14 @@ export class Booking extends NotionItem {
   @NotionType("rich_text")
   "Departure Time": string = "";
 
+  @NotionType("rich_text")
+  "Captain Feedback": string = "";
+
   @NotionType("number")
-  "Fuel left": number = 0;
+  "Fuel Left": number = 0;
+
+  @NotionType("number")
+  "Rate": number = 0;
 
   @NotionType("number")
   "Engine Hours": number;
@@ -91,8 +97,8 @@ export class Booking extends NotionItem {
   @NotionType("file")
   "ID Back Picture": string;
 
-  @NotionType("number")
-  Rate: number = 0;
+  @NotionType("checkbox")
+  AllowFollowUp: number = 0;
 
   @NotionType("relation")
   Captain?: Captian;

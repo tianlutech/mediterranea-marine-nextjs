@@ -13,7 +13,8 @@ export type NotionType =
   | "multi_select"
   | "title"
   | "files"
-  | "file";
+  | "file"
+  | "checkbox";
 
 export type NotionProperty = { type: NotionType } & Record<string, unknown>;
 
@@ -127,6 +128,10 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
       return (
         (property["title"] as Array<{ plain_text: string }>)[0]?.plain_text ||
         ""
+      );
+    case "checkbox":
+      return (
+        (property["checkbox"] as { checkbox: boolean })
       );
     default:
       return "";

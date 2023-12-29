@@ -24,7 +24,6 @@ export default function UserFeedbackPage({
         router.replace("/");
         return;
       }
-
       const [boatDetails] = await Promise.all([getBoatInfo(data.Boat[0])]);
 
       if (!boatDetails) {
@@ -57,7 +56,7 @@ export default function UserFeedbackPage({
         <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
           <div className="flex md:flex-row flex-col w-full lg:flex lg:flex-wrap h-screen">
             <Sidebar />
-            <FeedbackForm data={data} boatInfo={boatInfo} />
+            <FeedbackForm data={data} id={params.id} boatInfo={boatInfo} />
           </div>
         </div>
       </section>
