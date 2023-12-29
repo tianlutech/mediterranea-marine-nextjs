@@ -1,6 +1,6 @@
 "use client";
 
-import InfoSvg from "@/assets/svgs/InfoSvg";
+import InfoSvg from "@/app/assets/svgs/InfoSvg";
 import CommonInput from "@/components/common/inputs/input";
 import CommonInputFile from "@/components/common/inputs/fileInput";
 import CommonLabel from "../common/containers/label";
@@ -81,7 +81,10 @@ export default function FeedbackForm({
                   placeholder={t("input.engine_hours")}
                   value={formData["Engine Hours"]}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setFormData({ ...formData, "Engine Hours": e.target.value })
+                    setFormData({
+                      ...formData,
+                      "Engine Hours": +e.target.value,
+                    })
                   }
                   min={1}
                   step={1}
@@ -99,7 +102,7 @@ export default function FeedbackForm({
                   placeholder="%"
                   value={formData["Fuel Left"]}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    const inputValue: number = e.target.value;
+                    const inputValue: number = +e.target.value;
 
                     // Check if the entered value is a valid number and not more than 100
                     if (
@@ -123,7 +126,7 @@ export default function FeedbackForm({
                 className="block p-2.5 w-full text-sm text-black rounded-lg border border-gray-300"
                 placeholder=""
                 value={formData["Captain Feedback"]}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                   setFormData({
                     ...formData,
                     "Captain Feedback": e.target.value,
