@@ -35,11 +35,11 @@ export default function FeedbackForm({
     "Engine Hours": 0,
     Rate: 0,
     "Captain Feedback": "",
-    AllowFollowUp: true
-  })
+    AllowFollowUp: true,
+  });
   const router = useRouter();
   const changeRating = (newRating: number) => {
-    setFormData({ ...formData, Rate: newRating })
+    setFormData({ ...formData, Rate: newRating });
   };
 
   const formik = useFormik({
@@ -50,19 +50,23 @@ export default function FeedbackForm({
   });
 
   const submitFeedBack = async () => {
-    setLoading(true)
+    setLoading(true);
 
     const booking = new Booking(formData as unknown as Booking);
     const res = await updateBookingInfo(id, booking);
+    setLoading(false);
+
     if (res === false) {
       return;
     }
     router.replace("/success");
-  }
+  };
   return (
     <div className="flex md:w-[77%] w-full  justify-center items-center md:p-6 p-2">
       <div className="bg-white rounded-lg">
-        <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm mx-6">Treatment Received Feedback Form</p>
+        <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm mx-6">
+          Treatment Received Feedback Form
+        </p>
         <form onSubmit={formik.handleSubmit}>
           <div className="md:p-6 sm:p-8 p-6">
             <div className="w-full mt-6">
@@ -87,9 +91,7 @@ export default function FeedbackForm({
             </div>
             <div className="w-full mt-6">
               <FormWrapper>
-                <CommonLabel input="text">
-                  {t("input.fuel_left")}
-                </CommonLabel>
+                <CommonLabel input="text">{t("input.fuel_left")}</CommonLabel>
                 <CommonInput
                   type="number"
                   name="number"
@@ -100,13 +102,16 @@ export default function FeedbackForm({
                     const inputValue: number = e.target.value;
 
                     // Check if the entered value is a valid number and not more than 100
-                    if (!isNaN(inputValue) && inputValue >= 0 && inputValue <= 100) {
+                    if (
+                      !isNaN(inputValue) &&
+                      inputValue >= 0 &&
+                      inputValue <= 100
+                    ) {
                       setFormData({ ...formData, "Fuel Left": inputValue });
                     }
                   }}
                   step={1}
                 />
-
               </FormWrapper>
             </div>
             <div className="relative w-full mt-6">
@@ -119,15 +124,15 @@ export default function FeedbackForm({
                 placeholder=""
                 value={formData["Captain Feedback"]}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setFormData({ ...formData, "Captain Feedback": e.target.value })
+                  setFormData({
+                    ...formData,
+                    "Captain Feedback": e.target.value,
+                  })
                 }
-                required
               ></textarea>
             </div>
             <div className="mt-3">
-              <p className="text-black mb-2">
-                {t("input.client_happiness")}
-              </p>
+              <p className="text-black mb-2">{t("input.client_happiness")}</p>
               <StarRatings
                 rating={formData.Rate}
                 starRatedColor="#EAAC00"
@@ -145,7 +150,10 @@ export default function FeedbackForm({
                   checked={formData.AllowFollowUp}
                   type="checkbox"
                   onChange={() =>
-                    setFormData({ ...formData, AllowFollowUp: !formData.AllowFollowUp })
+                    setFormData({
+                      ...formData,
+                      AllowFollowUp: !formData.AllowFollowUp,
+                    })
                   }
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
@@ -154,10 +162,7 @@ export default function FeedbackForm({
                 </label>
               </div>
             </div>
-            <SubmitButton
-              label="Submit"
-              loading={loading}
-            />
+            <SubmitButton label="Submit" loading={loading} />
           </div>
         </form>
       </div>

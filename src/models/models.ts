@@ -53,7 +53,7 @@ export class Booking extends NotionItem {
   Client?: Record<string, unknown>;
 
   @NotionType("multi_select")
-  Toys: String[] = [];
+  Toys?: String[];
 
   @NotionType("number")
   "Payment Deposit": number = 0;
