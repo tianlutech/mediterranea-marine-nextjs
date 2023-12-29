@@ -5,8 +5,10 @@ import { getBookingInfo, getBoatInfo } from "@/services/notion.service";
 import { useEffect, useState } from "react";
 import router from "next/router";
 import PuttingFuelForm from "@/components/puttingFuel";
+import { useTranslation } from "react-i18next";
 
 export default function PuttingFuel({ params }: { params: { id: string } }) {
+  const { t } = useTranslation();
   const [boatInfo, setBoatInfo] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<any>({});
@@ -22,10 +24,8 @@ export default function PuttingFuel({ params }: { params: { id: string } }) {
       const data = await getBookingInfo(params.id);
       if (!data) {
         router.replace("/");
-
         return;
       }
-
       await getBoatDetails(data);
       setData(data);
       setLoading(false);
@@ -42,7 +42,14 @@ export default function PuttingFuel({ params }: { params: { id: string } }) {
       <section className="gradient-form justify-center h-screen w-full text-black">
         <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
           <div className="flex md:flex-row flex-col w-full lg:flex lg:flex-wrap h-screen">
-            <Sidebar boatInfo={boatInfo} />
+            <Sidebar title={t("sidebar.feedback_form")}>
+              <div
+                className="p-4"
+                dangerouslySetInnerHTML={{
+                  __html: t("sidebar.feedback_sidebar"),
+                }}
+              />
+            </Sidebar>
             <PuttingFuelForm data={data} setData={setData} boatInfo={boatInfo} />
           </div>
         </div>
