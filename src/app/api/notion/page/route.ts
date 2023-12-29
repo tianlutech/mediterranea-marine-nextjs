@@ -1,4 +1,4 @@
-import * as notion from "./notion.api";
+import * as notion from "../notion.api";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);

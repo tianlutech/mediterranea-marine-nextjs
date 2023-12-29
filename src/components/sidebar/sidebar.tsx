@@ -10,11 +10,11 @@ import { useCallback } from "react";
 import { Boat } from "@/models/models";
 import "../../i18n";
 interface SidebarProps {
-  boatInfo: Boat;
-  feedBackText?: string;
+  children?: React.ReactNode;
+  image?: string;
 }
 
-export default function Sidebar({ boatInfo, feedBackText }: SidebarProps) {
+export default function Sidebar({ image, children }: SidebarProps) {
   const { t, i18n } = useTranslation();
   const changeLanguage = useCallback(
     (language: string) => {
@@ -56,35 +56,23 @@ export default function Sidebar({ boatInfo, feedBackText }: SidebarProps) {
       </div>
       <div>
         <div className="w-full block md:hidden">
-          {boatInfo && (
+          {image && (
             <Image
               width={60}
               height={45}
-              src={boatInfo.cover || BoatImage}
+              src={image || BoatImage}
               className="h-auto w-full"
               alt="boat"
             />
           )}
         </div>
-        <div className="px-4 py-4 text-textSecondaryColor lg:text-base text-sm">
-          <p className="mb-6">
-            {t("sidebar.boat_booking")} {boatInfo?.Nombre}{" "}
-            {t("sidebar.reservation_form")}
-          </p>
-          <p className="mb-6">
-            {t(
-              "sidebar.we_are_excited_to_help_you_plan_your_next_water_adventure"
-            )}
-          </p>
-          <p className="mb-6">{t("sidebar.sidebar_p1")}</p>
-          <p className="mb-6">{t("sidebar.sidebar_p2")}</p>
-        </div>
+        {children}
       </div>
       <div className="w-full absolute bottom-0 md:block hidden">
         <Image
           width={60}
           height={45}
-          src={boatInfo?.cover || BoatImage}
+          src={image || BoatImage}
           className="h-auto w-full"
           alt="boat"
         />
