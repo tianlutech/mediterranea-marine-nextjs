@@ -1,17 +1,15 @@
 "use client";
 
-import InfoSvg from "@/assets/svgs/InfoSvg";
-import CommonInput from "@/components/common/inputs/input";
-import CommonInputFile from "@/components/common/inputs/fileInput";
+import CommonInput from "../common/inputs/input";
 import CommonLabel from "../common/containers/label";
 import React from "react";
-import { Boat, Booking } from "@/models/models";
+import { Boat, Booking } from "../../models/models";
 import { useTranslation } from "react-i18next";
 import StarRatings from "react-star-ratings";
 import SubmitButton from "../common/containers/submit-button";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
-import { updateBookingInfo } from "@/services/notion.service";
+import { updateBookingInfo } from "../../services/notion.service";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
@@ -35,11 +33,11 @@ export default function FeedbackForm({
     "Engine Hours": 0,
     Rate: 1,
     "Captain Feedback": "",
-    AllowFollowUp: true
-  })
+    AllowFollowUp: true,
+  });
   const router = useRouter();
   const changeRating = (newRating: number) => {
-    setFormData({ ...formData, Rate: newRating })
+    setFormData({ ...formData, Rate: newRating });
   };
 
   const formik = useFormik({
@@ -50,15 +48,17 @@ export default function FeedbackForm({
   });
 
   const submitFeedBack = async () => {
-    setLoading(true)
+    setLoading(true);
 
     const booking = new Booking(formData as unknown as Booking);
     const res = await updateBookingInfo(id, booking);
+    setLoading(false);
+
     if (res === false) {
       return;
     }
     router.replace("/success");
-  }
+  };
   return (
     <div className="flex md:w-[77%] w-full  justify-center items-center md:p-6 p-2">
       <div className="bg-white rounded-lg">
@@ -77,7 +77,10 @@ export default function FeedbackForm({
                   placeholder={t("input.engine_hours")}
                   value={formData["Engine Hours"]}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setFormData({ ...formData, "Engine Hours": e.target.value })
+                    setFormData({
+                      ...formData,
+                      "Engine Hours": +e.target.value,
+                    })
                   }
                   min={1}
                   step={1}
@@ -86,27 +89,29 @@ export default function FeedbackForm({
               </FormWrapper>
             </div>
             <div className="w-full mt-6 relative">
-              <div className="">
-                <FormWrapper>
-                  <CommonLabel input="text">
-                    {t("input.fuel_left")}%
-                  </CommonLabel>
-                  <CommonInput
-                    type="text"  // Change type to text to allow for the "%" sign
-                    name="number"
-                    id="fuelLeft"
-                    placeholder="%"
-                    value={formData["Fuel Left"]}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      const inputValue: number = e.target.value;
-                      // Check if the entered value is a valid number and not more than 100
-                      if (!isNaN(inputValue) && inputValue >= 0 && inputValue <= 100) {
-                        setFormData({ ...formData, "Fuel Left": inputValue });
-                      }
-                    }}
-                  />
-                </FormWrapper>
-              </div>
+              <FormWrapper>
+                <CommonLabel input="text">{t("input.fuel_left")}</CommonLabel>
+                <CommonInput
+                  type="number"
+                  name="number"
+                  id="fuelLeft"
+                  placeholder="%"
+                  value={formData["Fuel Left"]}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    const inputValue: number = +e.target.value;
+
+                    // Check if the entered value is a valid number and not more than 100
+                    if (
+                      !isNaN(inputValue) &&
+                      inputValue >= 0 &&
+                      inputValue <= 100
+                    ) {
+                      setFormData({ ...formData, "Fuel Left": inputValue });
+                    }
+                  }}
+                  step={1}
+                />
+              </FormWrapper>
               <p className="text-black absolute z-10 bottom-[0.6rem] md:left-[3.2rem] left-[2.2rem]">%</p>
             </div>
             <div className="relative w-full mt-6">
@@ -118,16 +123,16 @@ export default function FeedbackForm({
                 className="block p-2.5 w-full text-sm text-black rounded-lg border border-gray-300"
                 placeholder=""
                 value={formData["Captain Feedback"]}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setFormData({ ...formData, "Captain Feedback": e.target.value })
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  setFormData({
+                    ...formData,
+                    "Captain Feedback": e.target.value,
+                  })
                 }
-                required
               ></textarea>
             </div>
             <div className="mt-3">
-              <p className="text-black mb-2">
-                {t("input.client_happiness")}
-              </p>
+              <p className="text-black mb-2">{t("input.client_happiness")}</p>
               <StarRatings
                 rating={formData.Rate}
                 starRatedColor="#EAAC00"
@@ -145,7 +150,10 @@ export default function FeedbackForm({
                   checked={formData.AllowFollowUp}
                   type="checkbox"
                   onChange={() =>
-                    setFormData({ ...formData, AllowFollowUp: !formData.AllowFollowUp })
+                    setFormData({
+                      ...formData,
+                      AllowFollowUp: !formData.AllowFollowUp,
+                    })
                   }
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
@@ -154,10 +162,7 @@ export default function FeedbackForm({
                 </label>
               </div>
             </div>
-            <SubmitButton
-              label="Submit"
-              loading={loading}
-            />
+            <SubmitButton label="Submit" loading={loading} />
           </div>
         </form>
       </div>

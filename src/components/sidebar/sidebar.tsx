@@ -12,9 +12,10 @@ import "../../i18n";
 interface SidebarProps {
   children?: React.ReactNode;
   image?: string;
+  title: string;
 }
 
-export default function Sidebar({ image, children }: SidebarProps) {
+export default function Sidebar({ image, children, title }: SidebarProps) {
   const { t, i18n } = useTranslation();
   const changeLanguage = useCallback(
     (language: string) => {
@@ -50,9 +51,7 @@ export default function Sidebar({ image, children }: SidebarProps) {
         </div>
       </div>
       <div className="bg-chocolate py-4 flex justify-center items-center">
-        <span className="font-extrabold text-3xl text-white">
-          {t("sidebar.boat_booking")}
-        </span>
+        <span className="font-extrabold text-3xl text-white">{title}</span>
       </div>
       <div>
         <div className="w-full block md:hidden">
