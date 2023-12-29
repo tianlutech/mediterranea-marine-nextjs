@@ -4,6 +4,7 @@ import fs from "fs";
 import { Readable } from "stream";
 import { FileBody } from "@/models/models";
 import { FileMetadata } from "@/models/models";
+import path from "path";
 
 // abel am not sure about the type of this auth
 export const uploadFile = async (auth: any, file: File, body: FileBody) => {
@@ -16,24 +17,33 @@ export const uploadFile = async (auth: any, file: File, body: FileBody) => {
     const date = moment(Date.now()).format("DD-MM-YYYY");
     const { boatName, id, slag } = body;
 
-    const fileMetadata: FileMetadata = {
-      name: `${boatName}/${date}/${id}_${slag}`,
-      mimeType: "application/vnd.google-apps.folder",
-      parents: [`${googleDriveFolderId}`],
-    };
-    const folder = await drive.files.create({
-      requestBody: fileMetadata,
-      fields: "id",
-    });
+    /**
+     * Follow this to check if a folder exists then no need to create it again
+     *  https://stackoverflow.com/questions/45757635/google-drive-api-v3-get-a-folder-id-with-name
+     *  Meanwhile we keep a flat structure
+     */
 
-    if (!folder.data.id) {
-      return { error: "Error creating the folder" };
-    }
+    // const fileMetadata: FileMetadata = {
+    //   name: `${boatName}/${date}/${id}_${slag}`,
+    //   mimeType: "application/vnd.google-apps.folder",
+    //   parents: [`${googleDriveFolderId}`],
+    // };
+
+    // const folder = await drive.files.create({
+    //   requestBody: fileMetadata,
+    //   fields: "id",
+    // });
+
+    // if (!folder.data.id) {
+    //   return { error: "Error creating the folder" };
+    // }
+
     const res = await drive.files.create({
       requestBody: {
-        name: file.name,
+        name: `${boatName}_${date}_${id}_${slag}.${path.extname(file.name)}`,
         mimeType: file.type,
-        parents: [`${folder.data.id}`],
+        // parents: [`${folder.data.id}`],
+        parents: [`${googleDriveFolderId}`],
       },
       media: {
         mimeType: file.type,

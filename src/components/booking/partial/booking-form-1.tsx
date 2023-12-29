@@ -1,6 +1,6 @@
 "use client";
 
-import InfoSvg from "@/assets/svgs/InfoSvg";
+import InfoSvg from "@/app/assets/svgs/InfoSvg";
 import CommonInput from "@/components/common/inputs/input";
 import CommonInputFile from "@/components/common/inputs/fileInput";
 import CommonLabel from "../../common/containers/label";

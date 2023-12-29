@@ -87,6 +87,8 @@ export default function BookingComponent({
   }, [formData]);
 
   const updateNotion = async (formData: Record<string, unknown>) => {
+    setLoading(true);
+
     const [uploadIdFrontResponse, uploadIdBackImageResponse] =
       await Promise.all([
         storeIdImage(formData["ID_Front_Picture"] as File, "front"),
@@ -191,6 +193,8 @@ export default function BookingComponent({
     }
     if (totalPayment > 0) {
       getCheckoutId();
+      setLoading(false);
+
       return;
     }
   };

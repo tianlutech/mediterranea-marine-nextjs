@@ -1,6 +1,6 @@
 "use client";
 
-import InfoSvg from "@/assets/svgs/InfoSvg";
+import InfoSvg from "@/app/assets/svgs/InfoSvg";
 import CommonInput from "@/components/common/inputs/input";
 import CommonInputFile from "@/components/common/inputs/fileInput";
 import CommonLabel from "../common/containers/label";
@@ -32,13 +32,13 @@ export default function FeedbackForm({
   return (
     <div className="flex md:w-[77%] w-full  justify-center items-center md:p-6 p-2">
       <div className="bg-white rounded-lg">
-        <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm mx-6">Treatment Received Feedback Form</p>
+        <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm mx-6">
+          Treatment Received Feedback Form
+        </p>
         <div className="md:p-6 sm:p-8 p-6">
           <div className="w-full mt-6">
             <FormWrapper>
-              <CommonLabel input="text">
-                {t("input.engine_hours")}
-              </CommonLabel>
+              <CommonLabel input="text">{t("input.engine_hours")}</CommonLabel>
               <CommonInput
                 type="number"
                 name="number"
@@ -53,9 +53,7 @@ export default function FeedbackForm({
           </div>
           <div className="w-full mt-6">
             <FormWrapper>
-              <CommonLabel input="text">
-                {t("input.fuel_left")}
-              </CommonLabel>
+              <CommonLabel input="text">{t("input.fuel_left")}</CommonLabel>
               <CommonInput
                 type="number"
                 name="number"
@@ -64,13 +62,10 @@ export default function FeedbackForm({
                 value={data["No Childs"]} //Abel this I will change while integrating
                 step={1}
               />
-
             </FormWrapper>
           </div>
           <div className="mt-3">
-            <p className="text-black mb-2">
-              {t("input.client_happiness")}
-            </p>
+            <p className="text-black mb-2">{t("input.client_happiness")}</p>
             <StarRatings
               rating={rating}
               starRatedColor="#EAAC00"
@@ -81,10 +76,7 @@ export default function FeedbackForm({
               name="rating"
             />
           </div>
-          <SubmitButton
-            label="Submit"
-            loading={loading}
-          />
+          <SubmitButton label="Submit" loading={loading} />
         </div>
       </div>
     </div>
