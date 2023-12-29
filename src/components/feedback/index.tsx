@@ -33,7 +33,7 @@ export default function FeedbackForm({
   const [formData, setFormData] = useState({
     "Fuel Left": 0,
     "Engine Hours": 0,
-    Rate: 0,
+    Rate: 1,
     "Captain Feedback": "",
     AllowFollowUp: true
   })
@@ -62,7 +62,7 @@ export default function FeedbackForm({
   return (
     <div className="flex md:w-[77%] w-full  justify-center items-center md:p-6 p-2">
       <div className="bg-white rounded-lg">
-        <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm mx-6">Treatment Received Feedback Form</p>
+        <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm mx-6">{t("title.feed_back_form")}</p>
         <form onSubmit={formik.handleSubmit}>
           <div className="md:p-6 sm:p-8 p-6">
             <div className="w-full mt-6">
@@ -85,29 +85,29 @@ export default function FeedbackForm({
                 />
               </FormWrapper>
             </div>
-            <div className="w-full mt-6">
-              <FormWrapper>
-                <CommonLabel input="text">
-                  {t("input.fuel_left")}
-                </CommonLabel>
-                <CommonInput
-                  type="number"
-                  name="number"
-                  id="fuelLeft"
-                  placeholder="%"
-                  value={formData["Fuel Left"]}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    const inputValue: number = e.target.value;
-
-                    // Check if the entered value is a valid number and not more than 100
-                    if (!isNaN(inputValue) && inputValue >= 0 && inputValue <= 100) {
-                      setFormData({ ...formData, "Fuel Left": inputValue });
-                    }
-                  }}
-                  step={1}
-                />
-
-              </FormWrapper>
+            <div className="w-full mt-6 relative">
+              <div className="">
+                <FormWrapper>
+                  <CommonLabel input="text">
+                    {t("input.fuel_left")}%
+                  </CommonLabel>
+                  <CommonInput
+                    type="text"  // Change type to text to allow for the "%" sign
+                    name="number"
+                    id="fuelLeft"
+                    placeholder="%"
+                    value={formData["Fuel Left"]}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      const inputValue: number = e.target.value;
+                      // Check if the entered value is a valid number and not more than 100
+                      if (!isNaN(inputValue) && inputValue >= 0 && inputValue <= 100) {
+                        setFormData({ ...formData, "Fuel Left": inputValue });
+                      }
+                    }}
+                  />
+                </FormWrapper>
+              </div>
+              <p className="text-black absolute z-10 bottom-[0.6rem] md:left-[3.2rem] left-[2.2rem]">%</p>
             </div>
             <div className="relative w-full mt-6">
               <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 bottom-[2.8rem] bg-white left-4 px-2">

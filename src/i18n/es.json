@@ -59,5 +59,8 @@
   "error": {
     "upload_image":"Se ha producido un error al cargar la imagen de identificación frontal.",
     "upload_back_image":"Se ha producido un error al cargar la imagen de identificación posterior."
+  },
+  "title": {
+    "feed_back_form":"Formulario de comentarios sobre el tratamiento recibido"
   }
 }

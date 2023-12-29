@@ -58,5 +58,8 @@
   "error": {
     "upload_front_image":"There has been an error while uploading front id picture",
     "upload_back_image":"There has been an error while uploading back id picture"
+  },
+  "title": {
+    "feed_back_form":"Treatment Received Feedback Form"
   }
 }
