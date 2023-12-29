@@ -41,7 +41,7 @@ export type NotionPage = {
  * @returns
  */
 export const NotionType = (type: NotionType) => {
-  return function (target: any, key: string) {
+  return function (target: any, key: any) {
     // console.log({ target, key });
     const metadataKey = Symbol("notion");
     target[metadataKey] = target[metadataKey] || {};
@@ -130,9 +130,7 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
         ""
       );
     case "checkbox":
-      return (
-        (property["checkbox"] as { checkbox: boolean })
-      );
+      return property["checkbox"] as { checkbox: boolean };
     default:
       return "";
   }
