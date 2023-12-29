@@ -39,7 +39,7 @@
     "engine_hours":"Horas de motor",
     "fuel_left":"Combustible restante",
     "client_happiness":"Felicidad del cliente",
-    "recommendation_text":"Si la calificación del cliente es alta (3 inicios o más), envíele una solicitud de recomendación."
+    "recommendation_text":"Si la calificación del cliente es alta (3 estrellas o más), envíele una solicitud de recomendación."
   },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepaga tu combustible",
