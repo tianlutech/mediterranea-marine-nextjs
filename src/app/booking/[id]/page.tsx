@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Sidebar from "@/components/sidebar/sidebar";
 import BookingComponent from "@/components/booking";
 import { useEffect, useState } from "react";

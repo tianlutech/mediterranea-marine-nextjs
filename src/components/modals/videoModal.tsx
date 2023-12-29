@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Modal from "@/components/common/containers/modal";
-import ReloadSvg from "@/app/assets/svgs/ReloadSvg";
+import ReloadSvg from "../../assets/svgs/ReloadSvg";
 import dynamic from "next/dynamic";
 
 const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });

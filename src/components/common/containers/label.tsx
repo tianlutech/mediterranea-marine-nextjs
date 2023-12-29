@@ -1,3 +1,5 @@
+import React from "react"
+
 export default function CommonLabel({
   children,
   error,
@@ -12,16 +14,16 @@ export default function CommonLabel({
     input === "text"
       ? "md:bottom-[1.8rem] bottom-[1.6rem]"
       : input === "select"
-      ? "md:bottom-[1.3rem] bottom-[1.6rem]"
-      : ""; // Add more conditions for other input types if needed
+        ? "md:bottom-[1.3rem] bottom-[1.6rem]"
+        : ""; // Add more conditions for other input types if needed
 
   // Adjust position if there is an error
   let errorAdjustment = error
     ? input === "text"
       ? "md:bottom-[3.2rem] bottom-[3rem]"
       : input === "select"
-      ? "bottom-[3.7rem]"
-      : "" // Add more conditions for other input types if needed
+        ? "bottom-[3.7rem]"
+        : "" // Add more conditions for other input types if needed
     : "";
 
   // Combine base position with error adjustment if there is an error

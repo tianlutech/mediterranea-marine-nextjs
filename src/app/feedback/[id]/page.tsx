@@ -1,12 +1,13 @@
 "use client";
 
-import Sidebar from "@/components/sidebar/sidebar";
-import { getBookingInfo, getBoatInfo } from "@/services/notion.service";
+import React from "react";
+import Sidebar from "../../../components/sidebar/sidebar";
+import { getBookingInfo, getBoatInfo } from "../../../services/notion.service";
 import { useEffect, useState } from "react";
 import router from "next/router";
-import FeedbackForm from "@/components/feedback";
-import { Boat, Booking } from "@/models/models";
-import LoadingModal from "@/components/modals/loadingModal";
+import FeedbackForm from "../../../components/feedback";
+import { Boat, Booking } from "../../../models/models";
+import LoadingModal from "../../../components/modals/loadingModal";
 import { useTranslation } from "react-i18next";
 
 export default function UserFeedbackPage({

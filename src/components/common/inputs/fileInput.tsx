@@ -1,7 +1,7 @@
 "use client";
-import UploadSvg from "@/app/assets/svgs/UploadSvg";
-import ImageSvg from "@/app/assets/svgs/ImageSvg";
-import CloseSvg from "@/app/assets/svgs/CloseSvg";
+import UploadSvg from "../../../assets/svgs/UploadSvg";
+import ImageSvg from "../../../assets/svgs/ImageSvg";
+import CloseSvg from "../../../assets/svgs/CloseSvg";
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
