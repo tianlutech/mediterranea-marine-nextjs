@@ -1,6 +1,7 @@
 "use client";
 
 import CommonInput from "../common/inputs/input";
+import CommonCheckbox from "../common/inputs/checkbox";
 import CommonLabel from "../common/containers/label";
 import React from "react";
 import { Boat, Booking } from "../../models/models";
@@ -29,9 +30,9 @@ export default function FeedbackForm({
   const { t } = useTranslation();
   const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState({
-    "Fuel Left": 0,
-    "Engine Hours": 0,
-    Rate: 1,
+    "Fuel Left": "",
+    "Engine Hours": "",
+    Rate: 0,
     "Captain Feedback": "",
     AllowFollowUp: true,
   });
@@ -49,20 +50,33 @@ export default function FeedbackForm({
 
   const submitFeedBack = async () => {
     setLoading(true);
+    try {
+      if (!formData.Rate) {
+        toast.error(t("feedback.rate_required"));
+        return;
+      }
+      const data = {
+        ...formData,
+        "Fuel Left": +formData["Fuel Left"] / 100,
+        FeedbackFormAt: new Date(),
+      };
+      const booking = new Booking(data as unknown as Booking);
+      const res = await updateBookingInfo(id, booking);
 
-    const booking = new Booking(formData as unknown as Booking);
-    const res = await updateBookingInfo(id, booking);
-    setLoading(false);
-
-    if (res === false) {
-      return;
+      if (res === false) {
+        return;
+      }
+      // router.replace("/success");
+    } finally {
+      setLoading(false);
     }
-    router.replace("/success");
   };
   return (
     <div className="flex md:w-[77%] w-full  justify-center items-center md:p-6 p-2">
       <div className="bg-white rounded-lg">
-        <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm mx-6">{t("title.feed_back_form")}</p>
+        <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm mx-6">
+          {t("title.feed_back_form")}
+        </p>
         <form onSubmit={formik.handleSubmit}>
           <div className="md:p-6 sm:p-8 p-6">
             <div className="w-full mt-6">
@@ -79,7 +93,7 @@ export default function FeedbackForm({
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setFormData({
                       ...formData,
-                      "Engine Hours": +e.target.value,
+                      "Engine Hours": e.target.value,
                     })
                   }
                   min={1}
@@ -90,13 +104,16 @@ export default function FeedbackForm({
             </div>
             <div className="w-full mt-6 relative">
               <FormWrapper>
-                <CommonLabel input="text">{t("input.fuel_left")}</CommonLabel>
+                <CommonLabel input="text">
+                  {t("input.fuel_left") + " %"}
+                </CommonLabel>
                 <CommonInput
                   type="number"
                   name="number"
                   id="fuelLeft"
-                  placeholder="%"
+                  placeholder={"50"}
                   value={formData["Fuel Left"]}
+                  min={1}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     const inputValue: number = +e.target.value;
 
@@ -106,15 +123,20 @@ export default function FeedbackForm({
                       inputValue >= 0 &&
                       inputValue <= 100
                     ) {
-                      setFormData({ ...formData, "Fuel Left": inputValue });
+                      setFormData({
+                        ...formData,
+                        "Fuel Left": inputValue.toString(),
+                      });
                     }
                   }}
                   step={1}
                 />
               </FormWrapper>
-              <p className="text-black absolute z-10 bottom-[0.6rem] md:left-[3.2rem] left-[2.2rem]">%</p>
+              <p className="text-black absolute z-10 bottom-[0.6rem] md:left-[4.5rem] left-[2.5rem]">
+                %
+              </p>
             </div>
-            <div className="relative w-full mt-6">
+            <div className="w-full mt-6 relative">
               <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 bottom-[2.8rem] bg-white left-4 px-2">
                 {t("input.general_comments")}
               </label>{" "}
@@ -131,8 +153,9 @@ export default function FeedbackForm({
                 }
               ></textarea>
             </div>
-            <div className="mt-3">
-              <p className="text-black mb-2">{t("input.client_happiness")}</p>
+            <div className="relative mt-3">
+              <p className=" text-black mb-2">{t("input.client_happiness")}</p>
+
               <StarRatings
                 rating={formData.Rate}
                 starRatedColor="#EAAC00"
@@ -145,17 +168,16 @@ export default function FeedbackForm({
             </div>
             <div className="mt-3">
               <div className="flex items-center">
-                <input
+                <CommonCheckbox
                   id="checked-checkbox"
                   checked={formData.AllowFollowUp}
-                  type="checkbox"
                   onChange={() =>
                     setFormData({
                       ...formData,
                       AllowFollowUp: !formData.AllowFollowUp,
                     })
                   }
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  name={"AllowFollowUp"}
                 />
                 <label className="ms-2 text-sm text-black">
                   {t("input.recommendation_text")}

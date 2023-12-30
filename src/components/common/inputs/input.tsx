@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 export default function CommonInput({
   type,
   id,
@@ -11,6 +13,7 @@ export default function CommonInput({
   min,
   max,
   step,
+  checked,
 }: {
   type: string;
   id: string;
@@ -22,6 +25,7 @@ export default function CommonInput({
   min?: number;
   max?: number;
   step?: number;
+  checked?: boolean;
 }) {
   return (
     <input

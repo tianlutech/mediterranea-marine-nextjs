@@ -144,6 +144,8 @@ export class Booking extends NotionItem {
 
   @NotionType("date")
   "SubmittedFormAt": Date;
+  @NotionType("date")
+  FeedbackFormAt?: Date;
 }
 
 export class DepartureTime extends NotionItem {

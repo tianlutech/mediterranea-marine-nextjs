@@ -130,9 +130,7 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
         ""
       );
     case "checkbox":
-      return (
-        (property["checkbox"] as { checkbox: boolean }).checkbox
-      );
+      return (property["checkbox"] as { checkbox: boolean }).checkbox;
     default:
       return "";
   }
@@ -173,6 +171,10 @@ const propToNotion: Record<string, (value: any) => NotionProperty> = {
         url,
       },
     })),
+  }),
+  checkbox: (value: boolean | string) => ({
+    type: "checkbox",
+    checkbox: value === true || value === "true",
   }),
   file: (value: string) => ({
     type: "files",

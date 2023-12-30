@@ -61,11 +61,14 @@
     "fuel_sidebar": "<p>Recopilar esta información es realmente importante para nuestra empresa. Podemos mejorar nuestro servicio y mejorar los costos, mejorando la experiencia tanto para el cliente como para el personal.</p>"
 
   },
+  "feedback": {
+    "rate_required": "De una puntuación de 1 a 5 estrellas"
+  },
   "error": {
     "upload_image":"Se ha producido un error al cargar la imagen de identificación frontal.",
     "upload_back_image":"Se ha producido un error al cargar la imagen de identificación posterior."
   },
   "title": {
-    "feed_back_form":"Formulario de comentarios sobre el tratamiento recibido"
+    "feed_back_form":"Feedback del Viaje"
   }
 }

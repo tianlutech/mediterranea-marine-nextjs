@@ -40,6 +40,9 @@
     "client_happiness":"Client Happiness",
     "recommendation_text":"If the rating for the client is high (3 starts or more), send him a recommendation requests."
   },
+  "feedback": {
+    "rate-required": "Please rate from 1 to 5 starts"
+  },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepay your fuel",
     "prepayment_fuel_modal_p1":"Selecting the option of prepaying the fuel will allow us the provide you a better service: planning properly the navigation route and improving your experience.",
