@@ -9,51 +9,19 @@ import { useTranslation } from "react-i18next";
 
 export default function PuttingFuel({ params }: { params: { id: string } }) {
   const { t } = useTranslation();
-  const [boatInfo, setBoatInfo] = useState<any>({});
-  const [loading, setLoading] = useState<boolean>(true);
-  const [data, setData] = useState<any>({});
 
-  const getBoatDetails = async (data: any) => {
-    await getBoatInfo(data.Boat[0]).then((data) => {
-      setBoatInfo(data);
-    });
-  };
-
-  useEffect(() => {
-    const getBookingDetails = async () => {
-      const data = await getBookingInfo(params.id);
-      if (!data) {
-        router.replace("/");
-        return;
-      }
-      await getBoatDetails(data);
-      setData(data);
-      setLoading(false);
-    };
-
-    getBookingDetails();
-  }, [params.id]);
-
-  if (!data || !boatInfo) {
-    return;
-  }
   return (
     <>
-      <section className="gradient-form justify-center h-screen w-full text-black">
-        <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
-          <div className="flex md:flex-row flex-col w-full lg:flex lg:flex-wrap h-screen">
-            <Sidebar title={t("sidebar.feedback_form")}>
-              <div
-                className="p-4"
-                dangerouslySetInnerHTML={{
-                  __html: t("sidebar.feedback_sidebar"),
-                }}
-              />
-            </Sidebar>
-            <PuttingFuelForm data={data} setData={setData} boatInfo={boatInfo} />
-          </div>
-        </div>
-      </section>
+      {/*  here we will change with real message */}
+      <Sidebar title={t("sidebar.putting_fuel_form")}>
+        <div
+          className="p-4 text-black"
+          dangerouslySetInnerHTML={{
+            __html: t("sidebar.feedback_sidebar"),
+          }}
+        />
+      </Sidebar>
+      <PuttingFuelForm />
     </>
   );
 }

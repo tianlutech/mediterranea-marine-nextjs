@@ -78,29 +78,23 @@ export default function BookingPage({ params }: { params: { id: string } }) {
   return (
     <>
       <ToastContainer />
-      <section className="gradient-form justify-center h-screen w-full text-black">
-        <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
-          <div className="flex md:flex-row flex-col justify-between w-full lg:flex lg:flex-wrap h-screen">
-            <Sidebar title={t("sidebar.boat_booking")} image={boatInfo.cover}>
-              <div className="px-4 py-4 text-textSecondaryColor lg:text-base text-sm">
-                <p className="mb-6">
-                  {t("sidebar.boat_booking")} {boatInfo?.Nombre}{" "}
-                  {t("sidebar.reservation_form")}
-                </p>
-                <p className="mb-6">
-                  {t(
-                    "sidebar.we_are_excited_to_help_you_plan_your_next_water_adventure"
-                  )}
-                </p>
-                <p className="mb-6">{t("sidebar.sidebar_p1")}</p>
-                <p className="mb-6">{t("sidebar.sidebar_p2")}</p>
-              </div>{" "}
-            </Sidebar>
-            {/* forms section */}
-            <BookingComponent data={data} id={params.id} boatInfo={boatInfo} />
-          </div>
-        </div>
-      </section>
+      <Sidebar title={t("sidebar.boat_booking")} image={boatInfo.cover}>
+        <div className="px-4 py-4 text-textSecondaryColor lg:text-base text-sm">
+          <p className="mb-6">
+            {t("sidebar.boat_booking")} {boatInfo?.Nombre}{" "}
+            {t("sidebar.reservation_form")}
+          </p>
+          <p className="mb-6">
+            {t(
+              "sidebar.we_are_excited_to_help_you_plan_your_next_water_adventure"
+            )}
+          </p>
+          <p className="mb-6">{t("sidebar.sidebar_p1")}</p>
+          <p className="mb-6">{t("sidebar.sidebar_p2")}</p>
+        </div>{" "}
+      </Sidebar>
+      {/* forms section */}
+      <BookingComponent data={data} id={params.id} boatInfo={boatInfo} />
     </>
   );
 }

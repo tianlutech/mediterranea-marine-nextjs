@@ -15,27 +15,20 @@ import { SEABOB } from "@/models/constants";
 
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
-  return <div className="relative w-[48%]">{children}</div>;
+  return <div className="relative md:w-[48%] w-full mb-6 md:mb-0">{children}</div>;
 };
 
-export default function PuttingFuelForm({
-  data,
-  setData,
-  boatInfo,
-}: {
-  data: any;
-  setData: any;
-  boatInfo: Boat;
-}) {
+export default function Fuel() {
   const { t } = useTranslation();
   const [loading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<any>({});
 
   return (
     <div className="flex md:w-[77%] w-full  justify-center items-center md:p-6 p-2">
       <div className="bg-white md:w-[70%] w-full rounded-lg">
         <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm">{t("title.fuel_form")}</p>
         <div className="md:p-6 sm:p-8 p-6">
-          <div className="flex justify-between w-full mt-6">
+          <div className="flex md:flex-row flex-col justify-between w-full mt-6">
             <FormWrapper>
               <CommonLabel input="text">
                 {t("input.date")}
@@ -71,7 +64,7 @@ export default function PuttingFuelForm({
 
             </FormWrapper>
           </div>
-          <div className="flex justify-between w-full mt-6">
+          <div className="flex md:flex-row flex-col justify-between w-full md:mt-6 mt-0">
             <FormWrapper>
               <CommonLabel input="text">
                 {t("input.amount_paid")}
@@ -104,7 +97,7 @@ export default function PuttingFuelForm({
               />
             </FormWrapper>
           </div>
-          <div className="flex justify-between w-full mt-6">
+          <div className="flex justify-between w-full md:mt-6 mt-0">
             <FormWrapper>
               <CommonLabel input="text">
                 {t("input.port")}

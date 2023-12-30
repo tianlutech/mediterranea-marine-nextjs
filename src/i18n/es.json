@@ -55,7 +55,8 @@
   "sidebar":{
     "language":"Language",
     "boat_booking":"RESERVA",
-    "feedback_form":"FEEDBACK",
+    "feedback_form":"COMENTARIOS DE LOS CLIENTES",
+    "putting_fuel_form":"PONER COMBUSTIBLE",
     "fuel_Form":"REPOSTAJE",
     "welcome_to_our_boat":"Bienvenido a nuestro barco",
     "reservation_form":"Formulario de reserva",

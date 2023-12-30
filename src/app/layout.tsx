@@ -16,7 +16,13 @@ export default function RootLayout({
   return (
     <html>
       <body className={inter.className} suppressHydrationWarning={true}>
-        {children}
+        <section className="gradient-form justify-center h-screen w-full text-black">
+          <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
+            <div className="flex md:flex-row flex-col justify-between w-full lg:flex lg:flex-wrap h-screen">
+              {children}
+            </div>
+          </div>
+        </section>
       </body>
     </html>
   );
