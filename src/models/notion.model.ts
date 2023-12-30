@@ -13,7 +13,8 @@ export type NotionType =
   | "multi_select"
   | "title"
   | "files"
-  | "file";
+  | "file"
+  | "emoji";
 
 export type NotionProperty = { type: NotionType } & Record<string, unknown>;
 
@@ -32,6 +33,7 @@ export type NotionPage = {
   id: string;
   properties: Record<string, NotionProperty>;
   cover: NotionProperty;
+  icon: NotionProperty;
 };
 
 /**
@@ -52,6 +54,7 @@ export const NotionType = (type: NotionType) => {
 export class NotionItem {
   id: string = "";
   cover: string = "";
+  icon: string = "";
 
   constructor(obj: object = {}) {
     Object.assign(this, obj);
@@ -88,8 +91,10 @@ export const parseNotionObject = <Type extends NotionItem>(
     return obj;
   }, instance as Record<string, unknown>);
 
+  object.icon = parseNotionProperty(notionObject.icon);
   object.cover = parseNotionProperty(notionObject.cover);
   object.id = notionObject.id;
+
   return object as Type;
 };
 
@@ -108,6 +113,8 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
       return new Date(
         (property["date"] as { start: string; end: string })?.start
       );
+    case "emoji":
+      return property["emoji"];
     case "relation":
       return (property["relation"] as Array<{ id: string }>).map(
         (relation) => relation.id
