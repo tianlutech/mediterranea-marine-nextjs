@@ -35,6 +35,18 @@ export class Boat extends NotionItem {
   Nombre: string = "";
   @NotionType("rich_text")
   RegistrationPlate: string = "";
+
+  // Client Side Injected data Format time HH:mm
+  bussySlots: string[] = [];
+}
+
+export class Captain extends NotionItem {
+  constructor(obj: object = {}) {
+    super(obj);
+    Object.assign(this, obj);
+  }
+  @NotionType("title")
+  "Name": string = "";
 }
 
 export class Booking extends NotionItem {
@@ -132,4 +144,17 @@ export class Booking extends NotionItem {
 
   @NotionType("date")
   "SubmittedFormAt": Date;
+}
+
+export class DepartureTime extends NotionItem {
+  constructor(obj: object = {}) {
+    super(obj);
+    Object.assign(this, obj);
+  }
+  @NotionType("relation")
+  Boat: string[] = [];
+  @NotionType("date")
+  Date?: Date;
+  @NotionType("relation")
+  Booking: string[] = [];
 }
