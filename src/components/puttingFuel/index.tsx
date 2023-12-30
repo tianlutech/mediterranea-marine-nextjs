@@ -11,8 +11,8 @@ import StarRatings from "react-star-ratings";
 import SubmitButton from "../common/containers/submit-button";
 import { useEffect, useState } from "react";
 import CommonSelect from "@/components/common/inputs/selectInput";
-import { SEABOB } from "@/models/constants";
-
+import { PORTS } from "@/models/constants";
+import { getCaptains, getBoats } from "@/services/notion.service";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative md:w-[48%] w-full mb-6 md:mb-0">{children}</div>;
@@ -22,6 +22,23 @@ export default function Fuel() {
   const { t } = useTranslation();
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<any>({});
+
+  const fetchCaptain = async () => {
+    const res = await getCaptains()
+    console.log("=======response", res)
+    return res
+  }
+
+  const fetchBoats = async () => {
+    const res = await getBoats()
+    console.log("=======boats", res)
+    return res
+  }
+
+  useEffect(() => {
+    const res1 = fetchCaptain()
+    const res2 = fetchBoats()
+  }, [])
 
   return (
     <div className="flex md:w-[77%] w-full  justify-center items-center md:p-6 p-2">
@@ -54,7 +71,7 @@ export default function Fuel() {
               <CommonSelect
                 id="boats"
                 name="boats"
-                data={SEABOB} //Abel this one I will change in integration
+                data={PORTS} //Abel this one I will change in integration
                 value={data["Fuel Payment"]}
                 onChange={(e) =>
                   setData({ ...data, "Fuel Payment": e.target.value })
@@ -88,7 +105,7 @@ export default function Fuel() {
               <CommonSelect
                 id="captainlist"
                 name="captainList"
-                data={SEABOB} //Abel this one I will change in integration
+                data={PORTS} //Abel this one I will change in integration
                 value={data["Fuel Payment"]}
                 onChange={(e) =>
                   setData({ ...data, "Fuel Payment": e.target.value })
@@ -105,7 +122,7 @@ export default function Fuel() {
               <CommonSelect
                 id="port"
                 name="port"
-                data={SEABOB} //Abel this one I will change in integration
+                data={PORTS} //Abel this one I will change in integration
                 value={data["Fuel Payment"]}
                 onChange={(e) =>
                   setData({ ...data, "Fuel Payment": e.target.value })
