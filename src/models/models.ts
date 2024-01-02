@@ -23,10 +23,6 @@ export type FileBody = {
 };
 
 export class Boat extends NotionItem {
-  constructor(obj: object = {}) {
-    super(obj);
-    Object.assign(this, obj);
-  }
   @NotionType("number")
   "Max.Passengers": number;
   @NotionType("rich_text")
@@ -54,13 +50,10 @@ export class Captain extends NotionItem {
 }
 
 export class Booking extends NotionItem {
-  constructor(obj: object = {}) {
-    super(obj);
+  constructor(obj: Partial<Booking> = {}) {
+    super();
     Object.assign(this, obj);
   }
-
-  @NotionType("title")
-  Name: string = "";
 
   @NotionType("ID")
   ID: string = "";
@@ -72,7 +65,7 @@ export class Booking extends NotionItem {
   Client?: Record<string, unknown>;
 
   @NotionType("multi_select")
-  Toys: String[] = [];
+  Toys?: String[];
 
   @NotionType("number")
   "Payment Deposit": number = 0;
@@ -83,8 +76,14 @@ export class Booking extends NotionItem {
   @NotionType("rich_text")
   "Departure Time": string = "";
 
+  @NotionType("rich_text")
+  "Captain Feedback": string = "";
+
   @NotionType("number")
-  "Fuel left": number = 0;
+  "Fuel Left": number = 0;
+
+  @NotionType("number")
+  "Rate": number = 0;
 
   @NotionType("number")
   "Engine Hours": number;
@@ -110,8 +109,8 @@ export class Booking extends NotionItem {
   @NotionType("file")
   "ID Back Picture": string;
 
-  @NotionType("number")
-  Rate: number = 0;
+  @NotionType("checkbox")
+  AllowFollowUp: number = 0;
 
   @NotionType("relation")
   Captain?: Captian;
@@ -135,6 +134,9 @@ export class Booking extends NotionItem {
   Email: string = "";
 
   @NotionType("rich_text")
+  Name: string = "";
+
+  @NotionType("rich_text")
   "Restaurant Name": string = "";
 
   @NotionType("date")
@@ -142,6 +144,8 @@ export class Booking extends NotionItem {
 
   @NotionType("date")
   "SubmittedFormAt": Date;
+  @NotionType("date")
+  FeedbackFormAt?: Date;
 }
 
 export class DepartureTime extends NotionItem {

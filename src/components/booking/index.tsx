@@ -173,7 +173,7 @@ export default function BookingComponent({
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
       setLoading(false);
       return toast.error(
-        `Add number of paasengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
+        `Add number of passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
     }
 

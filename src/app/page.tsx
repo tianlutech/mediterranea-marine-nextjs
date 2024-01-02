@@ -3,7 +3,7 @@
 import Sidebar from "../components/sidebar/sidebar";
 import Booking from "../components/booking";
 import Modal from "../components/common/containers/modal";
-import BoatSvg from "./assets/svgs/BoatSvg";
+import BoatSvg from "../assets/svgs/BoatSvg";
 import Script from "next/script";
 
 export default function Home() {

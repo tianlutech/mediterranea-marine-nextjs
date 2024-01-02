@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Sidebar from "@/components/sidebar/sidebar";
 import BookingComponent from "@/components/booking";
 import { useEffect, useState } from "react";
@@ -81,7 +82,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
       <section className="gradient-form justify-center h-screen w-full text-black">
         <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
           <div className="flex md:flex-row flex-col justify-between w-full lg:flex lg:flex-wrap h-screen">
-            <Sidebar image={boatInfo.cover}>
+            <Sidebar title={t("sidebar.boat_booking")} image={boatInfo.cover}>
               <div className="px-4 py-4 text-textSecondaryColor lg:text-base text-sm">
                 <p className="mb-6">
                   {t("sidebar.boat_booking")} {boatInfo?.Nombre}{" "}

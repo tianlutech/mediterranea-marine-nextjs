@@ -38,7 +38,8 @@
     "complete_field":"Complete todos los campos para firmar el contrato.",
     "engine_hours":"Horas de motor",
     "fuel_left":"Combustible restante",
-    "client_happiness":"Felicidad del cliente"
+    "client_happiness":"Nivel de satisfacción del cliente",
+    "recommendation_text":"Si la calificación del cliente es alta (3 estrellas o más), envíele una solicitud de recomendación."
   },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepaga tu combustible",
@@ -49,14 +50,25 @@
   "sidebar":{
     "language":"Language",
     "boat_booking":"RESERVA",
+    "feedback_form":"FEEDBACK",
+    "fuel_Form":"REPOSTAJE",
     "welcome_to_our_boat":"Bienvenido a nuestro barco",
     "reservation_form":"Formulario de reserva",
     "we_are_excited_to_help_you_plan_your_next_water_adventure":"Estamos encantados de ayudarle a planificar su próxima aventura acuática.",
     "sidebar_p1":"Tómese un momento para brindarnos algunos detalles esenciales, para que podamos garantizar que tenga una experiencia fluida y agradable.",
-    "sidebar_p2":"Sus respuestas nos ayudarán a programar la reserva de su barco y satisfacer sus necesidades específicas. ¡Gracias por elegirnos para su aventura!"
+    "sidebar_p2":"Sus respuestas nos ayudarán a programar la reserva de su barco y satisfacer sus necesidades específicas. ¡Gracias por elegirnos para su aventura!",
+    "feedback_sidebar": "<p>Recopilar esta información es realmente importante para nuestra empresa. Podemos mejorar nuestro servicio y mejorar los costos, mejorando la experiencia tanto para el cliente como para el personal.</p>",
+    "fuel_sidebar": "<p>Recopilar esta información es realmente importante para nuestra empresa. Podemos mejorar nuestro servicio y mejorar los costos, mejorando la experiencia tanto para el cliente como para el personal.</p>"
+
+  },
+  "feedback": {
+    "rate_required": "De una puntuación de 1 a 5 estrellas"
   },
   "error": {
     "upload_image":"Se ha producido un error al cargar la imagen de identificación frontal.",
     "upload_back_image":"Se ha producido un error al cargar la imagen de identificación posterior."
+  },
+  "title": {
+    "feed_back_form":"Feedback del Viaje"
   }
 }
