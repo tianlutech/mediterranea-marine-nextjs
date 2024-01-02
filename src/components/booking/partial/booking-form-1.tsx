@@ -6,7 +6,7 @@ import CommonInputFile from "@/components/common/inputs/fileInput";
 import CommonLabel from "../../common/containers/label";
 import React from "react";
 import ErrorMessage from "./errorMessage";
-import { Boat } from "@/models/models";
+import { Boat } from "../../../models/models";
 import { useTranslation } from "react-i18next";
 import PlaceAutoComplete from "../../common/inputs/addressAutoComplete";
 

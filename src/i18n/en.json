@@ -43,13 +43,17 @@
     "amount_paid":"Amount paid",
     "captain_list":"Captain List",
     "port":"Port",
-    "picture_of_the_receipt":"Picture of the Receipt "
+    "picture_of_the_receipt":"Picture of the Receipt ",
+    "recommendation_text":"If the rating for the client is high (3 starts or more), send him a recommendation requests."
   },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepay your fuel",
     "prepayment_fuel_modal_p1":"Selecting the option of prepaying the fuel will allow us the provide you a better service: planning properly the navigation route and improving your experience.",
     "prepayment_fuel_modal_p2":"As well will reduce your cost and let you enjoy the trip being relax on a fix cost of the fuel",
     "back":"Back"
+  },
+  "feedback": {
+    "rate_required": "De una puntuación de 1 a 5 estrellas"
   },
   "sidebar":{
     "language":"Language",
