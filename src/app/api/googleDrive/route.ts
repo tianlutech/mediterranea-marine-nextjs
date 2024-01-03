@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     const data = await request.formData();
     // Get the file from the FormData
     const file: File = data.get("file") as File;
-    const type = data.get("string");
+    const type = data.get("type");
     
     const body: any = {
       boatName: data.get("boatName"),

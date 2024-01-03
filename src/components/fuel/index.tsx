@@ -73,7 +73,7 @@ export default function FuelForm() {
       if (!res) {
         return;
       }
-      // router.replace("/success");
+      router.replace("/success");
     } finally {
       setLoading(false);
     }
