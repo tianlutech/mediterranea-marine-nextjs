@@ -6,16 +6,16 @@ import { getCaptains } from "@/services/notion.service";
 export default function SelectCaptain({
   data,
   setData,
-  setLoading,
 }: {
   data: any;
   setData: any;
-  setLoading: any;
 }) {
   const [captains, setCaptains] = useState<selectType[]>([]);
   const [captainId, setCaptainId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     const fetchCaptain = async () => {
+      setLoading(true)
       const captainsData = await getCaptains();
 
       const formattedCaptains = captainsData.flatMap((captain) => [
@@ -32,6 +32,7 @@ export default function SelectCaptain({
       });
 
       setCaptains(formattedCaptains);
+      setLoading(false)
     };
 
     fetchCaptain();
@@ -52,7 +53,7 @@ export default function SelectCaptain({
   return (
     <CommonSelect
       id="captains"
-      disabled={captainId !== null}
+      disabled={captainId !== null || loading}
       name="captains"
       value={data["Captain"]}
       onChange={(e) => {

@@ -8,16 +8,16 @@ import React from "react";
 export default function SelectBoat({
   data,
   setData,
-  setLoading,
 }: {
   data: any;
   setData: any;
-  setLoading: any;
 }) {
   const [boats, setBoats] = useState<selectType[]>([]);
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchBoats = async () => {
+      setLoading(true)
       try {
         const boatsData = await getBoats();
         const formattedBoats = boatsData.map((boat) => ({
@@ -25,8 +25,10 @@ export default function SelectBoat({
           value: boat.id,
         }));
         setBoats(formattedBoats);
+        setLoading(false)
         return boatsData;
       } catch (error) {
+        setLoading(false)
         console.error("Error fetching boats:", error);
         throw error;
       }
@@ -38,6 +40,7 @@ export default function SelectBoat({
     <CommonSelect
       id="boats"
       name="boats"
+      disabled={loading}
       value={data["Boat"]}
       onChange={(e) => setData({ ...data, Boat: e.target.value })}
       data={boats}
