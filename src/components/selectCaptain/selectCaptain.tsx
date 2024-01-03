@@ -13,7 +13,7 @@ export default function SelectCaptain({
   setLoading: any;
 }) {
   const [captains, setCaptains] = useState<selectType[]>([]);
-  const [captainId, setCaptainId] = useState<null>(null)
+  const [captainId, setCaptainId] = useState<string | null>(null);
   useEffect(() => {
     const fetchCaptain = async () => {
       const captainsData = await getCaptains();
