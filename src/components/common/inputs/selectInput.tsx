@@ -8,6 +8,7 @@ export default function CommonSelect({
   value = "",
   placeholder = "Select an option",
   required,
+  disabled,
 }: {
   id: string;
   name: string;
@@ -16,6 +17,7 @@ export default function CommonSelect({
   value?: string;
   placeholder?: string;
   required?: boolean;
+  disabled?: boolean;
 }) {
   const { t } = useTranslation();
 
@@ -23,6 +25,7 @@ export default function CommonSelect({
     <select
       id={id}
       name={name}
+      disabled={disabled}
       value={value}
       onChange={onChange}
       required={required}

@@ -22,6 +22,7 @@ export async function POST(request: Request) {
     const data = await request.formData();
     // Get the file from the FormData
     const file: File = data.get("file") as File;
+    const type = data.get("string");
     
     const body: any = {
       boatName: data.get("boatName"),
@@ -38,12 +39,10 @@ export async function POST(request: Request) {
     }
 
     let result = null
-    if (data.get("boatName") !== null, data.get("id") !== null, data.get("slag") !== null) {
-      // Call your function to handle the file upload
+    if (type === "idCard") {
     result = await googleDrive.uploadFile(auth, file, body);
     }
-    if (data.get("boatName") === null, data.get("id") === null, data.get("slag") === null) {
-      // Call your function to handle the file upload
+    if (type === "receipt") {
     result = await googleDrive.uploadReceiptImage(auth, file);
     }
 

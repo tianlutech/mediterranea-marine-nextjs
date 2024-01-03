@@ -1,4 +1,3 @@
-"use client";
 import CommonSelect from "@/components/common/inputs/selectInput";
 import { selectType } from "@/models/models";
 import { useEffect, useState } from "react";
@@ -14,7 +13,7 @@ export default function SelectCaptain({
   setLoading: any;
 }) {
   const [captains, setCaptains] = useState<selectType[]>([]);
-
+  const [captainId, setCaptainId] = useState<null>(null)
   useEffect(() => {
     const fetchCaptain = async () => {
       const captainsData = await getCaptains();
@@ -38,9 +37,22 @@ export default function SelectCaptain({
     fetchCaptain();
   }, []);
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id: string | null = urlParams.get("captainId")
+    setCaptainId(id)
+    if (captains.length <= 0) {
+      return
+    }
+    if (id && captains.some((captain) => captain.value === id)) {
+      setData({ ...data, Captain: id });
+    }
+  }, [captains]);
+
   return (
     <CommonSelect
       id="captains"
+      disabled={captainId !== null}
       name="captains"
       value={data["Captain"]}
       onChange={(e) => {

@@ -5,6 +5,7 @@ export const uploadFile = async (file: File, boatName: string, id: string ,slag:
     formData.append("boatName", boatName);
     formData.append("id", id);
     formData.append("slag", slag);
+    formData.append("type", "idCard");
 
     const response = await fetch("/api/googleDrive", {
       method: "POST",
@@ -24,6 +25,7 @@ export const uploadReceiptImage = async (file: File) => {
   try {
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("type", "receipt");
 
     const response = await fetch("/api/googleDrive", {
       method: "POST",
