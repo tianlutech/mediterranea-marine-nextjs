@@ -6,7 +6,6 @@ import { FileBody } from "@/models/models";
 import { FileMetadata } from "@/models/models";
 import path from "path";
 
-// abel am not sure about the type of this auth
 export const uploadFile = async (auth: any, file: File, body: FileBody) => {
   // allows you to use drive API methods e.g. listing files, creating files.
   const drive = google.drive({ version: "v3", auth });
@@ -41,6 +40,34 @@ export const uploadFile = async (auth: any, file: File, body: FileBody) => {
     const res = await drive.files.create({
       requestBody: {
         name: `${boatName}_${date}_${id}_${slag}.${path.extname(file.name)}`,
+        mimeType: file.type,
+        // parents: [`${folder.data.id}`],
+        parents: [`${googleDriveFolderId}`],
+      },
+      media: {
+        mimeType: file.type,
+        body: Readable.from(buffer),
+      },
+    });
+    return res.data;
+  } catch (error: any) {
+    console.error("Error fetching files:", error.message);
+    return { error: error.message };
+  }
+};
+
+export const uploadReceiptImage = async (auth: any, file: File) => {
+  // allows you to use drive API methods e.g. listing files, creating files.
+  const drive = google.drive({ version: "v3", auth });
+  try {
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    const googleDriveFolderId = "1isbXrWgy5MZ0oZ_UKwOW2hsYyANQejNm";
+    const date = moment(Date.now()).format("DD-MM-YYYY");
+
+    const res = await drive.files.create({
+      requestBody: {
+        name: `${date}_${file.name}.${path.extname(file.name)}`,
         mimeType: file.type,
         // parents: [`${folder.data.id}`],
         parents: [`${googleDriveFolderId}`],

@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     const data = await request.formData();
     // Get the file from the FormData
     const file: File = data.get("file") as File;
-    // @abel am using the FileBody type but gives me errors
+    
     const body: any = {
       boatName: data.get("boatName"),
       id: data.get("id"),
@@ -37,8 +37,15 @@ export async function POST(request: Request) {
       });
     }
 
-    // Call your function to handle the file upload
-    const result = await googleDrive.uploadFile(auth, file, body);
+    let result = null
+    if (data.get("boatName") !== null, data.get("id") !== null, data.get("slag") !== null) {
+      // Call your function to handle the file upload
+    result = await googleDrive.uploadFile(auth, file, body);
+    }
+    if (data.get("boatName") === null, data.get("id") === null, data.get("slag") === null) {
+      // Call your function to handle the file upload
+    result = await googleDrive.uploadReceiptImage(auth, file);
+    }
 
     return new Response(JSON.stringify(result), {
       status: 200,

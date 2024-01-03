@@ -156,6 +156,34 @@ export async function updateBookingInfo(bookingId: string, data: Booking) {
   }
 }
 
+export async function updateFuelInfo(FuelFormID: string, data: any) {
+  try {
+    // Append the FuelFormID as a query parameter to the URL
+    const response = await fetch(
+      `/api/notion/page?id=${encodeURIComponent(FuelFormID)}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          properties: parseObjectToNotion(data),
+        }),
+      }
+    );
+    const json = await response.json();
+    if (response.status !== 200) {
+      toast.error("Something went wrong" + response.statusText);
+      return false;
+    }
+
+    return parseNotionObject<Booking>(new Booking(), json.result as NotionPage);
+  } catch (error) {
+    console.error("Error retrieving page from Notion:", error);
+    return undefined;
+  }
+}
+
 export async function getBoats() {
   try {
     // Append the bookingId as a query parameter to the URL
