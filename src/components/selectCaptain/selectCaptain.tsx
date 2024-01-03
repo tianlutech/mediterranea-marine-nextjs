@@ -4,40 +4,39 @@ import { selectType } from "@/models/models";
 import { useEffect, useState } from "react";
 import { getCaptains } from "@/services/notion.service";
 
-export default function SelectCaptain({ data, setData, setLoading }: { data: any, setData: any, setLoading: any }) {
-  const [captains, setCaptains] = useState<selectType[]>([])
+export default function SelectCaptain({
+  data,
+  setData,
+  setLoading,
+}: {
+  data: any;
+  setData: any;
+  setLoading: any;
+}) {
+  const [captains, setCaptains] = useState<selectType[]>([]);
 
-  const fetchCaptain = async () => {
-    try {
+  useEffect(() => {
+    const fetchCaptain = async () => {
       const captainsData = await getCaptains();
 
       const formattedCaptains = captainsData.flatMap((captain) => [
         {
-          name: "",
-          label: "Other",
-          value: "0",
-        },
-        {
           name: captain.id,
           label: captain.Name,
-          value: captain.Name
-        }
+          value: captain.id,
+        },
       ]);
-
-
+      formattedCaptains.push({
+        name: "",
+        label: "Other",
+        value: "0",
+      });
 
       setCaptains(formattedCaptains);
+    };
 
-      return captainsData;
-    } catch (error) {
-      console.error("Error fetching captains:", error);
-      throw error;
-    }
-  }
-
-  useEffect(() => {
-    fetchCaptain()
-  })
+    fetchCaptain();
+  }, []);
 
   return (
     <CommonSelect
@@ -45,11 +44,10 @@ export default function SelectCaptain({ data, setData, setLoading }: { data: any
       name="captains"
       value={data["Captain"]}
       onChange={(e) => {
-        setData({ ...data, "Captain": e.target.value })
-      }
-      }
+        setData({ ...data, Captain: e.target.value });
+      }}
       data={captains}
       required
     />
-  )
+  );
 }

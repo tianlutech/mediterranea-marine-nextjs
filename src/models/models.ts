@@ -153,26 +153,28 @@ export class Booking extends NotionItem {
   FeedbackFormAt?: Date;
 }
 
-export class FuelForm {
-  @NotionType("rich_text")
-  "Date": string = "";
+export class Fuel extends NotionItem {
+  @NotionType("title")
+  "Name": string;
 
-  @NotionType("rich_text")
-  "Boat": string = "";
+  @NotionType("date")
+  "Date": string;
 
-  @NotionType("rich_text")
-  "Captain": string = "";
+  @NotionType("relation")
+  "Boat": string;
 
-  @NotionType("rich_text")
-  "Port": string = "";
+  @NotionType("relation")
+  "Captain": string;
+
+  @NotionType("select")
+  "Port": string;
 
   @NotionType("number")
-  "Amount Paid": number;
+  "Paid": number;
 
   @NotionType("file")
-  "Picture of the Reciept": string;
+  "Receipt": string;
 }
-
 
 export class DepartureTime extends NotionItem {
   constructor(obj: object = {}) {

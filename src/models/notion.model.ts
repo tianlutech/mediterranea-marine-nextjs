@@ -10,6 +10,7 @@ export type NotionType =
   | "date"
   | "files"
   | "relation"
+  | "select"
   | "multi_select"
   | "title"
   | "files"
@@ -124,6 +125,8 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
       return (property["multi_select"] as Array<{ name: string }>).map(
         (relation) => relation.name
       );
+    case "select":
+      return (property["select"] as { name: string }).name;
     case "files":
       return (property["files"] as Array<NotionFile>).map((file) => ({
         name: file.name,
@@ -153,6 +156,10 @@ const propToNotion: Record<string, (value: any) => NotionProperty> = {
     multi_select: value.map((item) => ({
       name: item,
     })),
+  }),
+  select: (value: unknown) => ({
+    type: "select",
+    select: { name: value },
   }),
   date: (value: Date) => ({
     type: "date",

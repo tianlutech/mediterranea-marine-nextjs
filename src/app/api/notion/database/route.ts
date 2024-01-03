@@ -66,7 +66,6 @@ export async function POST(request: Request) {
     // Use request.json() to parse the request body as JSON
     const body = await request.json();
     const properties = body || {};
-
     const response = await notion.createDatabaseItem({
       databaseId,
       properties,

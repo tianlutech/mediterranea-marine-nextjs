@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import router from "next/router";
 import FuelForm from "@/components/fuel";
 import { useTranslation } from "react-i18next";
+import React from "react";
 
 export default function PuttingFuel({ params }: { params: { id: string } }) {
   const { t } = useTranslation();
