@@ -1,62 +1,47 @@
 import CommonSelect from "@/components/common/inputs/selectInput";
-import { selectType } from "@/models/models";
+import { SelectType } from "@/models/models";
 import { useEffect, useState } from "react";
 import { getCaptains } from "@/services/notion.service";
+import React from "react";
 
 export default function SelectCaptain({
-  data,
-  setData,
-  setLoading,
+  onChange,
+  value,
+  disabled,
 }: {
-  data: any;
-  setData: any;
-  setLoading: any;
+  disabled?: boolean;
+  value: string;
+  onChange: (captainId: string) => void;
 }) {
-  const [captains, setCaptains] = useState<selectType[]>([]);
-  const [captainId, setCaptainId] = useState<string | null>(null);
+  const [captains, setCaptains] = useState<SelectType[]>([]);
+
   useEffect(() => {
     const fetchCaptain = async () => {
       const captainsData = await getCaptains();
 
-      const formattedCaptains = captainsData.flatMap((captain) => [
-        {
-          name: captain.id,
-          label: captain.Name,
-          value: captain.id,
-        },
-      ]);
+      const formattedCaptains = captainsData.map((captain) => ({
+        label: captain.Name,
+        value: captain.id.replaceAll("-", ""),
+      }));
       formattedCaptains.push({
         name: "",
         label: "Other",
         value: "0",
       });
-
       setCaptains(formattedCaptains);
     };
 
     fetchCaptain();
   }, []);
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const id: string | null = urlParams.get("captainId")
-    setCaptainId(id)
-    if (captains.length <= 0) {
-      return
-    }
-    if (id && captains.some((captain) => captain.value === id)) {
-      setData({ ...data, Captain: id });
-    }
-  }, [captains]);
-
   return (
     <CommonSelect
       id="captains"
-      disabled={captainId !== null}
+      disabled={disabled}
       name="captains"
-      value={data["Captain"]}
+      value={value.replaceAll("-", "")}
       onChange={(e) => {
-        setData({ ...data, Captain: e.target.value });
+        onChange(e.target.value);
       }}
       data={captains}
       required

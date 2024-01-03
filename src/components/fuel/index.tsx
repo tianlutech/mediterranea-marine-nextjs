@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { createFuelRecord } from "../../services/notion.service";
 import { Fuel } from "../../models/models";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -30,11 +30,13 @@ export default function FuelForm() {
   const { t } = useTranslation();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
+  const searchParams = useSearchParams();
+
   const [data, setData] = useState({
     Date: moment().format("YYYY-MM-DD"),
     Boat: "",
     "Amount Paid": "",
-    Captain: "",
+    Captain: searchParams.get("captainId") || "",
     Port: "",
     "Picture of the Receipt": {} as File,
   });
@@ -64,7 +66,7 @@ export default function FuelForm() {
         Date: data["Date"],
         Paid: +data["Amount Paid"],
         Boat: data["Boat"],
-        Captain: data["Captain"],
+        Captain: data["Captain"] !== "0" ? data["Captain"] : undefined,
         Port: data["Port"],
         Receipt: receiptUrl,
       });
@@ -73,7 +75,7 @@ export default function FuelForm() {
       if (!res) {
         return;
       }
-      router.replace("/success");
+      // router.replace("/success");
     } finally {
       setLoading(false);
     }
@@ -114,9 +116,8 @@ export default function FuelForm() {
               <FormWrapper>
                 <CommonLabel input="text">{t("input.select_boat")}</CommonLabel>
                 <SelectBoat
-                  data={data}
-                  setData={setData}
-                  setLoading={setLoading}
+                  value={data["Boat"]}
+                  onChange={(boat) => setData({ ...data, Boat: boat })}
                 />
               </FormWrapper>
             </div>
@@ -144,9 +145,11 @@ export default function FuelForm() {
                   {t("input.captain_list")}
                 </CommonLabel>
                 <SelectCaptain
-                  data={data}
-                  setData={setData}
-                  setLoading={setLoading}
+                  disabled={!!searchParams.get("captainId")}
+                  value={data["Captain"]}
+                  onChange={(captainId) =>
+                    setData({ ...data, Captain: captainId })
+                  }
                 />
               </FormWrapper>
             </div>
