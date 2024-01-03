@@ -40,7 +40,7 @@ export class Boat extends NotionItem {
   bussySlots: string[] = [];
 }
 
-export type selectType = {
+export type SelectType = {
   label: string;
   value: string;
 };

@@ -1,18 +1,18 @@
 "use client";
 import CommonSelect from "@/components/common/inputs/selectInput";
-import { selectType } from "@/models/models";
+import { SelectType } from "@/models/models";
 import { useEffect, useState } from "react";
 import { getBoats } from "@/services/notion.service";
 import React from "react";
 
 export default function SelectBoat({
-  data,
-  setData,
+  value,
+  onChange,
 }: {
-  data: any;
-  setData: any;
+  value: string;
+  onChange: (id: string) => void;
 }) {
-  const [boats, setBoats] = useState<selectType[]>([]);
+  const [boats, setBoats] = useState<SelectType[]>([]);
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function SelectBoat({
         const boatsData = await getBoats();
         const formattedBoats = boatsData.map((boat) => ({
           label: boat.Nombre,
-          value: boat.id,
+          value: boat.id.replaceAll("-", ""),
         }));
         setBoats(formattedBoats);
         setLoading(false)
@@ -41,8 +41,8 @@ export default function SelectBoat({
       id="boats"
       name="boats"
       disabled={loading}
-      value={data["Boat"]}
-      onChange={(e) => setData({ ...data, Boat: e.target.value })}
+      value={value.replaceAll("-", "")}
+      onChange={(e) => onChange(e.target.value)}
       data={boats}
       required
     />

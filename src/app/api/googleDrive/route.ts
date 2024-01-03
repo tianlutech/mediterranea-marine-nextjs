@@ -1,7 +1,5 @@
 import { google } from "googleapis";
 import * as googleDrive from "./googleDrive.api";
-import { FileBody } from "@/models/models";
-
 import { credentials } from "../config/credentials";
 
 const auth = new google.auth.GoogleAuth({
@@ -22,29 +20,45 @@ export async function POST(request: Request) {
     const data = await request.formData();
     // Get the file from the FormData
     const file: File = data.get("file") as File;
-    const type = data.get("type");
-    
+    const type = data.get("type") as string;
+
     const body: any = {
       boatName: data.get("boatName"),
       id: data.get("id"),
       slag: data.get("slag"),
     };
 
+    if (!type) {
+      return new Response(JSON.stringify({ message: "Type is required" }), {
+        status: 422,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     // If there's no file in the FormData, return an error response
     if (!file) {
-      return new Response(JSON.stringify({ success: false }), {
+      return new Response(JSON.stringify({ message: "Not file found" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       });
     }
 
-    let result = null
-    if (type === "idCard") {
-    result = await googleDrive.uploadFile(auth, file, body);
+    const config = {
+      idCard: () => googleDrive.uploadFile(auth, file, body),
+      receipt: () => googleDrive.uploadReceiptImage(auth, file),
+    };
+
+    if (!config[type]) {
+      return new Response(
+        JSON.stringify({ message: "No action config for this type" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
     }
-    if (type === "receipt") {
-    result = await googleDrive.uploadReceiptImage(auth, file);
-    }
+
+    const result = await config[type]();
 
     return new Response(JSON.stringify(result), {
       status: 200,
