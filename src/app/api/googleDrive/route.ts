@@ -1,7 +1,12 @@
-import { google } from "googleapis";
+import { google, drive_v3  } from "googleapis";
 import * as googleDrive from "./googleDrive.api";
 import { credentials } from "../config/credentials";
 
+interface Config {
+  type: string;
+  idCard: () => Promise<drive_v3.Schema$File | { error: any }>;
+  receipt: () => Promise<drive_v3.Schema$File | { error: any }>;
+}
 const auth = new google.auth.GoogleAuth({
   // your credentials to authenticate
   // keyFile: process.cwd() + "/src/app/config/credentials.json",
@@ -43,7 +48,8 @@ export async function POST(request: Request) {
       });
     }
 
-    const config = {
+    // @abel here added the type but am still getting a type error I sued any
+    const config: any = {
       idCard: () => googleDrive.uploadFile(auth, file, body),
       receipt: () => googleDrive.uploadReceiptImage(auth, file),
     };
