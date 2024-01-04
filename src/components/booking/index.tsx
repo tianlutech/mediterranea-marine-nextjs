@@ -36,13 +36,13 @@ export default function BookingComponent({
 }) {
   const { t } = useTranslation();
   const router = useRouter();
-  const axios = require("axios").default;
   const [openPrepaymentModal, setOpenPrepaymentModal] =
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [totalPayment, setTotalPayment] = useState<number>(0);
   const [openTermModal, setOpenTermModal] = useState<boolean>(false);
   const [checkoutId, setCheckoutId] = useState("");
+  const [userSigned, setUserSigned] = useState(false);
   const [formData, setFormData] = useState({
     "First Name": "",
     "Last Name": "",
@@ -160,22 +160,28 @@ export default function BookingComponent({
     }
     router.replace("/success");
   };
+  const handleUserSigning = () => {
+    setUserSigned(true);
+    return userSigned
+  };
 
   const submitBooking = async () => {
+    if (!formData["signedContract"]) {
+      return setOpenTermModal(true);
+    }
     setLoading(true);
+    const checkIfContractSigned = await handleUserSigning()
+    if (checkIfContractSigned === false) {
+      setLoading(false);
+      return;
+    }
+    console.log("=======logged here")
     // validate address first
     const res = await validateAddress(formData["Billing Address"]);
 
     if (res === false) {
       setLoading(false);
       return;
-    }
-
-    if (!formData["signedContract"]) {
-      setOpenTermModal(true);
-      return toast.error(
-        "Please click on the check box read and sign the contract"
-      );
     }
 
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
@@ -238,7 +244,7 @@ export default function BookingComponent({
     setCheckoutId("");
     updateNotion(formData);
   };
-  const pricePerMile = +boatInfo?.MilePrice || 0;
+  const pricePerMile = boatInfo?.MilePrice || 0;
   const calculatedMiles = calculateBoatPrices(pricePerMile, MILE_RANGES);
 
   if (!data || !formik) {
@@ -259,6 +265,7 @@ export default function BookingComponent({
         data={data}
         boat={boatInfo}
         setData={setFormData}
+        onUserSigning={handleUserSigning}
       />
       <PrepaymentModal
         isOpen={openPrepaymentModal}
@@ -303,7 +310,6 @@ export default function BookingComponent({
                 boatInfo={boatInfo}
               />
             </div>
-
             {/* terms and policy */}
             <div>
               <div className="mt-6">

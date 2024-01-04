@@ -32,8 +32,6 @@ export default function BookingForm2({
   const [videoModalOpen, setVideoModalOpen] = useState<boolean>(false);
   const [videoLiknk, setVideoLink] = useState<string>("");
 
-
-
   const openVideoModal = (link: string) => {
     setVideoLink(link);
     setVideoModalOpen(true);

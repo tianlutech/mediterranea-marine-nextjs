@@ -14,6 +14,7 @@ export type NotionType =
   | "title"
   | "files"
   | "file"
+  | "formula"
   | "checkbox";
 
 export type NotionProperty = { type: NotionType } & Record<string, unknown>;
@@ -117,6 +118,8 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
       return (property["multi_select"] as Array<{ name: string }>).map(
         (relation) => relation.name
       );
+    case "formula":
+      return (property["formula"] as { number: number }).number || 0;
     case "files":
       return (property["files"] as Array<NotionFile>).map((file) => ({
         name: file.name,
@@ -159,6 +162,10 @@ const propToNotion: Record<string, (value: any) => NotionProperty> = {
     },
   }),
   number: (value: number) => ({
+    type: "number",
+    number: +value,
+  }),
+  formula: (value: number) => ({
     type: "number",
     number: +value,
   }),

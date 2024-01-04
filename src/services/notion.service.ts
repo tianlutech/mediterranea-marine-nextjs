@@ -15,7 +15,7 @@ export async function getBoatInfo(boatId: string) {
       `/api/notion/page?id=${encodeURIComponent(boatId)}`
     );
     const json = await response.json();
-
+    
     if (json.error) {
       console.error(json.error);
       return undefined;

@@ -26,7 +26,7 @@ export default function BookingForm1({
   boatInfo: Boat;
 }) {
   const { t } = useTranslation();
-  const [documentType, setDocumentType] = useState<string>("")
+  const [documentType, setDocumentType] = useState<string>("National ID")
   return (
     <div className="flex md:flex-row flex-col md:w-[49%] w-full">
       <div className="w-full bg-white rounded-lg">
