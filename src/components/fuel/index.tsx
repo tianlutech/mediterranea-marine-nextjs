@@ -75,7 +75,7 @@ export default function FuelForm() {
       if (!res) {
         return;
       }
-      // router.replace("/success");
+      router.replace("/success");
     } finally {
       setLoading(false);
     }
@@ -136,7 +136,7 @@ export default function FuelForm() {
                   }
                   required={true}
                 />
-                <p className="text-black absolute z-10 bottom-[0.6rem]  right-[1rem]">
+                <p className="text-black absolute z-10 bottom-[0.5rem]  right-[1.2rem]">
                   €
                 </p>
               </FormWrapper>
