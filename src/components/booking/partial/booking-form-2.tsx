@@ -7,7 +7,6 @@ import CommonInput from "@/components/common/inputs/input";
 import CommonSelect from "@/components/common/inputs/selectInput";
 import CommonLabel from "../../common/containers/label";
 import { useState } from "react";
-import TermsAndConditionModal from "@/components/modals/termsAndConditions";
 import VideoModal from "../../modals/videoModal";
 import ErrorMessage from "./errorMessage";
 import { DEPARTURES_TIMES, STANDUP_PADDLE, SEABOB } from "@/models/constants";
@@ -20,25 +19,20 @@ export default function BookingForm2({
   miles,
   formik,
   boatInfo,
-  bookingInfo,
 }: {
   data: any;
   setData: any;
   miles: Array<{ value: string; label: string }>;
   formik: any;
   boatInfo: Boat;
-  bookingInfo: Booking;
 }) {
   const { t } = useTranslation();
 
   const [eatAtRestaurant, setEatAtRestaurant] = useState<string>("");
-  const [openTermModal, setOpenTermModal] = useState<boolean>(false);
   const [videoModalOpen, setVideoModalOpen] = useState<boolean>(false);
   const [videoLiknk, setVideoLink] = useState<string>("");
 
-  const closeModalTermModal = () => {
-    setOpenTermModal(false);
-  };
+
 
   const openVideoModal = (link: string) => {
     setVideoLink(link);
@@ -57,14 +51,6 @@ export default function BookingForm2({
         isOpen={videoModalOpen}
         closeModal={closeVideoModal}
         videoSrc={videoLiknk}
-      />
-      <TermsAndConditionModal
-        bookingInfo={bookingInfo}
-        isOpen={openTermModal}
-        closeModal={closeModalTermModal}
-        data={data}
-        boat={boatInfo}
-        setData={setData}
       />
       <div className="flex md:mt-0 mt-4 md:flex-row flex-col md:w-[49%] w-full">
         <div className="w-full bg-white rounded-lg">
@@ -282,39 +268,6 @@ export default function BookingForm2({
               </span>
             </div>
             <ErrorMessage formik={formik} name="SEABOB" />
-            <div className="mt-6">
-              <div
-                onClick={() => {
-                  !data["signedContract"] &&
-                    data["Departure Time"] !== "" &&
-                    setOpenTermModal(true);
-                }}
-                className="flex items-center"
-              >
-                <input
-                  id="checked-checkbox"
-                  checked={data["signedContract"]}
-                  disabled={data["signedContract"] || !data["Departure Time"]}
-                  type="checkbox"
-                  value=""
-                  readOnly
-                  required
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
-                />
-                <label className="ms-2 text-sm text-black cursor-pointer">
-                  {t("input.read_and_sign_the_contract")}
-                </label>
-              </div>
-              <div className="ml-6">
-                {!data["signedContract"] || !data["Departure Time"] ? (
-                  <label className="text-black text-sm">
-                    {t("input.complete_field")}
-                  </label>
-                ) : (
-                  ""
-                )}
-              </div>
-            </div>
           </div>
         </div>
       </div>

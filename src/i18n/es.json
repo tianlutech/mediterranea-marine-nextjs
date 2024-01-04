@@ -70,5 +70,15 @@
   },
   "title": {
     "feed_back_form":"Feedback del Viaje"
+  },
+  "loadingMessage": {
+    "uploading_passport":"Subiendo tu Pasaporte",
+    "uploading_front_id":"Cargando su identificación frontal",
+    "uploading_back_id":"Subiendo tu ID posterior",
+    "verifying_front_id":"Verificación de su identificación frontal",
+    "verifying_back_id":"Verificación de su identificación posterior",
+    "preparing_for_payment":"Preparándose para el pago",
+    "processing_payment":"Procesando su pago",
+    "saving_information":"Guardar información"
   }
 }

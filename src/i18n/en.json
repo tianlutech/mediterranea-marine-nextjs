@@ -68,5 +68,15 @@
   },
   "title": {
     "feed_back_form":"Treatment Received Feedback Form"
+  },
+  "loadingMessage": {
+    "uploading_passport":"Uploading your Passport",
+    "uploading_front_id":"Uploading your Front ID",
+    "uploading_back_id":"Uploading your Back ID",
+    "verifying_front_id":"Verifying your Front ID",
+    "verifying_back_id":"Verifying your Back ID",
+    "preparing_for_payment":"Preparing for the Payment",
+    "processing_payment":"Processing your Payment",
+    "saving_information":"Saving Information"
   }
 }

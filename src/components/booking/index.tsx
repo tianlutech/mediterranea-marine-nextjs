@@ -22,6 +22,8 @@ import { uploadFile } from "@/services/googleDrive.service";
 import SumupWidget from "@/components/modals/sumupWidget";
 import { generateCheckoutId } from "@/services/sumup.service";
 import moment from "moment";
+import TermsAndConditionModal from "@/components/modals/termsAndConditions";
+import ProcessingModal from "../modals/progressModal";
 
 export default function BookingComponent({
   data,
@@ -34,10 +36,12 @@ export default function BookingComponent({
 }) {
   const { t } = useTranslation();
   const router = useRouter();
+  const axios = require("axios").default;
   const [openPrepaymentModal, setOpenPrepaymentModal] =
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [totalPayment, setTotalPayment] = useState<number>(0);
+  const [openTermModal, setOpenTermModal] = useState<boolean>(false);
   const [checkoutId, setCheckoutId] = useState("");
   const [formData, setFormData] = useState({
     "First Name": "",
@@ -61,6 +65,10 @@ export default function BookingComponent({
 
   const closePrepaymentModal = () => {
     setOpenPrepaymentModal(false);
+  };
+
+  const closeModalTermModal = () => {
+    setOpenTermModal(false);
   };
 
   const storeIdImage = async (file: File, slag: string) => {
@@ -164,7 +172,7 @@ export default function BookingComponent({
     }
 
     if (!formData["signedContract"]) {
-      setLoading(false);
+      setOpenTermModal(true);
       return toast.error(
         "Please click on the check box read and sign the contract"
       );
@@ -213,9 +221,9 @@ export default function BookingComponent({
     return mileRanges.map((miles: number) => ({
       label: miles
         ? `${miles} ` +
-          t("input.nautical_miles") +
-          " - " +
-          `${miles * pricePerMile}€`
+        t("input.nautical_miles") +
+        " - " +
+        `${miles * pricePerMile}€`
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
@@ -238,10 +246,19 @@ export default function BookingComponent({
   }
   return (
     <>
+      <ProcessingModal isOpen={true} />
       <SumupWidget
         isOpen={checkoutId ? true : false}
         checkoutId={checkoutId}
         onClose={() => proceedToNotion()}
+      />
+      <TermsAndConditionModal
+        bookingInfo={data}
+        isOpen={openTermModal}
+        closeModal={closeModalTermModal}
+        data={data}
+        boat={boatInfo}
+        setData={setFormData}
       />
       <PrepaymentModal
         isOpen={openPrepaymentModal}
@@ -279,7 +296,6 @@ export default function BookingComponent({
               />
               {/* Second form */}
               <BookingForm2
-                bookingInfo={data}
                 data={formData}
                 setData={setFormData}
                 miles={calculatedMiles}
