@@ -4,7 +4,7 @@ import InfoSvg from "../../../assets/svgs/InfoSvg";
 import CommonInput from "../../common/inputs/input";
 import CommonInputFile from "../../common/inputs/fileInput";
 import CommonLabel from "../../common/containers/label";
-import React from "react";
+import React, { useState } from "react";
 import ErrorMessage from "./errorMessage";
 import { Boat } from "../../../models/models";
 import { useTranslation } from "react-i18next";
@@ -26,6 +26,7 @@ export default function BookingForm1({
   boatInfo: Boat;
 }) {
   const { t } = useTranslation();
+  const [documentType, setDocumentType] = useState<string>("")
   return (
     <div className="flex md:flex-row flex-col md:w-[49%] w-full">
       <div className="w-full bg-white rounded-lg">
@@ -83,6 +84,37 @@ export default function BookingForm1({
             />
             <ErrorMessage formik={formik} name="ID Number" />
           </div>
+          <div className="mt-6 flex items-baseline">
+            <div className="flex items-center mb-4">
+              <input
+                id="default-radio-1"
+                type="radio"
+                value="nationalId"
+                checked={documentType === "National ID"}
+                name="document-radio"
+                onChange={() => setDocumentType("National ID")}
+                required
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
+              />
+              <label className="ms-2 md:text-base text-sm  text-black">
+                {t("input.national_id")}
+              </label>
+            </div>
+            <div className="flex items-center ml-10">
+              <input
+                id="eat-radio-1"
+                type="radio"
+                value="passport"
+                checked={documentType === "Passport"}
+                name="document-radio"
+                onChange={() => setDocumentType("Passport")}
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
+              />
+              <label className="ms-2 md:text-base text-sm  text-black">
+                {t("input.passport")}
+              </label>
+            </div>
+          </div>
           <>
             <CommonInputFile
               name="ID_Front_Picture"
@@ -93,16 +125,20 @@ export default function BookingForm1({
             />
             <ErrorMessage formik={formik} name="ID_Front_Picture" />
           </>
-          <>
-            <CommonInputFile
-              name="ID_Back_Picture"
-              label={t("input.ID_Back_Picture")}
-              onRemove={() => setData({ ...data, ID_Back_Picture: {} })}
-              onChange={(file) => setData({ ...data, ID_Back_Picture: file })}
-              required
-            />
-            <ErrorMessage formik={formik} name="ID_Back_Picture" />
-          </>
+          {
+            documentType === "National ID" &&
+            <>
+              <CommonInputFile
+                name="ID_Back_Picture"
+                label={t("input.ID_Back_Picture")}
+                onRemove={() => setData({ ...data, ID_Back_Picture: {} })}
+                onChange={(file) => setData({ ...data, ID_Back_Picture: file })}
+                required
+              />
+              <ErrorMessage formik={formik} name="ID_Back_Picture" />
+            </>
+          }
+
           <div className="relative w-full mt-6">
             <CommonLabel input="text" error={formik.errors["Last Name"]}>
               {t("input.billing_address")}

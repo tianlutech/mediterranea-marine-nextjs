@@ -33,12 +33,14 @@
     "submit":"Submit",
     "pay":"Pay",
     "nautical_miles":"Nautical Miles",
-    "id_number":"ID Number",
+    "id_number":"ID Number / Passport Number",
     "complete_field":"Complete all fields to sign the contract",
     "engine_hours":"Engine Hours",
     "fuel_left":"Fuel Left",
     "client_happiness":"Client Happiness",
-    "recommendation_text":"If the rating for the client is high (3 starts or more), send him a recommendation requests."
+    "recommendation_text":"If the rating for the client is high (3 starts or more), send him a recommendation requests.",
+    "national_id":"National ID",
+    "passport":"Passport"
   },
   "feedback": {
     "rate-required": "Please rate from 1 to 5 starts"
