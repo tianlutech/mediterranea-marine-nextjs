@@ -1,9 +1,12 @@
-import { google } from "googleapis";
+import { google, drive_v3  } from "googleapis";
 import * as googleDrive from "./googleDrive.api";
-import { FileBody } from "@/models/models";
-
 import { credentials } from "../config/credentials";
 
+interface Config {
+  type: string;
+  idCard: () => Promise<drive_v3.Schema$File | { error: any }>;
+  receipt: () => Promise<drive_v3.Schema$File | { error: any }>;
+}
 const auth = new google.auth.GoogleAuth({
   // your credentials to authenticate
   // keyFile: process.cwd() + "/src/app/config/credentials.json",
@@ -22,23 +25,46 @@ export async function POST(request: Request) {
     const data = await request.formData();
     // Get the file from the FormData
     const file: File = data.get("file") as File;
-    // @abel am using the FileBody type but gives me errors
+    const type = data.get("type") as string;
+
     const body: any = {
       boatName: data.get("boatName"),
       id: data.get("id"),
       slag: data.get("slag"),
     };
 
+    if (!type) {
+      return new Response(JSON.stringify({ message: "Type is required" }), {
+        status: 422,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     // If there's no file in the FormData, return an error response
     if (!file) {
-      return new Response(JSON.stringify({ success: false }), {
+      return new Response(JSON.stringify({ message: "Not file found" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       });
     }
 
-    // Call your function to handle the file upload
-    const result = await googleDrive.uploadFile(auth, file, body);
+    // @abel here added the type but am still getting a type error I sued any
+    const config: any = {
+      idCard: () => googleDrive.uploadFile(auth, file, body),
+      receipt: () => googleDrive.uploadReceiptImage(auth, file),
+    };
+
+    if (!config[type]) {
+      return new Response(
+        JSON.stringify({ message: "No action config for this type" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    const result = await config[type]();
 
     return new Response(JSON.stringify(result), {
       status: 200,

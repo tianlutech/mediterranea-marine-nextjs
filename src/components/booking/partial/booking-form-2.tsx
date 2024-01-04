@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
-import InfoSvg from "../../../assets/svgs/InfoSvg";
-import PlayerSvg from "../../../assets/svgs/PlayerSvg";
+import InfoSvg from "@/assets/svgs/InfoSvg";
+import PlayerSvg from "@/assets/svgs/PlayerSvg";
 import CommonInput from "@/components/common/inputs/input";
 import CommonSelect from "@/components/common/inputs/selectInput";
 import CommonLabel from "../../common/containers/label";

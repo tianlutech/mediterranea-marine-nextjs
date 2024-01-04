@@ -1,4 +1,5 @@
 import * as notion from "../notion.api";
+import { deleteUndefined } from "@/services/utils";
 
 // A complex GET where we pass the filter as a body
 export async function GET(request: Request) {
@@ -22,9 +23,12 @@ export async function GET(request: Request) {
     }
 
     // Use request.json() to parse the request body as JSON
-    const filter = filterString ? JSON.parse(filterString) : {};
-
-    const response = await notion.queryDatabase({ databaseId, filter });
+    const query = {
+      databaseId,
+      filter: filterString ? JSON.parse(filterString) : undefined,
+    };
+    deleteUndefined(query);
+    const response = await notion.queryDatabase(query);
 
     return new Response(
       JSON.stringify({ results: response.result?.results || [] }),
@@ -62,7 +66,6 @@ export async function POST(request: Request) {
     // Use request.json() to parse the request body as JSON
     const body = await request.json();
     const properties = body || {};
-
     const response = await notion.createDatabaseItem({
       databaseId,
       properties,

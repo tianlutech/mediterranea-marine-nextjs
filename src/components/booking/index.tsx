@@ -22,6 +22,7 @@ import { uploadFile } from "@/services/googleDrive.service";
 import SumupWidget from "@/components/modals/sumupWidget";
 import { generateCheckoutId } from "@/services/sumup.service";
 import moment from "moment";
+import React from "react";
 
 export default function BookingComponent({
   data,
@@ -87,8 +88,6 @@ export default function BookingComponent({
   }, [formData]);
 
   const updateNotion = async (formData: Record<string, unknown>) => {
-    setLoading(true);
-
     const [uploadIdFrontResponse, uploadIdBackImageResponse] =
       await Promise.all([
         storeIdImage(formData["ID_Front_Picture"] as File, "front"),

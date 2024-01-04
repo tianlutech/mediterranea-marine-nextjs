@@ -40,6 +40,11 @@ export class Boat extends NotionItem {
   bussySlots: string[] = [];
 }
 
+export type SelectType = {
+  label: string;
+  value: string;
+};
+
 export class Captain extends NotionItem {
   constructor(obj: object = {}) {
     super(obj);
@@ -146,6 +151,29 @@ export class Booking extends NotionItem {
   "SubmittedFormAt": Date;
   @NotionType("date")
   FeedbackFormAt?: Date;
+}
+
+export class Fuel extends NotionItem {
+  @NotionType("title")
+  "Name": string;
+
+  @NotionType("date")
+  "Date": string;
+
+  @NotionType("relation")
+  "Boat": string;
+
+  @NotionType("relation")
+  "Captain": string;
+
+  @NotionType("select")
+  "Port": string;
+
+  @NotionType("number")
+  "Paid": number;
+
+  @NotionType("file")
+  "Receipt": string;
 }
 
 export class DepartureTime extends NotionItem {

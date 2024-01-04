@@ -39,6 +39,12 @@
     "engine_hours":"Horas de motor",
     "fuel_left":"Combustible restante",
     "client_happiness":"Nivel de satisfacción del cliente",
+    "date":"Fecha",
+    "select_boat":"Seslecciona el barco",
+    "amount_paid":"Cantidad pagada",
+    "captain_list":"Lista de capitanes",
+    "port":"Puerto",
+    "picture_of_the_receipt":"Imagen del recibo",
     "recommendation_text":"Si la calificación del cliente es alta (3 estrellas o más), envíele una solicitud de recomendación."
   },
   "prepayment_modal":{
@@ -50,7 +56,8 @@
   "sidebar":{
     "language":"Language",
     "boat_booking":"RESERVA",
-    "feedback_form":"FEEDBACK",
+    "feedback_form":"COMENTARIOS DE LOS CLIENTES",
+    "putting_fuel_form":"PONER COMBUSTIBLE",
     "fuel_Form":"REPOSTAJE",
     "welcome_to_our_boat":"Bienvenido a nuestro barco",
     "reservation_form":"Formulario de reserva",
@@ -59,7 +66,6 @@
     "sidebar_p2":"Sus respuestas nos ayudarán a programar la reserva de su barco y satisfacer sus necesidades específicas. ¡Gracias por elegirnos para su aventura!",
     "feedback_sidebar": "<p>Recopilar esta información es realmente importante para nuestra empresa. Podemos mejorar nuestro servicio y mejorar los costos, mejorando la experiencia tanto para el cliente como para el personal.</p>",
     "fuel_sidebar": "<p>Recopilar esta información es realmente importante para nuestra empresa. Podemos mejorar nuestro servicio y mejorar los costos, mejorando la experiencia tanto para el cliente como para el personal.</p>"
-
   },
   "feedback": {
     "rate_required": "De una puntuación de 1 a 5 estrellas"
@@ -69,6 +75,7 @@
     "upload_back_image":"Se ha producido un error al cargar la imagen de identificación posterior."
   },
   "title": {
-    "feed_back_form":"Feedback del Viaje"
+    "feed_back_form":"Feedback del Viaje",
+    "fuel_form":"Poner forma de combustible"
   }
 }
