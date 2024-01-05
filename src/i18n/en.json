@@ -38,17 +38,14 @@
     "engine_hours":"Engine Hours",
     "fuel_left":"Fuel Left",
     "client_happiness":"Client Happiness",
-
     "date":"Date",
     "select_boat":"Select the boat",
     "amount_paid":"Amount paid",
     "captain_list":"Captain List",
     "port":"Port",
     "picture_of_the_receipt":"Picture of the Receipt ",
-    "recommendation_text":"If the rating for the client is high (3 starts or more), send him a recommendation requests.",
-     "national_id":"National ID",
-    "passport":"Passport"
-   },
+    "recommendation_text":"If the rating for the client is high (3 starts or more), send him a recommendation requests."
+  },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepay your fuel",
     "prepayment_fuel_modal_p1":"Selecting the option of prepaying the fuel will allow us the provide you a better service: planning properly the navigation route and improving your experience.",
@@ -78,8 +75,7 @@
     "upload_back_image":"There has been an error while uploading back id picture"
   },
   "title": {
-    "feed_back_form":"Treatment Received Feedback Form",
-    "fuel_form":"Fuel Form"
+    "feed_back_form":"Treatment Received Feedback Form"
   },
   "loadingMessage": {
     "uploading_passport":"Uploading your Passport",
@@ -89,6 +85,8 @@
     "verifying_back_id":"Verifying your Back ID",
     "preparing_for_payment":"Preparing for the Payment",
     "processing_payment":"Processing your Payment",
-    "saving_information":"Saving Information"
+    "saving_information":"Saving Information",
+    "feed_back_form":"Treatment Received Feedback Form",
+    "fuel_form":"Putting Fuel Form"
   }
 }
