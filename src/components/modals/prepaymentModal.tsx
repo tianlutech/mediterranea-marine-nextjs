@@ -2,30 +2,50 @@
 import Image from "next/image";
 import Boat from "@/assets/boat.png";
 import Modal from "@/components/common/containers/modal";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
 import React from "react";
+import { Booking } from "../../models/models";
+import { t } from "i18next";
+import { MILE_RANGES } from "@/models/constants";
+
+// Function to calculate boat prices
+const calculateBoatPrices = (pricePerMile: number) => {
+  return MILE_RANGES.map((miles: number) => ({
+    label: miles
+      ? `${miles} ` +
+        t("input.nautical_miles") +
+        " - " +
+        `${miles * pricePerMile}€`
+      : t("input.continue_without_prepayment"),
+    value: (miles * pricePerMile).toString(),
+  }));
+};
 
 export default function PrepaymentModal({
   isOpen,
   closeModal,
-  data,
+  boat,
+  formData,
   continuePayment,
 }: {
   isOpen: boolean;
   closeModal: () => void;
-  data: Array<{ value: string; label: string }>;
+  formData: Booking;
+  boat: Boat;
   continuePayment: (fuelPayment: number) => void;
 }) {
   const { t } = useTranslation();
   const [payment, setPayment] = useState(
-    +data["Fuel Payment"] + +data["SUP"] + +data["SEABOB"]
+    +formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"]
   );
   const [fuelPayment, setFuelPayment] = useState(0);
 
   useEffect(() => {
-    setPayment(+data["Fuel Payment"] + +data["SUP"] + +data["SEABOB"]);
-  }, [data]);
+    setPayment(
+      +formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"]
+    );
+  }, [formData]);
 
   const addFuel = (value: string) => {
     const fuelPrice = parseInt(value);
@@ -36,6 +56,12 @@ export default function PrepaymentModal({
     continuePayment(fuelPayment);
     closeModal();
   };
+
+  const calculatedMiles = useMemo(() => {
+    const pricePerMile = boat.MilePrice || 0;
+    return calculateBoatPrices(pricePerMile);
+  }, [boat]);
+
   return (
     <Modal isOpen={isOpen} onClose={() => closeModal()}>
       <div className="relative p-2 md:w-[60%] w-[95%] bg-white rounded-lg shadow overflow-y-scroll pt-0 h-sm-[95%] h-md-[30%]">
@@ -77,7 +103,7 @@ export default function PrepaymentModal({
               </p>
             </span>
             <div>
-              {data.map((item, index: number) => {
+              {calculatedMiles.map((item, index: number) => {
                 return (
                   <div key={index} className="flex mt-4 items-center mb-4">
                     <input

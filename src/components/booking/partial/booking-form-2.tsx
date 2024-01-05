@@ -5,23 +5,36 @@ import PlayerSvg from "@/assets/svgs/PlayerSvg";
 import CommonInput from "@/components/common/inputs/input";
 import CommonSelect from "@/components/common/inputs/selectInput";
 import CommonLabel from "../../common/containers/label";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import VideoModal from "../../modals/videoModal";
 import ErrorMessage from "./errorMessage";
 import { DEPARTURES_TIMES, STANDUP_PADDLE, SEABOB } from "@/models/constants";
 import { Boat, Booking } from "@/models/models";
 import { useTranslation } from "next-i18next";
+import { MILE_RANGES } from "@/models/constants";
+import { t } from "i18next";
+
+// Function to calculate boat prices
+const calculateBoatPrices = (pricePerMile: number) => {
+  return MILE_RANGES.map((miles: number) => ({
+    label: miles
+      ? `${miles} ` +
+        t("input.nautical_miles") +
+        " - " +
+        `${miles * pricePerMile}€`
+      : t("input.continue_without_prepayment"),
+    value: (miles * pricePerMile).toString(),
+  }));
+};
 
 export default function BookingForm2({
   data,
   setData,
-  miles,
   formik,
   boatInfo,
 }: {
   data: any;
   setData: any;
-  miles: Array<{ value: string; label: string }>;
   formik: any;
   boatInfo: Boat;
 }) {
@@ -42,6 +55,12 @@ export default function BookingForm2({
   const departureTimes = DEPARTURES_TIMES.filter(
     (timeSlot) => !boatInfo.bussySlots.includes(timeSlot)
   );
+
+  const miles = useMemo(() => {
+    const pricePerMile = boatInfo.MilePrice || 0;
+    return calculateBoatPrices(pricePerMile);
+  }, [boatInfo]);
+
   return (
     <>
       <VideoModal

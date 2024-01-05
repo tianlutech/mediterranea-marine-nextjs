@@ -23,6 +23,7 @@ import SumupWidget from "@/components/modals/sumupWidget";
 import { generateCheckoutId } from "@/services/sumup.service";
 import moment from "moment";
 import TermsAndConditionModal from "@/components/modals/termsAndConditions";
+import SaveBooking from "./partial/submitBooking";
 
 export default function BookingComponent({
   data,
@@ -42,6 +43,9 @@ export default function BookingComponent({
   const [openTermModal, setOpenTermModal] = useState<boolean>(false);
   const [checkoutId, setCheckoutId] = useState("");
   const [userSigned, setUserSigned] = useState(false);
+  const [startSubmitProcess, setSubmitBookingHook] = useState<() => void>(
+    () => 1
+  );
   const [formData, setFormData] = useState({
     "First Name": "",
     "Last Name": "",
@@ -157,32 +161,17 @@ export default function BookingComponent({
     }
     router.replace("/success");
   };
-  const handleUserSigning = () => {
-    setUserSigned(true);
-    return userSigned;
-  };
 
   const submitBooking = async () => {
-    if (!formData["signedContract"]) {
-      return setOpenTermModal(true);
-    }
-    setLoading(true);
-    const checkIfContractSigned = await handleUserSigning();
-    if (checkIfContractSigned === false) {
-      setLoading(false);
-      return;
-    }
-
     // validate address first
     const res = await validateAddress(formData["Billing Address"]);
 
     if (res === false) {
-      setLoading(false);
+      return toast.error("The address is not accourate enought");
       return;
     }
 
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
-      setLoading(false);
       return toast.error(
         `Add number of passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
@@ -192,22 +181,12 @@ export default function BookingComponent({
       +formData["No Adults"] + +formData["No Childs"] >
       boatInfo["Max.Passengers"]
     ) {
-      setLoading(false);
       return toast.error(
         `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
     }
 
-    if (+formData["Fuel Payment"] === 0) {
-      setLoading(false);
-      return setOpenPrepaymentModal(true);
-    }
-    if (totalPayment > 0) {
-      getCheckoutId();
-      setLoading(false);
-
-      return;
-    }
+    startSubmitProcess();
   };
 
   const getCheckoutId = async () => {
@@ -219,19 +198,6 @@ export default function BookingComponent({
     return response;
   };
 
-  // Function to calculate boat prices
-  const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
-    return mileRanges.map((miles: number) => ({
-      label: miles
-        ? `${miles} ` +
-          t("input.nautical_miles") +
-          " - " +
-          `${miles * pricePerMile}€`
-        : t("input.continue_without_prepayment"),
-      value: (miles * pricePerMile).toString(),
-    }));
-  };
-
   const handlePrepayment = (additionalPayment: number) => {
     setTotalPayment(additionalPayment);
     submitBooking();
@@ -241,14 +207,18 @@ export default function BookingComponent({
     setCheckoutId("");
     updateNotion(formData);
   };
-  const pricePerMile = boatInfo?.MilePrice || 0;
-  const calculatedMiles = calculateBoatPrices(pricePerMile, MILE_RANGES);
 
   if (!data || !formik) {
     return;
   }
   return (
     <>
+      <SaveBooking
+        boat={boatInfo}
+        onInit={(onSubmit) => setSubmitBookingHook(onSubmit)}
+        booking={formData as unknown as Booking}
+        onSuccess={() => router.replace("/success")}
+      />
       <SumupWidget
         isOpen={checkoutId ? true : false}
         checkoutId={checkoutId}
@@ -263,7 +233,7 @@ export default function BookingComponent({
         setData={setFormData}
         onUserSigning={handleUserSigning}
       />
-      <PrepaymentModal
+      {/* <PrepaymentModal
         isOpen={openPrepaymentModal}
         closeModal={closePrepaymentModal}
         data={calculatedMiles}
@@ -285,7 +255,7 @@ export default function BookingComponent({
           }
           updateNotion(newData);
         }}
-      />
+      /> */}
       <div className="relative md:w-[77%] w-full md:p-6 p-2">
         <form onSubmit={formik.handleSubmit}>
           <div className="justify-between w-full ">
@@ -301,7 +271,6 @@ export default function BookingComponent({
               <BookingForm2
                 data={formData}
                 setData={setFormData}
-                miles={calculatedMiles}
                 formik={formik}
                 boatInfo={boatInfo}
               />

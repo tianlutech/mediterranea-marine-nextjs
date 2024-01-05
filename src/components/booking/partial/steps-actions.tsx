@@ -31,7 +31,13 @@ export const stepsActions = ({
   setModalInfo,
   nextStep,
 }: {
-  setModalInfo: ({ message }: { message: string; modal: string }) => void;
+  setModalInfo: ({
+    message,
+  }: {
+    message?: string;
+    modal: string;
+    error?: string;
+  }) => void;
   nextStep: () => void;
 }) => {
   const fuel = {
@@ -46,11 +52,7 @@ export const stepsActions = ({
 
   const sign = {
     execute: (booking: Booking, boat: Boat) => {
-      if (booking["Fuel Left"] === 0) {
-        setModalInfo({ modal: "fuel", message: "" });
-        return;
-      }
-      nextStep();
+      setModalInfo({ modal: "sign", message: "" });
     },
   };
   const uploadPictures = {
@@ -79,13 +81,19 @@ export const stepsActions = ({
 
       if (!uploadIdFrontResponse) {
         toast.error(t("error.upload_image"));
-        close();
+        setModalInfo({
+          modal: "loading",
+          error: "Error uploading front picture",
+        });
         return;
       }
 
       if (!uploadIdBackImageResponse) {
         toast.error(t("upload_front_image"));
-        close();
+        setModalInfo({
+          modal: "loading",
+          error: "Error uploading back picture",
+        });
         return;
       }
       nextStep();
