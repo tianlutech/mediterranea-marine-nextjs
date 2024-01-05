@@ -4,32 +4,33 @@ import Boat from "@/assets/boat.png";
 import Modal from "@/components/common/containers/modal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
+import React from "react";
 
 export default function PrepaymentModal({
   isOpen,
   closeModal,
   data,
-  totalPayment,
   continuePayment,
 }: {
   isOpen: boolean;
   closeModal: () => void;
   data: Array<{ value: string; label: string }>;
-  totalPayment: number;
   continuePayment: (fuelPayment: number) => void;
 }) {
   const { t } = useTranslation();
-  const [payment, setPayment] = useState(totalPayment);
+  const [payment, setPayment] = useState(
+    +data["Fuel Payment"] + +data["SUP"] + +data["SEABOB"]
+  );
   const [fuelPayment, setFuelPayment] = useState(0);
 
   useEffect(() => {
-    setPayment(totalPayment);
-  }, [totalPayment]);
+    setPayment(+data["Fuel Payment"] + +data["SUP"] + +data["SEABOB"]);
+  }, [data]);
 
   const addFuel = (value: string) => {
     const fuelPrice = parseInt(value);
     setFuelPayment(fuelPayment);
-    setPayment(totalPayment + fuelPrice);
+    setPayment(payment + fuelPrice);
   };
   const proceedSubmission = () => {
     continuePayment(fuelPayment);

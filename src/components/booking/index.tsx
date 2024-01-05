@@ -23,7 +23,6 @@ import SumupWidget from "@/components/modals/sumupWidget";
 import { generateCheckoutId } from "@/services/sumup.service";
 import moment from "moment";
 import TermsAndConditionModal from "@/components/modals/termsAndConditions";
-import ProcessingModal from "../modals/progressModal";
 
 export default function BookingComponent({
   data,
@@ -250,7 +249,6 @@ export default function BookingComponent({
   }
   return (
     <>
-      <ProcessingModal isOpen={true} />
       <SumupWidget
         isOpen={checkoutId ? true : false}
         checkoutId={checkoutId}
