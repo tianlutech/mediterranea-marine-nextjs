@@ -47,7 +47,7 @@
     "amount_paid":"Cantidad pagada",
     "captain_list":"Lista de capitanes",
     "port":"Puerto",
-    "picture_of_the_receipt":"Imagen del recibo",
+    "picture_of_the_receipt":"Imagen del recibo"
   },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepaga tu combustible",

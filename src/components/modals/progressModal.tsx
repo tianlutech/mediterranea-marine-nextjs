@@ -12,7 +12,7 @@ export default function ProcessingModal({
 }) {
 
   return (
-    <Modal isOpen={false}>
+    <Modal isOpen={true}>
       <div className="relative p-2 md:w-[50%] w-[95%] bg-white text-black rounded-lg shadow">
         <div className="flex justify-center items-center my-3">
           <span className="font-bold text-lg"> Processing</span>
