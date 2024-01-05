@@ -39,19 +39,15 @@
     "engine_hours":"Horas de motor",
     "fuel_left":"Combustible restante",
     "client_happiness":"Nivel de satisfacción del cliente",
-<<<<<<< HEAD
     "recommendation_text":"Si la calificación del cliente es alta (3 estrellas o más), envíele una solicitud de recomendación.",
     "national_id":"Identificación nacional",
-    "passport":"Pasaporte"
-=======
+    "passport":"Pasaporte",
     "date":"Fecha",
     "select_boat":"Seslecciona el barco",
     "amount_paid":"Cantidad pagada",
     "captain_list":"Lista de capitanes",
     "port":"Puerto",
     "picture_of_the_receipt":"Imagen del recibo",
-    "recommendation_text":"Si la calificación del cliente es alta (3 estrellas o más), envíele una solicitud de recomendación."
->>>>>>> 6f53a53f8f9690ce43ce87a762f402a7583b78b4
   },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepaga tu combustible",
@@ -81,7 +77,6 @@
     "upload_back_image":"Se ha producido un error al cargar la imagen de identificación posterior."
   },
   "title": {
-<<<<<<< HEAD
     "feed_back_form":"Feedback del Viaje"
   },
   "loadingMessage": {
@@ -92,10 +87,8 @@
     "verifying_back_id":"Verificación de su identificación posterior",
     "preparing_for_payment":"Preparándose para el pago",
     "processing_payment":"Procesando su pago",
-    "saving_information":"Guardar información"
-=======
+    "saving_information":"Guardar información",
     "feed_back_form":"Feedback del Viaje",
     "fuel_form":"Poner forma de combustible"
->>>>>>> 6f53a53f8f9690ce43ce87a762f402a7583b78b4
   }
 }

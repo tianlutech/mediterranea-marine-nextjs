@@ -38,11 +38,6 @@
     "engine_hours":"Engine Hours",
     "fuel_left":"Fuel Left",
     "client_happiness":"Client Happiness",
-<<<<<<< HEAD
-    "recommendation_text":"If the rating for the client is high (3 starts or more), send him a recommendation requests.",
-    "national_id":"National ID",
-    "passport":"Passport"
-=======
     "date":"Date",
     "select_boat":"Select the boat",
     "amount_paid":"Amount paid",
@@ -50,7 +45,6 @@
     "port":"Port",
     "picture_of_the_receipt":"Picture of the Receipt ",
     "recommendation_text":"If the rating for the client is high (3 starts or more), send him a recommendation requests."
->>>>>>> 6f53a53f8f9690ce43ce87a762f402a7583b78b4
   },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepay your fuel",
@@ -80,7 +74,6 @@
     "upload_back_image":"There has been an error while uploading back id picture"
   },
   "title": {
-<<<<<<< HEAD
     "feed_back_form":"Treatment Received Feedback Form"
   },
   "loadingMessage": {
@@ -91,10 +84,8 @@
     "verifying_back_id":"Verifying your Back ID",
     "preparing_for_payment":"Preparing for the Payment",
     "processing_payment":"Processing your Payment",
-    "saving_information":"Saving Information"
-=======
+    "saving_information":"Saving Information",
     "feed_back_form":"Treatment Received Feedback Form",
     "fuel_form":"Putting Fuel Form"
->>>>>>> 6f53a53f8f9690ce43ce87a762f402a7583b78b4
   }
 }
