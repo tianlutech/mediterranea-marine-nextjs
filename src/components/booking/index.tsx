@@ -160,7 +160,7 @@ export default function BookingComponent({
   };
   const handleUserSigning = () => {
     setUserSigned(true);
-    return userSigned
+    return userSigned;
   };
 
   const submitBooking = async () => {
@@ -168,12 +168,12 @@ export default function BookingComponent({
       return setOpenTermModal(true);
     }
     setLoading(true);
-    const checkIfContractSigned = await handleUserSigning()
+    const checkIfContractSigned = await handleUserSigning();
     if (checkIfContractSigned === false) {
       setLoading(false);
       return;
     }
-    console.log("=======logged here")
+
     // validate address first
     const res = await validateAddress(formData["Billing Address"]);
 
@@ -225,9 +225,9 @@ export default function BookingComponent({
     return mileRanges.map((miles: number) => ({
       label: miles
         ? `${miles} ` +
-        t("input.nautical_miles") +
-        " - " +
-        `${miles * pricePerMile}€`
+          t("input.nautical_miles") +
+          " - " +
+          `${miles * pricePerMile}€`
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));

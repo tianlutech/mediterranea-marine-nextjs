@@ -26,7 +26,7 @@ export default function BookingForm1({
   boatInfo: Boat;
 }) {
   const { t } = useTranslation();
-  const [documentType, setDocumentType] = useState<string>("National ID")
+  const [documentType, setDocumentType] = useState<string>("National ID");
   return (
     <div className="flex md:flex-row flex-col md:w-[49%] w-full">
       <div className="w-full bg-white rounded-lg">
@@ -120,24 +120,27 @@ export default function BookingForm1({
               name="ID_Front_Picture"
               label={t("input.ID_Front_Picture")}
               onRemove={() => setData({ ...data, ID_Front_Picture: {} })}
-              onChange={(file) => setData({ ...data, ID_Front_Picture: file })}
+              onChange={(file) =>
+                setData({ ...data, ID_Front_Picture: file || {} })
+              }
               required
             />
             <ErrorMessage formik={formik} name="ID_Front_Picture" />
           </>
-          {
-            documentType === "National ID" &&
+          {documentType === "National ID" && (
             <>
               <CommonInputFile
                 name="ID_Back_Picture"
                 label={t("input.ID_Back_Picture")}
                 onRemove={() => setData({ ...data, ID_Back_Picture: {} })}
-                onChange={(file) => setData({ ...data, ID_Back_Picture: file })}
+                onChange={(file) =>
+                  setData({ ...data, ID_Back_Picture: file || {} })
+                }
                 required
               />
               <ErrorMessage formik={formik} name="ID_Back_Picture" />
             </>
-          }
+          )}
 
           <div className="relative w-full mt-6">
             <CommonLabel input="text" error={formik.errors["Last Name"]}>

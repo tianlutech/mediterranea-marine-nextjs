@@ -67,6 +67,7 @@
     "welcome_to_our_boat":"Welcome to our Boat",
     "reservation_form":"Reservation Form!",
     "we_are_excited_to_help_you_plan_your_next_water_adventure":"We are excited to help you plan your next water adventure.",
+    "booking_info":"📅 Fecha: {{date}}<br/>🛥️ Barco: {{boat}}<br/>⚓ Puerto: {{port}}",
     "sidebar_p1":"Please take a moment to provide us with some essential details, so we can ensure you have a smooth and enjoyable experience.",
     "sidebar_p2":"Your responses will help us schedule your boat reservation and cater to your specific needs. Thank you for choosing us for your boating adventure!",
     "feedback_sidebar": "<p>Collecting this information is really important for our company. We can improve our service and cost enhancing the experience fo both client and staff.</p>",
