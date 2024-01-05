@@ -1,3 +1,4 @@
+import SpinnerSVG from "@/assets/svgs/SpinerSvg";
 import Spinner from "./spinner";
 
 export default function SubmitButton({

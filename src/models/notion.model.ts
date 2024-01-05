@@ -10,11 +10,13 @@ export type NotionType =
   | "date"
   | "files"
   | "relation"
+  | "select"
   | "multi_select"
   | "title"
   | "files"
   | "file"
   | "formula"
+  | "emoji"
   | "checkbox";
 
 export type NotionProperty = { type: NotionType } & Record<string, unknown>;
@@ -34,6 +36,7 @@ export type NotionPage = {
   id: string;
   properties: Record<string, NotionProperty>;
   cover: NotionProperty;
+  icon: NotionProperty;
 };
 
 /**
@@ -54,6 +57,7 @@ export const NotionType = (type: NotionType) => {
 export class NotionItem {
   id: string = "";
   cover: string = "";
+  icon: string = "";
 
   constructor(obj: object = {}) {
     Object.assign(this, obj);
@@ -90,8 +94,10 @@ export const parseNotionObject = <Type extends NotionItem>(
     return obj;
   }, instance as Record<string, unknown>);
 
+  object.icon = parseNotionProperty(notionObject.icon);
   object.cover = parseNotionProperty(notionObject.cover);
   object.id = notionObject.id;
+
   return object as Type;
 };
 
@@ -110,6 +116,8 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
       return new Date(
         (property["date"] as { start: string; end: string })?.start
       );
+    case "emoji":
+      return property["emoji"];
     case "relation":
       return (property["relation"] as Array<{ id: string }>).map(
         (relation) => relation.id
@@ -120,6 +128,8 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
       );
     case "formula":
       return (property["formula"] as { number: number }).number || 0;
+    case "select":
+      return (property["select"] as { name: string }).name;
     case "files":
       return (property["files"] as Array<NotionFile>).map((file) => ({
         name: file.name,
@@ -149,6 +159,10 @@ const propToNotion: Record<string, (value: any) => NotionProperty> = {
     multi_select: value.map((item) => ({
       name: item,
     })),
+  }),
+  select: (value: unknown) => ({
+    type: "select",
+    select: { name: value },
   }),
   date: (value: Date) => ({
     type: "date",

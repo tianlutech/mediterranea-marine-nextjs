@@ -132,7 +132,7 @@ export default function FeedbackForm({
                   step={1}
                 />
               </FormWrapper>
-              <p className="text-black absolute z-10 bottom-[0.6rem] md:left-[4.5rem] left-[2.5rem]">
+              <p className="text-black absolute z-10 bottom-[0.6rem] right-[1rem]">
                 %
               </p>
             </div>

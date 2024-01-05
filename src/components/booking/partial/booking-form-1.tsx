@@ -1,8 +1,8 @@
 "use client";
 
-import InfoSvg from "../../../assets/svgs/InfoSvg";
-import CommonInput from "../../common/inputs/input";
-import CommonInputFile from "../../common/inputs/fileInput";
+import InfoSvg from "@/assets/svgs/InfoSvg";
+import CommonInput from "@/components/common/inputs/input";
+import CommonInputFile from "@/components/common/inputs/fileInput";
 import CommonLabel from "../../common/containers/label";
 import React, { useState } from "react";
 import ErrorMessage from "./errorMessage";

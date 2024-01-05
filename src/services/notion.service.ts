@@ -1,5 +1,5 @@
 import { Client } from "@notionhq/client";
-import { Boat, Booking, Captain, DepartureTime } from "../models/models";
+import { Boat, Booking, Captain, DepartureTime, Fuel } from "../models/models";
 import {
   parseNotionObject,
   NotionPage,
@@ -150,6 +150,32 @@ export async function updateBookingInfo(bookingId: string, data: Booking) {
     }
 
     return parseNotionObject<Booking>(new Booking(), json.result as NotionPage);
+  } catch (error) {
+    console.error("Error retrieving page from Notion:", error);
+    return undefined;
+  }
+}
+
+export async function createFuelRecord(data: Fuel) {
+  try {
+    // Append the FuelFormID as a query parameter to the URL
+    const response = await fetch(
+      `/api/notion/database?databaseId=${NOTION_DATABASES.FUEL}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(parseObjectToNotion<Fuel>(data)),
+      }
+    );
+    const json = await response.json();
+    if (response.status !== 200) {
+      toast.error("Something went wrong" + response.statusText);
+      return false;
+    }
+
+    return parseNotionObject<Fuel>(new Fuel(), json.result as NotionPage);
   } catch (error) {
     console.error("Error retrieving page from Notion:", error);
     return undefined;

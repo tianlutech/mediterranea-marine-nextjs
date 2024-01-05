@@ -32,6 +32,14 @@ export const DEPARTURES_TIMES = [
   "20:00",
   "20:30",
 ];
+
+export const PORTS = [
+  "Marina Botafoc",
+  "Marina Ibiza",
+  "Club Nautico de Ibiza",
+  "Marina Port Ibiza"
+]
+
 export const SEABOB = [
   {
     name: "",

@@ -38,12 +38,19 @@
     "engine_hours":"Engine Hours",
     "fuel_left":"Fuel Left",
     "client_happiness":"Client Happiness",
+<<<<<<< HEAD
     "recommendation_text":"If the rating for the client is high (3 starts or more), send him a recommendation requests.",
     "national_id":"National ID",
     "passport":"Passport"
-  },
-  "feedback": {
-    "rate-required": "Please rate from 1 to 5 starts"
+=======
+    "date":"Date",
+    "select_boat":"Select the boat",
+    "amount_paid":"Amount paid",
+    "captain_list":"Captain List",
+    "port":"Port",
+    "picture_of_the_receipt":"Picture of the Receipt ",
+    "recommendation_text":"If the rating for the client is high (3 starts or more), send him a recommendation requests."
+>>>>>>> 6f53a53f8f9690ce43ce87a762f402a7583b78b4
   },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepay your fuel",
@@ -51,10 +58,14 @@
     "prepayment_fuel_modal_p2":"As well will reduce your cost and let you enjoy the trip being relax on a fix cost of the fuel",
     "back":"Back"
   },
+  "feedback": {
+    "rate_required": "De una puntuación de 1 a 5 estrellas"
+  },
   "sidebar":{
     "language":"Language",
     "boat_booking":"BOAT BOOKING",
     "feedback_form":"CUSTOMER FEEDBACK",
+    "putting_fuel_form":"PUTTING FUEL",
     "fuel_Form":"FUEL REPORT",
     "welcome_to_our_boat":"Welcome to our Boat",
     "reservation_form":"Reservation Form!",
@@ -69,6 +80,7 @@
     "upload_back_image":"There has been an error while uploading back id picture"
   },
   "title": {
+<<<<<<< HEAD
     "feed_back_form":"Treatment Received Feedback Form"
   },
   "loadingMessage": {
@@ -80,5 +92,9 @@
     "preparing_for_payment":"Preparing for the Payment",
     "processing_payment":"Processing your Payment",
     "saving_information":"Saving Information"
+=======
+    "feed_back_form":"Treatment Received Feedback Form",
+    "fuel_form":"Putting Fuel Form"
+>>>>>>> 6f53a53f8f9690ce43ce87a762f402a7583b78b4
   }
 }
