@@ -33,8 +33,8 @@ export const stepsActions = ({
 }: {
   setModalInfo: ({ message }: { message: string; modal: string }) => void;
   nextStep: () => void;
-}) => ({
-  fuel: {
+}) => {
+  const fuel = {
     execute: (booking: Booking, boat: Boat) => {
       if (booking["Fuel Left"] === 0) {
         setModalInfo({ modal: "fuel", message: "" });
@@ -42,8 +42,9 @@ export const stepsActions = ({
       }
       nextStep();
     },
-  },
-  sign: {
+  };
+
+  const sign = {
     execute: (booking: Booking, boat: Boat) => {
       if (booking["Fuel Left"] === 0) {
         setModalInfo({ modal: "fuel", message: "" });
@@ -51,8 +52,8 @@ export const stepsActions = ({
       }
       nextStep();
     },
-  },
-  uploadPictures: {
+  };
+  const uploadPictures = {
     execute: async (booking: Booking, boat: Boat) => {
       setModalInfo({
         modal: "loading",
@@ -89,5 +90,11 @@ export const stepsActions = ({
       }
       nextStep();
     },
-  },
-});
+  };
+
+  return {
+    fuel,
+    sign,
+    uploadPictures,
+  };
+};

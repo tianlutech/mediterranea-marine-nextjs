@@ -9,25 +9,6 @@ import TermsAndConditionModal from "@/components/modals/termsAndConditions";
 import { stepsActions, steps } from "./steps-actions";
 import ProgressModal from "@/components/modals/ProgressModal";
 
-export function LoadingModal({
-  isOpen,
-  message,
-}: {
-  isOpen: boolean;
-  message: string;
-}) {
-  return (
-    <Modal isOpen={isOpen}>
-      <div className="flex items-center justify-center w-full h-full bg-white fixed top-0 left-0 z-50">
-        <Spinner size={20}>
-          <BoatSvg />
-        </Spinner>
-      </div>
-      <span>{message} </span>
-    </Modal>
-  );
-}
-
 export default function SaveBooking({
   onInit,
   booking,
@@ -43,6 +24,7 @@ export default function SaveBooking({
 }) {
   const [step, setStep] = useState<string>("sign");
   const [modalInfo, setModalInfo] = useState({ modal: "", message: "" });
+  const [number, setNumber] = useState(0);
 
   const nextStep = useCallback(
     (step) => {
@@ -54,7 +36,7 @@ export default function SaveBooking({
       const newStep = steps[index + 1];
       setStep(newStep);
     },
-    [onSuccess]
+    [onSuccess, setStep]
   );
 
   useEffect(() => {
