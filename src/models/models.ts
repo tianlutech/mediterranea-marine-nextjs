@@ -25,8 +25,8 @@ export type FileBody = {
 export class Boat extends NotionItem {
   @NotionType("number")
   "Max.Passengers": number;
-  @NotionType("rich_text")
-  MilePrice: string = "";
+  @NotionType("number")
+  MilePrice: number= 0;
   @NotionType("rich_text")
   Code: string = "";
   @NotionType("ID")

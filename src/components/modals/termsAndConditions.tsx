@@ -6,19 +6,17 @@ import { Boat, Booking } from "@/models/models";
 import moment from "moment";
 import { toast } from "react-toastify";
 
-export default function CommonModal({
+export default function TermsAndConditions({
   isOpen,
   closeModal,
-  data,
-  setData,
   boat,
   bookingInfo,
+  onUserSigning,
 }: {
   isOpen: boolean;
   closeModal: any;
-  data: any;
-  setData: any;
   boat: Boat;
+  onUserSigning: () => void;
   bookingInfo: Booking;
 }) {
   const sigPad = useRef<SignaturePad>(null);
@@ -41,7 +39,7 @@ export default function CommonModal({
   };
   const maximumDepartureTime = () => {
     // Split the time string into hours and minutes
-    var parts = data["Departure Time"].split(":");
+    var parts = bookingInfo["Departure Time"].split(":");
     var hours = parseInt(parts[0], 10);
     var minutes = parseInt(parts[1], 10);
 
@@ -66,10 +64,10 @@ export default function CommonModal({
     if (sigPad.current && !sigPad.current.isEmpty()) {
       setIsSigned(!sigPad.current.isEmpty());
     }
-  }, [data]);
+  }, [bookingInfo]);
 
   useEffect(() => {
-    if (data["Departure Time"] === "") {
+    if (bookingInfo["Departure Time"] === "") {
       closeModal();
       return;
     }
@@ -85,8 +83,9 @@ export default function CommonModal({
   //   return null;
   // };
   const agreeContract = () => {
-    setData({ ...data, signedContract: !data["signedContract"] });
+    // setData({ ...data, signedContract: !data["signedContract"] });
     closeModal();
+    onUserSigning();
   };
   return (
     <Modal isOpen={isOpen} onClose={() => closeModal()}>
@@ -151,7 +150,7 @@ export default function CommonModal({
           </p>
           <p className="mb-6">The lease period includes:</p>
           <p className="text-sm">
-            From: {data["Departure Time"]} of the day {bookingDateDay} of{" "}
+            From: {bookingInfo["Departure Time"]} of the day {bookingDateDay} of{" "}
             {bookingDateMonth} of {bookingDateYear}
           </p>
           <p className="text-sm">

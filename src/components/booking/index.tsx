@@ -22,7 +22,8 @@ import { uploadFile } from "@/services/googleDrive.service";
 import SumupWidget from "@/components/modals/sumupWidget";
 import { generateCheckoutId } from "@/services/sumup.service";
 import moment from "moment";
-import React from "react";
+import TermsAndConditionModal from "@/components/modals/termsAndConditions";
+import SaveBooking from "./partial/submitBooking";
 
 export default function BookingComponent({
   data,
@@ -39,7 +40,12 @@ export default function BookingComponent({
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [totalPayment, setTotalPayment] = useState<number>(0);
+  const [openTermModal, setOpenTermModal] = useState<boolean>(false);
   const [checkoutId, setCheckoutId] = useState("");
+  const [userSigned, setUserSigned] = useState(false);
+  const [startSubmitProcess, setSubmitBookingHook] = useState<() => void>(
+    () => 1
+  );
   const [formData, setFormData] = useState({
     "First Name": "",
     "Last Name": "",
@@ -62,6 +68,10 @@ export default function BookingComponent({
 
   const closePrepaymentModal = () => {
     setOpenPrepaymentModal(false);
+  };
+
+  const closeModalTermModal = () => {
+    setOpenTermModal(false);
   };
 
   const storeIdImage = async (file: File, slag: string) => {
@@ -153,24 +163,15 @@ export default function BookingComponent({
   };
 
   const submitBooking = async () => {
-    setLoading(true);
     // validate address first
     const res = await validateAddress(formData["Billing Address"]);
 
     if (res === false) {
-      setLoading(false);
+      return toast.error("The address is not accourate enought");
       return;
     }
 
-    if (!formData["signedContract"]) {
-      setLoading(false);
-      return toast.error(
-        "Please click on the check box read and sign the contract"
-      );
-    }
-
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
-      setLoading(false);
       return toast.error(
         `Add number of passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
@@ -180,22 +181,12 @@ export default function BookingComponent({
       +formData["No Adults"] + +formData["No Childs"] >
       boatInfo["Max.Passengers"]
     ) {
-      setLoading(false);
       return toast.error(
         `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
     }
 
-    if (+formData["Fuel Payment"] === 0) {
-      setLoading(false);
-      return setOpenPrepaymentModal(true);
-    }
-    if (totalPayment > 0) {
-      getCheckoutId();
-      setLoading(false);
-
-      return;
-    }
+    startSubmitProcess();
   };
 
   const getCheckoutId = async () => {
@@ -207,19 +198,6 @@ export default function BookingComponent({
     return response;
   };
 
-  // Function to calculate boat prices
-  const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
-    return mileRanges.map((miles: number) => ({
-      label: miles
-        ? `${miles} ` +
-          t("input.nautical_miles") +
-          " - " +
-          `${miles * pricePerMile}€`
-        : t("input.continue_without_prepayment"),
-      value: (miles * pricePerMile).toString(),
-    }));
-  };
-
   const handlePrepayment = (additionalPayment: number) => {
     setTotalPayment(additionalPayment);
     submitBooking();
@@ -229,20 +207,33 @@ export default function BookingComponent({
     setCheckoutId("");
     updateNotion(formData);
   };
-  const pricePerMile = +boatInfo?.MilePrice || 0;
-  const calculatedMiles = calculateBoatPrices(pricePerMile, MILE_RANGES);
 
   if (!data || !formik) {
     return;
   }
   return (
     <>
+      <SaveBooking
+        boat={boatInfo}
+        onInit={(onSubmit) => setSubmitBookingHook(onSubmit)}
+        booking={formData as unknown as Booking}
+        onSuccess={() => router.replace("/success")}
+      />
       <SumupWidget
         isOpen={checkoutId ? true : false}
         checkoutId={checkoutId}
         onClose={() => proceedToNotion()}
       />
-      <PrepaymentModal
+      <TermsAndConditionModal
+        bookingInfo={data}
+        isOpen={openTermModal}
+        closeModal={closeModalTermModal}
+        data={data}
+        boat={boatInfo}
+        setData={setFormData}
+        onUserSigning={handleUserSigning}
+      />
+      {/* <PrepaymentModal
         isOpen={openPrepaymentModal}
         closeModal={closePrepaymentModal}
         data={calculatedMiles}
@@ -264,7 +255,7 @@ export default function BookingComponent({
           }
           updateNotion(newData);
         }}
-      />
+      /> */}
       <div className="relative md:w-[77%] w-full md:p-6 p-2">
         <form onSubmit={formik.handleSubmit}>
           <div className="justify-between w-full ">
@@ -278,15 +269,12 @@ export default function BookingComponent({
               />
               {/* Second form */}
               <BookingForm2
-                bookingInfo={data}
                 data={formData}
                 setData={setFormData}
-                miles={calculatedMiles}
                 formik={formik}
                 boatInfo={boatInfo}
               />
             </div>
-
             {/* terms and policy */}
             <div>
               <div className="mt-6">
