@@ -3,6 +3,11 @@ import { Boat, Booking } from "../../../models/models";
 import { uploadFile } from "@/services/googleDrive.service";
 import { t } from "i18next";
 
+type StepAction = {
+  execute:
+  (booking: Booking, boat: Boat) => void
+}
+
 export const steps = [
   "fuel",
   "sign",
@@ -31,19 +36,17 @@ export const stepsActions = ({
   setModalInfo,
   nextStep,
 }: {
-  setModalInfo: ({
-    message,
-  }: {
-    message?: string;
+  setModalInfo: React.Dispatch<React.SetStateAction<{
     modal: string;
-    error?: string;
-  }) => void;
+    message: string;
+    error: string;
+  }>>,
   nextStep: () => void;
-}) => {
+}): Record<string, StepAction> => {
   const fuel = {
     execute: (booking: Booking, boat: Boat) => {
       if (booking["Fuel Left"] === 0) {
-        setModalInfo({ modal: "fuel", message: "" });
+        setModalInfo({ modal: "fuel", message: "", error: "" });
         return;
       }
       nextStep();
@@ -52,7 +55,7 @@ export const stepsActions = ({
 
   const sign = {
     execute: (booking: Booking, boat: Boat) => {
-      setModalInfo({ modal: "sign", message: "" });
+      setModalInfo({ modal: "sign", message: "", error: "" });
     },
   };
   const uploadPictures = {
@@ -60,6 +63,7 @@ export const stepsActions = ({
       setModalInfo({
         modal: "loading",
         message: "Uploading your identity passports",
+        error: ""
       });
 
       // Check if we only require to upload 1 or 2
@@ -68,13 +72,13 @@ export const stepsActions = ({
           storeIdImage(
             booking["ID Number"],
             boat,
-            booking["ID_Front_Picture"] as File,
+            (booking as any)["ID_Front_Picture"] as File,
             "front"
           ),
           storeIdImage(
             booking["ID Number"],
             boat,
-            booking["ID_Back_Picture"] as File,
+            (booking as any)["ID_Back_Picture"] as File,
             "back"
           ),
         ]);
@@ -83,6 +87,7 @@ export const stepsActions = ({
         toast.error(t("error.upload_image"));
         setModalInfo({
           modal: "loading",
+          message: "Uploading your front picture",
           error: "Error uploading front picture",
         });
         return;
@@ -92,6 +97,7 @@ export const stepsActions = ({
         toast.error(t("upload_front_image"));
         setModalInfo({
           modal: "loading",
+          message: "Uploading your back picture",
           error: "Error uploading back picture",
         });
         return;

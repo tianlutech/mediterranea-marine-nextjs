@@ -29,7 +29,7 @@ export default function SaveBooking({
   const [number, setNumber] = useState(0);
 
   const nextStep = useCallback(
-    (step) => {
+    (step: string) => {
       const index = steps.indexOf(step);
       if (index + 1 > steps.length) {
         onSuccess?.();
@@ -42,15 +42,18 @@ export default function SaveBooking({
   );
 
   useEffect(() => {
+    console.log("========we real", step)
     if (step === "") {
       return;
     }
-    const stepObject = stepsActions[step]({
+    const stepObject = stepsActions({
       nextStep: () => nextStep(step),
       setModalInfo,
-    });
-
-    stepObject.execute(booking, boat);
+    })
+    if (!stepObject[step]) {
+      return
+    }
+    stepObject[step].execute(booking, boat);
   }, [boat, booking, nextStep, step]);
 
   const cancel = () => {
@@ -70,7 +73,6 @@ export default function SaveBooking({
         isOpen={modalInfo.modal === "loading"}
         message={modalInfo.message}
         error={modalInfo.error}
-        close={() => cancel()}
       />
       <PrepaymentModal
         isOpen={modalInfo.modal === "fuel"}
@@ -80,9 +82,10 @@ export default function SaveBooking({
         continuePayment={() => nextStep(step)}
       />
       <TermsAndConditionModal
+        bookingInfo={booking}
         isOpen={modalInfo.modal === "sign"}
         closeModal={() => cancel()}
-        data={booking}
+        boat={boat}
         onUserSigning={() => nextStep(step)}
       />
     </>

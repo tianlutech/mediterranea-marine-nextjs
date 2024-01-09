@@ -185,7 +185,7 @@ export default function BookingComponent({
         `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
     }
-
+    console.log("======got here")
     startSubmitProcess();
   };
 
@@ -211,6 +211,9 @@ export default function BookingComponent({
   if (!data || !formik) {
     return;
   }
+  const handleUserSigning = () => {
+    console.log("here")
+  }
   return (
     <>
       <SaveBooking
@@ -228,34 +231,9 @@ export default function BookingComponent({
         bookingInfo={data}
         isOpen={openTermModal}
         closeModal={closeModalTermModal}
-        data={data}
         boat={boatInfo}
-        setData={setFormData}
         onUserSigning={handleUserSigning}
       />
-      {/* <PrepaymentModal
-        isOpen={openPrepaymentModal}
-        closeModal={closePrepaymentModal}
-        data={calculatedMiles}
-        totalPayment={totalPayment}
-        continuePayment={(fuelPayment) => {
-          const newData = {
-            ...formData,
-            ["Fuel Payment"]: fuelPayment.toString(),
-          };
-
-          const total =
-            +newData["Fuel Payment"] + +newData["SUP"] + +newData["SEABOB"];
-
-          setFormData(newData);
-
-          if (total > 0) {
-            getCheckoutId();
-            return;
-          }
-          updateNotion(newData);
-        }}
-      /> */}
       <div className="relative md:w-[77%] w-full md:p-6 p-2">
         <form onSubmit={formik.handleSubmit}>
           <div className="justify-between w-full ">

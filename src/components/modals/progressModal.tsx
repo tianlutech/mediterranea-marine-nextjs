@@ -5,9 +5,9 @@ import Modal from "@/components/common/containers/modal";
 import Spinner from "../common/containers/spinner";
 import BoatSvg from "../../assets/svgs/BoatSvg";
 
-export default function ProgressModal({ isOpen }: { isOpen: boolean }) {
+export default function ProgressModal({ isOpen, message, error }: { isOpen: boolean, message: string, error: string }) {
   return (
-    <Modal isOpen={true}>
+    <Modal isOpen={isOpen}>
       <div className="relative p-2 md:w-[50%] w-[95%] bg-white text-black rounded-lg shadow">
         <div className="flex justify-center items-center my-3">
           <span className="font-bold text-lg"> Processing</span>
