@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import BookingForm1 from "./partial/booking-form-1";
 import BookingForm2 from "./partial/booking-form-2";
 import PrepaymentModal from "@/components/modals/prepaymentModal";
@@ -36,6 +36,7 @@ export default function BookingComponent({
 }) {
   const { t } = useTranslation();
   const router = useRouter();
+  const saveModalRef = useRef<{ start: () => void }>(null);
   const [openPrepaymentModal, setOpenPrepaymentModal] =
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -185,8 +186,7 @@ export default function BookingComponent({
         `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
     }
-    console.log("======got here")
-    startSubmitProcess();
+    saveModalRef.current?.start();
   };
 
   const getCheckoutId = async () => {
@@ -212,13 +212,13 @@ export default function BookingComponent({
     return;
   }
   const handleUserSigning = () => {
-    console.log("here")
-  }
+    console.log("here");
+  };
   return (
     <>
       <SaveBooking
+        ref={saveModalRef}
         boat={boatInfo}
-        onInit={(onSubmit) => setSubmitBookingHook(onSubmit)}
         booking={formData as unknown as Booking}
         onSuccess={() => router.replace("/success")}
       />

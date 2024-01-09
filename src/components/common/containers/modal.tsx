@@ -35,7 +35,6 @@ export default function Modal({
       document.removeEventListener("keydown", onKeyPress);
     };
   }, [onClose]);
-
   return (
     <div
       ref={modal}

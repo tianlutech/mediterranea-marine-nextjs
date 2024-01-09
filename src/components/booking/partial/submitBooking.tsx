@@ -1,32 +1,40 @@
 "use client";
 
 import { Boat, Booking } from "../../../models/models";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  ForwardedRef,
+  Ref,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import PrepaymentModal from "@/components/modals/prepaymentModal";
 import TermsAndConditionModal from "@/components/modals/termsAndConditions";
 import { stepsActions, steps } from "./steps-actions";
 import ProgressModal from "@/components/modals/ProgressModal";
 
-export default function SaveBooking({
-  onInit,
-  booking,
-  boat,
-  onCancel,
-  onSuccess,
-}: {
-  onInit: (onClickSave: () => void) => void;
-  booking: Booking;
-  boat: Boat;
-  onCancel?: () => void;
-  onSuccess?: () => void;
-}) {
+const SaveBooking = forwardRef(function SaveBookingRef(
+  {
+    booking,
+    boat,
+    onCancel,
+    onSuccess,
+  }: {
+    booking: Booking;
+    boat: Boat;
+    onCancel?: () => void;
+    onSuccess?: () => void;
+  },
+  ref: ForwardedRef<{ start: () => void }>
+) {
   const [step, setStep] = useState<string>("");
   const [modalInfo, setModalInfo] = useState({
     modal: "",
     message: "",
     error: "",
   });
-  const [number, setNumber] = useState(0);
 
   const nextStep = useCallback(
     (step: string) => {
@@ -42,16 +50,15 @@ export default function SaveBooking({
   );
 
   useEffect(() => {
-    console.log("========we real", step)
     if (step === "") {
       return;
     }
     const stepObject = stepsActions({
       nextStep: () => nextStep(step),
       setModalInfo,
-    })
+    });
     if (!stepObject[step]) {
-      return
+      return;
     }
     stepObject[step].execute(booking, boat);
   }, [boat, booking, nextStep, step]);
@@ -61,11 +68,11 @@ export default function SaveBooking({
     onCancel?.();
   };
 
-  useEffect(() => {
-    onInit(() => {
+  useImperativeHandle(ref, () => ({
+    start: () => {
       setStep(steps[0]);
-    });
-  }, [onInit]);
+    },
+  }));
 
   return (
     <>
@@ -90,4 +97,6 @@ export default function SaveBooking({
       />
     </>
   );
-}
+});
+
+export default SaveBooking;

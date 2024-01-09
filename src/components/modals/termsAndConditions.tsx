@@ -66,14 +66,6 @@ export default function TermsAndConditions({
     }
   }, [bookingInfo]);
 
-  useEffect(() => {
-    if (bookingInfo["Departure Time"] === "") {
-      closeModal();
-      return;
-    }
-    maximumDepartureTime();
-  });
-
   // will uncomment later if we need to use it
   // const getSignatureImage = () => {
   //   if (sigPad.current) {
@@ -142,8 +134,9 @@ export default function TermsAndConditions({
           <p className="font-bold my-4">FIRST. - OBJECT OF THE CONTRACT</p>
           <p className="mb-6">
             Through this contract, THE MANAGER leases to THE LESSEE the boat
-            described in EXPOSITION I, authorized for the transport of {boat["Max.Passengers"]} people
-            for navigation through the waters of the Balearic Islands.
+            described in EXPOSITION I, authorized for the transport of{" "}
+            {boat["Max.Passengers"]} people for navigation through the waters of
+            the Balearic Islands.
           </p>
           <p className="font-bold my-4">
             SECOND. - LEASE PERIOD AND PORT OF EMBARK AND DISEMBARK
@@ -454,8 +447,9 @@ export default function TermsAndConditions({
               onClick={agreeContract}
               data-modal-hide="default-modal"
               type="button"
-              className={`text-white bg-buttonColor2 focus:ring-4 mt-4 md:mt-0 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ${isSigned ? "cursor-pointer" : "cursor-not-allowed"
-                }`}
+              className={`text-white bg-buttonColor2 focus:ring-4 mt-4 md:mt-0 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ${
+                isSigned ? "cursor-pointer" : "cursor-not-allowed"
+              }`}
             >
               Sign
             </button>
