@@ -44,7 +44,9 @@
     "captain_list":"Captain List",
     "port":"Port",
     "picture_of_the_receipt":"Picture of the Receipt ",
-    "recommendation_text":"If the rating for the client is high (3 starts or more), send him a recommendation requests."
+    "recommendation_text":"If the rating for the client is high (3 starts or more), send him a recommendation requests.",
+    "national_id": "National ID",
+    "passport": "Passport"
   },
   "prepayment_modal":{
     "prepay_your_fuel":"Prepay your fuel",

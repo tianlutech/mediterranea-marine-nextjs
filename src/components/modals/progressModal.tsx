@@ -18,7 +18,7 @@ export default function ProgressModal({ isOpen, message, error }: { isOpen: bool
               <BoatSvg />
             </Spinner>
             <div className="mt-6">
-              <span className="mt-4 ">Uploading Id front</span>
+              <span className="mt-4 ">{message}</span>
             </div>
           </div>
         </div>

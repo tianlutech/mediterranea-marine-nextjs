@@ -4,12 +4,11 @@ import { useState, useEffect, useRef } from "react";
 import BookingForm1 from "./partial/booking-form-1";
 import BookingForm2 from "./partial/booking-form-2";
 import PrepaymentModal from "@/components/modals/prepaymentModal";
-import { Boat, Booking, DepartureTime } from "@/models/models";
+import { Boat, Booking, DepartureTime, FormData } from "@/models/models";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
 import {
-  MILE_RANGES,
   SEABOB as SEABOB_TOY,
   STANDUP_PADDLE,
 } from "@/models/constants";
@@ -43,11 +42,8 @@ export default function BookingComponent({
   const [totalPayment, setTotalPayment] = useState<number>(0);
   const [openTermModal, setOpenTermModal] = useState<boolean>(false);
   const [checkoutId, setCheckoutId] = useState("");
-  const [userSigned, setUserSigned] = useState(false);
-  const [startSubmitProcess, setSubmitBookingHook] = useState<() => void>(
-    () => 1
-  );
-  const [formData, setFormData] = useState({
+
+  const [formData, setFormData] = useState<FormData>({
     "First Name": "",
     "Last Name": "",
     Email: "",
@@ -59,7 +55,7 @@ export default function BookingComponent({
     "Departure Time": "",
     SUP: "",
     SEABOB: "",
-    "Fuel Payment": "",
+    "Fuel Payment": 0,
     Comments: "",
     "Restuarant Name": "",
     "Restaurant Time": "",
@@ -168,8 +164,7 @@ export default function BookingComponent({
     const res = await validateAddress(formData["Billing Address"]);
 
     if (res === false) {
-      return toast.error("The address is not accourate enought");
-      return;
+      return toast.error("The address is not accurate enougth");
     }
 
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
@@ -211,28 +206,17 @@ export default function BookingComponent({
   if (!data || !formik) {
     return;
   }
-  const handleUserSigning = () => {
-    console.log("here");
-  };
+
   return (
     <>
       <SaveBooking
         ref={saveModalRef}
+        formData={formData}
+        setFormData={setFormData}
         boat={boatInfo}
         booking={formData as unknown as Booking}
         onSuccess={() => router.replace("/success")}
-      />
-      <SumupWidget
-        isOpen={checkoutId ? true : false}
-        checkoutId={checkoutId}
-        onClose={() => proceedToNotion()}
-      />
-      <TermsAndConditionModal
-        bookingInfo={data}
-        isOpen={openTermModal}
-        closeModal={closeModalTermModal}
-        boat={boatInfo}
-        onUserSigning={handleUserSigning}
+        bookingId={id}
       />
       <div className="relative md:w-[77%] w-full md:p-6 p-2">
         <form onSubmit={formik.handleSubmit}>

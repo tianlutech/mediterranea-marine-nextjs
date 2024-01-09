@@ -1,21 +1,28 @@
 import { toast } from "react-toastify";
-import { Boat, Booking } from "../../../models/models";
+import { Boat, Booking, FormData, DepartureTime } from "../../../models/models";
 import { uploadFile } from "@/services/googleDrive.service";
 import { t } from "i18next";
+import {
+  SEABOB as SEABOB_TOY,
+  STANDUP_PADDLE,
+} from "@/models/constants";
+import moment from "moment";
+import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
 
 type StepAction = {
   execute:
-  (booking: Booking, boat: Boat) => void
+  (formData: FormData, boat: Boat) => void
 }
 
 export const steps = [
   "fuel",
   "sign",
-  "validateFront",
-  "uploadFront",
-  "validateBack",
-  "uploadBack",
+  // "validateFront",
+  "uploadFrontIdImage",
+  // "validateBack",
+  "uploadBackIdImage",
   "pay",
+  "saveData"
 ];
 
 const storeIdImage = async (
@@ -35,6 +42,8 @@ const storeIdImage = async (
 export const stepsActions = ({
   setModalInfo,
   nextStep,
+  booking,
+  bookingId
 }: {
   setModalInfo: React.Dispatch<React.SetStateAction<{
     modal: string;
@@ -42,10 +51,19 @@ export const stepsActions = ({
     error: string;
   }>>,
   nextStep: () => void;
+  booking: Booking,
+  bookingId: string,
 }): Record<string, StepAction> => {
+  var res1: string = ""
+  var res2 = ""
   const fuel = {
-    execute: (booking: Booking, boat: Boat) => {
-      if (booking["Fuel Left"] === 0) {
+    execute: (formData: FormData, boat: Boat) => {
+      setModalInfo({
+        modal: "loading",
+        message: "Loading fuel modal",
+        error: ""
+      });
+      if (+formData["Fuel Payment"] === 0) {
         setModalInfo({ modal: "fuel", message: "", error: "" });
         return;
       }
@@ -54,32 +72,34 @@ export const stepsActions = ({
   };
 
   const sign = {
-    execute: (booking: Booking, boat: Boat) => {
-      setModalInfo({ modal: "sign", message: "", error: "" });
-    },
-  };
-  const uploadPictures = {
-    execute: async (booking: Booking, boat: Boat) => {
+    execute: (formData: FormData, boat: Boat) => {
       setModalInfo({
         modal: "loading",
-        message: "Uploading your identity passports",
+        message: "Loading contract modal",
         error: ""
       });
+      if (!formData["signedContract"]) {
+        setModalInfo({ modal: "sign", message: "", error: "" });
+        return
+      }
+      nextStep();
+    },
+  };
 
-      // Check if we only require to upload 1 or 2
-      const [uploadIdFrontResponse, uploadIdBackImageResponse] =
+  const uploadFrontIdImage = {
+    execute: async (formData: FormData, boat: Boat) => {
+      setModalInfo({
+        modal: "loading",
+        message: "Uploading front image of your identity",
+        error: ""
+      });
+      const uploadIdFrontResponse =
         await Promise.all([
           storeIdImage(
-            booking["ID Number"],
+            formData["ID Number"],
             boat,
-            (booking as any)["ID_Front_Picture"] as File,
+            formData["ID_Front_Picture"] as File,
             "front"
-          ),
-          storeIdImage(
-            booking["ID Number"],
-            boat,
-            (booking as any)["ID_Back_Picture"] as File,
-            "back"
           ),
         ]);
 
@@ -87,14 +107,35 @@ export const stepsActions = ({
         toast.error(t("error.upload_image"));
         setModalInfo({
           modal: "loading",
-          message: "Uploading your front picture",
+          message: "Uploading front image of your identity",
           error: "Error uploading front picture",
         });
         return;
       }
+      res1 = uploadIdFrontResponse[0]
+      nextStep();
+    },
+  }
+
+  const uploadBackIdImage = {
+    execute: async (formData: FormData, boat: Boat) => {
+      setModalInfo({
+        modal: "loading",
+        message: "Uploading back image of your identity",
+        error: ""
+      });
+      const [uploadIdBackImageResponse] =
+        await Promise.all([
+          storeIdImage(
+            formData["ID Number"],
+            boat,
+            formData["ID_Back_Picture"] as File,
+            "back"
+          ),
+        ]);
 
       if (!uploadIdBackImageResponse) {
-        toast.error(t("upload_front_image"));
+        toast.error(t("error.upload_image"));
         setModalInfo({
           modal: "loading",
           message: "Uploading your back picture",
@@ -102,13 +143,78 @@ export const stepsActions = ({
         });
         return;
       }
+      res2 = uploadIdBackImageResponse[0]
       nextStep();
     },
+  }
+
+  const pay = {
+    execute: (formData: FormData, boat: Boat) => {
+      setModalInfo({
+        modal: "pay",
+        message: "",
+        error: ""
+      });
+    },
+  };
+
+  // Abel here I used any becuase the Booking was causing errors and same for the FormData
+  const saveData = {
+    execute: async (formData: any, boat: Boat) => {
+      setModalInfo({
+        modal: "Saving Data To Notion",
+        message: "",
+        error: ""
+      });
+
+      const {
+        ID_Back_Picture,
+        ID_Front_Picture,
+        SEABOB,
+        SUP,
+        signedContract,
+        ...bookingData
+      } = formData;
+
+      const seaBobName = SEABOB_TOY.find((seabob) => seabob.value === SEABOB)?.name || "";
+      const paddle = STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
+      const departureTime = moment(
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]}`
+      );
+      const bookingInfo = new Booking({
+        ...bookingData,
+        Name: `${boat.Nombre} - ${departureTime.format("DD-MM-YY HH:mm")}`,
+        "ID Back Picture": res2,
+        "ID Front Picture": res1,
+        Toys: [paddle, seaBobName].filter((value) => !!value),
+        SubmittedFormAt: new Date(),
+      });
+      const res = await updateBookingInfo(bookingId, bookingInfo);
+
+      /**
+       * Create a Time Slot so no one can book at the same time
+       */
+      createTimeSlot(
+        new DepartureTime({
+          Booking: [bookingId],
+          Boat: [boat.id],
+          Date: departureTime,
+        })
+      );
+      if (res === false || res === undefined) {
+        return;
+      }
+      console.log("this was a successful day for you eddy congratulation", res)
+      // router.replace("/success");
+    }
   };
 
   return {
     fuel,
     sign,
-    uploadPictures,
+    uploadFrontIdImage,
+    uploadBackIdImage,
+    pay,
+    saveData
   };
 };

@@ -16,6 +16,26 @@ export type DriveFolder = {
   data: FileMetadata;
 };
 
+export type FormData = {
+  "First Name": string;
+  "Last Name": string;
+  Email: string;
+  "Billing Address": string;
+  "No Adults": number;
+  "No Childs": number;
+  ID_Back_Picture: File;
+  ID_Front_Picture: File;
+  "Departure Time": string;
+  SUP: string;
+  SEABOB: string;
+  "Fuel Payment": number;
+  Comments: string;
+  "Restuarant Name": string;
+  "Restaurant Time": string;
+  signedContract: boolean;
+  "ID Number": string;
+}
+
 export type FileBody = {
   boatName: string;
   slag: string;
@@ -138,7 +158,7 @@ export class Booking extends NotionItem {
   @NotionType("rich_text")
   Email: string = "";
 
-  @NotionType("rich_text")
+  @NotionType("title")
   Name: string = "";
 
   @NotionType("rich_text")

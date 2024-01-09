@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import Boat from "@/assets/boat.png";
+import BoatImage from "@/assets/boat.png";
 import Modal from "@/components/common/containers/modal";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
@@ -8,15 +8,16 @@ import React from "react";
 import { Booking } from "../../models/models";
 import { t } from "i18next";
 import { MILE_RANGES } from "@/models/constants";
+import { Boat, FormData } from "../../models/models";
 
 // Function to calculate boat prices
 const calculateBoatPrices = (pricePerMile: number) => {
   return MILE_RANGES.map((miles: number) => ({
     label: miles
       ? `${miles} ` +
-        t("input.nautical_miles") +
-        " - " +
-        `${miles * pricePerMile}€`
+      t("input.nautical_miles") +
+      " - " +
+      `${miles * pricePerMile}€`
       : t("input.continue_without_prepayment"),
     value: (miles * pricePerMile).toString(),
   }));
@@ -27,15 +28,18 @@ export default function PrepaymentModal({
   closeModal,
   boat,
   formData,
+  setFormData,
   continuePayment,
 }: {
   isOpen: boolean;
   closeModal: () => void;
-  formData: Booking;
+  formData: FormData;
+  setFormData: any;
   boat: Boat;
-  continuePayment: (fuelPayment: number) => void;
+  continuePayment: () => void;
 }) {
   const { t } = useTranslation();
+  const [fuelPrice, setFuelPrice] = useState(0)
   const [payment, setPayment] = useState(
     +formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"]
   );
@@ -48,13 +52,14 @@ export default function PrepaymentModal({
   }, [formData]);
 
   const addFuel = (value: string) => {
-    const fuelPrice = parseInt(value);
-    setFuelPayment(fuelPayment);
+    const fuelPrice = parseFloat(value);
+    setFuelPrice(fuelPrice)
     setPayment(payment + fuelPrice);
   };
+
   const proceedSubmission = () => {
-    continuePayment(fuelPayment);
-    closeModal();
+    setFormData({ ...formData, "Fuel Payment": fuelPrice })
+    continuePayment();
   };
 
   const calculatedMiles = useMemo(() => {
@@ -127,7 +132,7 @@ export default function PrepaymentModal({
               <Image
                 width={40}
                 height={45}
-                src={Boat}
+                src={BoatImage}
                 className="h-auto w-full"
                 alt="boat"
               />

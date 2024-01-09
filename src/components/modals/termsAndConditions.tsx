@@ -2,7 +2,7 @@
 import Modal from "@/components/common/containers/modal";
 import SignaturePad from "react-signature-canvas";
 import React, { useRef, useState, useEffect } from "react";
-import { Boat, Booking } from "@/models/models";
+import { Boat, Booking, FormData } from "@/models/models";
 import moment from "moment";
 import { toast } from "react-toastify";
 
@@ -10,12 +10,16 @@ export default function TermsAndConditions({
   isOpen,
   closeModal,
   boat,
+  formData,
+  setFormData,
   bookingInfo,
   onUserSigning,
 }: {
   isOpen: boolean;
-  closeModal: any;
+  closeModal: () => void;
   boat: Boat;
+  formData: FormData;
+  setFormData: any;
   onUserSigning: () => void;
   bookingInfo: Booking;
 }) {
@@ -75,7 +79,7 @@ export default function TermsAndConditions({
   //   return null;
   // };
   const agreeContract = () => {
-    // setData({ ...data, signedContract: !data["signedContract"] });
+    setFormData({ ...formData, signedContract: !formData["signedContract"] });
     closeModal();
     onUserSigning();
   };
@@ -447,9 +451,8 @@ export default function TermsAndConditions({
               onClick={agreeContract}
               data-modal-hide="default-modal"
               type="button"
-              className={`text-white bg-buttonColor2 focus:ring-4 mt-4 md:mt-0 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ${
-                isSigned ? "cursor-pointer" : "cursor-not-allowed"
-              }`}
+              className={`text-white bg-buttonColor2 focus:ring-4 mt-4 md:mt-0 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ${isSigned ? "cursor-pointer" : "cursor-not-allowed"
+                }`}
             >
               Sign
             </button>
