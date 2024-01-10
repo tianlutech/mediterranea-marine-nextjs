@@ -54,8 +54,9 @@ export const stepsActions = ({
   booking: Booking,
   bookingId: string,
 }): Record<string, StepAction> => {
-  var res1: string = ""
-  var res2 = ""
+  var imageFrontLink = ""
+  var imageBackLink = ""
+
   const fuel = {
     execute: (formData: FormData, boat: Boat) => {
       setModalInfo({
@@ -93,6 +94,9 @@ export const stepsActions = ({
         message: "Uploading front image of your identity",
         error: ""
       });
+      if (imageFrontLink !== "") {
+        return nextStep();
+      }
       const uploadIdFrontResponse =
         await Promise.all([
           storeIdImage(
@@ -112,7 +116,7 @@ export const stepsActions = ({
         });
         return;
       }
-      res1 = uploadIdFrontResponse[0]
+      imageFrontLink = uploadIdFrontResponse[0]
       nextStep();
     },
   }
@@ -124,6 +128,9 @@ export const stepsActions = ({
         message: "Uploading back image of your identity",
         error: ""
       });
+      if (imageBackLink !== "") {
+        return nextStep();
+      }
       const [uploadIdBackImageResponse] =
         await Promise.all([
           storeIdImage(
@@ -143,7 +150,7 @@ export const stepsActions = ({
         });
         return;
       }
-      res2 = uploadIdBackImageResponse[0]
+      imageBackLink = uploadIdBackImageResponse[0]
       nextStep();
     },
   }
@@ -184,8 +191,8 @@ export const stepsActions = ({
       const bookingInfo = new Booking({
         ...bookingData,
         Name: `${boat.Nombre} - ${departureTime.format("DD-MM-YY HH:mm")}`,
-        "ID Back Picture": res2,
-        "ID Front Picture": res1,
+        "ID Front Picture": imageFrontLink,
+        "ID Back Picture": imageBackLink,
         Toys: [paddle, seaBobName].filter((value) => !!value),
         SubmittedFormAt: new Date(),
       });
@@ -202,10 +209,10 @@ export const stepsActions = ({
         })
       );
       if (res === false || res === undefined) {
+        toast.error("There has been an error while saving the data")
         return;
       }
-      console.log("this was a successful day for you eddy congratulation", res)
-      // router.replace("/success");
+      window.location.replace("/success")
     }
   };
 
