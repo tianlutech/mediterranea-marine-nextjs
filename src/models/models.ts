@@ -152,6 +152,9 @@ export class Booking extends NotionItem {
   @NotionType("rich_text")
   "Last Name": string = "";
 
+  @NotionType("rich_text")
+  "Port": string = "";
+
   @NotionType("number")
   "Fuel Payment": number;
 
