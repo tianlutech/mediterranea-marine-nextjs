@@ -19,10 +19,10 @@ type StepAction = {
 export const steps = [
   "fuel",
   "sign",
-  // "validateFront",
-  // "validateBack",
-  // "uploadFrontIdImage",
-  // "uploadBackIdImage",
+  "validateFront",
+  "validateBack",
+  "uploadFrontIdImage",
+  "uploadBackIdImage",
   "pay",
   "saveData",
 ];
