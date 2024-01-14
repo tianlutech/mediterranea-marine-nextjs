@@ -6,7 +6,7 @@ import CommonInputFile from "@/components/common/inputs/fileInput";
 import CommonLabel from "../../common/containers/label";
 import React, { useState } from "react";
 import ErrorMessage from "./errorMessage";
-import { Boat } from "../../../models/models";
+import { Boat, BookingFormData } from "../../../models/models";
 import { useTranslation } from "react-i18next";
 import PlaceAutoComplete from "../../common/inputs/addressAutoComplete";
 
@@ -20,13 +20,12 @@ export default function BookingForm1({
   formik,
   boatInfo,
 }: {
-  data: any;
+  data: BookingFormData;
   setData: any;
   formik: any;
   boatInfo: Boat;
 }) {
   const { t } = useTranslation();
-  const [documentType, setDocumentType] = useState<string>("National ID");
   return (
     <div className="flex md:flex-row flex-col md:w-[49%] w-full">
       <div className="w-full bg-white rounded-lg">
@@ -90,9 +89,11 @@ export default function BookingForm1({
                 id="default-radio-1"
                 type="radio"
                 value="nationalId"
-                checked={documentType === "National ID"}
+                checked={data.documentType === "National ID"}
                 name="document-radio"
-                onChange={() => setDocumentType("National ID")}
+                onChange={() =>
+                  setData({ ...data, documentType: "National ID" })
+                }
                 required
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
               />
@@ -105,9 +106,9 @@ export default function BookingForm1({
                 id="eat-radio-1"
                 type="radio"
                 value="passport"
-                checked={documentType === "Passport"}
+                checked={data.documentType === "Passport"}
                 name="document-radio"
-                onChange={() => setDocumentType("Passport")}
+                onChange={() => setData({ ...data, documentType: "Passport" })}
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
               />
               <label className="ms-2 md:text-base text-sm  text-black">
@@ -120,22 +121,22 @@ export default function BookingForm1({
               name="ID_Front_Picture"
               label={t("input.ID_Front_Picture")}
               onRemove={() => setData({ ...data, ID_Front_Picture: {} })}
-              onChange={(file) =>
-                setData({ ...data, ID_Front_Picture: file || {} })
-              }
+              onChange={async (file) => {
+                setData({ ...data, ID_Front_Picture: file || {} });
+              }}
               required
             />
             <ErrorMessage formik={formik} name="ID_Front_Picture" />
           </>
-          {documentType === "National ID" && (
+          {data.documentType === "National ID" && (
             <>
               <CommonInputFile
                 name="ID_Back_Picture"
                 label={t("input.ID_Back_Picture")}
                 onRemove={() => setData({ ...data, ID_Back_Picture: {} })}
-                onChange={(file) =>
-                  setData({ ...data, ID_Back_Picture: file || {} })
-                }
+                onChange={async (file) => {
+                  setData({ ...data, ID_Back_Picture: file || {} });
+                }}
                 required
               />
               <ErrorMessage formik={formik} name="ID_Back_Picture" />

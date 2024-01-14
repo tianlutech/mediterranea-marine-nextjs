@@ -1,6 +1,6 @@
 "use client";
 
-import { Boat, Booking, FormData } from "../../../models/models";
+import { Boat, Booking, BookingFormData } from "../../../models/models";
 import React, {
   ForwardedRef,
   Ref,
@@ -28,11 +28,11 @@ const SaveBooking = forwardRef(function SaveBookingRef(
   }: {
     booking: Booking;
     boat: Boat;
-    formData: FormData;
+    formData: BookingFormData;
     setFormData: any;
     onCancel?: () => void;
     onSuccess?: () => void;
-    bookingId: string
+    bookingId: string;
   },
   ref: ForwardedRef<{ start: () => void }>
 ) {
@@ -89,6 +89,7 @@ const SaveBooking = forwardRef(function SaveBookingRef(
         isOpen={modalInfo.modal === "loading"}
         message={modalInfo.message}
         error={modalInfo.error}
+        closeModal={() => cancel()}
       />
       <PrepaymentModal
         isOpen={modalInfo.modal === "fuel"}

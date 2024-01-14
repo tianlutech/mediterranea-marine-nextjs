@@ -4,14 +4,11 @@ import { useState, useEffect, useRef } from "react";
 import BookingForm1 from "./partial/booking-form-1";
 import BookingForm2 from "./partial/booking-form-2";
 import PrepaymentModal from "@/components/modals/prepaymentModal";
-import { Boat, Booking, DepartureTime, FormData } from "@/models/models";
+import { Boat, Booking, DepartureTime, BookingFormData } from "@/models/models";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
-import {
-  SEABOB as SEABOB_TOY,
-  STANDUP_PADDLE,
-} from "@/models/constants";
+import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
 import "../../i18n";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
@@ -43,7 +40,7 @@ export default function BookingComponent({
   const [openTermModal, setOpenTermModal] = useState<boolean>(false);
   const [checkoutId, setCheckoutId] = useState("");
 
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<BookingFormData>({
     "First Name": "",
     "Last Name": "",
     Email: "",
@@ -61,6 +58,7 @@ export default function BookingComponent({
     "Restaurant Time": "",
     signedContract: false,
     "ID Number": "",
+    documentType: "National ID",
   });
 
   const closePrepaymentModal = () => {

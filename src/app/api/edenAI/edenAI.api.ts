@@ -1,28 +1,30 @@
+import { IDentityResult } from "@/models/eden-ia";
 import axios from "axios";
 
 const edenAIApiKey = process.env.EDEN_API_KEY;
 
-export async function validateImage(form: any) {
-  const options = {
-    method: "POST",
-    url: "https://api.edenai.run/v2/ocr/identity_parser",
-    headers: {
-      Authorization: `Bearer ${edenAIApiKey}`,
-    },
-    data: {
-      providers: "microsoft,base64,amazon,mindee",
-      file_url: "https://buyauthenticdocument.com/wp-content/uploads/2023/05/Buy-spanish-ID-982x620.jpg",
-      fallback_providers: "",
-    },
-  };
+const EDEN_URL = "https://api.edenai.run/v2";
+
+export async function validateIdentity(file: File) {
+  const form = new FormData();
+  form.append("providers", "amazon");
+  form.append("file", file);
 
   try {
-    const response = await axios.request(options);
+    const response = await axios.post<IDentityResult>(
+      `${EDEN_URL}/ocr/identity_parser`,
+      form,
+      {
+        headers: {
+          Authorization: `Bearer ${edenAIApiKey}`,
+          "Content-Type": "multipart/form-data;",
+        },
+      }
+    );
 
-    console.log(response.data.amazon.extracted_data);
-    return response.data;
+    return response.data["eden-ai"];
   } catch (error: any) {
-    console.error(">>> logged here",error);
+    console.error(error);
     return { error: error.message };
   }
 }
