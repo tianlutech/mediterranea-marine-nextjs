@@ -52,13 +52,14 @@ export default function BookingComponent({
     "Departure Time": "",
     SUP: "",
     SEABOB: "",
-    "Fuel Payment": 0,
+    "Fuel Payment": -1,
     Comments: "",
     "Restuarant Name": "",
     "Restaurant Time": "",
     signedContract: false,
     "ID Number": "",
     documentType: "National ID",
+    OutstandingPayment: data.OutstandingPayment || 0,
   });
 
   const closePrepaymentModal = () => {
@@ -87,9 +88,7 @@ export default function BookingComponent({
   });
 
   useEffect(() => {
-    setTotalPayment(
-      +formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"]
-    );
+    setTotalPayment(Booking.totalPayment(formData));
   }, [formData]);
 
   const updateNotion = async (formData: Record<string, unknown>) => {

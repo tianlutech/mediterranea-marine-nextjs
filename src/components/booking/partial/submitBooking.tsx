@@ -74,6 +74,7 @@ const SaveBooking = forwardRef(function SaveBookingRef(
 
   const cancel = () => {
     setModalInfo({ modal: "", message: "", error: "" });
+    setStep("");
     onCancel?.();
   };
 

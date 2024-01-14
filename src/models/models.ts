@@ -35,6 +35,7 @@ export type BookingFormData = {
   signedContract: boolean;
   "ID Number": string;
   documentType: "National ID" | "Passport";
+  OutstandingPayment: number;
 };
 
 export type FileBody = {
@@ -175,6 +176,17 @@ export class Booking extends NotionItem {
   "SubmittedFormAt": Date;
   @NotionType("date")
   FeedbackFormAt?: Date;
+
+  OutstandingPayment?: number;
+
+  public static totalPayment(data: BookingFormData) {
+    return (
+      +data["Fuel Payment"] +
+      +data["SUP"] +
+      +data["SEABOB"] +
+      +data.OutstandingPayment
+    );
+  }
 }
 
 export class Fuel extends NotionItem {

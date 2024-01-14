@@ -41,15 +41,10 @@ export default function PrepaymentModal({
 }) {
   const { t } = useTranslation();
   const [fuelPrice, setFuelPrice] = useState(-1);
-  const [payment, setPayment] = useState(
-    +formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"]
-  );
-  const [fuelPayment, setFuelPayment] = useState(0);
+  const [payment, setPayment] = useState(Booking.totalPayment(formData));
 
   useEffect(() => {
-    setPayment(
-      +formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"]
-    );
+    setPayment(Booking.totalPayment(formData));
   }, [formData]);
 
   const addFuel = (value: string) => {

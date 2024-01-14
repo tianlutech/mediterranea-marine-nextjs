@@ -19,10 +19,10 @@ type StepAction = {
 export const steps = [
   "fuel",
   "sign",
-  "validateFront",
-  "validateBack",
-  "uploadFrontIdImage",
-  "uploadBackIdImage",
+  // "validateFront",
+  // "validateBack",
+  // "uploadFrontIdImage",
+  // "uploadBackIdImage",
   "pay",
   "saveData",
 ];
@@ -58,8 +58,10 @@ export const stepsActions = ({
   booking: Booking;
   bookingId: string;
 }): Record<string, StepAction> => {
-  var imageFrontLink = "";
-  var imageBackLink = "";
+  let imageFrontLink = "";
+  let imageBackLink = "";
+  let imageFrontValidated = false;
+  let imageBackValidated = false;
 
   const fuel = {
     execute: (formData: BookingFormData, boat: Boat) => {
@@ -166,6 +168,11 @@ export const stepsActions = ({
 
   const validateFront = {
     execute: async (formData: BookingFormData, boat: Boat) => {
+      if (imageFrontValidated) {
+        nextStep();
+        return;
+      }
+
       setModalInfo({
         modal: "loading",
         message: "Validating front image of your identity",
@@ -184,11 +191,16 @@ export const stepsActions = ({
         });
         return;
       }
+      imageFrontValidated = true;
       nextStep();
     },
   };
   const validateBack = {
     execute: async (formData: BookingFormData, boat: Boat) => {
+      if (imageBackValidated) {
+        nextStep();
+        return;
+      }
       if (formData.documentType === "Passport") {
         nextStep();
         return;
@@ -211,6 +223,7 @@ export const stepsActions = ({
         });
         return;
       }
+      imageBackValidated = true;
       nextStep();
     },
   };

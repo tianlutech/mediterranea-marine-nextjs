@@ -63,6 +63,7 @@
     "welcome_to_our_boat": "Bienvenido a nuestro barco",
     "reservation_form": "Formulario de reserva",
     "we_are_excited_to_help_you_plan_your_next_water_adventure": "Estamos encantados de ayudarle a planificar su próxima aventura acuática.",
+    "booking_info": "📅 Fecha: {{date}}<br/>🛥️ Barco: {{boat}}<br/> 💳 Pago Pendiente: {{payment}}€",
     "sidebar_p1": "Tómese un momento para brindarnos algunos detalles esenciales, para que podamos garantizar que tenga una experiencia fluida y agradable.",
     "sidebar_p2": "Sus respuestas nos ayudarán a programar la reserva de su barco y satisfacer sus necesidades específicas. ¡Gracias por elegirnos para su aventura!",
     "feedback_sidebar": "<p>Recopilar esta información es realmente importante para nuestra empresa. Podemos mejorar nuestro servicio y mejorar los costos, mejorando la experiencia tanto para el cliente como para el personal.</p>",

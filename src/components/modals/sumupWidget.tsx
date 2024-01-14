@@ -3,7 +3,7 @@ import Modal from "@/components/common/containers/modal";
 import Script from "next/script";
 import { toast } from "react-toastify";
 import { generateCheckoutId } from "@/services/sumup.service";
-import { BookingFormData } from "@/models/models";
+import { Booking, BookingFormData } from "@/models/models";
 
 export default function SumupWidget({
   isOpen,
@@ -15,8 +15,6 @@ export default function SumupWidget({
   formData: BookingFormData;
 }) {
   const [checkoutId, setCheckoutId] = useState("");
-  const payment =
-    +formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"];
 
   const getCheckoutId = async (payment: number) => {
     const response = await generateCheckoutId(payment.toString());
@@ -28,8 +26,10 @@ export default function SumupWidget({
   };
 
   useEffect(() => {
+    const payment = Booking.totalPayment(formData);
+
     getCheckoutId(payment);
-  }, [payment]);
+  }, [formData]);
 
   const handleScriptLoad = () => {
     window.SumUpCard?.mount({
