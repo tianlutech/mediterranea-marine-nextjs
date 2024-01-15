@@ -17,7 +17,9 @@ export type NotionType =
   | "file"
   | "formula"
   | "emoji"
-  | "checkbox";
+  | "checkbox"
+  | "rollup"
+  | "url";
 
 export type NotionProperty = { type: NotionType } & Record<string, unknown>;
 
@@ -116,12 +118,24 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
       return new Date(
         (property["date"] as { start: string; end: string })?.start
       );
+    case "url":
+      return property["url"];
     case "emoji":
       return property["emoji"];
     case "relation":
       return (property["relation"] as Array<{ id: string }>).map(
         (relation) => relation.id
       );
+    case "rollup":
+      const item = property["rollup"] as {
+        type: "array";
+        array?: NotionProperty[];
+      };
+      if (item.type === "array") {
+        return item.array?.map((prop) => parseNotionProperty(prop));
+      }
+      return [];
+
     case "multi_select":
       return (property["multi_select"] as Array<{ name: string }>).map(
         (relation) => relation.name
