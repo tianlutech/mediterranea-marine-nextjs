@@ -46,6 +46,7 @@ export const stepsActions = ({
   nextStep,
   booking,
   bookingId,
+  t,
 }: {
   setModalInfo: React.Dispatch<
     React.SetStateAction<{
@@ -57,6 +58,7 @@ export const stepsActions = ({
   nextStep: () => void;
   booking: Booking;
   bookingId: string;
+  t: (key: string) => string;
 }): Record<string, StepAction> => {
   let imageFrontLink = "";
   let imageBackLink = "";
@@ -67,7 +69,7 @@ export const stepsActions = ({
     execute: (formData: BookingFormData, boat: Boat) => {
       setModalInfo({
         modal: "loading",
-        message: "Loading fuel modal",
+        message: t("loadingMessage.loading_fuel_modal"),
         error: "",
       });
       if (+formData["Fuel Payment"] === 0) {
@@ -82,7 +84,7 @@ export const stepsActions = ({
     execute: (formData: BookingFormData, boat: Boat) => {
       setModalInfo({
         modal: "loading",
-        message: "Loading contract modal",
+        message: t("loadingMessage.loading_contract"),
         error: "",
       });
       if (!formData["signedContract"]) {
@@ -97,7 +99,7 @@ export const stepsActions = ({
     execute: async (formData: BookingFormData, boat: Boat) => {
       setModalInfo({
         modal: "loading",
-        message: "Uploading front image of your identity",
+        message: t("loadingMessage.uploading_front_id"),
         error: "",
       });
       if (imageFrontLink !== "") {
@@ -116,8 +118,8 @@ export const stepsActions = ({
         toast.error(t("error.upload_image"));
         setModalInfo({
           modal: "loading",
-          message: "Uploading front image of your identity",
-          error: "Error uploading front picture",
+          message: "",
+          error: t("error.error_uploading_front_image"),
         });
         return;
       }
@@ -135,7 +137,7 @@ export const stepsActions = ({
       }
       setModalInfo({
         modal: "loading",
-        message: "Uploading back image of your identity",
+        message: t("loadingMessage.uploading_back_id"),
         error: "",
       });
 
@@ -156,8 +158,8 @@ export const stepsActions = ({
         toast.error(t("error.upload_image"));
         setModalInfo({
           modal: "loading",
-          message: "Uploading your back picture",
-          error: "Error uploading back picture",
+          message: "",
+          error: t("error.error_uploading_back_image"),
         });
         return;
       }
@@ -175,7 +177,7 @@ export const stepsActions = ({
 
       setModalInfo({
         modal: "loading",
-        message: "Validating front image of your identity",
+        message: t("loadingMessage.verifying_front_id"),
         error: "",
       });
 
@@ -186,7 +188,7 @@ export const stepsActions = ({
       if (result.error) {
         setModalInfo({
           modal: "loading",
-          message: "Validating front image of your identity",
+          message: "",
           error: result.error,
         });
         return;
@@ -207,7 +209,7 @@ export const stepsActions = ({
       }
       setModalInfo({
         modal: "loading",
-        message: "Validating front image of your identity",
+        message: t("loadingMessage.verifying_back_id"),
         error: "",
       });
 
@@ -218,7 +220,7 @@ export const stepsActions = ({
       if (result.error) {
         setModalInfo({
           modal: "loading",
-          message: "Validating front image of your identity",
+          message: "",
           error: result.error,
         });
         return;
@@ -231,7 +233,7 @@ export const stepsActions = ({
     execute: (formData: BookingFormData, boat: Boat) => {
       setModalInfo({
         modal: "pay",
-        message: "",
+        message: t("loadingMessage.processing_payment"),
         error: "",
       });
     },
@@ -242,7 +244,7 @@ export const stepsActions = ({
     execute: async (formData: any, boat: Boat) => {
       setModalInfo({
         modal: "Saving Data To Notion",
-        message: "",
+        message: t("loadingMessage.saving_information"),
         error: "",
       });
 
@@ -284,7 +286,7 @@ export const stepsActions = ({
         })
       );
       if (res === false || res === undefined) {
-        toast.error("There has been an error while saving the data");
+        toast.error(t("error.error_while_saving_data"));
         return;
       }
       window.location.replace("/success");

@@ -83,22 +83,29 @@
     "error_id_written_in_form_different_with_image":"El apellido escrito en el formulario no coincide con el documento subido.",
     "error_picture_not_readable": "La imagen no es legible, los siguientes campos no se reconocen",
     "error_name_written_in_form_different_with_image":"El nombre escrito en el formulario no coincide con el documento subido.",
-    "error_last_name_written_in_form_different_with_image":"El apellido escrito en el formulario no coincide con el documento subido."
+    "error_last_name_written_in_form_different_with_image":"El apellido escrito en el formulario no coincide con el documento subido.",
+    "error_loading_fuel_modal": "Ha habido un error al cargar el modal de combustible.",
+    "error_loading_contract": "Ha habido un error al cargar el contrato.",
+    "error_uploading_front_image": "Error al cargar la imagen frontal",
+    "error_uploading_back_image": "Error al cargar la imagen trasera",
+    "error_while_saving_data": "Ha habido un error al guardar los datos."
   },
   "title": {
     "feed_back_form": "Feedback del Viaje"
   },
   "loadingMessage": {
     "uploading_passport": "Subiendo tu Pasaporte",
-    "uploading_front_id": "Cargando su identificación frontal",
-    "uploading_back_id": "Subiendo tu ID posterior",
-    "verifying_front_id": "Verificación de su identificación frontal",
-    "verifying_back_id": "Verificación de su identificación posterior",
+    "uploading_front_id": "Subiendo imagen frontal de tu identidad",
+    "uploading_back_id": "Subiendo anverso y reverso de tu identidad",
+    "verifying_front_id": "Validando imagen frontal de tu identidad",
+    "verifying_back_id": "Validando la imagen trasera de tu identidad",
     "preparing_for_payment": "Preparándose para el pago",
     "processing_payment": "Procesando su pago",
-    "saving_information": "Guardar información",
-    "feed_back_form": "Feedback del Viaje",
+    "saving_information": "Guardando tu información",
+    "feed_back_form": "Formulario de comentarios sobre el tratamiento recibido",
     "fuel_form": "Poner forma de combustible",
-    "close": "Cerrar"
+    "close": "Cerca",
+    "loading_fuel_modal": "Cargando combustible modal",
+    "loading_contract": "Modalidad de contrato de carga"
   }
 }

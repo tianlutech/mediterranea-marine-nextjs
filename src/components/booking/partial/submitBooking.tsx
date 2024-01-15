@@ -15,6 +15,7 @@ import TermsAndConditionModal from "@/components/modals/termsAndConditions";
 import { stepsActions, steps } from "./steps-actions";
 import ProgressModal from "../../modals/progressModal";
 import SumupWidget from "@/components/modals/sumupWidget";
+import { useTranslation } from "react-i18next";
 
 const SaveBooking = forwardRef(function SaveBookingRef(
   {
@@ -36,6 +37,7 @@ const SaveBooking = forwardRef(function SaveBookingRef(
   },
   ref: ForwardedRef<{ start: () => void }>
 ) {
+  const { t } = useTranslation();
   const [step, setStep] = useState<string>("");
   const [modalInfo, setModalInfo] = useState({
     modal: "",
@@ -65,6 +67,7 @@ const SaveBooking = forwardRef(function SaveBookingRef(
       setModalInfo,
       booking: booking,
       bookingId,
+      t,
     });
     if (!stepObject[step]) {
       return;
