@@ -13,6 +13,8 @@ import { useFormik } from "formik";
 import { updateBookingInfo } from "../../services/notion.service";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import CommonSelect from "@/components/common/inputs/selectInput";
+import { PAYMENT_METHODS } from "@/models/constants";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative">{children}</div>;
@@ -35,8 +37,10 @@ export default function FeedbackForm({
     Rate: 0,
     "Captain Feedback": "",
     AllowFollowUp: true,
+    OnBoatPayment: 0,
+    // OnBoatPaymentMethod: "",
   });
-  const router = useRouter();
+
   const changeRating = (newRating: number) => {
     setFormData({ ...formData, Rate: newRating });
   };
@@ -153,9 +157,43 @@ export default function FeedbackForm({
                 }
               ></textarea>
             </div>
+            <div className="w-full mt-6 relative">
+              <FormWrapper>
+                <CommonLabel input="text">
+                  {t("input.on_boat_payment_amount")}
+                </CommonLabel>
+                <CommonInput
+                  type="number"
+                  name="On Boat Payment"
+                  id="OnBoatPayment"
+                  placeholder={t("input.on_boat_payment_amount")}
+                  value={formData["OnBoatPayment"]}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setFormData({ ...formData, "OnBoatPayment": +e.target.value })
+                  }
+                  min={1}
+                  step={1}
+                  required={true}
+                />
+              </FormWrapper>
+            </div>
+            <div className="relative w-full mt-6">
+              <CommonLabel input="select">
+                {t("input.payment_method")}
+              </CommonLabel>
+              <CommonSelect
+                id="paymentMethods"
+                name="paymentMethods"
+                data={PAYMENT_METHODS}
+                value={formData["OnBoatPaymentMethod"]}
+                onChange={(e) =>
+                  setFormData({ ...formData, "OnBoatPaymentMethod": e.target.value })
+                }
+                required
+              />
+            </div>
             <div className="relative mt-3">
               <p className=" text-black mb-2">{t("input.client_happiness")}</p>
-
               <StarRatings
                 rating={formData.Rate}
                 starRatedColor="#EAAC00"

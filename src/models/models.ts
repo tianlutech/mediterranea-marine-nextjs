@@ -149,8 +149,15 @@ export class Booking extends NotionItem {
 
   @NotionType("date")
   "SubmittedFormAt": Date;
+
   @NotionType("date")
   FeedbackFormAt?: Date;
+
+  @NotionType("number")
+  OnBoatPayment: number = 0;
+
+  @NotionType("select")
+  OnBoatPaymentMethod: string = "";
 }
 
 export class Fuel extends NotionItem {
