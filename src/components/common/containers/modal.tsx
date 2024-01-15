@@ -6,8 +6,10 @@ export default function Modal({
   isOpen,
   children,
   onClose,
+  cantClose,
 }: {
   isOpen: boolean;
+  cantClose?: boolean;
   children: React.ReactNode;
   onClose?: () => void;
 }) {
@@ -25,6 +27,9 @@ export default function Modal({
   useEffect(() => {
     const onKeyPress = (event: any) => {
       if (event.key === "Escape") {
+        if (cantClose) {
+          return;
+        }
         onClose?.();
       }
     };
@@ -34,8 +39,7 @@ export default function Modal({
     return () => {
       document.removeEventListener("keydown", onKeyPress);
     };
-  }, [onClose]);
-
+  }, [cantClose, onClose]);
   return (
     <div
       ref={modal}

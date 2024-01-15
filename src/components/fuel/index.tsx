@@ -173,7 +173,8 @@ export default function FuelForm() {
                 onRemove={() =>
                   setData({ ...data, "Picture of the Receipt": {} as File })
                 }
-                onChange={(file) =>
+                // @abel this type here when I put type File it doesn't work
+                onChange={(file: any) =>
                   setData({ ...data, "Picture of the Receipt": file })
                 }
                 required

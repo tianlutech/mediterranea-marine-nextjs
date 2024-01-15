@@ -9,6 +9,11 @@
     "lint": "next lint",
     "prepare": "husky install"
   },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@netlify/plugin-nextjs": "^4.41.1",

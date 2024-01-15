@@ -37,8 +37,8 @@ export const PORTS = [
   "Marina Botafoc",
   "Marina Ibiza",
   "Club Nautico de Ibiza",
-  "Marina Port Ibiza"
-]
+  "Marina Port Ibiza",
+];
 
 export const SEABOB = [
   {
