@@ -89,7 +89,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
                     __html: t("sidebar.booking_info", {
                       boat: boatInfo.Nombre,
                       date: moment(data.Date).format("DD/MM/YY"),
-                      port: data.Port,
+                      payment: data.OutstandingPayment,
                     }),
                   }}
                 />

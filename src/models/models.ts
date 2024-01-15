@@ -16,7 +16,7 @@ export type DriveFolder = {
   data: FileMetadata;
 };
 
-export type FormData = {
+export type BookingFormData = {
   "First Name": string;
   "Last Name": string;
   Email: string;
@@ -34,7 +34,9 @@ export type FormData = {
   "Restaurant Time": string;
   signedContract: boolean;
   "ID Number": string;
-}
+  documentType: "National ID" | "Passport";
+  OutstandingPayment: number;
+};
 
 export type FileBody = {
   boatName: string;
@@ -46,7 +48,7 @@ export class Boat extends NotionItem {
   @NotionType("number")
   "Max.Passengers": number;
   @NotionType("number")
-  MilePrice: number= 0;
+  MilePrice: number = 0;
   @NotionType("rich_text")
   Code: string = "";
   @NotionType("ID")
@@ -174,6 +176,17 @@ export class Booking extends NotionItem {
   "SubmittedFormAt": Date;
   @NotionType("date")
   FeedbackFormAt?: Date;
+
+  OutstandingPayment?: number;
+
+  public static totalPayment(data: BookingFormData) {
+    return (
+      +data["Fuel Payment"] +
+      +data["SUP"] +
+      +data["SEABOB"] +
+      +data.OutstandingPayment
+    );
+  }
 }
 
 export class Fuel extends NotionItem {

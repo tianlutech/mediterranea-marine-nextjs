@@ -1,6 +1,6 @@
 "use client";
 
-import { Boat, Booking, FormData } from "../../../models/models";
+import { Boat, Booking, BookingFormData } from "../../../models/models";
 import React, {
   ForwardedRef,
   Ref,
@@ -15,6 +15,7 @@ import TermsAndConditionModal from "@/components/modals/termsAndConditions";
 import { stepsActions, steps } from "./steps-actions";
 import ProgressModal from "../../modals/progressModal";
 import SumupWidget from "@/components/modals/sumupWidget";
+import { useTranslation } from "react-i18next";
 
 const SaveBooking = forwardRef(function SaveBookingRef(
   {
@@ -28,14 +29,15 @@ const SaveBooking = forwardRef(function SaveBookingRef(
   }: {
     booking: Booking;
     boat: Boat;
-    formData: FormData;
+    formData: BookingFormData;
     setFormData: any;
     onCancel?: () => void;
     onSuccess?: () => void;
-    bookingId: string
+    bookingId: string;
   },
   ref: ForwardedRef<{ start: () => void }>
 ) {
+  const { t } = useTranslation();
   const [step, setStep] = useState<string>("");
   const [modalInfo, setModalInfo] = useState({
     modal: "",
@@ -65,15 +67,17 @@ const SaveBooking = forwardRef(function SaveBookingRef(
       setModalInfo,
       booking: booking,
       bookingId,
+      t,
     });
     if (!stepObject[step]) {
       return;
     }
     stepObject[step].execute(formData, boat);
-  }, [boat, booking, nextStep, step]);
+  }, [boat, booking, bookingId, formData, nextStep, step]);
 
   const cancel = () => {
     setModalInfo({ modal: "", message: "", error: "" });
+    setStep("");
     onCancel?.();
   };
 
@@ -89,6 +93,7 @@ const SaveBooking = forwardRef(function SaveBookingRef(
         isOpen={modalInfo.modal === "loading"}
         message={modalInfo.message}
         error={modalInfo.error}
+        closeModal={() => cancel()}
       />
       <PrepaymentModal
         isOpen={modalInfo.modal === "fuel"}

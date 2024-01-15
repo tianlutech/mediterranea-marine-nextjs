@@ -1,5 +1,4 @@
 import { toast } from "react-toastify";
-
 export async function validateAddress(address: string) {
   try {
     const response = await fetch("/api/google", {

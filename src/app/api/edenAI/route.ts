@@ -1,9 +1,11 @@
-import * as edenAI from "./edenAI.api"
+import * as edenAI from "./edenAI.api";
 
 export async function POST(request: Request) {
   try {
     const data = await request.formData();
-    const response = await edenAI.validateImage(data)
+    const file: File = data.get("file") as File;
+
+    const response = await edenAI.validateIdentity(file);
 
     return new Response(JSON.stringify(response), { status: 200 });
   } catch (error) {
