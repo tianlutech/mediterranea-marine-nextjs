@@ -10,7 +10,7 @@ import { t } from "i18next";
 import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
 import moment from "moment";
 import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
-import * as edenIA from "@/services/edenAI.service";
+import EdenAIService from "@/services/edenAI.service";
 
 type StepAction = {
   execute: (formData: BookingFormData, boat: Boat) => void;
@@ -179,7 +179,7 @@ export const stepsActions = ({
         error: "",
       });
 
-      const result = await edenIA.checkFrontId(
+      const result = await EdenAIService().checkFrontId(
         formData["ID_Front_Picture"] as File,
         formData
       );
@@ -211,7 +211,7 @@ export const stepsActions = ({
         error: "",
       });
 
-      const result = await edenIA.checkFrontId(
+      const result = await EdenAIService().checkFrontId(
         formData["ID_Back_Picture"] as File,
         formData
       );
@@ -260,8 +260,7 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${
-          formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
         }`
       );
       const bookingInfo = new Booking({

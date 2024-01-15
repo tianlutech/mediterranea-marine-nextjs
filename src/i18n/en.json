@@ -73,7 +73,15 @@
   },
   "error": {
     "upload_front_image": "There has been an error while uploading front id picture",
-    "upload_back_image": "There has been an error while uploading back id picture"
+    "upload_back_image": "There has been an error while uploading back id picture",
+    "error_document_expired": "Your document is expired hence not valid",
+    "error_validation_failed": "The Id validation failed, please upload another picture",
+    "error_document_type_not_passport": "This document type doesn't match the type selected: Passport",
+    "error_document_type_not_national_id": "This document type doesn't match the type selected National ID",
+    "error_id_written_in_form_different_with_image":"The ID written in the form doesn't with your uploaded document",
+    "error_picture_not_readable": "The picture is not readible, the next fields are not recognized",
+    "error_name_written_in_form_different_with_image":"The name written in the form doesn't with your uploaded document",
+    "error_last_name_written_in_form_different_with_image":"The last name written in the form doesn't with your uploaded document "
   },
   "title": {
     "feed_back_form": "Treatment Received Feedback Form"

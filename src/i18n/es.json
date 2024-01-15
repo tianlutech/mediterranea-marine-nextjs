@@ -74,7 +74,16 @@
   },
   "error": {
     "upload_image": "Se ha producido un error al cargar la imagen de identificación frontal.",
-    "upload_back_image": "Se ha producido un error al cargar la imagen de identificación posterior."
+    "upload_back_image": "Se ha producido un error al cargar la imagen de identificación posterior.",
+    "error_validating_id": "La validación de identificación falló. Sube otra imagen.",
+    "error_document_expired": "Su documento está caducado, por lo tanto no es válido.",
+    "error_validation_failed": "La validación de identificación falló. Sube otra imagen.",
+    "error_document_type_not_passport": "Este tipo de documento no coincide con el tipo seleccionado: Pasaporte",
+    "error_document_type_not_national_id": "Este tipo de documento no coincide con el tipo de DNI seleccionado",
+    "error_id_written_in_form_different_with_image":"El apellido escrito en el formulario no coincide con el documento subido.",
+    "error_picture_not_readable": "La imagen no es legible, los siguientes campos no se reconocen",
+    "error_name_written_in_form_different_with_image":"El nombre escrito en el formulario no coincide con el documento subido.",
+    "error_last_name_written_in_form_different_with_image":"El apellido escrito en el formulario no coincide con el documento subido."
   },
   "title": {
     "feed_back_form": "Feedback del Viaje"
