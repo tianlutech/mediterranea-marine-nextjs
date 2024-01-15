@@ -73,7 +73,7 @@ const SaveBooking = forwardRef(function SaveBookingRef(
       return;
     }
     stepObject[step].execute(formData, boat);
-  }, [boat, booking, bookingId, formData, nextStep, step]);
+  }, [boat, booking, bookingId, formData, nextStep, step, t]);
 
   const cancel = () => {
     setModalInfo({ modal: "", message: "", error: "" });
