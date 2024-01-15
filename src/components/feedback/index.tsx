@@ -185,7 +185,10 @@ export default function FeedbackForm({
               <CommonSelect
                 id="paymentMethods"
                 name="paymentMethods"
-                data={PAYMENT_METHODS}
+                data={PAYMENT_METHODS.map(item => ({
+                  label: t(`select_options.${item}`),
+                  value: item
+                }))}
                 value={formData["OnBoatPaymentMethod"]}
                 onChange={(e) =>
                   setFormData({ ...formData, "OnBoatPaymentMethod": e.target.value })

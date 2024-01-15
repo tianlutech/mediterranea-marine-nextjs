@@ -108,5 +108,11 @@
     "close": "Close",
     "loading_fuel_modal": "Loading fuel modal",
     "loading_contract": "Loading contract modal"
+  },
+  "select_options": {
+    "None":"None",
+    "Transfer":"Transfer",
+    "Card":"Card",
+    "Cash":"Cash"
   }
 }

@@ -109,5 +109,11 @@
     "close": "Cerca",
     "loading_fuel_modal": "Cargando combustible modal",
     "loading_contract": "Modalidad de contrato de carga"
+  },
+  "select_options": {
+    "none":"Ninguno",
+    "transfer":"Transferir",
+    "card":"Tarjeta",
+    "cash":"Dinero"
   }
 }
