@@ -38,7 +38,7 @@ export default function FeedbackForm({
     "Captain Feedback": "",
     AllowFollowUp: true,
     OnBoatPayment: 0,
-    // OnBoatPaymentMethod: "",
+    OnBoatPaymentMethod: "",
   });
 
   const changeRating = (newRating: number) => {
