@@ -5,6 +5,7 @@ import CloseSvg from "@/assets/svgs/CloseSvg";
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
+import React from "react";
 
 export default function CommonInputFile({
   label,
@@ -16,7 +17,7 @@ export default function CommonInputFile({
   label: string;
   name: string;
   required?: boolean;
-  onChange: (file: File) => void;
+  onChange: (file: File | null) => void;
   onRemove: () => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -27,22 +28,28 @@ export default function CommonInputFile({
 
   const onChangeImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
-    if (file) {
-      const fileUrl = URL.createObjectURL(file);
-      const fileSizeInBytes = file.size;
-      const fileSizeInKilobytes: any = (fileSizeInBytes / 1024).toFixed(1);
-      const fileSizeInMegabytes: any = (fileSizeInKilobytes / 1024).toFixed(1);
+    if (!file) {
+      onChange(null);
+      setPhotoPreview("");
+      setPhotoName("");
+      setPhotoFontSize("");
 
-      setPhotoFontSize(
-        fileSizeInMegabytes < 1
-          ? `${fileSizeInKilobytes} KB`
-          : `${fileSizeInMegabytes} MB`
-      );
-
-      setPhotoPreview(fileUrl);
-      setPhotoName(file.name); // Assuming you want to keep the file name
-      onChange(file);
+      return;
     }
+    const fileUrl = URL.createObjectURL(file);
+    const fileSizeInBytes = file.size;
+    const fileSizeInKilobytes: any = (fileSizeInBytes / 1024).toFixed(1);
+    const fileSizeInMegabytes: any = (fileSizeInKilobytes / 1024).toFixed(1);
+
+    setPhotoFontSize(
+      fileSizeInMegabytes < 1
+        ? `${fileSizeInKilobytes} KB`
+        : `${fileSizeInMegabytes} MB`
+    );
+
+    setPhotoPreview(fileUrl);
+    setPhotoName(file.name); // Assuming you want to keep the file name
+    onChange(file);
   };
 
   const removeImage = () => {
@@ -74,7 +81,7 @@ export default function CommonInputFile({
           name={name}
           type="file"
           style={{ opacity: 0, height: 1, width: 1, position: "absolute" }}
-          onChangeCapture={onChangeImage}
+          onChange={onChangeImage}
           accept="image/*"
           required={required}
         />

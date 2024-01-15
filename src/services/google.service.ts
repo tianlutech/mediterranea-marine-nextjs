@@ -1,5 +1,4 @@
 import { toast } from "react-toastify";
-
 export async function validateAddress(address: string) {
   try {
     const response = await fetch("/api/google", {
@@ -13,12 +12,10 @@ export async function validateAddress(address: string) {
 
     const res = await response.json();
     if (res === false) {
-      toast.error("Please add a more specific address");
       return false;
     }
     return res;
   } catch (error) {
-    toast.error("Please add a more specific address");
     console.error(error);
     throw error;
   }

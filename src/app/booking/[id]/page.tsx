@@ -84,10 +84,16 @@ export default function BookingPage({ params }: { params: { id: string } }) {
           <div className="flex md:flex-row flex-col justify-between w-full lg:flex lg:flex-wrap h-screen">
             <Sidebar title={t("sidebar.boat_booking")} image={boatInfo.cover}>
               <div className="px-4 py-4 text-textSecondaryColor lg:text-base text-sm">
-                <p className="mb-6">
-                  {t("sidebar.boat_booking")} {boatInfo?.Nombre}{" "}
-                  {t("sidebar.reservation_form")}
-                </p>
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: t("sidebar.booking_info", {
+                      boat: boatInfo.Nombre,
+                      date: moment(data.Date).format("DD/MM/YY"),
+                      payment: data.OutstandingPayment,
+                    }),
+                  }}
+                />
+                <br />
                 <p className="mb-6">
                   {t(
                     "sidebar.we_are_excited_to_help_you_plan_your_next_water_adventure"

@@ -1,18 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import BookingForm1 from "./partial/booking-form-1";
 import BookingForm2 from "./partial/booking-form-2";
 import PrepaymentModal from "@/components/modals/prepaymentModal";
-import { Boat, Booking, DepartureTime } from "@/models/models";
+import { Boat, Booking, DepartureTime, BookingFormData } from "@/models/models";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
-import {
-  MILE_RANGES,
-  SEABOB as SEABOB_TOY,
-  STANDUP_PADDLE,
-} from "@/models/constants";
+import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
 import "../../i18n";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
@@ -22,7 +18,8 @@ import { uploadFile } from "@/services/googleDrive.service";
 import SumupWidget from "@/components/modals/sumupWidget";
 import { generateCheckoutId } from "@/services/sumup.service";
 import moment from "moment";
-import React from "react";
+import TermsAndConditionModal from "@/components/modals/termsAndConditions";
+import SaveBooking from "./partial/submitBooking";
 
 export default function BookingComponent({
   data,
@@ -35,12 +32,15 @@ export default function BookingComponent({
 }) {
   const { t } = useTranslation();
   const router = useRouter();
+  const saveModalRef = useRef<{ start: () => void }>(null);
   const [openPrepaymentModal, setOpenPrepaymentModal] =
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [totalPayment, setTotalPayment] = useState<number>(0);
+  const [openTermModal, setOpenTermModal] = useState<boolean>(false);
   const [checkoutId, setCheckoutId] = useState("");
-  const [formData, setFormData] = useState({
+
+  const [formData, setFormData] = useState<BookingFormData>({
     "First Name": "",
     "Last Name": "",
     Email: "",
@@ -52,16 +52,22 @@ export default function BookingComponent({
     "Departure Time": "",
     SUP: "",
     SEABOB: "",
-    "Fuel Payment": "",
+    "Fuel Payment": -1,
     Comments: "",
     "Restuarant Name": "",
     "Restaurant Time": "",
     signedContract: false,
     "ID Number": "",
+    documentType: "National ID",
+    OutstandingPayment: data.OutstandingPayment || 0,
   });
 
   const closePrepaymentModal = () => {
     setOpenPrepaymentModal(false);
+  };
+
+  const closeModalTermModal = () => {
+    setOpenTermModal(false);
   };
 
   const storeIdImage = async (file: File, slag: string) => {
@@ -82,9 +88,7 @@ export default function BookingComponent({
   });
 
   useEffect(() => {
-    setTotalPayment(
-      +formData["Fuel Payment"] + +formData["SUP"] + +formData["SEABOB"]
-    );
+    setTotalPayment(Booking.totalPayment(formData));
   }, [formData]);
 
   const updateNotion = async (formData: Record<string, unknown>) => {
@@ -153,24 +157,14 @@ export default function BookingComponent({
   };
 
   const submitBooking = async () => {
-    setLoading(true);
     // validate address first
     const res = await validateAddress(formData["Billing Address"]);
 
     if (res === false) {
-      setLoading(false);
-      return;
-    }
-
-    if (!formData["signedContract"]) {
-      setLoading(false);
-      return toast.error(
-        "Please click on the check box read and sign the contract"
-      );
+      return toast.error("The address is not accurate enougth");
     }
 
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
-      setLoading(false);
       return toast.error(
         `Add number of passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
@@ -180,22 +174,11 @@ export default function BookingComponent({
       +formData["No Adults"] + +formData["No Childs"] >
       boatInfo["Max.Passengers"]
     ) {
-      setLoading(false);
       return toast.error(
         `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
       );
     }
-
-    if (+formData["Fuel Payment"] === 0) {
-      setLoading(false);
-      return setOpenPrepaymentModal(true);
-    }
-    if (totalPayment > 0) {
-      getCheckoutId();
-      setLoading(false);
-
-      return;
-    }
+    saveModalRef.current?.start();
   };
 
   const getCheckoutId = async () => {
@@ -207,19 +190,6 @@ export default function BookingComponent({
     return response;
   };
 
-  // Function to calculate boat prices
-  const calculateBoatPrices = (pricePerMile: number, mileRanges: number[]) => {
-    return mileRanges.map((miles: number) => ({
-      label: miles
-        ? `${miles} ` +
-          t("input.nautical_miles") +
-          " - " +
-          `${miles * pricePerMile}€`
-        : t("input.continue_without_prepayment"),
-      value: (miles * pricePerMile).toString(),
-    }));
-  };
-
   const handlePrepayment = (additionalPayment: number) => {
     setTotalPayment(additionalPayment);
     submitBooking();
@@ -229,41 +199,21 @@ export default function BookingComponent({
     setCheckoutId("");
     updateNotion(formData);
   };
-  const pricePerMile = +boatInfo?.MilePrice || 0;
-  const calculatedMiles = calculateBoatPrices(pricePerMile, MILE_RANGES);
 
   if (!data || !formik) {
     return;
   }
+
   return (
     <>
-      <SumupWidget
-        isOpen={checkoutId ? true : false}
-        checkoutId={checkoutId}
-        onClose={() => proceedToNotion()}
-      />
-      <PrepaymentModal
-        isOpen={openPrepaymentModal}
-        closeModal={closePrepaymentModal}
-        data={calculatedMiles}
-        totalPayment={totalPayment}
-        continuePayment={(fuelPayment) => {
-          const newData = {
-            ...formData,
-            ["Fuel Payment"]: fuelPayment.toString(),
-          };
-
-          const total =
-            +newData["Fuel Payment"] + +newData["SUP"] + +newData["SEABOB"];
-
-          setFormData(newData);
-
-          if (total > 0) {
-            getCheckoutId();
-            return;
-          }
-          updateNotion(newData);
-        }}
+      <SaveBooking
+        ref={saveModalRef}
+        formData={formData}
+        setFormData={setFormData}
+        boat={boatInfo}
+        booking={formData as unknown as Booking}
+        onSuccess={() => router.replace("/success")}
+        bookingId={id}
       />
       <div className="relative md:w-[77%] w-full md:p-6 p-2">
         <form onSubmit={formik.handleSubmit}>
@@ -278,15 +228,12 @@ export default function BookingComponent({
               />
               {/* Second form */}
               <BookingForm2
-                bookingInfo={data}
                 data={formData}
                 setData={setFormData}
-                miles={calculatedMiles}
                 formik={formik}
                 boatInfo={boatInfo}
               />
             </div>
-
             {/* terms and policy */}
             <div>
               <div className="mt-6">

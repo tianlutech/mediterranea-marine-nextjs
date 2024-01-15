@@ -16,6 +16,28 @@ export type DriveFolder = {
   data: FileMetadata;
 };
 
+export type BookingFormData = {
+  "First Name": string;
+  "Last Name": string;
+  Email: string;
+  "Billing Address": string;
+  "No Adults": number;
+  "No Childs": number;
+  ID_Back_Picture: File;
+  ID_Front_Picture: File;
+  "Departure Time": string;
+  SUP: string;
+  SEABOB: string;
+  "Fuel Payment": number;
+  Comments: string;
+  "Restuarant Name": string;
+  "Restaurant Time": string;
+  signedContract: boolean;
+  "ID Number": string;
+  documentType: "National ID" | "Passport";
+  OutstandingPayment: number;
+};
+
 export type FileBody = {
   boatName: string;
   slag: string;
@@ -25,8 +47,8 @@ export type FileBody = {
 export class Boat extends NotionItem {
   @NotionType("number")
   "Max.Passengers": number;
-  @NotionType("rich_text")
-  MilePrice: string = "";
+  @NotionType("number")
+  MilePrice: number = 0;
   @NotionType("rich_text")
   Code: string = "";
   @NotionType("ID")
@@ -132,13 +154,16 @@ export class Booking extends NotionItem {
   @NotionType("rich_text")
   "Last Name": string = "";
 
+  @NotionType("rich_text")
+  "Port": string = "";
+
   @NotionType("number")
   "Fuel Payment": number;
 
   @NotionType("rich_text")
   Email: string = "";
 
-  @NotionType("rich_text")
+  @NotionType("title")
   Name: string = "";
 
   @NotionType("rich_text")
@@ -158,6 +183,17 @@ export class Booking extends NotionItem {
 
   @NotionType("select")
   OnBoatPaymentMethod: string = "";
+
+  OutstandingPayment?: number;
+
+  public static totalPayment(data: BookingFormData) {
+    return (
+      +data["Fuel Payment"] +
+      +data["SUP"] +
+      +data["SEABOB"] +
+      +data.OutstandingPayment
+    );
+  }
 }
 
 export class Fuel extends NotionItem {

@@ -30,6 +30,7 @@ export default function FeedbackForm({
   id: string;
 }) {
   const { t } = useTranslation();
+  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     "Fuel Left": "",
@@ -70,7 +71,7 @@ export default function FeedbackForm({
       if (res === false) {
         return;
       }
-      // router.replace("/success");
+      router.replace("/success");
     } finally {
       setLoading(false);
     }
