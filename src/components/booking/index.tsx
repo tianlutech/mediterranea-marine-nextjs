@@ -15,10 +15,8 @@ import { useRouter } from "next/navigation";
 import SubmitButton from "../common/containers/submit-button";
 import { validateAddress } from "@/services/google.service";
 import { uploadFile } from "@/services/googleDrive.service";
-import SumupWidget from "@/components/modals/sumupWidget";
 import { generateCheckoutId } from "@/services/sumup.service";
 import moment from "moment";
-import TermsAndConditionModal from "@/components/modals/termsAndConditions";
 import SaveBooking from "./partial/submitBooking";
 
 export default function BookingComponent({

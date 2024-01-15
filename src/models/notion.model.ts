@@ -127,9 +127,9 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
         (relation) => relation.name
       );
     case "formula":
-      return (property["formula"] as { number: number })?.number || 0;
+      return (property["formula"] as { number: number }).number || 0;
     case "select":
-      return (property["select"] as { name: string })?.name;
+      return (property["select"] as { name: string }).name;
     case "files":
       return (property["files"] as Array<NotionFile>).map((file) => ({
         name: file.name,
