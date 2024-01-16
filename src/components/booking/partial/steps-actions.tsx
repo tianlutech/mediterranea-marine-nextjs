@@ -15,16 +15,19 @@ type StepAction = {
   execute: (formData: BookingFormData, boat: Boat) => void;
 };
 
+const skip_steps = (process.env.NEXT_PUBLIC_SKIP_BOOKING_STEPS || "").split(
+  ","
+);
 export const steps = [
   "fuel",
   "sign",
-  // "validateFront",
-  // "validateBack",
+  "validateFront",
+  "validateBack",
   "uploadFrontIdImage",
   "uploadBackIdImage",
   "pay",
   "saveData",
-];
+].filter((step) => !skip_steps.includes(step));
 
 const storeIdImage = async (
   id: string,
