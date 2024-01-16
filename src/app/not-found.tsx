@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import DangerSvg from "@/assets/svgs/DangerSvg";
 import { useTranslation } from "react-i18next";
 import { Error_Codes } from "@/models/constants";
+import "../i18n";
 
 export default function ErrorPage() {
   const searchParams = useSearchParams();
@@ -12,7 +13,7 @@ export default function ErrorPage() {
   const { t } = useTranslation();
 
   const errorCode =
-    Error_Codes.find((code) => code === searchCode) || "PNF-409";
+    Error_Codes.find((code) => code === searchCode) || "PNF-404";
 
   const goHome = () => {
     window.location.href = "https://mediterraneamarine.com";
@@ -29,7 +30,7 @@ export default function ErrorPage() {
       <button
         type="button"
         onClick={() => goHome()}
-        className="mt-6 focus:ring-4 font-semibold rounded-lg text-lg px-10 py-3 border-color-gray"
+        className="mt-6 focus:ring-4 font-semibold rounded-lg text-lg px-2 py-2 border border-gray-400"
       >
         Go to home
       </button>

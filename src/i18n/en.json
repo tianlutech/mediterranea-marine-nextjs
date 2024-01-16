@@ -89,9 +89,9 @@
     "error_uploading_front_image": "Error uploading front picture",
     "error_uploading_back_image": "Error uploading back picture",
     "error_while_saving_data": "There has been an error while saving the data",
-    "GMFL-400": "Google map failed to load!",
-    "PNF-409": "Page not found!",
-    "ASB-502": "Already submitted your booking"
+    "GMFL-424": "Google map failed to load!",
+    "PNF-404": "Page not found!",
+    "ASB-409": "This booking is already submitted."
   },
   "title": {
     "feed_back_form": "Treatment Received Feedback Form"
