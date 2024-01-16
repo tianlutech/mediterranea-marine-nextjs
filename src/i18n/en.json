@@ -46,7 +46,9 @@
     "picture_of_the_receipt": "Picture of the Receipt ",
     "recommendation_text": "If the rating for the client is high (3 starts or more), send him a recommendation requests.",
     "national_id": "National ID",
-    "passport": "Passport"
+    "passport": "Passport",
+    "on_boat_payment_amount": "On Boat Payment amount",
+    "payment_method": "Payment Method"
   },
   "prepayment_modal": {
     "prepay_your_fuel": "Prepay your fuel",
@@ -105,5 +107,11 @@
     "close": "Close",
     "loading_fuel_modal": "Loading fuel modal",
     "loading_contract": "Loading contract modal"
+  },
+  "select_options": {
+    "None":"None",
+    "Transfer":"Transfer",
+    "Card":"Card",
+    "Cash":"Cash"
   }
 }

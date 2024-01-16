@@ -47,7 +47,9 @@
     "amount_paid": "Cantidad pagada",
     "captain_list": "Lista de capitanes",
     "port": "Puerto",
-    "picture_of_the_receipt": "Imagen del recibo"
+    "picture_of_the_receipt": "Imagen del recibo",
+    "on_boat_payment_amount": "Cantidad pagada en el barco",
+    "payment_method": "Método de pago"
   },
   "prepayment_modal": {
     "prepay_your_fuel": "Prepaga tu combustible",
@@ -107,5 +109,11 @@
     "close": "Cerca",
     "loading_fuel_modal": "Cargando combustible modal",
     "loading_contract": "Modalidad de contrato de carga"
+  },
+  "select_options": {
+    "None": "Ninguno",
+    "Transfer": "Transferencia",
+    "Card": "Tarjeta",
+    "Mash": "Metálico"
   }
 }
