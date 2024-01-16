@@ -1,16 +1,17 @@
+"use client";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 import DangerSvg from "@/assets/svgs/DangerSvg";
 import { useTranslation } from "react-i18next";
-
-const errorCodes = ["GMFL-400", "PNF-404", "ASB-502"];
+import { Error_Codes } from "@/models/constants";
 
 export default function ErrorPage() {
   const searchParams = useSearchParams();
   const searchCode = searchParams.get("code") || "";
   const { t } = useTranslation();
 
-  const errorCode = errorCodes.find((code) => code === searchCode) || "GMFL-400";
+  const errorCode = Error_Codes.find((code) => code === searchCode) || "GMFL-400";
 
   const goHome = () => {
     window.location.href = "https://mediterraneamarine.com";

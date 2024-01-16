@@ -81,3 +81,5 @@ export const STANDUP_PADDLE = [
     value: "100",
   },
 ];
+
+export const Error_Codes = ["GMFL-400", "PNF-404", "ASB-502"];
