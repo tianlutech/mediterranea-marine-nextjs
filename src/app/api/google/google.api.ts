@@ -1,7 +1,8 @@
 import axios from "axios"
-const googleApiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+const googleApiKey = process.env.GOOGLE_API_KEY;
 
 export async function validateAddressZipCode(address: string) {
+  console.log(">>>>>apikey", googleApiKey)
   const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
     address
   )}&key=${googleApiKey}`;

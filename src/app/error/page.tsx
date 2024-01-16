@@ -15,12 +15,12 @@ export default function errorPage() {
       <DangerSvg />
       <div className="flex-col text-black">
         <div className="my-6">
-          <span className="font-bold text-5xl">{message}</span>
+          <span className="font-bold md:text-5xl text-2xl">{message}</span>
         </div>
         <button
           type="button"
           onClick={() => goHome()}
-          className="mt-6 text-white bg-buttonColor focus:ring-4 font-semibold rounded-lg text-lg px-10 py-3"
+          className="mt-6 text-white bg-buttonColor focus:ring-4 font-semibold rounded-lg text-lg px-10 py-3 outilien"
         >
           Go to home
         </button>
