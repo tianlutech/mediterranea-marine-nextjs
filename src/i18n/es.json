@@ -92,7 +92,7 @@
     "error_uploading_back_image": "Error al cargar la imagen trasera",
     "error_while_saving_data": "Ha habido un error al guardar los datos.",
     "GMFL-400": "¡El mapa de Google no se pudo cargar!",
-    "PNF-404": "¡Página no encontrada!",
+    "PNF-409": "¡Página no encontrada!",
     "ASB-502": "¡Ya enviaste tu reserva!"
   },
   "title": {

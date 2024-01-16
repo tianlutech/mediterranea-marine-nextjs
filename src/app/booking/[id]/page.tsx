@@ -68,7 +68,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
   }, [params.id, router]);
 
   if (apiKey === "") {
-    router.replace("/not-found?code=GMFL-400")
+    router.replace("/not-found?code=GMFL-400");
     return null;
   }
 
@@ -82,6 +82,10 @@ export default function BookingPage({ params }: { params: { id: string } }) {
 
   if (!data || !boatInfo) {
     return;
+  }
+
+  if (!!data.SubmittedFormAt) {
+    return window.location.replace("/not-found?code=ASB-502");
   }
   return (
     <>

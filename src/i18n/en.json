@@ -80,17 +80,17 @@
     "error_validation_failed": "The Id validation failed, please upload another picture",
     "error_document_type_not_passport": "This document type doesn't match the type selected: Passport",
     "error_document_type_not_national_id": "This document type doesn't match the type selected National ID",
-    "error_id_written_in_form_different_with_image":"The ID written in the form doesn't with your uploaded document",
+    "error_id_written_in_form_different_with_image": "The ID written in the form doesn't with your uploaded document",
     "error_picture_not_readable": "The picture is not readible, the next fields are not recognized",
-    "error_name_written_in_form_different_with_image":"The name written in the form doesn't with your uploaded document",
-    "error_last_name_written_in_form_different_with_image":"The last name written in the form doesn't with your uploaded document ",
+    "error_name_written_in_form_different_with_image": "The name written in the form doesn't with your uploaded document",
+    "error_last_name_written_in_form_different_with_image": "The last name written in the form doesn't with your uploaded document ",
     "error_loading_fuel_modal": "There has been an error while loading fuel modal",
     "error_loading_contract": "There has been an error while loading contract",
     "error_uploading_front_image": "Error uploading front picture",
     "error_uploading_back_image": "Error uploading back picture",
     "error_while_saving_data": "There has been an error while saving the data",
     "GMFL-400": "Google map failed to load!",
-    "PNF-404": "Page not found!",
+    "PNF-409": "Page not found!",
     "ASB-502": "Already submitted your booking"
   },
   "title": {
@@ -112,9 +112,9 @@
     "loading_contract": "Loading contract modal"
   },
   "select_options": {
-    "None":"None",
-    "Transfer":"Transfer",
-    "Card":"Card",
-    "Cash":"Cash"
+    "None": "None",
+    "Transfer": "Transfer",
+    "Card": "Card",
+    "Cash": "Cash"
   }
 }
