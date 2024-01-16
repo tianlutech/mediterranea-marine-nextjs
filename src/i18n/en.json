@@ -88,7 +88,10 @@
     "error_loading_contract": "There has been an error while loading contract",
     "error_uploading_front_image": "Error uploading front picture",
     "error_uploading_back_image": "Error uploading back picture",
-    "error_while_saving_data": "There has been an error while saving the data"
+    "error_while_saving_data": "There has been an error while saving the data",
+    "GMFL-424": "Google map failed to load!",
+    "PNF-404": "Page not found!",
+    "ASB-409": "This booking is already submitted."
   },
   "title": {
     "feed_back_form": "Treatment Received Feedback Form"
@@ -109,9 +112,9 @@
     "loading_contract": "Loading contract modal"
   },
   "select_options": {
-    "None":"None",
-    "Transfer":"Transfer",
-    "Card":"Card",
-    "Cash":"Cash"
+    "None": "None",
+    "Transfer": "Transfer",
+    "Card": "Card",
+    "Cash": "Cash"
   }
 }

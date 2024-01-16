@@ -53,6 +53,8 @@ All the values are also accessible from the [credentials page](https://www.notio
 - NEXT_PUBLIC_GOOGLE_CLIENT_EMAIL: we use it in google drive api we find this in the credentials json file from  the google console
 - NEXT_PUBLIC_GOOGLE_CLIENT_ID: we use it in google drive api we find this in the credentials json file from  the google console
 - NEXT_PUBLIC_GOOGLE_CLIENT_X509_CERT_URL: we use it in google drive api we find this in the credentials json file from  the google console
+- NEXT_PUBLIC_SKIP_BOOKING_STEPS: Add the steps by comma (from the file steps-actions) to skip some sensibles or charged steps during the booking validation
+
 ### Application state
 
 What information do we have in the application state or context (Which is shared with all the applications)

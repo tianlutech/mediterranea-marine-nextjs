@@ -6,7 +6,6 @@ import {
   DepartureTime,
 } from "../../../models/models";
 import { uploadFile } from "@/services/googleDrive.service";
-import { t } from "i18next";
 import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
 import moment from "moment";
 import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
@@ -16,6 +15,9 @@ type StepAction = {
   execute: (formData: BookingFormData, boat: Boat) => void;
 };
 
+const skip_steps = (process.env.NEXT_PUBLIC_SKIP_BOOKING_STEPS || "").split(
+  ","
+);
 export const steps = [
   "fuel",
   "sign",
@@ -25,7 +27,7 @@ export const steps = [
   "uploadBackIdImage",
   "pay",
   "saveData",
-];
+].filter((step) => !skip_steps.includes(step));
 
 const storeIdImage = async (
   id: string,
@@ -262,7 +264,8 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${
+          formData["Departure Time"]
         }`
       );
       const bookingInfo = new Booking({
@@ -273,6 +276,7 @@ export const stepsActions = ({
         Toys: [paddle, seaBobName].filter((value) => !!value),
         SubmittedFormAt: new Date(),
       });
+
       const res = await updateBookingInfo(bookingId, bookingInfo);
 
       /**

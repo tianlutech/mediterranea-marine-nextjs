@@ -33,12 +33,7 @@ export const DEPARTURES_TIMES = [
   "20:30",
 ];
 
-export const PAYMENT_METHODS = [
-  "None",
-  "Transfer",
-  "Card",
-  "Cash",
-];
+export const PAYMENT_METHODS = ["None", "Transfer", "Card", "Cash"];
 
 export const PORTS = [
   "Marina Botafoc",
@@ -81,3 +76,5 @@ export const STANDUP_PADDLE = [
     value: "100",
   },
 ];
+
+export const Error_Codes = ["GMFL-424", "PNF-404", "ASB-409"];

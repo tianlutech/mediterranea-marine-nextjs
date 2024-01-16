@@ -13,7 +13,7 @@ import LoadingModal from "@/components/modals/loadingModal";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLoadScript } from "@react-google-maps/api";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 import { Booking, Boat } from "@/models/models";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
@@ -23,6 +23,7 @@ const libraries = ["places"] as "places"[];
 export default function BookingPage({ params }: { params: { id: string } }) {
   const [data, setData] = useState<Booking | null>(null);
   const [boatInfo, setBoatInfo] = useState<Boat | null>(null);
+  const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(true);
   const { t } = useTranslation();
@@ -35,6 +36,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
     googleMapsApiKey: apiKey,
     libraries,
   });
+
   useEffect(() => {
     const getBookingDetails = async () => {
       const data = (await getBookingInfo(params.id)) as Booking;
@@ -63,7 +65,12 @@ export default function BookingPage({ params }: { params: { id: string } }) {
     };
 
     getBookingDetails();
-  }, [params.id]);
+  }, [params.id, router]);
+
+  if (apiKey === "") {
+    router.replace("/not-found?code=GMFL-424");
+    return null;
+  }
 
   if (!googleMapsLoaded || loading) {
     return (
@@ -75,6 +82,10 @@ export default function BookingPage({ params }: { params: { id: string } }) {
 
   if (!data || !boatInfo) {
     return;
+  }
+
+  if (!!data.SubmittedFormAt) {
+    return window.location.replace("/not-found?code=ASB-409");
   }
   return (
     <>
