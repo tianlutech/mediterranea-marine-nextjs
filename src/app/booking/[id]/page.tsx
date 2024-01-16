@@ -101,6 +101,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
                       boat: boatInfo.Nombre,
                       date: moment(data.Date).format("DD/MM/YY"),
                       payment: data.OutstandingPayment,
+                      location: data.BoatLocation[0],
                     }),
                   }}
                 />

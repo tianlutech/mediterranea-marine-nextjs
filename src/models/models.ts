@@ -186,6 +186,8 @@ export class Booking extends NotionItem {
 
   OutstandingPayment?: number;
 
+  BoatLocation: string[] = [];
+
   public static totalPayment(data: BookingFormData) {
     return (
       +data["Fuel Payment"] +
