@@ -38,7 +38,7 @@ export default function FeedbackForm({
     Rate: 0,
     "Captain Feedback": "",
     AllowFollowUp: true,
-    OnBoatPayment: 0,
+    OnBoatPayment: "",
     OnBoatPaymentMethod: "",
   });
 
@@ -170,7 +170,7 @@ export default function FeedbackForm({
                   placeholder={t("input.on_boat_payment_amount")}
                   value={formData["OnBoatPayment"]}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setFormData({ ...formData, "OnBoatPayment": +e.target.value })
+                    setFormData({ ...formData, OnBoatPayment: +e.target.value })
                   }
                   min={1}
                   step={1}
@@ -185,13 +185,16 @@ export default function FeedbackForm({
               <CommonSelect
                 id="paymentMethods"
                 name="paymentMethods"
-                data={PAYMENT_METHODS.map(item => ({
+                data={PAYMENT_METHODS.map((item) => ({
                   label: t(`select_options.${item}`),
-                  value: item
+                  value: item,
                 }))}
                 value={formData["OnBoatPaymentMethod"]}
                 onChange={(e) =>
-                  setFormData({ ...formData, "OnBoatPaymentMethod": e.target.value })
+                  setFormData({
+                    ...formData,
+                    OnBoatPaymentMethod: e.target.value,
+                  })
                 }
                 required
               />

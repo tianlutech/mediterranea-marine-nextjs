@@ -48,7 +48,7 @@
     "captain_list": "Lista de capitanes",
     "port": "Puerto",
     "picture_of_the_receipt": "Imagen del recibo",
-    "on_boat_payment_amount": "Monto del pago en barco",
+    "on_boat_payment_amount": "Cantidad pagada en el barco",
     "payment_method": "Método de pago"
   },
   "prepayment_modal": {
@@ -82,10 +82,10 @@
     "error_validation_failed": "La validación de identificación falló. Sube otra imagen.",
     "error_document_type_not_passport": "Este tipo de documento no coincide con el tipo seleccionado: Pasaporte",
     "error_document_type_not_national_id": "Este tipo de documento no coincide con el tipo de DNI seleccionado",
-    "error_id_written_in_form_different_with_image":"El apellido escrito en el formulario no coincide con el documento subido.",
+    "error_id_written_in_form_different_with_image": "El apellido escrito en el formulario no coincide con el documento subido.",
     "error_picture_not_readable": "La imagen no es legible, los siguientes campos no se reconocen",
-    "error_name_written_in_form_different_with_image":"El nombre escrito en el formulario no coincide con el documento subido.",
-    "error_last_name_written_in_form_different_with_image":"El apellido escrito en el formulario no coincide con el documento subido.",
+    "error_name_written_in_form_different_with_image": "El nombre escrito en el formulario no coincide con el documento subido.",
+    "error_last_name_written_in_form_different_with_image": "El apellido escrito en el formulario no coincide con el documento subido.",
     "error_loading_fuel_modal": "Ha habido un error al cargar el modal de combustible.",
     "error_loading_contract": "Ha habido un error al cargar el contrato.",
     "error_uploading_front_image": "Error al cargar la imagen frontal",
@@ -111,9 +111,9 @@
     "loading_contract": "Modalidad de contrato de carga"
   },
   "select_options": {
-    "none":"Ninguno",
-    "transfer":"Transferir",
-    "card":"Tarjeta",
-    "cash":"Dinero"
+    "None": "Ninguno",
+    "Transfer": "Transferencia",
+    "Card": "Tarjeta",
+    "Mash": "Metálico"
   }
 }
