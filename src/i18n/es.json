@@ -90,7 +90,10 @@
     "error_loading_contract": "Ha habido un error al cargar el contrato.",
     "error_uploading_front_image": "Error al cargar la imagen frontal",
     "error_uploading_back_image": "Error al cargar la imagen trasera",
-    "error_while_saving_data": "Ha habido un error al guardar los datos."
+    "error_while_saving_data": "Ha habido un error al guardar los datos.",
+    "GMFL-400": "¡El mapa de Google no se pudo cargar!",
+    "PNF-404": "¡Página no encontrada!",
+    "ASB-502": "¡Ya enviaste tu reserva!"
   },
   "title": {
     "feed_back_form": "Feedback del Viaje"

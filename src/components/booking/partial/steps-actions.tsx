@@ -6,7 +6,6 @@ import {
   DepartureTime,
 } from "../../../models/models";
 import { uploadFile } from "@/services/googleDrive.service";
-import { t } from "i18next";
 import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
 import moment from "moment";
 import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
@@ -19,8 +18,8 @@ type StepAction = {
 export const steps = [
   "fuel",
   "sign",
-  "validateFront",
-  "validateBack",
+  // "validateFront",
+  // "validateBack",
   "uploadFrontIdImage",
   "uploadBackIdImage",
   "pay",
@@ -273,6 +272,11 @@ export const stepsActions = ({
         Toys: [paddle, seaBobName].filter((value) => !!value),
         SubmittedFormAt: new Date(),
       });
+
+      if (bookingInfo.SubmittedFormAt !== null && bookingInfo.SubmittedFormAt !== undefined) {
+        return window.location.replace("/not-found?code=ASB-502");
+      }
+
       const res = await updateBookingInfo(bookingId, bookingInfo);
 
       /**
