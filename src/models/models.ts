@@ -188,30 +188,6 @@ export class Booking extends NotionItem {
     );
   }
 }
-
-export class Fuel extends NotionItem {
-  @NotionType("title")
-  "Name": string;
-
-  @NotionType("date")
-  "Date": string;
-
-  @NotionType("relation")
-  "Boat": string;
-
-  @NotionType("relation")
-  "Captain": string;
-
-  @NotionType("select")
-  "Port": string;
-
-  @NotionType("number")
-  "Paid": number;
-
-  @NotionType("file")
-  "Receipt": string;
-}
-
 export class Fuel extends NotionItem {
   @NotionType("title")
   "Name": string;
