@@ -170,7 +170,7 @@ export default function FeedbackForm({
                   placeholder={t("input.on_boat_payment_amount")}
                   value={formData["OnBoatPayment"]}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setFormData({ ...formData, OnBoatPayment: +e.target.value })
+                    setFormData({ ...formData, OnBoatPayment: e.target.value })
                   }
                   min={1}
                   step={1}
