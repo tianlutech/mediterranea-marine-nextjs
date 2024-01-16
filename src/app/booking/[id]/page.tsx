@@ -65,7 +65,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
     };
 
     getBookingDetails();
-  }, [params.id]);
+  }, [params.id, router]);
 
   if (apiKey === "") {
     router.replace("/not-found?code=GMFL-400")
