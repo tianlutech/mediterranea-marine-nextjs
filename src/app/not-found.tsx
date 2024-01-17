@@ -20,7 +20,7 @@ export default function ErrorPage() {
   };
 
   return (
-    <div className="relative p-2 w-full h-screen bg-gray-300 text-center flex flex-col items-center bg-white justify-center">
+    <div className="relative p-2 w-full h-screen text-center flex flex-col items-center bg-white justify-center">
       <DangerSvg />
       <div className="flex-col text-black">
         <div className="my-6">
