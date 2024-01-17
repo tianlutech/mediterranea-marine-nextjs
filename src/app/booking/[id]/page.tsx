@@ -84,7 +84,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
     return;
   }
 
-  if (!!data.SubmittedFormAt) {
+  if (!isNaN(data.SubmittedFormAt.getTime())) {
     return window.location.replace("/not-found?code=ASB-409");
   }
   return (
