@@ -2,7 +2,6 @@ import { IdentityData, IdentityValidation, OCRResult } from "@/models/eden-ia";
 import { BookingFormData } from "@/models/models";
 import moment from "moment";
 import { compareStrings } from "./utils";
-import { error } from "console";
 import i18n from "@/i18n";
 
 const EdenAIService = () => {
