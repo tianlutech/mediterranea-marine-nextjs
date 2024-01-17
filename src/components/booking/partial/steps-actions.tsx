@@ -234,7 +234,7 @@ export const stepsActions = ({
   const pay = {
     execute: (formData: BookingFormData, boat: Boat) => {
       setModalInfo({
-        modal: "pay",
+        modal: "loading",
         message: t("loadingMessage.processing_payment"),
         error: "",
       });
