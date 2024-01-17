@@ -244,8 +244,9 @@ export const stepsActions = ({
   // Abel here I used any becuase the Booking was causing errors and same for the FormData
   const saveData = {
     execute: async (formData: any, boat: Boat) => {
+
       setModalInfo({
-        modal: "Saving Data To Notion",
+        modal: "loading",
         message: t("loadingMessage.saving_information"),
         error: "",
       });
@@ -264,8 +265,7 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${
-          formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
         }`
       );
       const bookingInfo = new Booking({
