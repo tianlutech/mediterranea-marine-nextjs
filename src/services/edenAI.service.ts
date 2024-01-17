@@ -2,12 +2,10 @@ import { IdentityData, IdentityValidation, OCRResult } from "@/models/eden-ia";
 import { BookingFormData } from "@/models/models";
 import moment from "moment";
 import { compareStrings } from "./utils";
-import { useTranslation } from "react-i18next";
 import { error } from "console";
+import i18n from "@/i18n";
 
 const EdenAIService = () => {
-  const { t } = useTranslation();
-
   const checkIdValidity = async (file: File) => {
     try {
       const formData = new FormData();
@@ -44,7 +42,12 @@ const EdenAIService = () => {
     });
     if (error_fields.length) {
       return {
-        error: t("error.error_picture_not_readable") + error_fields.join(","),
+        error:
+          i18n.t("error.error_picture_not_readable") +
+          " " +
+          error_fields
+            .map((field) => i18n.t(`error.error_eden_ia_${field}`))
+            .join(","),
       };
     }
     return { ok: true };
@@ -68,7 +71,7 @@ const EdenAIService = () => {
       };
     }
     if (!result || result.status !== "success") {
-      return { error: t("error.error_validation_failed") };
+      return { error: i18n.t("error.error_validation_failed") };
     }
 
     // Check fields
@@ -80,13 +83,13 @@ const EdenAIService = () => {
     }
 
     if (moment().isAfter(moment(data.expire_date.value))) {
-      return { error: t("error.error_document_expired") };
+      return { error: i18n.t("error.error_document_expired") };
     }
 
     // if (formData.documentType === "Passport") {
     //   if (data.document_type.value !== "PASSPORT") {
     //     return {
-    //       error: t("error.error_document_type_not_passport"),
+    //       error: i18n.t("error.error_document_type_not_passport"),
     //     };
     //   }
     // }
@@ -94,7 +97,7 @@ const EdenAIService = () => {
     // if (formData.documentType === "National ID") {
     //   if (!["ID", "DRIVER LICENSE"].includes(data.document_type.value)) {
     //     return {
-    //       error: t("error.error_document_type_not_national_id"),
+    //       error: i18n.t("error.error_document_type_not_national_id"),
     //     };
     //   }
     // }
@@ -102,7 +105,7 @@ const EdenAIService = () => {
     // if (!compareStrings(formData["ID Number"], data.document_id.value)) {
     //   return {
     //     error:
-    //       t("error.error_id_written_in_form_different_with_image") +
+    //       i18n.t("error.error_id_written_in_form_different_with_image") +
     //       data.document_id.value,
     //   };
     // }
@@ -113,7 +116,8 @@ const EdenAIService = () => {
     ) {
       return {
         error:
-          t("error.error_name_written_in_form_different_with_image") +
+          i18n.t("error.error_name_written_in_form_different_with_image") +
+          " " +
           data.given_names[0].value,
       };
     }
@@ -124,7 +128,8 @@ const EdenAIService = () => {
     ) {
       return {
         error:
-          t("error.error_last_name_written_in_form_different_with_image") +
+          i18n.t("error.error_last_name_written_in_form_different_with_image") +
+          " " +
           data.last_name.value,
       };
     }
@@ -145,7 +150,7 @@ const EdenAIService = () => {
     }
     if (!result || result.status !== "success") {
       return {
-        error: t("error.error_validation_failed"),
+        error: i18n.t("error.error_validation_failed"),
       };
     }
 
@@ -153,7 +158,7 @@ const EdenAIService = () => {
 
     if (!["ID", "DRIVER LICENSE"].includes(data.document_type.value)) {
       return {
-        error: t("error.error_document_type_not_national_id"),
+        error: i18n.t("error.error_document_type_not_national_id"),
       };
     }
 
@@ -161,14 +166,14 @@ const EdenAIService = () => {
       if (!compareStrings(formData["ID Number"], data.document_id.value)) {
         return {
           error:
-            t("error.error_id_written_in_form_different_with_image") +
+            i18n.t("error.error_id_written_in_form_different_with_image") +
             data.document_id.value,
         };
       }
     }
     if (data.expire_date.value) {
       if (moment().isAfter(moment(data.expire_date.value))) {
-        return { error: t("error.error_document_expired") };
+        return { error: i18n.t("error.error_document_expired") };
       }
     }
 
