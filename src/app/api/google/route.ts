@@ -1,4 +1,4 @@
-import * as google from "./google.api"
+import * as google from "./google.api";
 
 export async function POST(request: Request) {
   try {
@@ -9,10 +9,11 @@ export async function POST(request: Request) {
     const body = await request.json();
     const address = body.address;
 
-    const response = await google.validateAddressZipCode(address)
+    const response = await google.validateAddressZipCode(address);
 
     return new Response(JSON.stringify(response), { status: 200 });
   } catch (error) {
+    // TODO  Not valid address shall not fire an exception but be handle in the if
     console.error("Please enter more specific address:", error);
     return new Response(JSON.stringify(error), { status: 500 });
   }

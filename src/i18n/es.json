@@ -5,7 +5,7 @@
     "email": "Correo electrónico",
     "ID_Front_Picture": "Fotografía de Identidad/Pasaporte (Frontal)",
     "ID_Back_Picture": "Fotografía de Identidad/Pasaporte (Posterior)",
-    "billing_address": "Dirección de Envío",
+    "billing_address": "Dirección de Facturación",
     "adult_passengers": "Adultos",
     "kids_passengers": "Niños",
     "select_file": "Seleccione un archivo o arrástrelo y suéltelo aquí",
@@ -91,6 +91,10 @@
     "error_uploading_front_image": "Error al cargar la imagen frontal",
     "error_uploading_back_image": "Error al cargar la imagen trasera",
     "error_while_saving_data": "Ha habido un error al guardar los datos.",
+    "error_eden_ia_expire_date": "Fecha de Expiración",
+    "error_eden_ia_last_name": "Apellidos",
+    "error_eden_ia_given_name": "Nombre",
+    "error_eden_ia_document_id": "Número de Identidad",
     "GMFL-424": "¡El mapa de Google no se pudo cargar!",
     "PNF-404": "¡Página no encontrada!",
     "ASB-409": "¡Ya enviaste tu reserva!"
@@ -109,7 +113,7 @@
     "saving_information": "Guardando tu información",
     "feed_back_form": "Formulario de comentarios sobre el tratamiento recibido",
     "fuel_form": "Poner forma de combustible",
-    "close": "Cerca",
+    "close": "Cerrar",
     "loading_fuel_modal": "Cargando combustible modal",
     "loading_contract": "Modalidad de contrato de carga"
   },

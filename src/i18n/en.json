@@ -89,6 +89,10 @@
     "error_uploading_front_image": "Error uploading front picture",
     "error_uploading_back_image": "Error uploading back picture",
     "error_while_saving_data": "There has been an error while saving the data",
+    "error_eden_ia_expire_date": "Expiring Date",
+    "error_eden_ia_last_name": "Last Name",
+    "error_eden_ia_given_name": "Name",
+    "error_eden_ia_document_id": "Document Id",
     "GMFL-424": "Google map failed to load!",
     "PNF-404": "Page not found!",
     "ASB-409": "This booking is already submitted."
