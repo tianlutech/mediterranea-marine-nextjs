@@ -16,9 +16,9 @@ const calculateBoatPrices = (pricePerMile: number) => {
   return MILE_RANGES.map((miles: number) => ({
     label: miles
       ? `${miles} ` +
-        t("input.nautical_miles") +
-        " - " +
-        `${miles * pricePerMile}€`
+      t("input.nautical_miles") +
+      " - " +
+      `${miles * pricePerMile}€`
       : t("input.continue_without_prepayment"),
     value: (miles * pricePerMile).toString(),
   }));
@@ -50,7 +50,6 @@ export default function PrepaymentModal({
   const addFuel = (value: string) => {
     const fuelPrice = parseFloat(value);
     setFuelPrice(fuelPrice);
-    setPayment(payment + fuelPrice);
   };
 
   const proceedSubmission = () => {
@@ -134,7 +133,7 @@ export default function PrepaymentModal({
             disabled={fuelPrice === -1}
             className="text-white bg-buttonColor2 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
-            {payment > 0 ? t("input.pay") + ` ${payment}€ ` : t("input.submit")}
+            {payment > 0 ? t("input.pay") + ` ${payment + fuelPrice}€ ` : t("input.submit")}
           </button>
         </div>
       </div>

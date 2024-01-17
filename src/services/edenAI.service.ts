@@ -3,7 +3,7 @@ import { BookingFormData } from "@/models/models";
 import moment from "moment";
 import { compareStrings } from "./utils";
 import { useTranslation } from "react-i18next";
-import { error } from "console";
+import "../i18n";
 
 const EdenAIService = () => {
   const { t } = useTranslation();
