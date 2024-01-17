@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Modal from "@/components/common/containers/modal";
 import Script from "next/script";
 import { toast } from "react-toastify";
@@ -16,20 +16,26 @@ export default function SumupWidget({
 }) {
   const [checkoutId, setCheckoutId] = useState("");
 
-  const getCheckoutId = async (payment: number) => {
-    const response = await generateCheckoutId(payment.toString());
-    if (!response) {
-      return;
-    }
-    setCheckoutId(response.id);
-    return response;
-  };
+  const getCheckoutId = useCallback(
+    async (payment: number) => {
+      const response = await generateCheckoutId(payment.toString());
+      if (!response) {
+        return;
+      }
+      setCheckoutId(response.id);
+      return response;
+    },
+    [setCheckoutId]
+  );
 
   useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
     const payment = Booking.totalPayment(formData);
 
     getCheckoutId(payment);
-  }, [formData]);
+  }, [formData, getCheckoutId, isOpen]);
 
   const handleScriptLoad = () => {
     window.SumUpCard?.mount({
