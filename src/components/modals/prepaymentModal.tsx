@@ -16,9 +16,9 @@ const calculateBoatPrices = (pricePerMile: number) => {
   return MILE_RANGES.map((miles: number) => ({
     label: miles
       ? `${miles} ` +
-      t("input.nautical_miles") +
-      " - " +
-      `${miles * pricePerMile}€`
+        t("input.nautical_miles") +
+        " - " +
+        `${miles * pricePerMile}€`
       : t("input.continue_without_prepayment"),
     value: (miles * pricePerMile).toString(),
   }));
@@ -44,19 +44,19 @@ export default function PrepaymentModal({
   const [payment, setPayment] = useState(Booking.totalPayment(formData));
 
   useEffect(() => {
-    setPayment(Booking.totalPayment(formData));
-  }, [formData]);
-
-  const addFuel = (value: string) => {
-    const fuelPrice = parseFloat(value);
-    setFuelPrice(fuelPrice);
-  };
+    console.log({
+      payment,
+      data: Booking.totalPayment(formData),
+      fuel: Math.max(fuelPrice, 0),
+    });
+    setPayment(Booking.totalPayment(formData) + Math.max(fuelPrice, 0));
+  }, [formData, fuelPrice]);
 
   const proceedSubmission = () => {
     setFormData({ ...formData, "Fuel Payment": fuelPrice });
     continuePayment();
   };
-
+  console.log({ fuelPrice });
   const calculatedMiles = useMemo(() => {
     const pricePerMile = boat.MilePrice || 0;
     return calculateBoatPrices(pricePerMile);
@@ -94,7 +94,7 @@ export default function PrepaymentModal({
                       type="radio"
                       value={item.value}
                       name="default-radio"
-                      onClick={() => addFuel(item.value)}
+                      onClick={() => setFuelPrice(+item.value)}
                       className="w-4 h-4"
                     />
                     <label className="ms-2 text-base text-black">
@@ -133,7 +133,7 @@ export default function PrepaymentModal({
             disabled={fuelPrice === -1}
             className="text-white bg-buttonColor2 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
-            {payment > 0 ? t("input.pay") + ` ${payment + fuelPrice}€ ` : t("input.submit")}
+            {payment > 0 ? t("input.pay") + ` ${payment}€ ` : t("input.submit")}
           </button>
         </div>
       </div>

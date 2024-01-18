@@ -55,8 +55,8 @@ export const SEABOB = [
   },
   {
     name: "2 SEABOB",
-    label: "SEABOB 2 - 250E",
-    value: "250",
+    label: "SEABOB 2 - 500E",
+    value: "500",
   },
 ];
 export const STANDUP_PADDLE = [
