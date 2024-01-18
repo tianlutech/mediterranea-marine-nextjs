@@ -233,6 +233,9 @@ export const stepsActions = ({
   };
   const pay = {
     execute: (formData: BookingFormData, boat: Boat) => {
+      if (!Booking.totalPayment(formData)) {
+        nextStep();
+      }
       setModalInfo({
         modal: "pay",
         message: "",
