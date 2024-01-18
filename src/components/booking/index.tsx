@@ -3,8 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import BookingForm1 from "./partial/booking-form-1";
 import BookingForm2 from "./partial/booking-form-2";
-import PrepaymentModal from "@/components/modals/prepaymentModal";
-import { Boat, Booking, DepartureTime, BookingFormData } from "@/models/models";
+import { Boat, Booking, BookingFormData } from "@/models/models";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import "../../i18n";
@@ -12,11 +11,6 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
 import SubmitButton from "../common/containers/submit-button";
 import { validateAddress } from "@/services/google.service";
-import { uploadFile } from "@/services/googleDrive.service";
-import SumupWidget from "@/components/modals/sumupWidget";
-import { generateCheckoutId } from "@/services/sumup.service";
-import moment from "moment";
-import TermsAndConditionModal from "@/components/modals/termsAndConditions";
 import SaveBooking from "./partial/submitBooking";
 
 export default function BookingComponent({
@@ -31,12 +25,7 @@ export default function BookingComponent({
   const { t } = useTranslation();
   const router = useRouter();
   const saveModalRef = useRef<{ start: () => void }>(null);
-  const [openPrepaymentModal, setOpenPrepaymentModal] =
-    useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
   const [totalPayment, setTotalPayment] = useState<number>(0);
-  const [openTermModal, setOpenTermModal] = useState<boolean>(false);
-  const [checkoutId, setCheckoutId] = useState("");
 
   const [formData, setFormData] = useState<BookingFormData>({
     "First Name": "",
@@ -59,24 +48,6 @@ export default function BookingComponent({
     documentType: "National ID",
     OutstandingPayment: data.OutstandingPayment || 0,
   });
-
-  const closePrepaymentModal = () => {
-    setOpenPrepaymentModal(false);
-  };
-
-  const closeModalTermModal = () => {
-    setOpenTermModal(false);
-  };
-
-  const storeIdImage = async (file: File, slag: string) => {
-    const id = formData["ID Number"];
-    const response = await uploadFile(file, boatInfo.Nombre, id, slag);
-    if (!response.id) {
-      return "";
-    }
-    const url = `https://drive.google.com/file/d/${response.id}/view`;
-    return url;
-  };
 
   const formik = useFormik({
     initialValues: formData,
@@ -184,7 +155,6 @@ export default function BookingComponent({
                   ? t("input.pay") + ` ${totalPayment}€ `
                   : t("input.submit")
               }
-              loading={loading}
             />
           </div>
         </form>

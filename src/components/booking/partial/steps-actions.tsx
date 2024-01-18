@@ -43,6 +43,11 @@ const storeIdImage = async (
   return url;
 };
 
+let imageFrontLink = "";
+let imageBackLink = "";
+let imageFrontValidated = false;
+let imageBackValidated = false;
+
 export const stepsActions = ({
   setModalInfo,
   nextStep,
@@ -62,11 +67,6 @@ export const stepsActions = ({
   bookingId: string;
   t: (key: string) => string;
 }): Record<string, StepAction> => {
-  let imageFrontLink = "";
-  let imageBackLink = "";
-  let imageFrontValidated = false;
-  let imageBackValidated = false;
-
   const fuel = {
     execute: (formData: BookingFormData, boat: Boat) => {
       setModalInfo({
@@ -107,14 +107,12 @@ export const stepsActions = ({
       if (imageFrontLink !== "") {
         return nextStep();
       }
-      const uploadIdFrontResponse = await Promise.all([
-        storeIdImage(
-          formData["ID Number"],
-          boat,
-          formData["ID_Front_Picture"] as File,
-          "front"
-        ),
-      ]);
+      const uploadIdFrontResponse = await storeIdImage(
+        formData["ID Number"],
+        boat,
+        formData["ID_Front_Picture"] as File,
+        "front"
+      );
 
       if (!uploadIdFrontResponse) {
         toast.error(t("error.upload_image"));
@@ -125,7 +123,8 @@ export const stepsActions = ({
         });
         return;
       }
-      imageFrontLink = uploadIdFrontResponse[0];
+      imageFrontLink = uploadIdFrontResponse;
+
       nextStep();
     },
   };
@@ -147,17 +146,14 @@ export const stepsActions = ({
       if (imageBackLink !== "") {
         return nextStep();
       }
-      const [uploadIdBackImageResponse] = await Promise.all([
-        storeIdImage(
-          formData["ID Number"],
-          boat,
-          formData["ID_Back_Picture"] as File,
-          "back"
-        ),
-      ]);
+      const uploadIdBackImageResponse = await storeIdImage(
+        formData["ID Number"],
+        boat,
+        formData["ID_Back_Picture"] as File,
+        "back"
+      );
 
       if (!uploadIdBackImageResponse) {
-        toast.error(t("error.upload_image"));
         setModalInfo({
           modal: "loading",
           message: "",
@@ -165,7 +161,7 @@ export const stepsActions = ({
         });
         return;
       }
-      imageBackLink = uploadIdBackImageResponse[0];
+      imageBackLink = uploadIdBackImageResponse;
       nextStep();
     },
   };
@@ -272,6 +268,7 @@ export const stepsActions = ({
           formData["Departure Time"]
         }`
       );
+
       const bookingInfo = new Booking({
         ...bookingData,
         Name: `${boat.Nombre} - ${departureTime.format("DD-MM-YY HH:mm")}`,
@@ -280,7 +277,6 @@ export const stepsActions = ({
         Toys: [paddle, seaBobName].filter((value) => !!value),
         SubmittedFormAt: new Date(),
       });
-
       const res = await updateBookingInfo(bookingId, bookingInfo);
 
       if ((res as { error: string }).error) {
@@ -295,15 +291,14 @@ export const stepsActions = ({
       /**
        * Create a Time Slot so no one can book at the same time
        */
-      createTimeSlot(
+      await createTimeSlot(
         new DepartureTime({
           Booking: [bookingId],
           Boat: [boat.id],
           Date: departureTime,
         })
       );
-
-      window.location.replace("/success");
+      nextStep();
     },
   };
 

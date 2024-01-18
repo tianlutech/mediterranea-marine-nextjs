@@ -190,9 +190,9 @@ export class Booking extends NotionItem {
 
   public static totalPayment(data: BookingFormData) {
     return (
-      +data["Fuel Payment"] +
-      +data["SUP"] +
-      +data["SEABOB"] +
+      Math.max(0, +data["Fuel Payment"]) +
+      Math.max(0, +data["SUP"]) +
+      Math.max(0, +data["SEABOB"]) +
       +data.OutstandingPayment
     );
   }

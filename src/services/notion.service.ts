@@ -1,4 +1,3 @@
-import { Client } from "@notionhq/client";
 import { Boat, Booking, Captain, DepartureTime, Fuel } from "../models/models";
 import {
   parseNotionObject,
@@ -147,6 +146,9 @@ export async function updateBookingInfo(bookingId: string, data: Booking) {
     if (response.status !== 200) {
       return { error: json.error };
     }
+    if (json.error) {
+      return { error: json.error };
+    }
 
     return {
       booking: parseNotionObject<Booking>(
@@ -176,6 +178,10 @@ export async function createFuelRecord(data: Fuel) {
     const json = await response.json();
     if (response.status !== 200) {
       toast.error("Something went wrong" + response.statusText);
+      return false;
+    }
+    if (json.error) {
+      toast.error("Something went wrong" + json.error);
       return false;
     }
 
