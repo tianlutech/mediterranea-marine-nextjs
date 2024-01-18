@@ -157,7 +157,7 @@ const EdenAIService = () => {
 
     if (
       !["ID", "DRIVER LICENSE"].some((tag) =>
-        data.document_type.value.includes(tag)
+        (data.document_type.value || "").includes(tag)
       )
     ) {
       return {

@@ -105,9 +105,9 @@
   "loadingMessage": {
     "uploading_passport": "Subiendo tu Pasaporte",
     "uploading_front_id": "Subiendo imagen frontal de tu identidad",
-    "uploading_back_id": "Subiendo anverso y reverso de tu identidad",
-    "verifying_front_id": "Validando imagen frontal de tu identidad",
-    "verifying_back_id": "Validando la imagen trasera de tu identidad",
+    "uploading_back_id": "Subiendo reverso de tu identidad",
+    "verifying_front_id": "Validando el frontal de tu identidad",
+    "verifying_back_id": "Validando el reverso de tu identidad",
     "preparing_for_payment": "Preparándose para el pago",
     "processing_payment": "Procesando su pago",
     "saving_information": "Guardando tu información",

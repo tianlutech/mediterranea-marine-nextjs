@@ -219,6 +219,7 @@ export const stepsActions = ({
         formData["ID_Back_Picture"] as File,
         formData
       );
+
       if (result.error) {
         setModalInfo({
           modal: "loading",
