@@ -243,7 +243,7 @@ export const stepsActions = ({
 
   // Abel here I used any becuase the Booking was causing errors and same for the FormData
   const saveData = {
-    execute: async (formData: any, boat: Boat) => {
+    execute: async (formData: BookingFormData, boat: Boat) => {
       setModalInfo({
         modal: "loading",
         message: t("loadingMessage.saving_information"),
@@ -277,6 +277,7 @@ export const stepsActions = ({
         Toys: [paddle, seaBobName].filter((value) => !!value),
         SubmittedFormAt: new Date(),
       });
+
       const res = await updateBookingInfo(bookingId, bookingInfo);
 
       if ((res as { error: string }).error) {
@@ -298,6 +299,7 @@ export const stepsActions = ({
           Date: departureTime,
         })
       );
+
       nextStep();
     },
   };

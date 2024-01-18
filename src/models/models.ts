@@ -17,9 +17,9 @@ export type DriveFolder = {
 };
 
 export type BookingFormData = {
+  Date: Date;
   "First Name": string;
   "Last Name": string;
-  Email: string;
   "Billing Address": string;
   "No Adults": number;
   "No Childs": number;
@@ -170,7 +170,7 @@ export class Booking extends NotionItem {
   "Restaurant Name": string = "";
 
   @NotionType("date")
-  "Restaurant Time"?: Date;
+  "Restaurant Time"?: string;
 
   @NotionType("date")
   "SubmittedFormAt": Date;

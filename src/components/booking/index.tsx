@@ -30,7 +30,7 @@ export default function BookingComponent({
   const [formData, setFormData] = useState<BookingFormData>({
     "First Name": "",
     "Last Name": "",
-    Email: "",
+    Date: data.Date as Date,
     "Billing Address": "",
     "No Adults": 0,
     "No Childs": 0,

@@ -44,11 +44,6 @@ export default function PrepaymentModal({
   const [payment, setPayment] = useState(Booking.totalPayment(formData));
 
   useEffect(() => {
-    console.log({
-      payment,
-      data: Booking.totalPayment(formData),
-      fuel: Math.max(fuelPrice, 0),
-    });
     setPayment(Booking.totalPayment(formData) + Math.max(fuelPrice, 0));
   }, [formData, fuelPrice]);
 
