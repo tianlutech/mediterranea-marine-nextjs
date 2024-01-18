@@ -155,7 +155,11 @@ const EdenAIService = () => {
 
     const [data] = result.extracted_data;
 
-    if (!["ID", "DRIVER LICENSE"].includes(data.document_type.value)) {
+    if (
+      !["ID", "DRIVER LICENSE"].some((tag) =>
+        data.document_type.value.includes(tag)
+      )
+    ) {
       return {
         error: i18n.t("error.error_document_type_not_national_id"),
       };
