@@ -7,8 +7,6 @@ import PrepaymentModal from "@/components/modals/prepaymentModal";
 import { Boat, Booking, DepartureTime, BookingFormData } from "@/models/models";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
-import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
-import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
 import "../../i18n";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
@@ -91,71 +89,6 @@ export default function BookingComponent({
     setTotalPayment(Booking.totalPayment(formData));
   }, [formData]);
 
-  const updateNotion = async (formData: Record<string, unknown>) => {
-    const [uploadIdFrontResponse, uploadIdBackImageResponse] =
-      await Promise.all([
-        storeIdImage(formData["ID_Front_Picture"] as File, "front"),
-        storeIdImage(formData["ID_Back_Picture"] as File, "back"),
-      ]);
-
-    if (!uploadIdFrontResponse) {
-      toast.error(t("error.upload_image"));
-      setLoading(false);
-      return;
-    }
-
-    if (!uploadIdBackImageResponse) {
-      toast.error(t("upload_front_image"));
-      setLoading(false);
-      return;
-    }
-
-    const {
-      ID_Back_Picture,
-      ID_Front_Picture,
-      SEABOB,
-      SUP,
-      signedContract,
-      ...bookingData
-    } = formData;
-
-    // Upload the files and convert them in { name: '', url: '', type: "external"}
-    const seaBobName =
-      SEABOB_TOY.find((seabob) => seabob.value === SEABOB)?.name || "";
-
-    const paddle = STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
-    const departureTime = moment(
-      `${moment(data.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]}`
-    );
-
-    const booking = new Booking({
-      ...bookingData,
-      Name: `${boatInfo.Nombre} - ${departureTime.format("DD-MM-YY HH:mm")}`,
-      "ID Back Picture": uploadIdBackImageResponse,
-      "ID Front Picture": uploadIdFrontResponse,
-      Toys: [paddle, seaBobName].filter((value) => !!value),
-      SubmittedFormAt: new Date(),
-    });
-
-    const res = await updateBookingInfo(id, booking);
-
-    /**
-     * Create a Time Slot so no one can book at the same time
-     */
-    createTimeSlot(
-      new DepartureTime({
-        Booking: [id],
-        Boat: [boatInfo.id],
-        Date: departureTime,
-      })
-    );
-    setLoading(false);
-    if (res === false) {
-      return;
-    }
-    router.replace("/success");
-  };
-
   const submitBooking = async () => {
     // validate address first
     const res = await validateAddress(formData["Billing Address"]);
@@ -179,25 +112,6 @@ export default function BookingComponent({
       );
     }
     saveModalRef.current?.start();
-  };
-
-  const getCheckoutId = async () => {
-    const response = await generateCheckoutId(totalPayment.toString());
-    if (!response) {
-      return;
-    }
-    setCheckoutId(response.id);
-    return response;
-  };
-
-  const handlePrepayment = (additionalPayment: number) => {
-    setTotalPayment(additionalPayment);
-    submitBooking();
-  };
-
-  const proceedToNotion = () => {
-    setCheckoutId("");
-    updateNotion(formData);
   };
 
   if (!data || !formik) {

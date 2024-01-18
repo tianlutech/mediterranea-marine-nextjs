@@ -148,7 +148,12 @@ export async function updateBookingInfo(bookingId: string, data: Booking) {
       return { error: json.error };
     }
 
-    return parseNotionObject<Booking>(new Booking(), json.result as NotionPage);
+    return {
+      booking: parseNotionObject<Booking>(
+        new Booking(),
+        json.result as NotionPage
+      ),
+    };
   } catch (error) {
     console.error("Error retrieving page from Notion:", error);
     return { error: error };

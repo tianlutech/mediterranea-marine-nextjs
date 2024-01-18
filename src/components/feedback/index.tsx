@@ -66,9 +66,10 @@ export default function FeedbackForm({
         FeedbackFormAt: new Date(),
       };
       const booking = new Booking(data as unknown as Booking);
-      const res = await updateBookingInfo(id, booking);
+      const { error } = await updateBookingInfo(id, booking);
 
-      if (res === false) {
+      if (error) {
+        toast.error(error);
         return;
       }
       router.replace("/success");
