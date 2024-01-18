@@ -161,20 +161,20 @@ const EdenAIService = () => {
       };
     }
 
-    if (data.document_id.value) {
-      if (!compareStrings(formData["ID Number"], data.document_id.value)) {
-        return {
-          error:
-            i18n.t("error.error_id_written_in_form_different_with_image") +
-            data.document_id.value,
-        };
-      }
-    }
-    if (data.expire_date.value) {
-      if (moment().isAfter(moment(data.expire_date.value))) {
-        return { error: i18n.t("error.error_document_expired") };
-      }
-    }
+    // if (data.document_id.value) {
+    //   if (!compareStrings(formData["ID Number"], data.document_id.value)) {
+    //     return {
+    //       error:
+    //         i18n.t("error.error_id_written_in_form_different_with_image") +
+    //         data.document_id.value,
+    //     };
+    //   }
+    // }
+    // if (data.expire_date.value) {
+    //   if (moment().isAfter(moment(data.expire_date.value))) {
+    //     return { error: i18n.t("error.error_document_expired") };
+    //   }
+    // }
 
     return { ok: true };
   };

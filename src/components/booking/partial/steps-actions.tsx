@@ -215,7 +215,7 @@ export const stepsActions = ({
         error: "",
       });
 
-      const result = await EdenAIService().checkFrontId(
+      const result = await EdenAIService().checkBackId(
         formData["ID_Back_Picture"] as File,
         formData
       );
