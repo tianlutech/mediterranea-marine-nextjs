@@ -8,52 +8,58 @@ import { Booking, BookingFormData } from "@/models/models";
 export default function SumupWidget({
   isOpen,
   onSuccess,
+  onError,
   formData,
 }: {
   isOpen: boolean;
   onSuccess: () => void;
+  onError: (message: string) => void;
   formData: BookingFormData;
 }) {
-  const [checkoutId, setCheckoutId] = useState("");
-
-  const getCheckoutId = useCallback(
-    async (payment: number) => {
-      const response = await generateCheckoutId(payment.toString());
-      if (!response) {
+  const handleScriptLoad = useCallback(
+    (checkoutId: string) => {
+      if (!checkoutId) {
         return;
       }
-      setCheckoutId(response.id);
-      return response;
-    },
-    [setCheckoutId]
-  );
+      window.SumUpCard?.mount({
+        id: "sumup-card",
+        checkoutId,
+        onResponse: function (type: any, body: any) {
+          console.log({ type, body });
+          if (type === "sent") {
+            return;
+          }
 
+          if (type === "success") {
+            onSuccess();
+            return;
+          }
+          if (type !== "success") {
+            onError(body);
+            return;
+          }
+          return;
+        },
+      });
+    },
+    [onSuccess, onError]
+  );
   useEffect(() => {
     if (!isOpen) {
       return;
     }
-    const payment = Booking.totalPayment(formData);
 
-    getCheckoutId(payment);
-  }, [formData, getCheckoutId, isOpen]);
-
-  const handleScriptLoad = () => {
-    window.SumUpCard?.mount({
-      id: "sumup-card",
-      checkoutId,
-      onResponse: function (type: any, body: any) {
-        if (type === "success") {
-          onSuccess();
-          return;
-        }
-        if (type !== "sent" && type !== "success") {
-          toast.error("Something went wrong");
-          return;
-        }
+    const load = async () => {
+      const payment = Booking.totalPayment(formData);
+      const response = await generateCheckoutId(payment.toString());
+      if (!response) {
         return;
-      },
-    });
-  };
+      }
+      handleScriptLoad(response.id);
+    };
+
+    load();
+  }, [formData, handleScriptLoad, isOpen]);
 
   if (!isOpen) {
     return null;
@@ -64,7 +70,6 @@ export default function SumupWidget({
       <Script
         src="https://gateway.sumup.com/gateway/ecom/card/v2/sdk.js"
         strategy="afterInteractive"
-        onLoad={handleScriptLoad}
       />
       <Modal isOpen={isOpen}>
         <div id="sumup-card"></div>

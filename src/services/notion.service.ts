@@ -145,14 +145,13 @@ export async function updateBookingInfo(bookingId: string, data: Booking) {
     );
     const json = await response.json();
     if (response.status !== 200) {
-      toast.error("Something went wrong" + response.statusText);
-      return false;
+      return { error: json.error };
     }
 
     return parseNotionObject<Booking>(new Booking(), json.result as NotionPage);
   } catch (error) {
     console.error("Error retrieving page from Notion:", error);
-    return undefined;
+    return { error: error };
   }
 }
 

@@ -115,6 +115,13 @@ const SaveBooking = forwardRef(function SaveBookingRef(
       <SumupWidget
         isOpen={modalInfo.modal === "pay"}
         formData={formData}
+        onError={(error) =>
+          setModalInfo({
+            modal: "loading",
+            message: t("loadingMessage.processing_payment"),
+            error,
+          })
+        }
         onSuccess={() => nextStep(step)}
       />
     </>

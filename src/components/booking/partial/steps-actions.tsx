@@ -234,8 +234,8 @@ export const stepsActions = ({
   const pay = {
     execute: (formData: BookingFormData, boat: Boat) => {
       setModalInfo({
-        modal: "loading",
-        message: t("loadingMessage.processing_payment"),
+        modal: "pay",
+        message: "",
         error: "",
       });
     },
@@ -244,7 +244,6 @@ export const stepsActions = ({
   // Abel here I used any becuase the Booking was causing errors and same for the FormData
   const saveData = {
     execute: async (formData: any, boat: Boat) => {
-
       setModalInfo({
         modal: "loading",
         message: t("loadingMessage.saving_information"),
@@ -265,7 +264,8 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${
+          formData["Departure Time"]
         }`
       );
       const bookingInfo = new Booking({
@@ -279,6 +279,15 @@ export const stepsActions = ({
 
       const res = await updateBookingInfo(bookingId, bookingInfo);
 
+      if ((res as { error: string }).error) {
+        setModalInfo({
+          modal: "loading",
+          message: t("loadingMessage.saving_information"),
+          error: (res as { error: string }).error,
+        });
+        return;
+      }
+
       /**
        * Create a Time Slot so no one can book at the same time
        */
@@ -289,10 +298,7 @@ export const stepsActions = ({
           Date: departureTime,
         })
       );
-      if (res === false || res === undefined) {
-        toast.error(t("error.error_while_saving_data"));
-        return;
-      }
+
       window.location.replace("/success");
     },
   };
