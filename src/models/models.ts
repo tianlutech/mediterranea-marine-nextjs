@@ -30,7 +30,7 @@ export type BookingFormData = {
   SEABOB: string;
   "Fuel Payment": number;
   Comments: string;
-  "Restuarant Name": string;
+  "Restaurant Name": string;
   "Restaurant Time": string;
   signedContract: boolean;
   "ID Number": string;
@@ -150,6 +150,9 @@ export class Booking extends NotionItem {
 
   @NotionType("rich_text")
   "Billing Address": string = "";
+
+  @NotionType("rich_text")
+  Comments: string = "";
 
   @NotionType("rich_text")
   "Last Name": string = "";

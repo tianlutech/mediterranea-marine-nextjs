@@ -41,7 +41,7 @@ export default function BookingComponent({
     SEABOB: "",
     "Fuel Payment": -1,
     Comments: "",
-    "Restuarant Name": "",
+    "Restaurant Name": "",
     "Restaurant Time": "",
     signedContract: false,
     "ID Number": "",
