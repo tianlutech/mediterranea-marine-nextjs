@@ -9,6 +9,7 @@ import FeedbackForm from "../../../components/feedback";
 import { Boat, Booking } from "../../../models/models";
 import LoadingModal from "../../../components/modals/loadingModal";
 import { useTranslation } from "react-i18next";
+import moment from "moment";
 
 export default function UserFeedbackPage({
   params,
@@ -63,7 +64,12 @@ export default function UserFeedbackPage({
               <div
                 className="p-4"
                 dangerouslySetInnerHTML={{
-                  __html: t("sidebar.feedback_sidebar"),
+                  __html: t("sidebar.feedback_sidebar", {
+                    boat: boatInfo.Nombre,
+                    date: moment(data.Date).format("DD/MM/YY"),
+                    first_name: data["First Name"],
+                    last_name: data["Last Name"],
+                  }),
                 }}
               />
             </Sidebar>

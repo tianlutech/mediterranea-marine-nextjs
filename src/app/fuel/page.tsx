@@ -18,7 +18,7 @@ export default function PuttingFuel({ params }: { params: { id: string } }) {
         <div
           className="p-4 text-black"
           dangerouslySetInnerHTML={{
-            __html: t("sidebar.feedback_sidebar"),
+            __html: t("sidebar.fuel_sidebar"),
           }}
         />
       </Sidebar>

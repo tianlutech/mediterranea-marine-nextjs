@@ -70,7 +70,7 @@
     "booking_info": "📅 Date: {{date}}<br/>🛥️ Boat: {{boat}}<br/> 💳 Remaining Payment: {{payment}}€<br/>⚓ <a class=\" text-blue-300 underline mt-3 \" target=\"_blank\" href=\"{{location}}\">Departure Place</a> ",
     "sidebar_p1": "Please take a moment to provide us with some essential details, so we can ensure you have a smooth and enjoyable experience.",
     "sidebar_p2": "Your responses will help us schedule your boat reservation and cater to your specific needs. Thank you for choosing us for your boating adventure!",
-    "feedback_sidebar": "<p>Collecting this information is really important for our company. We can improve our service and cost enhancing the experience fo both client and staff.</p>",
+    "feedback_sidebar": "<p>📅 Date: {{date}}<br/>🛥️ Boat: {{boat}}<br/> 👤 Guest: {{first_name}} {{last_name}} </p><br/><p>Collecting this information is really important for our company. We can improve our service and cost enhancing the experience fo both client and staff.</p>",
     "fuel_sidebar": "<p>Collecting this information is really important for our company. We can improve our service and cost enhancing the experience fo both client and staff.</p>"
   },
   "error": {
