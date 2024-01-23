@@ -25,7 +25,6 @@ export default function SumupWidget({
         id: "sumup-card",
         checkoutId,
         onResponse: function (type: any, body: any) {
-          console.log({ type, body });
           if (type === "sent") {
             return;
           }

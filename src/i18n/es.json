@@ -101,7 +101,8 @@
     "ASB-409": "¡Ya enviaste tu reserva!"
   },
   "title": {
-    "feed_back_form": "Feedback del Viaje"
+    "feed_back_form": "Feedback del Viaje",
+    "fuel_form": "Forma de combustible"
   },
   "loadingMessage": {
     "uploading_passport": "Subiendo tu Pasaporte",

@@ -98,7 +98,8 @@
     "ASB-409": "This booking is already submitted."
   },
   "title": {
-    "feed_back_form": "Treatment Received Feedback Form"
+    "feed_back_form": "Treatment Received Feedback Form",
+    "fuel_form": "Fuel Form"
   },
   "loadingMessage": {
     "uploading_passport": "Uploading your Passport",

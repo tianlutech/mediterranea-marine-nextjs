@@ -38,9 +38,9 @@ export default function PrepaymentModal({
     setFormData({ ...formData, "Fuel Payment": fuelPrice });
     continuePayment();
   };
-
   const calculatedMiles = useMemo(() => {
     const pricePerMile = boat.MilePrice || 0;
+
     return MILE_RANGES.map((miles: number) => ({
       label: miles
         ? `${miles} ` +
