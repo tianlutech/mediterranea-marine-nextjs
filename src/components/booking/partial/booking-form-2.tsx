@@ -13,19 +13,7 @@ import { Boat, Booking } from "@/models/models";
 import { useTranslation } from "next-i18next";
 import { MILE_RANGES } from "@/models/constants";
 import { t } from "i18next";
-
-// Function to calculate boat prices
-const calculateBoatPrices = (pricePerMile: number) => {
-  return MILE_RANGES.map((miles: number) => ({
-    label: miles
-      ? `${miles} ` +
-        t("input.nautical_miles") +
-        " - " +
-        `${miles * pricePerMile}€`
-      : t("input.continue_without_prepayment"),
-    value: (miles * pricePerMile).toString(),
-  }));
-};
+import TextInfoModal from "@/components/modals/textInfoModal";
 
 export default function BookingForm2({
   data,
@@ -42,6 +30,8 @@ export default function BookingForm2({
 
   const [eatAtRestaurant, setEatAtRestaurant] = useState<string>("");
   const [videoModalOpen, setVideoModalOpen] = useState<boolean>(false);
+  const [infoModalText, setInfoModalText] = useState<string>("");
+
   const [videoLiknk, setVideoLink] = useState<string>("");
 
   const openVideoModal = (link: string) => {
@@ -58,11 +48,23 @@ export default function BookingForm2({
 
   const miles = useMemo(() => {
     const pricePerMile = boatInfo.MilePrice || 0;
-    return calculateBoatPrices(pricePerMile);
-  }, [boatInfo]);
+    return MILE_RANGES.map((miles: number) => ({
+      label: miles
+        ? `${miles} ` +
+          t("input.nautical_miles") +
+          " - " +
+          `${miles * pricePerMile}€`
+        : t("input.continue_without_prepayment"),
+      value: (miles * pricePerMile).toString(),
+    }));
+  }, [boatInfo, t]);
 
   return (
     <>
+      <TextInfoModal
+        closeModal={() => setInfoModalText("")}
+        text={infoModalText}
+      />
       <VideoModal
         isOpen={videoModalOpen}
         closeModal={closeVideoModal}
@@ -179,30 +181,37 @@ export default function BookingForm2({
                 onChange={(e) => setData({ ...data, Comments: e.target.value })}
               ></textarea>
             </div>
-            <div className="relative w-full mt-6">
-              <CommonLabel input="select" error={formik.errors["Fuel Payment"]}>
-                {t("input.prepayment_of_fuel")}
-              </CommonLabel>
-              <CommonSelect
-                id="miles"
-                name="miles"
-                data={miles}
-                value={data["Fuel Payment"]}
-                onChange={(e) =>
-                  setData({ ...data, "Fuel Payment": e.target.value })
-                }
-                required
-              />
-              <ErrorMessage formik={formik} name="Fuel Payment" />
-            </div>
-            <div className="mt-2 text-black flex">
-              <div>
-                <InfoSvg />
+            <div className="relative w-full mt-6  flex justify-between items-center">
+              <div className="w-[90%]">
+                <CommonLabel
+                  input="select"
+                  error={formik.errors["Fuel Payment"]}
+                >
+                  {t("input.prepayment_of_fuel")}
+                </CommonLabel>
+                <CommonSelect
+                  id="miles"
+                  name="miles"
+                  data={miles}
+                  value={data["Fuel Payment"]}
+                  onChange={(e) =>
+                    setData({ ...data, "Fuel Payment": e.target.value })
+                  }
+                  required
+                />
               </div>
-              <span className="text-sm ml-2">
-                {t("prepayment_modal.prepayment_fuel_modal_p1")}
-              </span>
+              <div
+                onClick={() =>
+                  setInfoModalText(
+                    t("prepayment_modal.prepayment_fuel_modal_p1")
+                  )
+                }
+                className="cursor-pointer"
+              >
+                <InfoSvg width={40} height={40} />
+              </div>
             </div>
+
             <div className="relative w-full mt-6 flex justify-between items-center">
               <div className="w-[90%]">
                 <CommonLabel

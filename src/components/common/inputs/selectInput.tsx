@@ -8,6 +8,7 @@ export default function CommonSelect({
   onChange,
   value = "",
   placeholder = "Select an option",
+  noneLabel,
   required,
   disabled,
 }: {
@@ -16,6 +17,7 @@ export default function CommonSelect({
   data: Array<{ label: string; value: string } | string>;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   value?: string;
+  noneLabel?: string;
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
@@ -38,14 +40,16 @@ export default function CommonSelect({
         if (typeof item === "object" && "value" in item) {
           return (
             <option key={index} value={item.value}>
-              {item.label === "None" ? t("input.none_option") : item.label}
+              {item.label === "None"
+                ? noneLabel || t("input.none_option")
+                : item.label}
             </option>
           );
         }
         // Handle the string case
         return (
           <option key={index} value={item}>
-            {item === "None" ? t("input.none_option") : item}
+            {item === "None" ? noneLabel || t("input.none_option") : item}
           </option>
         );
       })}

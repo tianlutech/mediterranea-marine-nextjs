@@ -11,19 +11,6 @@ import { MILE_RANGES } from "@/models/constants";
 import { Boat, BookingFormData } from "../../models/models";
 import CloseSvg from "@/assets/svgs/CloseSvg";
 
-// Function to calculate boat prices
-const calculateBoatPrices = (pricePerMile: number) => {
-  return MILE_RANGES.map((miles: number) => ({
-    label: miles
-      ? `${miles} ` +
-        t("input.nautical_miles") +
-        " - " +
-        `${miles * pricePerMile}€`
-      : t("input.continue_without_prepayment"),
-    value: (miles * pricePerMile).toString(),
-  }));
-};
-
 export default function PrepaymentModal({
   isOpen,
   closeModal,
@@ -51,11 +38,19 @@ export default function PrepaymentModal({
     setFormData({ ...formData, "Fuel Payment": fuelPrice });
     continuePayment();
   };
-  console.log({ fuelPrice });
+
   const calculatedMiles = useMemo(() => {
     const pricePerMile = boat.MilePrice || 0;
-    return calculateBoatPrices(pricePerMile);
-  }, [boat]);
+    return MILE_RANGES.map((miles: number) => ({
+      label: miles
+        ? `${miles} ` +
+          t("input.nautical_miles") +
+          " - " +
+          `${miles * pricePerMile}€`
+        : t("input.continue_without_prepayment"),
+      value: (miles * pricePerMile).toString(),
+    }));
+  }, [boat.MilePrice, t]);
 
   return (
     <Modal isOpen={isOpen} onClose={() => closeModal()}>

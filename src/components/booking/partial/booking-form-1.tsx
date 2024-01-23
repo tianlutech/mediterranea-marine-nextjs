@@ -66,23 +66,6 @@ export default function BookingForm1({
               <ErrorMessage formik={formik} name="Last Name" />
             </FormWrapper>
           </div>
-          <div className="relative w-full mt-6">
-            <CommonLabel input="text" error={formik.errors["ID Number"]}>
-              {t("input.id_number")}
-            </CommonLabel>
-            <CommonInput
-              type="text"
-              name="ID Number"
-              id="idnumber"
-              placeholder={t("input.id_number")}
-              value={data["ID Number"]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setData({ ...data, "ID Number": e.target.value })
-              }
-              required={true}
-            />
-            <ErrorMessage formik={formik} name="ID Number" />
-          </div>
           <div className="mt-6 flex items-baseline">
             <div className="flex items-center mb-4">
               <input
@@ -116,6 +99,24 @@ export default function BookingForm1({
               </label>
             </div>
           </div>
+          <div className="relative w-full mt-6">
+            <CommonLabel input="text" error={formik.errors["ID Number"]}>
+              {t("input.id_number")}
+            </CommonLabel>
+            <CommonInput
+              type="text"
+              name="ID Number"
+              id="idnumber"
+              placeholder={t("input.id_number")}
+              value={data["ID Number"]}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setData({ ...data, "ID Number": e.target.value })
+              }
+              required={true}
+            />
+            <ErrorMessage formik={formik} name="ID Number" />
+          </div>
+
           <>
             <CommonInputFile
               name="ID_Front_Picture"
