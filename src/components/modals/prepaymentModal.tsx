@@ -54,11 +54,8 @@ export default function PrepaymentModal({
 
   return (
     <Modal isOpen={isOpen} onClose={() => closeModal()}>
-      <div className="relative md:w-[60%] w-[95%] bg-white rounded-lg shadow overflow-y-scroll pt-0 h-sm-[95%] h-md-[30%]">
+      <div className="relative md:w-[40%] w-[95%] px-8  bg-white rounded-lg shadow overflow-y-scroll pt-0 h-sm-[95%] h-md-[30%]">
         <div className="flex items-center justify-between px-4 pt-4 md:px-4 md:pt-4 sticky top-0 bg-white">
-          <h3 className="text-xl font-semibold text-black">
-            {t("prepayment_modal.prepay_your_fuel")}
-          </h3>
           <button
             onClick={() => closeModal()}
             type="button"
@@ -68,8 +65,11 @@ export default function PrepaymentModal({
             <CloseSvg />
           </button>
         </div>
-        <div className="w-full flex md:flex-row flex-col px-8 text-justify">
-          <div className="md:w-[50%] w-full flex flex-col justify-center">
+        <h3 className="text-xl font-semibold text-black mb-4">
+          {t("prepayment_modal.prepay_your_fuel")}
+        </h3>
+        <div className="w-full flex md:flex-row flex-col text-justify">
+          <div className="w-full flex flex-col justify-center">
             <span className="text-black md:text-base text-sm">
               <p className="mb-6">
                 {t("prepayment_modal.prepayment_fuel_modal_p1")}
@@ -95,19 +95,8 @@ export default function PrepaymentModal({
               })}
             </div>
           </div>
-          <div className="md:w-[45%] w-full m-8">
-            {Boat && (
-              <Image
-                width={40}
-                height={45}
-                src={BoatImage}
-                className="h-auto w-full"
-                alt="boat"
-              />
-            )}
-          </div>
         </div>
-        <div className="flex items-center justify-between p-4 md:p-5 border-gray-200 md:w-[50%] w-full">
+        <div className="flex items-center justify-between p-4 md:p-5 border-gray-200  w-full">
           <button
             onClick={() => closeModal()}
             data-modal-hide="default-modal"
@@ -123,7 +112,7 @@ export default function PrepaymentModal({
             disabled={fuelPrice === -1}
             className="text-white bg-buttonColor2 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
-            {payment > 0 ? t("input.pay") + ` ${payment}€ ` : t("input.submit")}
+            {payment > 0 ? t("input.pay") + ` ${payment}€ ` : t("input.submit")}{" "}
           </button>
         </div>
       </div>

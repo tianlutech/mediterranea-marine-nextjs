@@ -22,7 +22,7 @@ export type IdentityValidation = {
   status: "success" | "error";
   extracted_data: [IdentityData];
   cost: number;
-  error: string;
+  error?: { message: string; type: string };
 };
 
 export type IDentityResult = {

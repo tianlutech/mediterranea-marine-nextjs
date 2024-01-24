@@ -26,7 +26,7 @@
     "i_agree_with_the_privacy_policy": "Estoy de acuerdo con la política de privacidad",
     "guarantee_label": "Garantizo que la información del usuario es de una persona que irá abordo a bordo.",
     "select_option": "Seleccione una opción",
-    "file_sizes": "JPG, PNG o PDF, tamaño de archivo no superior a 10 MB",
+    "file_sizes": "El tamaño de archivo no superior a 10 MB",
     "boat_passenger_info1": "Este barco permite un máximo de",
     "boat_passenger_info2": "Pasajeros. Necesitamos conocer esta información para preparar el chaleco salvavidas y otros equipos en consecuencia.",
     "continue_without_prepayment": "Pagar el dia posterior a la reserva",
@@ -49,8 +49,7 @@
     "port": "Puerto",
     "picture_of_the_receipt": "Imagen del recibo",
     "on_boat_payment_amount": "Cantidad pagada en el barco",
-    "payment_method": "Método de pago",
-    "select_option": "Selecciona una opción"
+    "payment_method": "Método de pago"
   },
   "prepayment_modal": {
     "prepay_your_fuel": "Prepaga tu combustible",
@@ -94,7 +93,7 @@
     "error_while_saving_data": "Ha habido un error al guardar los datos.",
     "error_eden_ia_expire_date": "Fecha de Expiración",
     "error_eden_ia_last_name": "Apellidos",
-    "error_eden_ia_given_name": "Nombre",
+    "error_eden_ia_given_names": "Nombre",
     "error_eden_ia_document_id": "Número de Identidad",
     "GMFL-424": "¡El mapa de Google no se pudo cargar!",
     "PNF-404": "¡Página no encontrada!",

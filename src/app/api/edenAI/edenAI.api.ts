@@ -22,6 +22,18 @@ export async function validateIdentity(file: File) {
       }
     );
 
+    if (!response.data["eden-ai"]) {
+      // The error come on the providers
+      const error = Object.keys(response.data)
+        .map(
+          (provider) =>
+            response.data[provider as keyof IDentityResult]?.error?.message
+        )
+        .filter((error) => !!error)
+        .join(", ");
+
+      return { error };
+    }
     return response.data["eden-ai"];
   } catch (error: any) {
     console.error(error);

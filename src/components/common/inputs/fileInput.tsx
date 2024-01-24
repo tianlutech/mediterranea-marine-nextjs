@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import React from "react";
+import { toast } from "react-toastify";
 
 export default function CommonInputFile({
   label,
@@ -13,10 +14,12 @@ export default function CommonInputFile({
   required,
   onChange,
   onRemove,
+  maxSize = 10,
 }: {
   label: string;
   name: string;
   required?: boolean;
+  maxSize?: number;
   onChange: (file: File | null) => void;
   onRemove: () => void;
 }) {
@@ -26,20 +29,29 @@ export default function CommonInputFile({
   const [photoFontSize, setPhotoFontSize] = useState<string>("");
   const [photoName, setPhotoName] = useState<string>("");
 
+  const cancelFile = () => {
+    onChange(null);
+    setPhotoPreview("");
+    setPhotoName("");
+    setPhotoFontSize("");
+  };
   const onChangeImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (!file) {
-      onChange(null);
-      setPhotoPreview("");
-      setPhotoName("");
-      setPhotoFontSize("");
-
+      cancelFile();
       return;
     }
-    const fileUrl = URL.createObjectURL(file);
     const fileSizeInBytes = file.size;
-    const fileSizeInKilobytes: any = (fileSizeInBytes / 1024).toFixed(1);
-    const fileSizeInMegabytes: any = (fileSizeInKilobytes / 1024).toFixed(1);
+    const fileSizeInKilobytes = +(fileSizeInBytes / 1024).toFixed(1);
+    const fileSizeInMegabytes = +(fileSizeInKilobytes / 1024).toFixed(1);
+
+    if (fileSizeInMegabytes >= maxSize) {
+      toast.warning(t("input.file_sizes", { size: maxSize }));
+      cancelFile();
+      return;
+    }
+
+    const fileUrl = URL.createObjectURL(file);
 
     setPhotoFontSize(
       fileSizeInMegabytes < 1
@@ -92,7 +104,9 @@ export default function CommonInputFile({
             </div>
             <div className="flex flex-col ml-4">
               <span className="text-black">{t("input.select_file")}</span>
-              <span className="greytext mt-2">{t("input.file_sizes")}</span>
+              <span className="greytext mt-2">
+                {t("input.file_sizes", { size: maxSize })}
+              </span>
             </div>
           </div>
           {photoName && (

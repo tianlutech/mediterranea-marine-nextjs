@@ -4,6 +4,9 @@ import moment from "moment";
 import { compareStrings } from "./utils";
 import i18n from "@/i18n";
 
+type CheckValidityReturn = Omit<IdentityValidation, "error"> & {
+  error: string;
+};
 const EdenAIService = () => {
   const checkIdValidity = async (file: File) => {
     try {
@@ -15,12 +18,13 @@ const EdenAIService = () => {
         body: formData,
       });
 
-      const json = (await response.json()) as IdentityValidation;
-
-      return json;
+      const json = await response.json();
+      return json as CheckValidityReturn;
     } catch (error) {
       console.error("Error retrieving data", error);
-      return { error: error as string } as IdentityValidation;
+      return {
+        error: (error as any).message as string,
+      } as CheckValidityReturn;
     }
   };
 
@@ -43,10 +47,10 @@ const EdenAIService = () => {
       return {
         error:
           i18n.t("error.error_picture_not_readable") +
-          " " +
+          ": " +
           error_fields
             .map((field) => i18n.t(`error.error_eden_ia_${field}`))
-            .join(","),
+            .join(", "),
       };
     }
     return { ok: true };
@@ -69,6 +73,7 @@ const EdenAIService = () => {
         error: result.error,
       };
     }
+
     if (!result || result.status !== "success") {
       return { error: i18n.t("error.error_validation_failed") };
     }
@@ -155,15 +160,15 @@ const EdenAIService = () => {
 
     const [data] = result.extracted_data;
 
-    if (
-      !["ID", "DRIVER LICENSE"].some((tag) =>
-        (data.document_type.value || "").includes(tag)
-      )
-    ) {
-      return {
-        error: i18n.t("error.error_document_type_not_national_id"),
-      };
-    }
+    // if (
+    //   !["ID", "DRIVER LICENSE"].some((tag) =>
+    //     (data.document_type.value || "").includes(tag)
+    //   )
+    // ) {
+    //   return {
+    //     error: i18n.t("error.error_document_type_not_national_id"),
+    //   };
+    // }
 
     // if (data.document_id.value) {
     //   if (!compareStrings(formData["ID Number"], data.document_id.value)) {
