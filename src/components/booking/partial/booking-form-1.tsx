@@ -121,6 +121,7 @@ export default function BookingForm1({
             <CommonInputFile
               name="ID_Front_Picture"
               label={t("input.ID_Front_Picture")}
+              maxSize={5}
               onRemove={() => setData({ ...data, ID_Front_Picture: {} })}
               onChange={async (file) => {
                 setData({ ...data, ID_Front_Picture: file || {} });
@@ -134,6 +135,7 @@ export default function BookingForm1({
               <CommonInputFile
                 name="ID_Back_Picture"
                 label={t("input.ID_Back_Picture")}
+                maxSize={5}
                 onRemove={() => setData({ ...data, ID_Back_Picture: {} })}
                 onChange={async (file) => {
                   setData({ ...data, ID_Back_Picture: file || {} });
