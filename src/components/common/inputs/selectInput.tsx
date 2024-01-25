@@ -23,7 +23,6 @@ export default function CommonSelect({
   disabled?: boolean;
 }) {
   const { t } = useTranslation();
-
   return (
     <select
       id={id}

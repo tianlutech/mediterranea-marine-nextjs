@@ -77,4 +77,22 @@ export const STANDUP_PADDLE = [
   },
 ];
 
+export const WHATAPP_MESSAGE_TEMPLATE = [
+  {
+    label: "Template1",
+    language: "en",
+    value: "Hello {{value_1}} there thank you for booking our yatch with plate number {{value_2}}",
+  },
+  {
+    label: "Template2",
+    language: "es",
+    value: "Hello {{value_1}} there thank you for booking our yatch",
+  },
+  {
+    label: "Template3",
+    language: "en",
+    value: "Hello there thank you for booking our yatch",
+  }
+];
+
 export const Error_Codes = ["GMFL-424", "PNF-404", "ASB-409"];
