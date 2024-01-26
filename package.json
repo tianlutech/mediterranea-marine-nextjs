@@ -20,6 +20,7 @@
     "@notionhq/client": "^2.2.13",
     "@react-google-maps/api": "^2.19.2",
     "axios": "^1.6.2",
+    "csv": "^6.3.6",
     "dotenv": "^16.3.1",
     "formik": "^2.4.5",
     "fs": "^0.0.1-security",

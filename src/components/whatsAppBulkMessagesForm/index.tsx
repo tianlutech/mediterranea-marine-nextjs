@@ -9,16 +9,7 @@ import SubmitButton from "../common/containers/submit-button";
 import { useState } from "react";
 import CommonSelect from "@/components/common/inputs/selectInput";
 import { WHATAPP_MESSAGE_TEMPLATE } from "@/models/constants";
-import SelectBoat from "../selectBoat/selectBoat";
-import SelectCaptain from "../selectCaptain/selectCaptain";
-import LoadingModal from "../modals/loadingModal";
-import { useFormik } from "formik";
-import { uploadReceiptImage } from "@/services/googleDrive.service";
-import { toast } from "react-toastify";
-import moment from "moment";
-import { createFuelRecord } from "../../services/notion.service";
-import { Fuel } from "../../models/models";
-import { useRouter, useSearchParams } from "next/navigation";
+import { sendBulkWhatsAppMessage } from "@/services/whatsApp.service";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -28,24 +19,25 @@ const FormWrapper = ({ children }: { children: React.ReactNode }) => {
 
 export default function WhatsAppBulkMessagesForm() {
   const { t } = useTranslation();
-  const searchParams = useSearchParams();
+  const [dynamicInputs, setDynamicInputs] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedMessage, setSelectedMessage] = useState<any>({})
   const [messageVariables, setMessageVariables] = useState<string[]>([])
-  const [data, setData] = useState({
-    Date: moment().format("YYYY-MM-DD"),
-    Boat: "",
-    "Amount Paid": "",
-    Captain: searchParams.get("captainId") || "",
-    Port: "",
-    "Picture of the Receipt": {} as File,
-  });
-  const formik = useFormik({
-    initialValues: data,
-    onSubmit: () => {
-      console.log(">>>>>>>submittingForm")
-    },
-  });
+  const [file, setFile] = useState<any>()
+
+  const onSubmit = async () => {
+    setLoading(true)
+    const filledMessage = messageVariables.reduce(
+      (acc, variable) =>
+        acc.replace(`{{${variable}}}`, dynamicInputs[variable] || ""),
+      selectedMessage
+    );
+
+    const res = await sendBulkWhatsAppMessage(file, filledMessage)
+    console.log(">>>>>>res", res)
+
+    setLoading(false)
+  };
 
   const downloadCsv = () => {
     // Read the content of the CSV file
@@ -93,24 +85,31 @@ export default function WhatsAppBulkMessagesForm() {
     setMessageVariables(messageVariables)
   }
 
+  const handleDynamicInputChange = (variable: string, value: string) => {
+    setDynamicInputs((prevInputs) => ({
+      ...prevInputs,
+      [variable]: value,
+    }));
+  };
+
   return (
     <div className="flex md:w-[60%] w-full  justify-center items-center md:p-6 p-2">
       <div className="bg-white md:w-[70%] w-full rounded-lg">
         <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm">
           {t("title.whatsapp_form")}
         </p>
-        <form onSubmit={formik.handleSubmit}>
+        <form>
           <div className="md:p-6 sm:p-8 p-6">
             <>
               <CommonCsvInputFile
                 name="csv_file"
                 label={t("input.upload_csv")}
                 onRemove={() =>
-                  setData({ ...data, "Picture of the Receipt": {} as File })
+                  setFile(null)
                 }
                 // @abel this type here when I put type File it doesn't work
-                onChange={(file: any) =>
-                  setData({ ...data, "Picture of the Receipt": file })
+                onChange={(file: File | null) =>
+                  setFile(file)
                 }
                 required
               />
@@ -142,6 +141,8 @@ export default function WhatsAppBulkMessagesForm() {
                         type="text"
                         name={variable}
                         id={variable}
+                        value={dynamicInputs[variable]}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleDynamicInputChange(variable, e.target.value)}
                         placeholder={`{{${variable}}}`}
                         required
                       />
@@ -149,7 +150,8 @@ export default function WhatsAppBulkMessagesForm() {
                   </div>
                 ))}
             </div>
-            <SubmitButton label="Send" loading={loading} />
+            <SubmitButton label="Send" loading={loading} onClick={() => onSubmit()}
+            />
           </div>
         </form>
       </div>

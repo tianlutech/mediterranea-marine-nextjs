@@ -1,0 +1,29 @@
+import * as whatsapp from "./sendBulkWhatsAppMessages";
+
+export async function POST(request: Request) {
+  try {
+    // Parse the incoming request to get the FormData
+    const data = await request.formData();
+    // Get the file from the FormData
+
+    const body: any = {
+      file: data.get("file") as File,
+      message: data.get("message") as string,
+    };
+
+    const response = await whatsapp.sendWhatsAppBulkMessage(body);
+
+    // Make sure to create a new Response object instead of modifying the original one
+    const jsonResponse = new Response(JSON.stringify(response), { status: 200 });
+
+    return jsonResponse;
+  } catch (error) {
+    // TODO: Not valid address shall not fire an exception but be handled in the if
+    console.error("Message not sent", error);
+
+    // Again, create a new Response object instead of modifying the original one
+    const errorResponse = new Response(JSON.stringify(error), { status: 500 });
+
+    return errorResponse;
+  }
+}
