@@ -17,7 +17,6 @@ export async function sendWhatsAppBulkMessage(body: any) {
     return new Promise((resolve, reject) => {
       stream
         .on("data", (col) => {
-          console.log(">>>>>>>>", col)
           // Assuming the CSV has columns named "name" and "telephone"
           const { Name, Telephone } = col;
           rows.push({ Name, Telephone });
