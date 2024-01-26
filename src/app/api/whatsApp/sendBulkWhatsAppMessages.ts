@@ -1,24 +1,26 @@
-import fs from "fs";
 import csvParser from "csv-parser";
-import path from "path";
 import { Readable } from "stream";
+import axios from "axios";
+
+const WHATAPP_URL = "https://graph.facebook.com/v18.0"
 
 export async function sendWhatsAppBulkMessage(body: any) {
   const buffer = Buffer.from(await body.file.arrayBuffer());
 
-  const readCSV = async (filename: string): Promise<{ name: string; telephone: string }[]> => {
-    const rows: { name: string; telephone: string }[] = [];
+  const readCSV = async (buffer: Buffer): Promise<{ name: string; telephone: string }[]> => {
+    const rows: { Name: string; Telephone: string }[] = [];
 
-    // Use fs.promises to read the file asynchronously
-    const stream = fs.createReadStream(filename).pipe(csvParser({ delimiter: ";" }));
+    // Create a Readable stream from the buffer
+    const stream = Readable.from(buffer).pipe(csvParser({ delimiter: ";" }));
 
     // Return a promise to handle the asynchronous file reading
     return new Promise((resolve, reject) => {
       stream
-        .on("data", (row: any) => {
+        .on("data", (col) => {
+          console.log(">>>>>>>>", col)
           // Assuming the CSV has columns named "name" and "telephone"
-          const { name, telephone } = row;
-          rows.push({ name, telephone });
+          const { Name, Telephone } = col;
+          rows.push({ Name, Telephone });
         })
         .on("end", () => {
           resolve(rows);
@@ -30,10 +32,8 @@ export async function sendWhatsAppBulkMessage(body: any) {
   };
 
   try {
-    console.log(">>>>>>>>file", Readable.from(buffer))
-    const filename = body.file.path; // Assuming "body.file" contains information about the uploaded file
-    const data = await readCSV(filename);
-    
+    const data = await readCSV(buffer);
+
     console.log("CSV Data:", data);
 
     // Continue with processing the data as needed

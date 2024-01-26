@@ -24,7 +24,7 @@ export default function WhatsAppBulkMessagesForm() {
   const [selectedMessage, setSelectedMessage] = useState<any>({})
   const [messageVariables, setMessageVariables] = useState<string[]>([])
   const [file, setFile] = useState<any>()
-  const [message, setMessage] = useState<string>()
+  const [message, setMessage] = useState<string>("")
   const onSubmit = async () => {
     setLoading(true)
     const filledMessage = messageVariables.reduce(
@@ -94,7 +94,7 @@ export default function WhatsAppBulkMessagesForm() {
 
   return (
     <>
-      <SendingWhatsAppModal isOpen={loading} message="here is the message being sent" />
+      <SendingWhatsAppModal isOpen={loading} message={message} />
       <div className="flex md:w-[60%] w-full  justify-center items-center md:p-6 p-2">
         <div className="bg-white md:w-[70%] w-full rounded-lg">
           <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm">
