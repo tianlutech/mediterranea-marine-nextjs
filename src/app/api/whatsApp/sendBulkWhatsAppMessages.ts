@@ -1,25 +1,46 @@
-import axios from "axios"
-const googleApiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+import fs from "fs";
+import csvParser from "csv-parser";
+import path from "path";
+import { Readable } from "stream";
 
 export async function sendWhatsAppBulkMessage(body: any) {
-    console.log(">>>>>>>data", body)
-//   const apiUrl = "https://graph.facebook.com/v18.0/178392938699880/messages"
+  const buffer = Buffer.from(await body.file.arrayBuffer());
 
-//   const response = await axios.get(apiUrl);
+  const readCSV = async (filename: string): Promise<{ name: string; telephone: string }[]> => {
+    const rows: { name: string; telephone: string }[] = [];
 
-//   if (response.data.error_message) {
-//     return response.data.error_message;
-//   }
-//   const dataResponse = response.data.results[0].address_components;
-  
-//   // not sure about the component type
-//   const zipCodeComponent = dataResponse.find((component: any) =>
-//     component.types.includes("postal_code")
-//   );
-//   const zipcode = zipCodeComponent ? zipCodeComponent.long_name : "N/A";
+    // Use fs.promises to read the file asynchronously
+    const stream = fs.createReadStream(filename).pipe(csvParser({ delimiter: ";" }));
 
-//   if (zipcode === "N/A") {
-//     return false
-//   }
-  return true;
+    // Return a promise to handle the asynchronous file reading
+    return new Promise((resolve, reject) => {
+      stream
+        .on("data", (row: any) => {
+          // Assuming the CSV has columns named "name" and "telephone"
+          const { name, telephone } = row;
+          rows.push({ name, telephone });
+        })
+        .on("end", () => {
+          resolve(rows);
+        })
+        .on("error", (error) => {
+          reject(error);
+        });
+    });
+  };
+
+  try {
+    console.log(">>>>>>>>file", Readable.from(buffer))
+    const filename = body.file.path; // Assuming "body.file" contains information about the uploaded file
+    const data = await readCSV(filename);
+    
+    console.log("CSV Data:", data);
+
+    // Continue with processing the data as needed
+
+    return true;
+  } catch (error) {
+    console.error("Error reading CSV file:", error);
+    return false;
+  }
 }

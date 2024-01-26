@@ -10,7 +10,7 @@ import { useState } from "react";
 import CommonSelect from "@/components/common/inputs/selectInput";
 import { WHATAPP_MESSAGE_TEMPLATE } from "@/models/constants";
 import { sendBulkWhatsAppMessage } from "@/services/whatsApp.service";
-
+import SendingWhatsAppModal from "../modals/sendingWhatsAppModal";
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="relative w-full mb-6 md:mb-0">{children}</div>
@@ -24,7 +24,7 @@ export default function WhatsAppBulkMessagesForm() {
   const [selectedMessage, setSelectedMessage] = useState<any>({})
   const [messageVariables, setMessageVariables] = useState<string[]>([])
   const [file, setFile] = useState<any>()
-
+  const [message, setMessage] = useState<string>()
   const onSubmit = async () => {
     setLoading(true)
     const filledMessage = messageVariables.reduce(
@@ -32,7 +32,7 @@ export default function WhatsAppBulkMessagesForm() {
         acc.replace(`{{${variable}}}`, dynamicInputs[variable] || ""),
       selectedMessage
     );
-
+    setMessage(filledMessage)
     const res = await sendBulkWhatsAppMessage(file, filledMessage)
     console.log(">>>>>>res", res)
 
@@ -93,68 +93,72 @@ export default function WhatsAppBulkMessagesForm() {
   };
 
   return (
-    <div className="flex md:w-[60%] w-full  justify-center items-center md:p-6 p-2">
-      <div className="bg-white md:w-[70%] w-full rounded-lg">
-        <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm">
-          {t("title.whatsapp_form")}
-        </p>
-        <form>
-          <div className="md:p-6 sm:p-8 p-6">
-            <>
-              <CommonCsvInputFile
-                name="csv_file"
-                label={t("input.upload_csv")}
-                onRemove={() =>
-                  setFile(null)
-                }
-                // @abel this type here when I put type File it doesn't work
-                onChange={(file: File | null) =>
-                  setFile(file)
-                }
-                required
-              />
-            </>
-            <div className="flex justify-between w-full md:mt-1 mt-0">
-              <span onClick={() => downloadCsv()} className="text-base cursor-pointer ml-2 text-blue-500 underline">
-                {t("input.csv_example")}
-              </span>
-            </div>
-            <div className="w-full mt-6 relative">
-              <FormWrapper>
-                <CommonLabel input="text">{t("input.template")}</CommonLabel>
-                <CommonSelect
-                  id="template"
-                  name="template"
-                  data={WHATAPP_MESSAGE_TEMPLATE}
-                  value={selectedMessage}
-                  onChange={(e) => getMessage(e.target.value)}
+    <>
+      <SendingWhatsAppModal isOpen={loading} message="here is the message being sent" />
+      <div className="flex md:w-[60%] w-full  justify-center items-center md:p-6 p-2">
+        <div className="bg-white md:w-[70%] w-full rounded-lg">
+          <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm">
+            {t("title.whatsapp_form")}
+          </p>
+          <form>
+            <div className="md:p-6 sm:p-8 p-6">
+              <>
+                <CommonCsvInputFile
+                  name="csv_file"
+                  label={t("input.upload_csv")}
+                  onRemove={() =>
+                    setFile(null)
+                  }
+                  // @abel this type here when I put type File it doesn't work
+                  onChange={(file: File | null) =>
+                    setFile(file)
+                  }
                   required
                 />
-              </FormWrapper>
+              </>
+              <div className="flex justify-between w-full md:mt-1 mt-0">
+                <span onClick={() => downloadCsv()} className="text-base cursor-pointer ml-2 text-blue-500 underline">
+                  {t("input.csv_example")}
+                </span>
+              </div>
+              <div className="w-full mt-6 relative">
+                <FormWrapper>
+                  <CommonLabel input="text">{t("input.template")}</CommonLabel>
+                  <CommonSelect
+                    id="template"
+                    name="template"
+                    data={WHATAPP_MESSAGE_TEMPLATE}
+                    value={selectedMessage}
+                    onChange={(e) => getMessage(e.target.value)}
+                    required
+                  />
+                </FormWrapper>
+              </div>
+              <div className="w-full mt-3 relative">
+                {messageVariables.length > 0 &&
+                  messageVariables.map((variable, index) => (
+                    <div key={index} className="mt-2">
+                      <FormWrapper>
+                        <CommonInput
+                          type="text"
+                          name={variable}
+                          id={variable}
+                          value={dynamicInputs[variable]}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleDynamicInputChange(variable, e.target.value)}
+                          placeholder={`{{${variable}}}`}
+                          required
+                        />
+                      </FormWrapper>
+                    </div>
+                  ))}
+              </div>
+              <SubmitButton label="Send" loading={loading} onClick={() => onSubmit()}
+              />
             </div>
-            <div className="w-full mt-3 relative">
-              {messageVariables.length > 0 &&
-                messageVariables.map((variable, index) => (
-                  <div key={index} className="mt-2">
-                    <FormWrapper>
-                      <CommonInput
-                        type="text"
-                        name={variable}
-                        id={variable}
-                        value={dynamicInputs[variable]}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleDynamicInputChange(variable, e.target.value)}
-                        placeholder={`{{${variable}}}`}
-                        required
-                      />
-                    </FormWrapper>
-                  </div>
-                ))}
-            </div>
-            <SubmitButton label="Send" loading={loading} onClick={() => onSubmit()}
-            />
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
+
   );
 }

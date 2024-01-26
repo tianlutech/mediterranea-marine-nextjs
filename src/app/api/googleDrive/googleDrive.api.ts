@@ -1,6 +1,5 @@
 import { google } from "googleapis";
 import moment from "moment";
-import fs from "fs";
 import { Readable } from "stream";
 import { FileBody } from "@/models/models";
 import { FileMetadata } from "@/models/models";
