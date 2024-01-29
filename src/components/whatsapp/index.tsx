@@ -271,7 +271,7 @@ export default function WhatsAppBulkMessagesForm({
                                   setData((data) => ({
                                     ...data,
                                     default: {
-                                      ...data.fields,
+                                      ...data.default,
                                       [variable]: e.target.value,
                                     },
                                   }))
