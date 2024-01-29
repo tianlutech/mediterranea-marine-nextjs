@@ -18,7 +18,6 @@ const whatappCall = (
     },
   };
 
-  console.log({ config });
   return axios(config);
 };
 

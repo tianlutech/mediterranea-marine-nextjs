@@ -1,4 +1,4 @@
-import * as whatsapp from "./sendBulkWhatsAppMessages";
+import * as whatsapp from "./whatsapp.api";
 
 export async function POST(request: Request) {
   try {
