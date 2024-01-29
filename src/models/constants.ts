@@ -7,6 +7,7 @@ export const NOTION_DATABASES = {
 };
 
 export const WHATSAPP_APPLICATION_ID = "157321974140617";
+export const WHATSAPP_PHONE_ID = "158038010736924";
 export const MILE_RANGES = [0, 25, 35]; // Example mile ranges
 
 export const DEPARTURES_TIMES = [

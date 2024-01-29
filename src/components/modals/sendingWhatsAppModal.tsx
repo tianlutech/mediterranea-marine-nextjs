@@ -1,46 +1,51 @@
 import Modal from "@/components/common/containers/modal";
 import React, { useEffect, useState } from "react";
 import * as whatsApp from "@/services/whatsApp.service";
+import { WhatsappTemplate } from "@/models/whatsapp";
 
 export default function SendingWhatsAppModal({
   isOpen,
   message,
-  contacts,
   data,
+  template,
+  parameters,
+  closeModal,
 }: {
   isOpen: boolean;
   message: string;
-  contacts: Record<string, string>[];
-  data: { to: string; fields: string[]; default: string[] };
-  template: { name: string; language: string; parameters: string[] };
+  data: any;
+  template: WhatsappTemplate;
+  parameters: any,
+  closeModal: () => void;
 }) {
   const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
     const simulateLoading = async () => {
-      const totalContacts = contacts.length;
+      const totalContacts = data.contacts.length;
 
-      for (const i in contacts) {
-        const contact = contacts[i];
+
+      for (const i in data.contacts) {
+        const contact = data.contacts[i];
         // Simulate some asynchronous task
         await new Promise((resolve) => setTimeout(resolve, 50));
-
         // Update the progress
         setProgress(((+i + 1) / totalContacts) * 100);
         whatsApp.sendMessage(contact[data.to], {
           name: template.name,
           language: template.language,
-          parameters: template.parameters.map((variable) => {
+          parameters: parameters.map((variable: string) => {
             return contact[data.fields[variable]] || data.default[variable];
           }),
         });
       }
+      closeModal()
     };
 
     if (isOpen) {
       simulateLoading();
     }
-  }, [isOpen, contacts]);
+  }, [data, isOpen, template]);
 
   return (
     <Modal isOpen={isOpen}>

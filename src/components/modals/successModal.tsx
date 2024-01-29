@@ -5,10 +5,8 @@ import Modal from "@/components/common/containers/modal";
 
 export default function SuccessModal({
   isOpen,
-  closeModal,
 }: {
   isOpen: boolean;
-  closeModal: any;
 }) {
   return (
     <Modal isOpen={isOpen}>

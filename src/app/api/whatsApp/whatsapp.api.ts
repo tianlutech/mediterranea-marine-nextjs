@@ -1,15 +1,16 @@
-import { WHATSAPP_APPLICATION_ID } from "@/models/constants";
+import { WHATSAPP_APPLICATION_ID, WHATSAPP_PHONE_ID } from "@/models/constants";
 import axios from "axios";
 
 const WHATAPP_URL = "https://graph.facebook.com/v19.0";
 
 const whatappCall = (
   uri: string,
-  method: string = "GET",
-  body?: Record<string, unknown>
+  method: string,
+  ID: string,
+  body?: Record<string, unknown>,
 ) => {
   const config = {
-    url: `${WHATAPP_URL}/${WHATSAPP_APPLICATION_ID}/` + uri,
+    url: `${WHATAPP_URL}/${ID}/` + uri,
     method,
     data: !!body ? JSON.stringify(body) : undefined,
     headers: {
@@ -17,11 +18,10 @@ const whatappCall = (
       Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
     },
   };
-
   return axios(config);
 };
 
-export async function sendWhatsAppBulkMessage({
+export async function sendMessage({
   to,
   template,
 }: {
@@ -34,6 +34,7 @@ export async function sendWhatsAppBulkMessage({
 }) {
   const body = {
     messaging_product: "whatsapp",
+    to,
     type: "template",
     template: {
       name: template.name,
@@ -51,7 +52,7 @@ export async function sendWhatsAppBulkMessage({
   };
 
   try {
-    await whatappCall("messages", "POST", body);
+    await whatappCall("messages", "POST", WHATSAPP_PHONE_ID, body);
     return true;
   } catch (error) {
     console.error("Error reading CSV file:", error);
@@ -73,7 +74,7 @@ export async function getTemplates(
     const fields = ["id", "components", "language", "name"];
 
     const response = await whatappCall(
-      `message_templates?fields=${fields}&category=MARKETING&limit=${limit}`
+      `message_templates?fields=${fields}&category=MARKETING&limit=${limit}`, "GET", WHATSAPP_APPLICATION_ID
     );
 
     return response.data;

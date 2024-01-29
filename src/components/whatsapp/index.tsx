@@ -27,10 +27,15 @@ export default function WhatsAppBulkMessagesForm({
   renderMessage: (message: string) => void;
 }) {
   const { t } = useTranslation();
-  const phoneNumbers = Array.from({ length: 200 }, (_, index) => `+1${Math.floor(Math.random() * 1000000000)}`);
   const [loading, setLoading] = useState<boolean>(false);
   const [templates, setTemplates] = useState<WhatsappTemplate[]>([]);
-  const [templateSelected, setTemplate] = useState<string>("");
+  const [templateSelected, setTemplate] = useState<WhatsappTemplate>({
+    category: "",
+    id: "",
+    name: "",
+    language: "",
+    components: []
+  });
   const [inputs, setInputs] = useState<string[]>([]);
   const [message, setMessage] = useState<string>("");
   const [data, setData] = useState({
@@ -66,7 +71,7 @@ export default function WhatsAppBulkMessagesForm({
         acc.replace(
           `{{${variable}}}`,
           data.default[variable] ||
-            `<span style='color: #999999'>{{${variable}}}</span>`
+          `<span style='color: #999999'>{{${variable}}}</span>`
         ),
       message.replaceAll("\n", "</br>")
     );
@@ -137,9 +142,11 @@ export default function WhatsAppBulkMessagesForm({
   };
 
   const selectTemplate = (value: string) => {
-    const template = templates.find((template) => template.id === value);
+    const template: WhatsappTemplate | undefined = templates.find((template) => template.id === value);
+    console.log(">>>>>>template", template)
+
     setData((data) => ({ ...data, to: "", fields: {}, default: {} }));
-    setTemplate(value);
+    setTemplate(template);
     if (!template) {
       setInputs([]);
       setMessage("");
@@ -162,9 +169,13 @@ export default function WhatsAppBulkMessagesForm({
     },
   });
 
+  const closeModal = () => {
+    setLoading(false)
+  }
+
   return (
     <>
-      <SendingWhatsAppModal isOpen={loading} message={""} contacts={phoneNumbers} />
+      <SendingWhatsAppModal parameters={inputs} isOpen={loading} message={""} data={data} template={templateSelected} closeModal={closeModal} />
       <div className="flex md:w-[70%] w-full  justify-center items-center md:p-6 p-2">
         <div className="bg-white md:w-[70%] w-full rounded-lg">
           <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm">
@@ -205,7 +216,7 @@ export default function WhatsAppBulkMessagesForm({
                           label: template.name,
                           value: template.id,
                         }))}
-                        value={templateSelected}
+                        value={templateSelected?.id || ""}
                         onChange={(e) => selectTemplate(e.target.value)}
                         required
                       />

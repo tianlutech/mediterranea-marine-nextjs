@@ -3,7 +3,7 @@ import * as whatsapp from "./whatsapp.api";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const response = await whatsapp.sendWhatsAppBulkMessage(body);
+    const response = await whatsapp.sendMessage(body);
 
     // Make sure to create a new Response object instead of modifying the original one
     const jsonResponse = new Response(JSON.stringify(response), {
