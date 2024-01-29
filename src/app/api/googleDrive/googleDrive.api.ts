@@ -2,7 +2,6 @@ import { google } from "googleapis";
 import moment from "moment";
 import { Readable } from "stream";
 import { FileBody } from "@/models/models";
-import { FileMetadata } from "@/models/models";
 import path from "path";
 
 export const uploadFile = async (auth: any, file: File, body: FileBody) => {
