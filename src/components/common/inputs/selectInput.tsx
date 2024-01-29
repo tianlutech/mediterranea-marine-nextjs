@@ -31,7 +31,7 @@ export default function CommonSelect({
       value={value}
       onChange={onChange}
       required={required}
-      className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+      className="border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 h-[45px]"
     >
       {placeholder && <option value="">{t("input.select_option")}</option>}
       {data.map((item, index) => {

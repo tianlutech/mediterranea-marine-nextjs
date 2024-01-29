@@ -52,7 +52,9 @@
     "payment_method": "Payment Method",
     "upload_csv": "Upload CSV",
     "csv_example": "CSV Example",
-    "template":"Template"
+    "template": "Template",
+    "to": "To",
+    "default_value": "Default value"
   },
   "prepayment_modal": {
     "prepay_your_fuel": "Prepay your fuel",
