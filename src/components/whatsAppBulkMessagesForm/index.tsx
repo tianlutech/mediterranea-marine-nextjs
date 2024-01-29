@@ -30,7 +30,8 @@ export default function WhatsAppBulkMessagesForm() {
   const [template, setTemplates] = useState<WhatsappTemplate[]>([]);
 
   const [data, setData] = useState({
-    file: null as File | null,
+    contacts: [] as Array<Record<string, unknown>>,
+    csvColumns: [] as string[],
     message: "",
   });
   useEffect(() => {
