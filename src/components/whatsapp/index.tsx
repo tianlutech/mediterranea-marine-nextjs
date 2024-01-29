@@ -11,9 +11,11 @@ import CommonSelect from "@/components/common/inputs/selectInput";
 import * as whatsApp from "@/services/whatsApp.service";
 import SendingWhatsAppModal from "../modals/sendingWhatsAppModal";
 import { WhatsappTemplate } from "@/models/whatsapp";
-import { setIn, useFormik } from "formik";
-import { Readable } from "stream";
+import { useFormik } from "formik";
 import Papa from "papaparse";
+import SimpleButton from "../common/containers/simple-button";
+
+const PRICE = 0.0509; // At 2024-01-29
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-full mb-6 md:mb-0">{children}</div>;
@@ -63,7 +65,8 @@ export default function WhatsAppBulkMessagesForm({
       (acc, variable) =>
         acc.replace(
           `{{${variable}}}`,
-          data.default[variable] || `{{${variable}}}`
+          data.default[variable] ||
+            `<span style='color: #999999'>{{${variable}}}</span>`
         ),
       message.replaceAll("\n", "</br>")
     );
@@ -195,17 +198,28 @@ export default function WhatsAppBulkMessagesForm({
                     <CommonLabel input="text">
                       {t("input.template")}
                     </CommonLabel>
-                    <CommonSelect
-                      id="template"
-                      name="template"
-                      data={templates.map((template) => ({
-                        label: template.name,
-                        value: template.id,
-                      }))}
-                      value={templateSelected}
-                      onChange={(e) => selectTemplate(e.target.value)}
-                      required
-                    />
+                    <div className="flex gap-4">
+                      <CommonSelect
+                        id="template"
+                        name="template"
+                        data={templates.map((template) => ({
+                          label: template.name,
+                          value: template.id,
+                        }))}
+                        value={templateSelected}
+                        onChange={(e) => selectTemplate(e.target.value)}
+                        required
+                      />
+                      <SimpleButton
+                        label="Manage"
+                        onClick={() =>
+                          window.open(
+                            "   https://business.facebook.com/wa/manage/message-templates/?business_id=2330989420463473&waba_id=157321974140617&filters=%7B%22search_text%22%3A%22%22%2C%22tag%22%3A[]%2C%22language%22%3A[]%2C%22status%22%3A[%22APPROVED%22%2C%22IN_APPEAL%22%2C%22PAUSED%22%2C%22PENDING%22%2C%22REJECTED%22]%2C%22quality%22%3A[]%2C%22date_range%22%3A30%2C%22sort_direction%22%3A%22descending%22%2C%22sort_key%22%3A%22lastUpdatedTime%22%7D",
+                            "__blank"
+                          )
+                        }
+                      />
+                    </div>
                   </FormWrapper>
                 </div>
               )}
@@ -283,7 +297,28 @@ export default function WhatsAppBulkMessagesForm({
                   </div>
                 </div>
               )}
-              <SubmitButton label="Send" type="submit" loading={loading} />
+              <div className="flex flex-col">
+                <SubmitButton
+                  label={
+                    "Send (Cost: ~" +
+                    (data.contacts.length * PRICE).toFixed(2) +
+                    "€)"
+                  }
+                  type="submit"
+                  loading={loading}
+                />
+                <a
+                  className="text-blue-400 underline"
+                  onClick={() =>
+                    window.open(
+                      "https://scontent.flba3-2.fna.fbcdn.net/v/t39.8562-6/398220152_1524886938273869_1924028791440919138_n.csv?_nc_cat=106&ccb=1-7&_nc_sid=b8d81d&_nc_ohc=dFY5MRY8Iu4AX9nVqUU&_nc_ht=scontent.flba3-2.fna&oh=00_AfCGUd_tDtVmrT1K-H1ZFWK4iBEl45v2fkXWZ5M4LYQHJQ&oe=65BBECD6",
+                      "__blank"
+                    )
+                  }
+                >
+                  Get latest prices
+                </a>
+              </div>
             </div>
           </form>
         </div>
