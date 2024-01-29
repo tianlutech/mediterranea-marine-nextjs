@@ -11,6 +11,10 @@ import CommonSelect from "@/components/common/inputs/selectInput";
 import * as whatsApp from "@/services/whatsApp.service";
 import SendingWhatsAppModal from "../modals/sendingWhatsAppModal";
 import { WhatsappTemplate } from "@/models/whatsapp";
+import { useFormik } from "formik";
+import { Readable } from "stream";
+import Papa from "papaparse";
+
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-full mb-6 md:mb-0">{children}</div>;
 };
@@ -24,9 +28,11 @@ export default function WhatsAppBulkMessagesForm() {
   const [selectedMessage, setSelectedMessage] = useState<any>({});
   const [messageVariables, setMessageVariables] = useState<string[]>([]);
   const [template, setTemplates] = useState<WhatsappTemplate[]>([]);
-  const [file, setFile] = useState<any>();
-  const [message, setMessage] = useState<string>("");
 
+  const [data, setData] = useState({
+    file: null as File | null,
+    message: "",
+  });
   useEffect(() => {
     whatsApp.getMessagesTemplates().then((data) => {
       setTemplates(data);
@@ -39,8 +45,9 @@ export default function WhatsAppBulkMessagesForm() {
         acc.replace(`{{${variable}}}`, dynamicInputs[variable] || ""),
       selectedMessage
     );
-    setMessage(filledMessage);
-    const res = await whatsApp.sendBulkWhatsAppMessage(file, filledMessage);
+
+    setData({ ...data, message: filledMessage });
+    const res = await whatsApp.sendMessage();
     console.log(">>>>>>res", res);
 
     setLoading(false);
@@ -86,6 +93,16 @@ export default function WhatsAppBulkMessagesForm() {
     return matches;
   };
 
+  const readCSV = async (file: File) => {
+    const reader = new FileReader();
+
+    reader.onloadend = ({ target }) => {
+      const csv = Papa.parse(target?.result, { header: true });
+      console.log({ csv });
+    };
+    reader.readAsText(file);
+  };
+
   const getMessage = (value: string) => {
     setSelectedMessage(value);
     const messageVariables = extractPlaceholderVariables(value);
@@ -99,23 +116,33 @@ export default function WhatsAppBulkMessagesForm() {
     }));
   };
 
+  const formik = useFormik({
+    initialValues: data,
+    onSubmit: () => {
+      onSubmit();
+    },
+  });
+
   return (
     <>
-      <SendingWhatsAppModal isOpen={loading} message={message} />
+      <SendingWhatsAppModal isOpen={loading} message={data.message} />
       <div className="flex md:w-[60%] w-full  justify-center items-center md:p-6 p-2">
         <div className="bg-white md:w-[70%] w-full rounded-lg">
           <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm">
             {t("title.whatsapp_form")}
           </p>
-          <form>
+          <form onSubmit={formik.handleSubmit}>
             <div className="md:p-6 sm:p-8 p-6">
               <>
                 <CommonCsvInputFile
                   name="csv_file"
                   label={t("input.upload_csv")}
-                  onRemove={() => setFile(null)}
+                  onRemove={() => setData({ ...data, file: {} as File })}
                   // @abel this type here when I put type File it doesn't work
-                  onChange={(file: File | null) => setFile(file)}
+                  onChange={(file) => {
+                    readCSV(file);
+                    setData({ ...data, file });
+                  }}
                   required
                 />
               </>
@@ -163,11 +190,7 @@ export default function WhatsAppBulkMessagesForm() {
                     </div>
                   ))}
               </div>
-              <SubmitButton
-                label="Send"
-                loading={loading}
-                onClick={() => onSubmit()}
-              />
+              <SubmitButton label="Send" type="submit" loading={loading} />
             </div>
           </form>
         </div>
