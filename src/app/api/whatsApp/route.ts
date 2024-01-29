@@ -2,15 +2,7 @@ import * as whatsapp from "./sendBulkWhatsAppMessages";
 
 export async function POST(request: Request) {
   try {
-    // Parse the incoming request to get the FormData
-    const data = await request.formData();
-    // Get the file from the FormData
-
-    const body: any = {
-      file: data.get("file") as File,
-      message: data.get("message") as string,
-    };
-
+    const body = await request.json();
     const response = await whatsapp.sendWhatsAppBulkMessage(body);
 
     // Make sure to create a new Response object instead of modifying the original one
