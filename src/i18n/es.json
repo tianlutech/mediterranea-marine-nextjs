@@ -53,7 +53,9 @@
     "payment_method": "Método de pago",
     "upload_csv": "Subir archivo csv",
     "csv_example": "Ejemplo CSV",
-    "template":"Plantilla"
+    "template": "Plantilla",
+    "to": "Para",
+    "default_value": "Valor por defector"
   },
   "prepayment_modal": {
     "prepay_your_fuel": "Prepaga tu combustible",

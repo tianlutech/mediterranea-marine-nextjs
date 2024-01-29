@@ -67,15 +67,17 @@ export default function Sidebar({ image, children, title }: SidebarProps) {
         </div>
         {children}
       </div>
-      <div className="w-full absolute bottom-0 md:block hidden">
-        <Image
-          width={60}
-          height={45}
-          src={image || BoatImage}
-          className="h-auto w-full"
-          alt="boat"
-        />
-      </div>
+      {image && (
+        <div className="w-full absolute bottom-0 md:block hidden">
+          <Image
+            width={60}
+            height={45}
+            src={image}
+            className="h-auto w-full"
+            alt="boat"
+          />
+        </div>
+      )}
     </div>
   );
 }
