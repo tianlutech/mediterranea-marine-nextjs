@@ -104,7 +104,8 @@
     "error_eden_ia_document_id": "Número de Identidad",
     "GMFL-424": "¡El mapa de Google no se pudo cargar!",
     "PNF-404": "¡Página no encontrada!",
-    "ASB-409": "¡Ya enviaste tu reserva!"
+    "ASB-409": "¡Ya enviaste tu reserva!",
+    "maximum_number_250": "El límite máximo para enviar mensajes a la vez es de 250 clientes."
   },
   "title": {
     "feed_back_form": "Feedback del Viaje",

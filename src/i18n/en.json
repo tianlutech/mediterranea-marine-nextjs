@@ -102,7 +102,8 @@
     "error_eden_ia_document_id": "Document Id",
     "GMFL-424": "Google map failed to load!",
     "PNF-404": "Page not found!",
-    "ASB-409": "This booking is already submitted."
+    "ASB-409": "This booking is already submitted.",
+    "maximum_number_250": "The maximum limit for sending messages at once is 250 customers."
   },
   "title": {
     "feed_back_form": "Treatment Received Feedback Form",

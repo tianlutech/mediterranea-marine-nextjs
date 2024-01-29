@@ -14,6 +14,7 @@ import { WhatsappTemplate } from "@/models/whatsapp";
 import { useFormik } from "formik";
 import Papa from "papaparse";
 import SimpleButton from "../common/containers/simple-button";
+import { toast } from "react-toastify";
 
 const PRICE = 0.0509; // At 2024-01-29
 
@@ -45,7 +46,6 @@ export default function WhatsAppBulkMessagesForm({
     fields: {} as Record<string, string>, // Column of the CSV where we select the value
     default: {} as Record<string, string>, // Value that we put if the CSV column is empty
   });
-
   useEffect(() => {
     whatsApp.getMessagesTemplates().then((data) => {
       setTemplates(data);
@@ -53,6 +53,9 @@ export default function WhatsAppBulkMessagesForm({
   }, [setTemplates]);
 
   const onSubmit = async () => {
+    if (data.contacts.length > 250) {
+      return toast.error(t("error.maximum_number_250"))
+    }
     setLoading(true);
 
     // setData({ ...data, message: "" });
@@ -143,7 +146,6 @@ export default function WhatsAppBulkMessagesForm({
 
   const selectTemplate = (value: string) => {
     const template: WhatsappTemplate | undefined = templates.find((template) => template.id === value);
-    console.log(">>>>>>template", template)
 
     setData((data) => ({ ...data, to: "", fields: {}, default: {} }));
     setTemplate(template);
@@ -284,14 +286,12 @@ export default function WhatsAppBulkMessagesForm({
                                 type="text"
                                 name={`parameter-default-${variable}`}
                                 id={`parameter-default-${variable}`}
-                                value={data.default[variable]}
-                                onChange={(
-                                  e: React.ChangeEvent<HTMLInputElement>
-                                ) =>
-                                  setData((data) => ({
-                                    ...data,
+                                value={data.default[variable] || ""}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                  setData((prevData) => ({
+                                    ...prevData,
                                     default: {
-                                      ...data.default,
+                                      ...prevData.default,
                                       [variable]: e.target.value,
                                     },
                                   }))
