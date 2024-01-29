@@ -4,13 +4,13 @@ import { Readable } from "stream";
 export async function sendBulkWhatsAppMessage(file: File, message: string) {
   try {
     const buffer = Buffer.from(await file.arrayBuffer());
-    console.log(">>>>>>>buffer", buffer)
+    console.log(">>>>>>>>", buffer)
 
     const readCSV = async (buffer: Buffer): Promise<{ name: string; telephone: string }[]> => {
       const rows: { Name: string; Telephone: string }[] = [];
   
       // Create a Readable stream from the buffer
-      const stream = Readable.from(buffer).pipe(csvParser({ delimiter: ";" }));
+      const stream = Readable.from(buffer).pipe(csvParser({ delimiter: "," }));
   
       // Return a promise to handle the asynchronous file reading
       return new Promise((resolve, reject) => {
@@ -28,7 +28,6 @@ export async function sendBulkWhatsAppMessage(file: File, message: string) {
           });
       });
     };
-
 
     const data = await readCSV(buffer);
 
