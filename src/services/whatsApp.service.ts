@@ -6,6 +6,7 @@ export async function sendMessage(
   template: { name: string; language: string; parameters: string[] }
 ) {
   try {
+    console.log(">>>>got here")
     return true;
   } catch (error) {
     console.error("Error while sending message", error);
