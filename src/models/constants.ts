@@ -6,6 +6,7 @@ export const NOTION_DATABASES = {
   CAPTAINS: "ba114e3cae854159803fde2ae3861d71",
 };
 
+export const WHATSAPP_APPLICATION_ID = "157321974140617";
 export const MILE_RANGES = [0, 25, 35]; // Example mile ranges
 
 export const DEPARTURES_TIMES = [
@@ -75,24 +76,6 @@ export const STANDUP_PADDLE = [
     label: "SUP 2 - 100E",
     value: "100",
   },
-];
-
-export const WHATAPP_MESSAGE_TEMPLATE = [
-  {
-    label: "Template1",
-    language: "en",
-    value: "Hello {{value_1}} there thank you for booking our yatch with plate number {{value_2}}",
-  },
-  {
-    label: "Template2",
-    language: "es",
-    value: "Hello {{value_1}} there thank you for booking our yatch",
-  },
-  {
-    label: "Template3",
-    language: "en",
-    value: "Hello there thank you for booking our yatch",
-  }
 ];
 
 export const Error_Codes = ["GMFL-424", "PNF-404", "ASB-409"];

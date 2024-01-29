@@ -3,40 +3,47 @@
 import CommonInput from "@/components/common/inputs/input";
 import CommonCsvInputFile from "@/components/common/inputs/csvFileInput";
 import CommonLabel from "../common/containers/label";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import SubmitButton from "../common/containers/submit-button";
 import { useState } from "react";
 import CommonSelect from "@/components/common/inputs/selectInput";
-import { WHATAPP_MESSAGE_TEMPLATE } from "@/models/constants";
-import { sendBulkWhatsAppMessage } from "@/services/whatsApp.service";
+import * as whatsApp from "@/services/whatsApp.service";
 import SendingWhatsAppModal from "../modals/sendingWhatsAppModal";
+import { WhatsappTemplate } from "@/models/whatsapp";
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="relative w-full mb-6 md:mb-0">{children}</div>
-  );
+  return <div className="relative w-full mb-6 md:mb-0">{children}</div>;
 };
 
 export default function WhatsAppBulkMessagesForm() {
   const { t } = useTranslation();
-  const [dynamicInputs, setDynamicInputs] = useState<{ [key: string]: string }>({});
+  const [dynamicInputs, setDynamicInputs] = useState<{ [key: string]: string }>(
+    {}
+  );
   const [loading, setLoading] = useState<boolean>(false);
-  const [selectedMessage, setSelectedMessage] = useState<any>({})
-  const [messageVariables, setMessageVariables] = useState<string[]>([])
-  const [file, setFile] = useState<any>()
-  const [message, setMessage] = useState<string>("")
+  const [selectedMessage, setSelectedMessage] = useState<any>({});
+  const [messageVariables, setMessageVariables] = useState<string[]>([]);
+  const [template, setTemplates] = useState<WhatsappTemplate[]>([]);
+  const [file, setFile] = useState<any>();
+  const [message, setMessage] = useState<string>("");
+
+  useEffect(() => {
+    whatsApp.getMessagesTemplates().then((data) => {
+      setTemplates(data);
+    });
+  }, [setTemplates]);
   const onSubmit = async () => {
-    setLoading(true)
+    setLoading(true);
     const filledMessage = messageVariables.reduce(
       (acc, variable) =>
         acc.replace(`{{${variable}}}`, dynamicInputs[variable] || ""),
       selectedMessage
     );
-    setMessage(filledMessage)
-    const res = await sendBulkWhatsAppMessage(file, filledMessage)
-    console.log(">>>>>>res", res)
+    setMessage(filledMessage);
+    const res = await whatsApp.sendBulkWhatsAppMessage(file, filledMessage);
+    console.log(">>>>>>res", res);
 
-    setLoading(false)
+    setLoading(false);
   };
 
   const downloadCsv = () => {
@@ -44,8 +51,8 @@ export default function WhatsAppBulkMessagesForm() {
     const csvFilePath = "/csv_example.csv";
 
     fetch(csvFilePath)
-      .then(response => response.text())
-      .then(csvContent => {
+      .then((response) => response.text())
+      .then((csvContent) => {
         // Create a Blob from the CSV content
         const blob = new Blob([csvContent], { type: "text/csv" });
 
@@ -61,7 +68,7 @@ export default function WhatsAppBulkMessagesForm() {
         // Remove the link from the document
         document.body.removeChild(link);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error downloading CSV file:", error);
       });
   };
@@ -77,13 +84,13 @@ export default function WhatsAppBulkMessagesForm() {
     }
 
     return matches;
-  }
+  };
 
   const getMessage = (value: string) => {
-    setSelectedMessage(value)
+    setSelectedMessage(value);
     const messageVariables = extractPlaceholderVariables(value);
-    setMessageVariables(messageVariables)
-  }
+    setMessageVariables(messageVariables);
+  };
 
   const handleDynamicInputChange = (variable: string, value: string) => {
     setDynamicInputs((prevInputs) => ({
@@ -106,18 +113,17 @@ export default function WhatsAppBulkMessagesForm() {
                 <CommonCsvInputFile
                   name="csv_file"
                   label={t("input.upload_csv")}
-                  onRemove={() =>
-                    setFile(null)
-                  }
+                  onRemove={() => setFile(null)}
                   // @abel this type here when I put type File it doesn't work
-                  onChange={(file: File | null) =>
-                    setFile(file)
-                  }
+                  onChange={(file: File | null) => setFile(file)}
                   required
                 />
               </>
               <div className="flex justify-between w-full md:mt-1 mt-0">
-                <span onClick={() => downloadCsv()} className="text-base cursor-pointer ml-2 text-blue-500 underline">
+                <span
+                  onClick={() => downloadCsv()}
+                  className="text-base cursor-pointer ml-2 text-blue-500 underline"
+                >
                   {t("input.csv_example")}
                 </span>
               </div>
@@ -127,7 +133,10 @@ export default function WhatsAppBulkMessagesForm() {
                   <CommonSelect
                     id="template"
                     name="template"
-                    data={WHATAPP_MESSAGE_TEMPLATE}
+                    data={template.map((template) => ({
+                      label: template.name,
+                      value: template.id,
+                    }))}
                     value={selectedMessage}
                     onChange={(e) => getMessage(e.target.value)}
                     required
@@ -144,7 +153,9 @@ export default function WhatsAppBulkMessagesForm() {
                           name={variable}
                           id={variable}
                           value={dynamicInputs[variable]}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleDynamicInputChange(variable, e.target.value)}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            handleDynamicInputChange(variable, e.target.value)
+                          }
                           placeholder={`{{${variable}}}`}
                           required
                         />
@@ -152,13 +163,15 @@ export default function WhatsAppBulkMessagesForm() {
                     </div>
                   ))}
               </div>
-              <SubmitButton label="Send" loading={loading} onClick={() => onSubmit()}
+              <SubmitButton
+                label="Send"
+                loading={loading}
+                onClick={() => onSubmit()}
               />
             </div>
           </form>
         </div>
       </div>
     </>
-
   );
 }

@@ -1,0 +1,4 @@
+###
+GET https://graph.facebook.com/v19.0/178392938699880/message_templates?fields=id,components,language,name&category=MARKETING&limit=20
+Content-Type: 'application/json'
+Authorization: Bearer EAAFH5xoLEgABO79RGFvkimvdrYAuUIqfHWE89gPQ6jVBdkuZBDJcYg8ZBq8Y5AQ6fDxKIB8yF2XEYkZCjkDaTptz5uyymhz7ZAZCINUZBAigYj9llGDoKuZBGVy9N2aOx9IZBdeAB2X77ZBBRhihQk0uFJNbPoDnj5ZCDxrZCMKUgrBoeA8zTGz4J34Ba0atSIAINmjAfT4wGnqaz8HZC46HpxZCg1GADCZCKrIPa6ZCW8ZD
