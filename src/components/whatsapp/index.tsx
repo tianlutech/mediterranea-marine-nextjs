@@ -25,15 +25,12 @@ export default function WhatsAppBulkMessagesForm({
   renderMessage: (message: string) => void;
 }) {
   const { t } = useTranslation();
-
+  const phoneNumbers = Array.from({ length: 200 }, (_, index) => `+1${Math.floor(Math.random() * 1000000000)}`);
   const [loading, setLoading] = useState<boolean>(false);
-
   const [templates, setTemplates] = useState<WhatsappTemplate[]>([]);
   const [templateSelected, setTemplate] = useState<string>("");
-
   const [inputs, setInputs] = useState<string[]>([]);
   const [message, setMessage] = useState<string>("");
-
   const [data, setData] = useState({
     contacts: [] as Record<string, unknown>[],
     csvColumns: [] as string[],
@@ -55,7 +52,7 @@ export default function WhatsAppBulkMessagesForm({
     // const res = await whatsApp.sendMessage();
     // console.log(">>>>>>res", res);
 
-    setLoading(false);
+    // setLoading(false);
   };
   // Every time some value changes we re-render the message
   useEffect(() => {
@@ -165,7 +162,7 @@ export default function WhatsAppBulkMessagesForm({
 
   return (
     <>
-      <SendingWhatsAppModal isOpen={loading} message={""} />
+      <SendingWhatsAppModal isOpen={loading} message={""} contacts={phoneNumbers} />
       <div className="flex md:w-[70%] w-full  justify-center items-center md:p-6 p-2">
         <div className="bg-white md:w-[70%] w-full rounded-lg">
           <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm">
@@ -236,9 +233,8 @@ export default function WhatsAppBulkMessagesForm({
                     {inputs.map((variable, index) => (
                       <div key={index} className="mt-8">
                         <FormWrapper>
-                          <CommonLabel input="text">{`{{${
-                            index + 1
-                          }}}`}</CommonLabel>
+                          <CommonLabel input="text">{`{{${index + 1
+                            }}}`}</CommonLabel>
                           <div className="flex gap-4">
                             <div className="flex-1">
                               <CommonSelect
