@@ -38,10 +38,10 @@ export default function WhatsAppBulkMessagesForm({
 
   const [data, setData] = useState({
     contacts: [] as Record<string, unknown>[],
-    csvColumns: [] as string[],
-    to: "",
-    fields: {} as Record<string, string>,
-    default: {} as Record<string, string>,
+    csvColumns: [] as string[], // List of columns names on the CSV
+    to: "", // Column does contains the phone number to send the message
+    fields: {} as Record<string, string>, // Column of the CSV where we select the value
+    default: {} as Record<string, string>, // Value that we put if the CSV column is empty
   });
 
   useEffect(() => {
@@ -130,7 +130,6 @@ export default function WhatsAppBulkMessagesForm({
       const csv = Papa.parse(target.result as any, {
         header: true,
       });
-
       setData((data) => ({
         ...data,
         contacts: csv.data as Record<string, string>[],
