@@ -124,7 +124,8 @@
     "fuel_form": "Putting Fuel Form",
     "close": "Close",
     "loading_fuel_modal": "Loading fuel modal",
-    "loading_contract": "Loading contract modal"
+    "loading_contract": "Loading contract modal",
+    "sending_message_to": "Sending message to"
   },
   "select_options": {
     "None": "None",

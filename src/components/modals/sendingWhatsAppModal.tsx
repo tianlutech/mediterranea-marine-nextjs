@@ -5,21 +5,22 @@ import { WhatsappTemplate } from "@/models/whatsapp";
 import { toast } from "react-toastify";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
+import SimpleButton from "../common/containers/simple-button";
 
 export default function SendingWhatsAppModal({
   isOpen,
-  message,
   data,
   template,
   parameters,
 }: {
   isOpen: boolean;
-  message: string;
   data: any;
   template: WhatsappTemplate;
   parameters: any,
 }) {
   const [progress, setProgress] = useState<number>(0);
+  const [sendingMessageTo, setSendingMessageTo] = useState<string>("")
+  const [error, setError] = useState<string>("")
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -32,7 +33,8 @@ export default function SendingWhatsAppModal({
         await new Promise((resolve) => setTimeout(resolve, 50));
         // Update the progress
         setProgress(((+i + 1) / totalContacts) * 100);
-        const res = whatsApp.sendMessage(contact[data.to], {
+        setSendingMessageTo(t("loadingMessage.sending_message_to") + ` ${contact[data.to]}`)
+        const res = await whatsApp.sendMessage(contact[data.to], {
           name: template.name,
           language: template.language,
           parameters: parameters.map((variable: string) => {
@@ -41,7 +43,9 @@ export default function SendingWhatsAppModal({
         });
 
         if (!res) {
-          return toast.error(t(`error.failed_to_send_message_to ${contact[data.to]}`))
+          setError(
+            t("error.failed_to_send_message_to") + ` ${contact[data.to]}`)
+          return
         }
       }
       router.replace("/success");
@@ -59,15 +63,35 @@ export default function SendingWhatsAppModal({
           <div className="my-6">
             <span className="font-bold text-xl">Sending Message</span>
           </div>
-          <div>
-            <span>{message}</span>
+          <div className="mb-6">
+            {error === "" &&
+              <span>
+                {sendingMessageTo}
+              </span>
+            }
+            {error !== "" &&
+              <span>
+                {error}
+              </span>
+            }
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-            <div
-              className="bg-blue-600 h-2.5 rounded-full"
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
+          {
+            error === "" &&
+            <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+              <div
+                className="bg-blue-600 h-2.5 rounded-full"
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+          }
+          {error !== "" &&
+            <div>
+              <SimpleButton
+                label="Skip"
+                onClick={() => window.location.reload()}
+              />
+            </div>
+          }
         </div>
       </div>
     </Modal>

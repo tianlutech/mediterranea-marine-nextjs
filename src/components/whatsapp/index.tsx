@@ -176,7 +176,7 @@ export default function WhatsAppBulkMessagesForm({
   return (
     <>
       <ToastContainer />
-      <SendingWhatsAppModal parameters={inputs} isOpen={loading} message={""} data={data} template={templateSelected} />
+      <SendingWhatsAppModal parameters={inputs} isOpen={loading} data={data} template={templateSelected} />
       <div className="flex md:w-[70%] w-full  justify-center items-center md:p-6 p-2">
         <div className="bg-white md:w-[70%] w-full rounded-lg">
           <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm">
