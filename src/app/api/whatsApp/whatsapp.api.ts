@@ -30,6 +30,7 @@ export async function sendMessage({
     name: string;
     language: string;
     parameters: string[];
+    attachment: { type: string; url: string };
   };
 }) {
   const body = {
@@ -47,16 +48,37 @@ export async function sendMessage({
             text: param,
           })),
         },
-      ],
+      ] as Array<Record<string, unknown>>,
     },
   };
 
+  if (template.attachment) {
+    body.template.components.unshift({
+      type: "header",
+      parameters: [
+        {
+          type: template.attachment.type.toLowerCase(),
+          [template.attachment.type.toLocaleLowerCase()]: {
+            link: template.attachment.url,
+            // Optional
+            // provider: {
+            //   name: "provider-name",
+            // },
+          },
+        },
+      ],
+    });
+  }
   try {
-    await whatappCall("messages", "POST", WHATSAPP_PHONE_ID, body);
-    return true;
+    const response = await whatappCall(
+      "messages",
+      "POST",
+      WHATSAPP_PHONE_ID,
+      body
+    );
+    return response.data;
   } catch (error) {
-    console.error("Error reading CSV file:", error);
-    return false;
+    return { error };
   }
 }
 

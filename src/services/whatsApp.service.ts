@@ -8,6 +8,7 @@ export async function sendMessage(
     name: string;
     language: string;
     parameters: string[];
+    attachment?: { url: string; type: string };
   }
 ) {
   try {
@@ -19,10 +20,16 @@ export async function sendMessage(
       body: JSON.stringify({ to, template }),
     });
     const res = await response.json();
-    return res;
+    if (res.error?.status === 400) {
+      return { error: "We coudn't read the multimedia file" };
+    }
+    if (res.error) {
+      return { error: res.error.message };
+    }
+    return { success: true };
   } catch (error) {
     console.error("Error while sending message", error);
-    return false;
+    return { error };
   }
 }
 

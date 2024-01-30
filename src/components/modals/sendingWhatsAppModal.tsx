@@ -2,7 +2,6 @@ import Modal from "@/components/common/containers/modal";
 import React, { useEffect, useState } from "react";
 import * as whatsApp from "@/services/whatsApp.service";
 import { WhatsappTemplate } from "@/models/whatsapp";
-import { toast } from "react-toastify";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
 import SimpleButton from "../common/containers/simple-button";
@@ -12,13 +11,17 @@ export default function SendingWhatsAppModal({
   data,
   template,
   parameters,
+  attachmentType,
   onClose,
+  onSuccess,
 }: {
   isOpen: boolean;
   onClose?: () => void;
+  onSuccess?: () => void;
   data: any;
   template: WhatsappTemplate;
-  parameters: any;
+  parameters: string[];
+  attachmentType: string;
 }) {
   const [progress, setProgress] = useState<number>(0);
   const [sendingMessageTo, setSendingMessageTo] = useState<string>("");
@@ -49,10 +52,14 @@ export default function SendingWhatsAppModal({
           parameters: parameters.map((variable: string) => {
             return contact[data.fields[variable]] || data.default[variable];
           }),
+          attachment: attachmentType
+            ? { type: attachmentType, url: data.attachment }
+            : undefined,
         });
-        if (!res) {
+        if (res.error) {
           setError(
-            t("error.failed_to_send_message_to") + ` ${contact[data.to]}`
+            t("error.failed_to_send_message_to") +
+              ` ${contact[data.to]}<br/>${res.error}`
           );
           return;
         }
@@ -62,10 +69,12 @@ export default function SendingWhatsAppModal({
       setProgress(100);
     };
 
+    setProgress(0);
     if (isOpen) {
+      setError("");
       sendMessages();
     }
-  }, [data, isOpen, parameters, router, t, template]);
+  }, [attachmentType, data, isOpen, parameters, router, t, template]);
 
   return (
     <Modal isOpen={isOpen} onClose={() => onClose?.()}>
@@ -76,7 +85,9 @@ export default function SendingWhatsAppModal({
           </div>
           <div className="mb-6">
             {error === "" && <span>{sendingMessageTo}</span>}
-            {error !== "" && <span>{error}</span>}
+            {error !== "" && (
+              <span dangerouslySetInnerHTML={{ __html: error }} />
+            )}
           </div>
           {error === "" && (
             <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
@@ -90,7 +101,7 @@ export default function SendingWhatsAppModal({
             <div className="mt-4">
               <SimpleButton
                 label={t("loadingMessage.close")}
-                onClick={() => onClose?.()}
+                onClick={() => (progress === 100 ? onSuccess?.() : onClose?.())}
               />
             </div>
           )}

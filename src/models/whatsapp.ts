@@ -3,5 +3,5 @@ export type WhatsappTemplate = {
   id: string;
   name: string;
   language: string;
-  components: Array<{ type: string; text: string }>;
+  components: Array<{ type: string; text: string; format: string }>;
 };
