@@ -54,7 +54,8 @@
     "csv_example": "CSV Example",
     "template": "Template",
     "to": "To",
-    "default_value": "Default value"
+    "default_value": "Default value",
+    "url": "URL"
   },
   "prepayment_modal": {
     "prepay_your_fuel": "Prepay your fuel",

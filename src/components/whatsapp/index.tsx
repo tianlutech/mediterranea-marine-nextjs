@@ -39,14 +39,19 @@ export default function WhatsAppBulkMessagesForm({
     language: "",
     components: [],
   });
+  // TODO: Transform this 3 in one state object with 3 properties
   const [inputs, setInputs] = useState<string[]>([]);
   const [message, setMessage] = useState<string>("");
+  const [footer, setFooter] = useState<string>("");
+
+  const [attachmentType, setAttachmentType] = useState<string>("");
   const [data, setData] = useState({
     contacts: [] as Record<string, unknown>[],
     csvColumns: [] as string[], // List of columns names on the CSV
     to: "", // Column does contains the phone number to send the message
     fields: {} as Record<string, string>, // Column of the CSV where we select the value
     default: {} as Record<string, string>, // Value that we put if the CSV column is empty
+    attachment: "", // URL of video or image
   });
   useEffect(() => {
     whatsApp.getMessagesTemplates().then((data) => {
@@ -74,8 +79,11 @@ export default function WhatsAppBulkMessagesForm({
         ),
       message.replaceAll("\n", "</br>")
     );
-    renderMessage(filledMessage);
-  }, [message, data, inputs, renderMessage]);
+
+    renderMessage(
+      filledMessage + `<br/><br/><span style='color: #999999'>${footer}</span>`
+    );
+  }, [message, data, inputs, renderMessage, footer]);
 
   const downloadCsv = () => {
     // Read the content of the CSV file
@@ -157,6 +165,8 @@ export default function WhatsAppBulkMessagesForm({
     if (!template) {
       setInputs([]);
       setMessage("");
+      setAttachmentType("");
+      setFooter("");
       return;
     }
     setTemplate(template);
@@ -168,6 +178,17 @@ export default function WhatsAppBulkMessagesForm({
 
     setInputs(messageVariables);
     setMessage(text);
+
+    const header = template.components.find(
+      (component) => component.type === "HEADER"
+    );
+    setAttachmentType(header?.format || "");
+
+    const footer = template.components.find(
+      (component) => component.type === "FOOTER"
+    );
+
+    setFooter(footer?.text || "");
   };
 
   const formik = useFormik({
@@ -184,14 +205,16 @@ export default function WhatsAppBulkMessagesForm({
     <>
       <ToastContainer />
       <SendingWhatsAppModal
+        attachmentType={attachmentType}
         parameters={inputs}
         isOpen={loading}
         data={data}
         template={templateSelected}
-        onClose={() => {
+        onSuccess={() => {
           setData((data) => ({ ...data, contacts: [] }));
           setLoading(false);
         }}
+        onClose={() => setLoading(false)}
       />
       <div className="flex md:w-[70%] w-full  justify-center items-center md:p-6 p-2">
         <div className="bg-white md:w-[70%] w-full rounded-lg">
@@ -321,16 +344,42 @@ export default function WhatsAppBulkMessagesForm({
                         </FormWrapper>
                       </div>
                     ))}
+
+                    {["VIDEO", "IMAGE"].includes(attachmentType) && (
+                      <div className="mt-6">
+                        <CommonLabel input="text">
+                          {attachmentType.charAt(0) +
+                            attachmentType.substring(1).toLocaleLowerCase()}
+                        </CommonLabel>
+                        <CommonInput
+                          type="text"
+                          name={"attachment"}
+                          id={"attachment"}
+                          value={data.attachment}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setData((prevData) => ({
+                              ...prevData,
+                              attachment: e.target.value,
+                            }))
+                          }
+                          placeholder={t("input.url")}
+                          required
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
               <div className="flex flex-col">
                 <SubmitButton
                   label={
-                    "Send (Cost: ~" +
-                    (validContacts.length * PRICE).toFixed(2) +
-                    "€)"
+                    validContacts.length
+                      ? "Send (Cost: ~" +
+                        (validContacts.length * PRICE).toFixed(2) +
+                        "€)"
+                      : "No valid contacts detected"
                   }
+                  disabled={validContacts.length === 0}
                   type="submit"
                   loading={loading}
                 />
