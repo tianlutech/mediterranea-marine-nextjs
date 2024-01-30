@@ -8,7 +8,7 @@ import { Boat, Booking } from "../../models/models";
 import { useTranslation } from "react-i18next";
 import StarRatings from "react-star-ratings";
 import SubmitButton from "../common/containers/submit-button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 import { updateBookingInfo } from "../../services/notion.service";
 import { useRouter } from "next/navigation";

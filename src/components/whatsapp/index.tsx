@@ -15,6 +15,8 @@ import { useFormik } from "formik";
 import Papa from "papaparse";
 import SimpleButton from "../common/containers/simple-button";
 import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PRICE = 0.0509; // At 2024-01-29
 
@@ -171,13 +173,10 @@ export default function WhatsAppBulkMessagesForm({
     },
   });
 
-  const closeModal = () => {
-    setLoading(false)
-  }
-
   return (
     <>
-      <SendingWhatsAppModal parameters={inputs} isOpen={loading} message={""} data={data} template={templateSelected} closeModal={closeModal} />
+      <ToastContainer />
+      <SendingWhatsAppModal parameters={inputs} isOpen={loading} message={""} data={data} template={templateSelected} />
       <div className="flex md:w-[70%] w-full  justify-center items-center md:p-6 p-2">
         <div className="bg-white md:w-[70%] w-full rounded-lg">
           <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm">
@@ -189,7 +188,6 @@ export default function WhatsAppBulkMessagesForm({
                 <CommonCsvInputFile
                   name="csv_file"
                   label={t("input.upload_csv")}
-                  // @abel this type here when I put type File it doesn't work
                   onChange={(file) => {
                     readCSV(file);
                   }}

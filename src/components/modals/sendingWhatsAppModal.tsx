@@ -2,6 +2,9 @@ import Modal from "@/components/common/containers/modal";
 import React, { useEffect, useState } from "react";
 import * as whatsApp from "@/services/whatsApp.service";
 import { WhatsappTemplate } from "@/models/whatsapp";
+import { toast } from "react-toastify";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/navigation";
 
 export default function SendingWhatsAppModal({
   isOpen,
@@ -9,43 +12,45 @@ export default function SendingWhatsAppModal({
   data,
   template,
   parameters,
-  closeModal,
 }: {
   isOpen: boolean;
   message: string;
   data: any;
   template: WhatsappTemplate;
   parameters: any,
-  closeModal: () => void;
 }) {
   const [progress, setProgress] = useState<number>(0);
+  const { t } = useTranslation();
+  const router = useRouter();
 
   useEffect(() => {
     const simulateLoading = async () => {
       const totalContacts = data.contacts.length;
-
-
       for (const i in data.contacts) {
         const contact = data.contacts[i];
         // Simulate some asynchronous task
         await new Promise((resolve) => setTimeout(resolve, 50));
         // Update the progress
         setProgress(((+i + 1) / totalContacts) * 100);
-        whatsApp.sendMessage(contact[data.to], {
+        const res = whatsApp.sendMessage(contact[data.to], {
           name: template.name,
           language: template.language,
           parameters: parameters.map((variable: string) => {
             return contact[data.fields[variable]] || data.default[variable];
           }),
         });
+
+        if (!res) {
+          return toast.error(t(`error.failed_to_send_message_to ${contact[data.to]}`))
+        }
       }
-      closeModal()
+      router.replace("/success");
     };
 
     if (isOpen) {
       simulateLoading();
     }
-  }, [data, isOpen, template]);
+  }, [data, isOpen, parameters, router, t, template]);
 
   return (
     <Modal isOpen={isOpen}>
