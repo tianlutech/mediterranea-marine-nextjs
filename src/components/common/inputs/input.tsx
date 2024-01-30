@@ -35,7 +35,7 @@ export default function CommonInput({
       type={type}
       name={name}
       id={id}
-      className="w-full border md:text-sm text-xs border-gray-300 text-black text-start p-[0.7rem] md:px-8 px-4 rounded-lg"
+      className="w-full border md:text-sm text-xs border-gray-300 text-black text-start p-[0.7rem] md:px-8 px-4 rounded-lg h-[45px]"
       placeholder={placeholder || name}
       min={min}
       max={max}

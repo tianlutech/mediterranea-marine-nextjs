@@ -1,0 +1,11 @@
+###
+GET https://graph.facebook.com/v19.0/157321974140617/message_templates?fields=id,components,language,name,category&limit=20&category=MARKETING
+Content-Type: application/json
+Authorization: Bearer EAAFH5xoLEgABOZCa2Xos6PxZBpG2PAFpXa4rR5XaZChD9pdoukhBPhE2f5x41eSEkS4T5qwZCIyptyVO52lMaRCZB75MLFZCCm5dcfibJydgDXqcuxgvciAMklniIQLYWcWYBYwGzz2464LbjX6BURcZAAlXPZC7xEVNjdSF50HjZCIImVaI1P5JUasyi8ywfhG0IuGwO8kjMxf8ZA2CsE
+
+### 
+POST https://graph.facebook.com/v19.0/157321974140617/messages
+Content-Type: application/json
+Authorization: Bearer EAAFH5xoLEgABO79RGFvkimvdrYAuUIqfHWE89gPQ6jVBdkuZBDJcYg8ZBq8Y5AQ6fDxKIB8yF2XEYkZCjkDaTptz5uyymhz7ZAZCINUZBAigYj9llGDoKuZBGVy9N2aOx9IZBdeAB2X77ZBBRhihQk0uFJNbPoDnj5ZCDxrZCMKUgrBoeA8zTGz4J34Ba0atSIAINmjAfT4wGnqaz8HZC46HpxZCg1GADCZCKrIPa6ZCW8ZDEAAFH5xoLEgABOZCa2Xos6PxZBpG2PAFpXa4rR5XaZChD9pdoukhBPhE2f5x41eSEkS4T5qwZCIyptyVO52lMaRCZB75MLFZCCm5dcfibJydgDXqcuxgvciAMklniIQLYWcWYBYwGzz2464LbjX6BURcZAAlXPZC7xEVNjdSF50HjZCIImVaI1P5JUasyi8ywfhG0IuGwO8kjMxf8ZA2CsE
+
+{"messaging_product":"whatsapp","to":"+250780693870","type":"template","template":{"name":"new_season","language":{"code":"es"},"components":[{"type":"body","parameters":[{"type":"text","text":"Eddy"},{"type":"text","text":"+250780693870"}]}]}}

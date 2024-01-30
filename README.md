@@ -54,6 +54,8 @@ All the values are also accessible from the [credentials page](https://www.notio
 - NEXT_PUBLIC_GOOGLE_CLIENT_ID: we use it in google drive api we find this in the credentials json file from  the google console
 - NEXT_PUBLIC_GOOGLE_CLIENT_X509_CERT_URL: we use it in google drive api we find this in the credentials json file from  the google console
 - NEXT_PUBLIC_SKIP_BOOKING_STEPS: Add the steps by comma (from the file steps-actions) to skip some sensibles or charged steps during the booking validation
+- WHATSAPP_TOKEN: To send messages on the message bulk functionality to whatsapp numbers. You can get a temporal one in the application [API Config](https://developers.facebook.com/apps/6964882823566210/whatsapp-business/wa-dev-console/?business_id=2330989420463473) but you require permissions.
+For the production was is generated as a system user in the facebook business section (pretty complex)
 
 ### Application state
 

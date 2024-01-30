@@ -32,7 +32,7 @@ export default function BookingForm2({
   const [videoModalOpen, setVideoModalOpen] = useState<boolean>(false);
   const [infoModalText, setInfoModalText] = useState<string>("");
 
-  const [videoLiknk, setVideoLink] = useState<string>("");
+  const [videoLink, setVideoLink] = useState<string>("");
 
   const openVideoModal = (link: string) => {
     setVideoLink(link);
@@ -51,9 +51,9 @@ export default function BookingForm2({
     return MILE_RANGES.map((miles: number) => ({
       label: miles
         ? `${miles} ` +
-          t("input.nautical_miles") +
-          " - " +
-          `${miles * pricePerMile}€`
+        t("input.nautical_miles") +
+        " - " +
+        `${miles * pricePerMile}€`
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
@@ -68,7 +68,7 @@ export default function BookingForm2({
       <VideoModal
         isOpen={videoModalOpen}
         closeModal={closeVideoModal}
-        videoSrc={videoLiknk}
+        videoSrc={videoLink}
       />
       <div className="flex md:mt-0 mt-4 md:flex-row flex-col md:w-[49%] w-full">
         <div className="w-full bg-white rounded-lg">

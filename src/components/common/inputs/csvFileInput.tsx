@@ -7,21 +7,22 @@ import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import React from "react";
 import { toast } from "react-toastify";
+import CsvSvg from "@/assets/svgs/CsvSvg";
 
-export default function CommonInputFile({
+export default function CommonCsvInputFile({
   label,
   name,
   required,
   onChange,
-  onRemove,
   maxSize = 10,
+  onRemove,
 }: {
   label: string;
   name: string;
   required?: boolean;
   maxSize?: number;
-  onChange: (file: File | null) => void;
   onRemove?: () => void;
+  onChange: (file: File | null) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const { t } = useTranslation();
@@ -94,7 +95,7 @@ export default function CommonInputFile({
           type="file"
           style={{ opacity: 0, height: 1, width: 1, position: "absolute" }}
           onChange={onChangeImage}
-          accept="image/*"
+          accept=".csv, text/csv, .xlsx"
           required={required}
         />
         <div>
@@ -103,7 +104,7 @@ export default function CommonInputFile({
               <UploadSvg />
             </div>
             <div className="flex flex-col ml-4">
-              <span className="text-black">{t("input.select_file")}</span>
+              <span className="text-black">{t("input.select_csv_file")}</span>
               <span className="greytext mt-2">
                 {t("input.file_sizes", { size: maxSize })}
               </span>
@@ -113,16 +114,7 @@ export default function CommonInputFile({
             <div className="flex justify-between items-center mt-4 p-2 bg-bgColor1">
               <div className="flex justify-center items-center text-center">
                 <div>
-                  {photoPreview ? (
-                    <Image
-                      width={20}
-                      height={20}
-                      src={photoPreview}
-                      alt="idFront"
-                    />
-                  ) : (
-                    <ImageSvg />
-                  )}
+                  <CsvSvg />
                 </div>
                 <span className="text-black text-center md:ml-4 ml-2 md:text-base text-xs">
                   {photoName}
