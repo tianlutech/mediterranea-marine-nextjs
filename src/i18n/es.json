@@ -127,7 +127,8 @@
     "close": "Cerrar",
     "loading_fuel_modal": "Cargando combustible modal",
     "loading_contract": "Modalidad de contrato de carga",
-    "sending_message_to": "Enviando mensaje a"
+    "sending_message_to": "Enviando mensaje a",
+    "sending_complete": "Mensajes enviados!"
   },
   "select_options": {
     "None": "Ninguno",

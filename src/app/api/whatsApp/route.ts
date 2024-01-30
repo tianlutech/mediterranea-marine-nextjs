@@ -6,11 +6,9 @@ export async function POST(request: Request) {
     const response = await whatsapp.sendMessage(body);
 
     // Make sure to create a new Response object instead of modifying the original one
-    const jsonResponse = new Response(JSON.stringify(response), {
+    return new Response(JSON.stringify(response), {
       status: 200,
     });
-
-    return jsonResponse;
   } catch (error) {
     // TODO: Not valid address shall not fire an exception but be handled in the if
     console.error("Message not sent", error);

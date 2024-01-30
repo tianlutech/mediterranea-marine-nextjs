@@ -37,7 +37,7 @@ export default function WhatsAppBulkMessagesForm({
     id: "",
     name: "",
     language: "",
-    components: []
+    components: [],
   });
   const [inputs, setInputs] = useState<string[]>([]);
   const [message, setMessage] = useState<string>("");
@@ -56,15 +56,9 @@ export default function WhatsAppBulkMessagesForm({
 
   const onSubmit = async () => {
     if (data.contacts.length > 250) {
-      return toast.error(t("error.maximum_number_250"))
+      return toast.error(t("error.maximum_number_250"));
     }
     setLoading(true);
-
-    // setData({ ...data, message: "" });
-    // const res = await whatsApp.sendMessage();
-    // console.log(">>>>>>res", res);
-
-    // setLoading(false);
   };
   // Every time some value changes we re-render the message
   useEffect(() => {
@@ -76,7 +70,7 @@ export default function WhatsAppBulkMessagesForm({
         acc.replace(
           `{{${variable}}}`,
           data.default[variable] ||
-          `<span style='color: #999999'>{{${variable}}}</span>`
+            `<span style='color: #999999'>{{${variable}}}</span>`
         ),
       message.replaceAll("\n", "</br>")
     );
@@ -147,7 +141,17 @@ export default function WhatsAppBulkMessagesForm({
   };
 
   const selectTemplate = (value: string) => {
-    const template: WhatsappTemplate | undefined = templates.find((template) => template.id === value);
+    if (!value) {
+      return;
+    }
+
+    const template: WhatsappTemplate | undefined = templates.find(
+      (template) => template.id === value
+    );
+
+    if (!template) {
+      return;
+    }
 
     setData((data) => ({ ...data, to: "", fields: {}, default: {} }));
     setTemplate(template);
@@ -173,10 +177,22 @@ export default function WhatsAppBulkMessagesForm({
     },
   });
 
+  const validContacts = data.to
+    ? data.contacts.map((contact) => !!contact[data.to])
+    : [];
   return (
     <>
       <ToastContainer />
-      <SendingWhatsAppModal parameters={inputs} isOpen={loading} data={data} template={templateSelected} />
+      <SendingWhatsAppModal
+        parameters={inputs}
+        isOpen={loading}
+        data={data}
+        template={templateSelected}
+        onClose={() => {
+          setData((data) => ({ ...data, contacts: [] }));
+          setLoading(false);
+        }}
+      />
       <div className="flex md:w-[70%] w-full  justify-center items-center md:p-6 p-2">
         <div className="bg-white md:w-[70%] w-full rounded-lg">
           <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm">
@@ -257,8 +273,9 @@ export default function WhatsAppBulkMessagesForm({
                     {inputs.map((variable, index) => (
                       <div key={index} className="mt-8">
                         <FormWrapper>
-                          <CommonLabel input="text">{`{{${index + 1
-                            }}}`}</CommonLabel>
+                          <CommonLabel input="text">{`{{${
+                            index + 1
+                          }}}`}</CommonLabel>
                           <div className="flex gap-4">
                             <div className="flex-1">
                               <CommonSelect
@@ -285,7 +302,9 @@ export default function WhatsAppBulkMessagesForm({
                                 name={`parameter-default-${variable}`}
                                 id={`parameter-default-${variable}`}
                                 value={data.default[variable] || ""}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                onChange={(
+                                  e: React.ChangeEvent<HTMLInputElement>
+                                ) =>
                                   setData((prevData) => ({
                                     ...prevData,
                                     default: {
@@ -309,7 +328,7 @@ export default function WhatsAppBulkMessagesForm({
                 <SubmitButton
                   label={
                     "Send (Cost: ~" +
-                    (data.contacts.length * PRICE).toFixed(2) +
+                    (validContacts.length * PRICE).toFixed(2) +
                     "€)"
                   }
                   type="submit"

@@ -21,7 +21,7 @@ export default function CommonInputFile({
   required?: boolean;
   maxSize?: number;
   onChange: (file: File | null) => void;
-  onRemove: () => void;
+  onRemove?: () => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const { t } = useTranslation();
@@ -65,7 +65,7 @@ export default function CommonInputFile({
   };
 
   const removeImage = () => {
-    onRemove();
+    onRemove?.();
     setPhotoFontSize("");
     setPhotoPreview("");
     setPhotoName("");

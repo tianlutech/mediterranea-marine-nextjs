@@ -125,7 +125,8 @@
     "close": "Close",
     "loading_fuel_modal": "Loading fuel modal",
     "loading_contract": "Loading contract modal",
-    "sending_message_to": "Sending message to"
+    "sending_message_to": "Sending message to",
+    "sending_complete": "Messages sent!"
   },
   "select_options": {
     "None": "None",

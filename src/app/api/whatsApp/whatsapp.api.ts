@@ -7,7 +7,7 @@ const whatappCall = (
   uri: string,
   method: string,
   ID: string,
-  body?: Record<string, unknown>,
+  body?: Record<string, unknown>
 ) => {
   const config = {
     url: `${WHATAPP_URL}/${ID}/` + uri,
@@ -74,7 +74,9 @@ export async function getTemplates(
     const fields = ["id", "components", "language", "name"];
 
     const response = await whatappCall(
-      `message_templates?fields=${fields}&category=MARKETING&limit=${limit}`, "GET", WHATSAPP_APPLICATION_ID
+      `message_templates?fields=${fields}&category=MARKETING&limit=${limit}`,
+      "GET",
+      WHATSAPP_APPLICATION_ID
     );
 
     return response.data;

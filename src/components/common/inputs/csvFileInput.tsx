@@ -66,7 +66,7 @@ export default function CommonCsvInputFile({
   };
 
   const removeImage = () => {
-    onRemove();
+    onRemove?.();
     setPhotoFontSize("");
     setPhotoPreview("");
     setPhotoName("");
