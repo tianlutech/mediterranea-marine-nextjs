@@ -14,15 +14,15 @@ export default function CommonCsvInputFile({
   name,
   required,
   onChange,
-  onRemove,
   maxSize = 10,
+  onRemove,
 }: {
   label: string;
   name: string;
   required?: boolean;
   maxSize?: number;
-  onChange: (file: File | null) => void;
   onRemove?: () => void;
+  onChange: (file: File | null) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const { t } = useTranslation();

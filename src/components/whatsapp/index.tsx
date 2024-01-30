@@ -154,12 +154,12 @@ export default function WhatsAppBulkMessagesForm({
     }
 
     setData((data) => ({ ...data, to: "", fields: {}, default: {} }));
-    setTemplate(template);
     if (!template) {
       setInputs([]);
       setMessage("");
       return;
     }
+    setTemplate(template);
     const templateBody = template.components.find(
       (component) => component.type === "BODY"
     );
