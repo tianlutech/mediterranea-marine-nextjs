@@ -32,9 +32,13 @@ export default function SignPage({ params }: { params: { id: string } }) {
 
     const getBookingDetails = async () => {
       const data = (await getBookingInfo(params.id)) as Booking;
+
       if (!data || !data.Boat || !data.Date) {
         router.replace("/");
         return;
+      }
+      if (!isNaN(data.captainSignedAt?.getTime())) {
+        return window.location.replace("/not-found?code=CSC-503");
       }
       updateCaptainSignSignAt()
       setData(data);
@@ -44,23 +48,13 @@ export default function SignPage({ params }: { params: { id: string } }) {
     getBookingDetails();
   }, [params.id, router, data]);
 
-
-
-  if (!data) {
-    return;
-  }
-
-  if (!isNaN(data.captainSignedAt?.getTime())) {
-    return window.location.replace("/not-found?code=CSC-503");
-  }
-
   return (
     <div
       className="relative p-2 w-full h-screen bg-gray-300 text-center flex flex-col items-center text-white justify-center"
     >
       <div className="flex-col text-black">
         <div className="my-6">
-          <span className="font-bold text-5xl">Signing Agreement...</span>
+          <span className="font-bold text-2xl">Signing Agreement...</span>
         </div>
       </div>
     </div>
