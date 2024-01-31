@@ -79,4 +79,4 @@ export const STANDUP_PADDLE = [
   },
 ];
 
-export const Error_Codes = ["GMFL-424", "PNF-404", "ASB-409"];
+export const Error_Codes = ["GMFL-424", "PNF-404", "ASB-409", "CSC-503"];
