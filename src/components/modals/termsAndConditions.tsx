@@ -68,6 +68,7 @@ export default function TermsAndConditions({
     if (sigPad.current && !sigPad.current.isEmpty()) {
       setIsSigned(!sigPad.current.isEmpty());
     }
+    maximumDepartureTime()
   }, [bookingInfo]);
 
   // will uncomment later if we need to use it
