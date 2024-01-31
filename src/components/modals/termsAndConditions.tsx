@@ -84,7 +84,7 @@ export default function TermsAndConditions({
     onUserSigning();
   };
   return (
-    <Modal isOpen={isOpen} onClose={() => closeModal()}>
+    <Modal isOpen={true} onClose={() => closeModal()}>
       <div className="relative p-2 md:w-[60%] bg-white rounded-lg shadow overflow-y-scroll pt-0 w-[95%] h-[95%] md:px-12 px-2">
         <div className="flex items-center justify-between px-4 pt-6 md:px-4 md:pt-4 sticky top-0 bg-white">
           <button

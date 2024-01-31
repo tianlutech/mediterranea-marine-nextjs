@@ -86,9 +86,9 @@ const EdenAIService = () => {
       return checkFields;
     }
 
-    if (moment().isAfter(moment(data.expire_date.value))) {
-      return { error: i18n.t("error.error_document_expired") };
-    }
+    // if (moment().isAfter(moment(data.expire_date.value))) {
+    //   return { error: i18n.t("error.error_document_expired") };
+    // }
 
     // if (formData.documentType === "Passport") {
     //   if (data.document_type.value !== "PASSPORT") {
