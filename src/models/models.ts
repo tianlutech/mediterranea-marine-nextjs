@@ -179,7 +179,7 @@ export class Booking extends NotionItem {
   "SubmittedFormAt": Date;
 
   @NotionType("date")
-  "CaptainSignAt": Date;
+  "captainSignedAt": Date;
 
   @NotionType("date")
   FeedbackFormAt?: Date;

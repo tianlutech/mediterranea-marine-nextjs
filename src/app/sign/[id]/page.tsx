@@ -6,6 +6,8 @@ import { getBookingInfo } from "@/services/notion.service";
 import { useRouter } from "next/navigation";
 import { Booking } from "@/models/models";
 import { useTranslation } from "react-i18next";
+import { updateBookingInfo } from "@/services/notion.service";
+import { toast } from "react-toastify";
 
 export default function SignPage({ params }: { params: { id: string } }) {
   const [data, setData] = useState<Booking | null>(null);
@@ -15,27 +17,43 @@ export default function SignPage({ params }: { params: { id: string } }) {
   const router = useRouter();
 
   useEffect(() => {
+    const updateCaptainSignSignAt = async () => {
+      const bookingInfo = new Booking({
+        captainSignedAt: new Date(),
+      });
+      const { error } = await updateBookingInfo(params.id, bookingInfo);
+
+      if (error) {
+        toast.error(error);
+        return;
+      }
+      router.replace("/success");
+    }
+
     const getBookingDetails = async () => {
       const data = (await getBookingInfo(params.id)) as Booking;
       if (!data || !data.Boat || !data.Date) {
         router.replace("/");
         return;
       }
-
+      updateCaptainSignSignAt()
       setData(data);
       setLoading(false);
     };
 
     getBookingDetails();
-  }, [params.id, router]);
+  }, [params.id, router, data]);
+
+
 
   if (!data) {
     return;
   }
 
-  if (!isNaN(data.SubmittedFormAt.getTime())) {
+  if (!isNaN(data.captainSignedAt?.getTime())) {
     return window.location.replace("/not-found?code=CSC-503");
   }
+
   return (
     <div
       className="relative p-2 w-full h-screen bg-gray-300 text-center flex flex-col items-center text-white justify-center"
