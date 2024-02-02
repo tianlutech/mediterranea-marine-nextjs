@@ -21,8 +21,8 @@ const skip_steps = (process.env.NEXT_PUBLIC_SKIP_BOOKING_STEPS || "").split(
 export const steps = [
   "fuel",
   "sign",
-  "validateFront",
-  "validateBack",
+  // "validateFront",
+  // "validateBack",
   "uploadFrontIdImage",
   "uploadBackIdImage",
   "pay",
