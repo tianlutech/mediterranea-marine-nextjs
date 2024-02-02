@@ -106,6 +106,7 @@
     "GMFL-424": "¡El mapa de Google no se pudo cargar!",
     "PNF-404": "¡Página no encontrada!",
     "ASB-409": "¡Ya enviaste tu reserva!",
+    "CSC-503": "Este contrato ya ha sido firmado",
     "maximum_number_250": "El límite máximo para enviar mensajes a la vez es de 250 clientes.",
     "failed_to_send_message_to": "No se pudo enviar el mensaje a este número"
   },
@@ -136,5 +137,8 @@
     "Transfer": "Transferencia",
     "Card": "Tarjeta",
     "Mash": "Metálico"
+  },
+  "signing": {
+    "title": "Firmando acuerdo..."
   }
 }

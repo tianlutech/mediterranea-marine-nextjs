@@ -65,7 +65,7 @@ export default function BookingComponent({
     const res = await validateAddress(formData["Billing Address"]);
 
     if (res === false) {
-      return toast.error("The address is not accurate enougth");
+      return toast.error("The address is not accurate enough");
     }
 
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {

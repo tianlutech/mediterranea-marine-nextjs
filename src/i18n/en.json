@@ -104,6 +104,7 @@
     "GMFL-424": "Google map failed to load!",
     "PNF-404": "Page not found!",
     "ASB-409": "This booking is already submitted.",
+    "CSC-503": "Contract already signed.",
     "maximum_number_250": "The maximum limit for sending messages at once is 250 customers.",
     "failed_to_send_message_to": "Failed to send message to this number"
   },
@@ -134,5 +135,8 @@
     "Transfer": "Transfer",
     "Card": "Card",
     "Cash": "Cash"
+  },
+  "signing": {
+    "title": "Signing Agreement..."
   }
 }
