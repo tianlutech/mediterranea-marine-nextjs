@@ -41,30 +41,30 @@ export default function TermsAndConditions({
   const checkSignature = () => {
     setIsSigned(!!sigPad.current && !sigPad.current.isEmpty());
   };
-  const maximumDepartureTime = () => {
-    // Split the time string into hours and minutes
-    var parts = bookingInfo["Departure Time"].split(":");
-    var hours = parseInt(parts[0], 10);
-    var minutes = parseInt(parts[1], 10);
-
-    // Add hours
-    hours += 8;
-
-    // Ensure that hours do not exceed 24
-    if (hours > 21) {
-      hours = 21;
-    }
-
-    // Formatting hours and minutes to two digits
-    var formattedHours = hours.toString().padStart(2, "0");
-    var formattedMinutes = minutes.toString().padStart(2, "0");
-
-    // Returning the formatted time string
-    const time = formattedHours + ":" + formattedMinutes;
-    setDepartureMaximumHour(time);
-  };
 
   useEffect(() => {
+    const maximumDepartureTime = () => {
+      // Split the time string into hours and minutes
+      var parts = bookingInfo["Departure Time"].split(":");
+      var hours = parseInt(parts[0], 10);
+      var minutes = parseInt(parts[1], 10);
+
+      // Add hours
+      hours += 8;
+
+      // Ensure that hours do not exceed 24
+      if (hours > 21) {
+        hours = 21;
+      }
+
+      // Formatting hours and minutes to two digits
+      var formattedHours = hours.toString().padStart(2, "0");
+      var formattedMinutes = minutes.toString().padStart(2, "0");
+
+      // Returning the formatted time string
+      const time = formattedHours + ":" + formattedMinutes;
+      setDepartureMaximumHour(time);
+    };
     if (sigPad.current && !sigPad.current.isEmpty()) {
       setIsSigned(!sigPad.current.isEmpty());
     }
