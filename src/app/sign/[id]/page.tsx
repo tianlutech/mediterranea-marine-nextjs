@@ -1,5 +1,4 @@
 "use client";
-
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import { getBookingInfo } from "@/services/notion.service";
@@ -8,11 +7,13 @@ import { Booking } from "@/models/models";
 import { useTranslation } from "react-i18next";
 import { updateBookingInfo } from "@/services/notion.service";
 import { toast } from "react-toastify";
+import Spinner from "@/components/common/containers/spinner";
+import BoatSvg from "@/assets/svgs/BoatSvg";
+import NoSSR from "react-no-ssr";
 
 export default function SignPage({ params }: { params: { id: string } }) {
-  const [data, setData] = useState<Booking | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
   const { t } = useTranslation();
+  const [error, setError] = useState<string>("");
 
   const router = useRouter();
 
@@ -22,13 +23,12 @@ export default function SignPage({ params }: { params: { id: string } }) {
         captainSignedAt: new Date(),
       });
       const { error } = await updateBookingInfo(params.id, bookingInfo);
-
       if (error) {
-        toast.error(error);
+        setError(error);
         return;
       }
       router.replace("/success");
-    }
+    };
 
     const getBookingDetails = async () => {
       const data = (await getBookingInfo(params.id)) as Booking;
@@ -40,23 +40,32 @@ export default function SignPage({ params }: { params: { id: string } }) {
       if (!isNaN(data.captainSignedAt?.getTime())) {
         return window.location.replace("/not-found?code=CSC-503");
       }
-      updateCaptainSignSignAt()
-      setData(data);
-      setLoading(false);
+      updateCaptainSignSignAt();
     };
 
     getBookingDetails();
-  }, [params.id, router, data]);
+  }, [params.id, router]);
 
   return (
-    <div
-      className="relative p-2 w-full h-screen bg-gray-300 text-center flex flex-col items-center text-white justify-center"
-    >
-      <div className="flex-col text-black">
-        <div className="my-6">
-          <span className="font-bold text-2xl">Signing Agreement...</span>
+    <NoSSR>
+      <div className="relative p-2 w-full h-screen bg-white text-center flex flex-col items-center text-white justify-center">
+        <div className="flex-col text-black">
+          {!error ? (
+            <>
+              <div className="my-6">
+                <span className="font-bold text-2xl">{t("signing.title")}</span>
+              </div>
+              <Spinner size={20}>
+                <BoatSvg size={50} />
+              </Spinner>
+            </>
+          ) : (
+            <div className="my-6 mx-10">
+              <span className="font-bold text-md">{error}</span>
+            </div>
+          )}
         </div>
       </div>
-    </div>
+    </NoSSR>
   );
 }
