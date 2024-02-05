@@ -40,13 +40,10 @@ export default function PrepaymentModal({
   };
   const calculatedMiles = useMemo(() => {
     const pricePerMile = boat.MilePrice || 0;
-
     return MILE_RANGES.map((miles: number) => ({
       label: miles
-        ? `${miles} ` +
-          t("input.nautical_miles") +
-          " - " +
-          `${miles * pricePerMile}€`
+        ? `${miles} Miles -> ${miles}` +
+        t(`input.${miles}_miles_description`)
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
