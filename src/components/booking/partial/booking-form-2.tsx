@@ -50,10 +50,8 @@ export default function BookingForm2({
     const pricePerMile = boatInfo.MilePrice || 0;
     return MILE_RANGES.map((miles: number) => ({
       label: miles
-        ? `${miles} ` +
-        t("input.nautical_miles") +
-        " - " +
-        `${miles * pricePerMile}€`
+        ? `${miles}` +
+        t(`input.${miles}_miles_description`)
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
