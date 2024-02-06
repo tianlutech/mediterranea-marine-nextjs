@@ -3,7 +3,9 @@ import * as pdfMonkey from "./pdfMonkey.api";
 export async function POST(request: Request) {
   try {
     const data = await request.json();
-    const response = await pdfMonkey.createDocument(data)
+    const bookingInfo = data.bookingInfo
+    const boatDetails = data.boatDetails
+    const response = await pdfMonkey.createDocument(bookingInfo, boatDetails)
 
     return new Response(JSON.stringify(response), { status: 200 });
   } catch (error: any) {

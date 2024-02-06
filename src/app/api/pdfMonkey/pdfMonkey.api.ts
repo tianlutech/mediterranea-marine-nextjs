@@ -1,11 +1,18 @@
 import { PDFMONKEY_DOCUMENT_ID } from "@/models/constants";
-import { Booking } from "@/models/models";
+import { Booking, Boat } from "@/models/models";
+import moment from "moment";
 
 const pdfMonkey_api_key = process.env.PDFMONKEY_API_KEY
 
-export async function createDocument(bookingInfo: Booking) {
+export async function createDocument(bookingInfo: Booking, boatDetails: Boat) {
   try {
     console.log(">>>>>>>bookingInfo", bookingInfo)
+    console.log(">>>>>>>boatDetails", boatDetails)
+    const date = bookingInfo["Date"];
+    const bookingDateYear = moment(date).format("YYYY");
+    const bookingDateMonth = moment(date).format("MM");
+    const bookingDateDay = moment(date).format("HH");
+    const {Nombre, Code, RegistrationPlate, icon} = boatDetails
     const apiUrl = "https://api.pdfmonkey.io/api/v1/documents"
 
     const response = await fetch(apiUrl, {
@@ -19,22 +26,22 @@ export async function createDocument(bookingInfo: Booking) {
         document: {
           document_template_id: PDFMONKEY_DOCUMENT_ID,
           payload: {
-            boatName: "Super Client",
-            boatCode: "AwesomeCorp",
-            boatRegistrationPlate: "3 (three)",
+            boatName: Nombre,
+            boatCode: Code,
+            boatRegistrationPlate: RegistrationPlate,
             basePort:"Ibiza",
-            boatMaxPassenger:"23",
-            bookingDepartureTime:"12:30",
-            bookingDateDay: "01",
-            bookingDateMonth:"12",
-            bookingDateYear:"34",
-            customerName:"Chris Henry",
-            bookingDate:"01/01/2024",
+            boatMaxPassenger: boatDetails["Max.Passengers"],
+            bookingDepartureTime: bookingInfo["Departure Time"],
+            bookingDateDay: bookingDateDay,
+            bookingDateMonth:bookingDateMonth,
+            bookingDateYear:bookingDateYear,
+            customerName: `${bookingInfo["First Name"]} ` + `${bookingInfo["Last Name"]}`,
+            bookingDate: moment(bookingInfo["SubmittedFormAt"]).format("DD/MM/YYYY"),
             registrationPort:"Ibiza 01",
-            boatFlag:"boatFlag",
+            boatFlag: icon,
             boatType:"Yatch",
-            departureMaximumHour:"21:30",
-            PortOfDisembark:"Ibiza",
+            departureMaximumHour: "21:30",
+            PortOfDisembark: "Ibiza",
             MaximumNumberOfGuestCruisingOnBoard:"4",
             CrewComposedOfCaptain:"5",
             taxableBase:"233",
@@ -44,14 +51,14 @@ export async function createDocument(bookingInfo: Booking) {
           },
           meta: {
             clientId: "ABC1234-DE",
-            _filename: "my-document.pdf"
+            _filename: `${bookingInfo["First Name"]} ` + `${bookingInfo["Last Name"]} - ` + `${Nombre} ` + `${RegistrationPlate} ` + `${moment(bookingInfo["Date"]).format("DD/MM/YYYY")}.pdf`
           }
         }
       })
     });
     
     const res = await response.json();
-    console.log(">>>>>>>res")
+    console.log(">>>>>>>res", res)
 
     return res
   } 
