@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import Spinner from "@/components/common/containers/spinner";
 import BoatSvg from "@/assets/svgs/BoatSvg";
 import NoSSR from "react-no-ssr";
+import { createDocument } from "@/services/pdfMonkey.service";
 
 export default function SignPage({ params }: { params: { id: string } }) {
   const { t } = useTranslation();
@@ -27,6 +28,8 @@ export default function SignPage({ params }: { params: { id: string } }) {
         setError(error);
         return;
       }
+      const res = await createDocument(bookingInfo)
+      console.log(">>>>here is your response", res)
       router.replace("/success");
     };
 
