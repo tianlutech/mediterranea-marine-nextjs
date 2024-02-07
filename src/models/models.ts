@@ -36,6 +36,7 @@ export type BookingFormData = {
   "ID Number": string;
   documentType: "National ID" | "Passport";
   OutstandingPayment: number;
+  CustomerSignature: string;
 };
 
 export type FileBody = {
@@ -123,6 +124,12 @@ export class Booking extends NotionItem {
 
   @NotionType("rich_text")
   "First Name": string = "";
+
+  @NotionType("rich_text")
+  "notion_id": string = "";
+
+  @NotionType("rich_text")
+  "CustomerSignature": string = "";
 
   @NotionType("rich_text")
   "ID Number": string = "";

@@ -81,3 +81,31 @@ export const uploadReceiptImage = async (auth: any, file: File) => {
     return { error: error.message };
   }
 };
+
+export const uploadSignatureImage = async (auth: any, file: File) => {
+  // allows you to use drive API methods e.g. listing files, creating files.
+  const drive = google.drive({ version: "v3", auth });
+  try {
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    const googleDriveFolderId = "1welC1ONHo-T2-U1fYQvm5P3fKXrQvA9L";
+    const date = moment(Date.now()).format("DD-MM-YYYY");
+
+    const res = await drive.files.create({
+      requestBody: {
+        name: `${date}_${file.name}.${path.extname(file.name)}`,
+        mimeType: file.type,
+        // parents: [`${folder.data.id}`],
+        parents: [`${googleDriveFolderId}`],
+      },
+      media: {
+        mimeType: file.type,
+        body: Readable.from(buffer),
+      },
+    });
+    return res.data;
+  } catch (error: any) {
+    console.error("Error fetching files:", error.message);
+    return { error: error.message };
+  }
+};

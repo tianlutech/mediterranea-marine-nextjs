@@ -48,10 +48,10 @@ export async function POST(request: Request) {
       });
     }
 
-    // @abel here added the type but am still getting a type error I sued any
     const config: any = {
       idCard: () => googleDrive.uploadFile(auth, file, body),
       receipt: () => googleDrive.uploadReceiptImage(auth, file),
+      customerSignature: () => googleDrive.uploadSignatureImage(auth, file),
     };
 
     if (!config[type]) {

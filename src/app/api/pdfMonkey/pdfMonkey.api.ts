@@ -12,7 +12,7 @@ export async function createDocument(bookingInfo: Booking, boatDetails: Boat) {
     const bookingDateYear = moment(date).format("YYYY");
     const bookingDateMonth = moment(date).format("MM");
     const bookingDateDay = moment(date).format("HH");
-    const {Nombre, Code, RegistrationPlate} = boatDetails
+    const {Nombre, Code, RegistrationPlate, id} = boatDetails
     const apiUrl = "https://api.pdfmonkey.io/api/v1/documents"
 
     const response = await fetch(apiUrl, {
@@ -51,7 +51,11 @@ export async function createDocument(bookingInfo: Booking, boatDetails: Boat) {
           },
           meta: {
             clientId: "ABC1234-DE",
-            _filename: "my-document.pdf"
+            clientName: `${bookingInfo["First Name"]} ` + `${bookingInfo["Last Name"]}`,
+            boatId: id,
+            captainId: `${bookingInfo["First Name"]}`,
+            _filename: "my-document.pdf",
+            NotionId: `${bookingInfo.notion_id}`,
           }
         }
       })

@@ -5,6 +5,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Boat, Booking, BookingFormData } from "@/models/models";
 import moment from "moment";
 import { toast } from "react-toastify";
+import { uploadSignatureImage } from "@/services/googleDrive.service";
 
 export default function TermsAndConditions({
   isOpen,
@@ -71,19 +72,65 @@ export default function TermsAndConditions({
     maximumDepartureTime()
   }, [bookingInfo]);
 
-  // will uncomment later if we need to use it
-  // const getSignatureImage = () => {
-  //   if (sigPad.current) {
-  //     const canvas = sigPad.current.getTrimmedCanvas();
-  //     return canvas.toDataURL("image/png");
-  //   }
-  //   return null;
-  // };
+
+  const getImage = async (
+    {
+      canvas,
+      mime,
+    }: {
+      canvas: HTMLCanvasElement,
+      mime: string,
+    }
+  ) => {
+    return new Promise<Blob | null>(resolve => {
+      const tmpCanvas = document.createElement("canvas");
+      // Use the original canvas's dimensions
+      tmpCanvas.width = canvas.width;
+      tmpCanvas.height = canvas.height;
+
+      const ctx = tmpCanvas.getContext("2d");
+      if (!ctx) {
+        return resolve(null); // Safely handle the case where context could not be obtained
+      }
+
+      // Set the background to white
+      ctx.fillStyle = "#FFFFFF"; // Define white color
+      ctx.fillRect(0, 0, tmpCanvas.width, tmpCanvas.height); // Fill the canvas with white
+
+      // Draw the original canvas onto the temporary canvas without resizing
+      ctx.drawImage(canvas, 0, 0);
+
+      // Convert the temporary canvas to a Blob
+      tmpCanvas.toBlob(blob => resolve(blob), mime);
+    });
+  };
+
+  const getSignatureImage = async () => {
+    if (sigPad.current) {
+      const width = 250
+      const height = 250
+      const mime = "image/jpeg"
+      const canvas = sigPad.current.getTrimmedCanvas();
+      const image = await getImage({ canvas, mime })
+
+      const response = await uploadSignatureImage(image as File);
+      if (!response.id) {
+        return "";
+      }
+      const url = `https://drive.google.com/file/d/${response.id}/view`;
+      setFormData({ ...formData, "CustomerSignature": url })
+      return
+    }
+    return null;
+  };
+
   const agreeContract = () => {
     setFormData({ ...formData, signedContract: !formData["signedContract"] });
     closeModal();
     onUserSigning();
+    getSignatureImage();
   };
+
   return (
     <Modal isOpen={isOpen} onClose={() => closeModal()}>
       <div className="relative p-2 md:w-[60%] bg-white rounded-lg shadow overflow-y-scroll pt-0 w-[95%] h-[95%] md:px-12 px-2">
