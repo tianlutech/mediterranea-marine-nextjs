@@ -103,6 +103,7 @@
     "error_eden_ia_last_name": "Apellidos",
     "error_eden_ia_given_names": "Nombre",
     "error_eden_ia_document_id": "Número de Identidad",
+    "error_sumup_payment": "Error al realizar el pago.",
     "GMFL-424": "¡El mapa de Google no se pudo cargar!",
     "PNF-404": "¡Página no encontrada!",
     "ASB-409": "¡Ya enviaste tu reserva!",

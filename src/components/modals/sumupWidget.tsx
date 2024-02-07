@@ -2,8 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 import Modal from "@/components/common/containers/modal";
 import Script from "next/script";
 import { toast } from "react-toastify";
-import { generateCheckoutId } from "@/services/sumup.service";
+import {
+  PaymentBody,
+  PaymentResponseBody,
+  generateCheckoutId,
+} from "@/services/sumup.service";
 import { Booking, BookingFormData } from "@/models/models";
+import { useTranslation } from "react-i18next";
 
 export default function SumupWidget({
   isOpen,
@@ -16,6 +21,7 @@ export default function SumupWidget({
   onError: (message: string) => void;
   formData: BookingFormData;
 }) {
+  const { t } = useTranslation();
   const handleScriptLoad = useCallback(
     (checkoutId: string) => {
       if (!checkoutId) {
@@ -24,20 +30,26 @@ export default function SumupWidget({
       window.SumUpCard?.mount({
         id: "sumup-card",
         checkoutId,
-        onResponse: function (type: any, body: any) {
+        onResponse: function (type: string, body: PaymentBody) {
+          console.log(type);
           if (type === "sent") {
             return;
           }
 
           if (type === "success") {
+            const bodyData = body as PaymentResponseBody;
+            if (bodyData.status === "FAILED") {
+              onError(
+                t("error.error_sumup_payment") +
+                  `ID #${bodyData.transaction_code}`
+              );
+              return;
+            }
             onSuccess();
             return;
           }
-          if (type !== "success") {
-            onError(body);
-            return;
-          }
-          return;
+
+          onError(t("error.error_sumup_payment") + `ID #${body.toString()}`);
         },
       });
     },
