@@ -264,14 +264,13 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${
-          formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
         }`
       );
 
       const bookingInfo = new Booking({
         ...bookingData,
-        Name: `${boat.Nombre} - ${departureTime.format("DD-MM-YY HH:mm")}`,
+        Name: `${booking["First Name"]} ` + `${booking["Last Name"]} - ${moment(booking.Date).format("YYYY-MM-DD")}`,
         "ID Front Picture": imageFrontLink,
         "ID Back Picture": imageBackLink,
         Toys: [paddle, seaBobName].filter((value) => !!value),

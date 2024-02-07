@@ -72,17 +72,18 @@ export default function TermsAndConditions({
   }, [bookingInfo]);
 
   // will uncomment later if we need to use it
-  // const getSignatureImage = () => {
-  //   if (sigPad.current) {
-  //     const canvas = sigPad.current.getTrimmedCanvas();
-  //     return canvas.toDataURL("image/png");
-  //   }
-  //   return null;
-  // };
+  const getSignatureImage = () => {
+    if (sigPad.current) {
+      const canvas = sigPad.current.getTrimmedCanvas();
+      return canvas.toDataURL("image/png");
+    }
+    return null;
+  };
   const agreeContract = () => {
     setFormData({ ...formData, signedContract: !formData["signedContract"] });
     closeModal();
     onUserSigning();
+    getSignatureImage();
   };
   return (
     <Modal isOpen={isOpen} onClose={() => closeModal()}>
