@@ -7,16 +7,7 @@ interface Config {
   idCard: () => Promise<drive_v3.Schema$File | { error: any }>;
   receipt: () => Promise<drive_v3.Schema$File | { error: any }>;
 }
-const auth = new google.auth.GoogleAuth({
-  // your credentials to authenticate
-  // keyFile: process.cwd() + "/src/app/config/credentials.json",
-  credentials: credentials,
-  // the actions you are permissed to perform using this API, in this case
-  // all CRUD operations are permissed, check out
-  // [ https://developers.google.com/drive/api/guides/api-specific-auth ]
-  // for more advice on scopes
-  scopes: ["https://www.googleapis.com/auth/drive"],
-});
+
 
 // Define the function to handle the POST request
 export async function POST(request: Request) {
@@ -49,9 +40,9 @@ export async function POST(request: Request) {
     }
 
     const config: any = {
-      idCard: () => googleDrive.uploadFile(auth, file, body),
-      receipt: () => googleDrive.uploadReceiptImage(auth, file),
-      customerSignature: () => googleDrive.uploadSignatureImage(auth, file),
+      idCard: () => googleDrive.uploadFile(file, body),
+      receipt: () => googleDrive.uploadReceiptImage(file),
+      customerSignature: () => googleDrive.uploadSignatureImage(file),
     };
 
     if (!config[type]) {

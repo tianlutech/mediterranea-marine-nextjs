@@ -73,7 +73,7 @@ export default function UserFeedbackPage({
                 }}
               />
             </Sidebar>
-            <FeedbackForm data={data} id={params.id} boatInfo={boatInfo} />
+            <FeedbackForm id={params.id} />
           </div>
         </div>
       </section>

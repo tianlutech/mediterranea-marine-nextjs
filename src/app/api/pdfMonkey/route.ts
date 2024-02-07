@@ -5,7 +5,8 @@ export async function POST(request: Request) {
     const data = await request.json();
     const bookingInfo = data.bookingInfo
     const boatDetails = data.boatDetails
-    const response = await pdfMonkey.createDocument(bookingInfo, boatDetails)
+    const captainDetails = data.captainDetails
+    const response = await pdfMonkey.createDocument(bookingInfo, boatDetails, captainDetails)
 
     return new Response(JSON.stringify(response), { status: 200 });
   } catch (error: any) {

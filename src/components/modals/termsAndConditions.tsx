@@ -107,8 +107,6 @@ export default function TermsAndConditions({
 
   const getSignatureImage = async () => {
     if (sigPad.current) {
-      const width = 250
-      const height = 250
       const mime = "image/jpeg"
       const canvas = sigPad.current.getTrimmedCanvas();
       const image = await getImage({ canvas, mime })

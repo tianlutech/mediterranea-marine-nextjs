@@ -3,10 +3,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import { getBookingInfo, getBoatInfo } from "@/services/notion.service";
 import { useRouter } from "next/navigation";
-import { Boat, Booking } from "@/models/models";
+import { Boat, Booking, Captian } from "@/models/models";
 import { useTranslation } from "react-i18next";
 import { updateBookingInfo } from "@/services/notion.service";
-import { toast } from "react-toastify";
+import { getCaptains } from "@/services/notion.service";
 import Spinner from "@/components/common/containers/spinner";
 import BoatSvg from "@/assets/svgs/BoatSvg";
 import NoSSR from "react-no-ssr";
@@ -17,7 +17,7 @@ export default function SignPage({ params }: { params: { id: string } }) {
   const router = useRouter();
 
   useEffect(() => {
-    const updateCaptainSignSignAt = async (booking: Booking, boatDetails: Boat) => {
+    const updateCaptainSignSignAt = async (booking: Booking, boatDetails: Boat, captainDetails: Captian) => {
       const bookingInfo = new Booking({
         captainSignedAt: new Date(),
       });
@@ -27,7 +27,7 @@ export default function SignPage({ params }: { params: { id: string } }) {
         return;
       }
 
-      const res = await createDocument(booking, boatDetails)
+      const res = await createDocument(booking, boatDetails, captainDetails)
       console.log(">>>>here is your response", res)
       router.replace("/success");
     };
@@ -49,10 +49,26 @@ export default function SignPage({ params }: { params: { id: string } }) {
         return;
       }
 
+      if (!data || !data.Captain) {
+        return
+      }
+
+      const getCaptain = async () => {
+        const captainsData = await getCaptains();
+        // I will change the any later 
+        return captainsData.find((captain: any) => captain.id === data.Captain[0]);
+      };
+
+      const captainDetails: Captian | undefined = await getCaptain()
+
+      if (!captainDetails) {
+        router.replace("/");
+        return;
+      }
       // if (!isNaN(data.captainSignedAt?.getTime())) {
       //   return window.location.replace("/not-found?code=CSC-503");
       // }
-      updateCaptainSignSignAt(data, boatDetails);
+      updateCaptainSignSignAt(data, boatDetails, captainDetails);
     };
 
     getBookingDetails();

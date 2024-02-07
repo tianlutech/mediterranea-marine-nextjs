@@ -75,6 +75,9 @@ export class Captain extends NotionItem {
   }
   @NotionType("title")
   "Name": string = "";
+
+  @NotionType("rich_text")
+  "id": string = "";
 }
 
 export class Booking extends NotionItem {
@@ -147,7 +150,7 @@ export class Booking extends NotionItem {
   AllowFollowUp: number = 0;
 
   @NotionType("relation")
-  Captain?: Captian;
+  Captain: string[] = [];
 
   @NotionType("number")
   "No Adults": number;

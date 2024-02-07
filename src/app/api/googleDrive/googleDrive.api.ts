@@ -3,8 +3,20 @@ import moment from "moment";
 import { Readable } from "stream";
 import { FileBody } from "@/models/models";
 import path from "path";
+import { credentials } from "../config/credentials";
 
-export const uploadFile = async (auth: any, file: File, body: FileBody) => {
+const auth = new google.auth.GoogleAuth({
+  // your credentials to authenticate
+  // keyFile: process.cwd() + "/src/app/config/credentials.json",
+  credentials: credentials,
+  // the actions you are permissed to perform using this API, in this case
+  // all CRUD operations are permissed, check out
+  // [ https://developers.google.com/drive/api/guides/api-specific-auth ]
+  // for more advice on scopes
+  scopes: ["https://www.googleapis.com/auth/drive"],
+});
+
+export const uploadFile = async (file: File, body: FileBody) => {
   // allows you to use drive API methods e.g. listing files, creating files.
   const drive = google.drive({ version: "v3", auth });
   try {
@@ -54,7 +66,7 @@ export const uploadFile = async (auth: any, file: File, body: FileBody) => {
   }
 };
 
-export const uploadReceiptImage = async (auth: any, file: File) => {
+export const uploadReceiptImage = async (file: File) => {
   // allows you to use drive API methods e.g. listing files, creating files.
   const drive = google.drive({ version: "v3", auth });
   try {
@@ -82,7 +94,7 @@ export const uploadReceiptImage = async (auth: any, file: File) => {
   }
 };
 
-export const uploadSignatureImage = async (auth: any, file: File) => {
+export const uploadSignatureImage = async (file: File) => {
   // allows you to use drive API methods e.g. listing files, creating files.
   const drive = google.drive({ version: "v3", auth });
   try {
@@ -107,5 +119,51 @@ export const uploadSignatureImage = async (auth: any, file: File) => {
   } catch (error: any) {
     console.error("Error fetching files:", error.message);
     return { error: error.message };
+  }
+};
+
+export const getFileContentBase64FromGoogleDrive = async (fileUrl: string) => {
+  const drive = google.drive({ version: "v3", auth });
+
+  const extractFileIdFromGoogleDriveUrl = (fileUrl: string) => {
+    // Regular expression to match the file ID in the Google Drive URL
+    const regex = /\/file\/d\/([a-zA-Z0-9_-]+)/;
+    const match = fileUrl.match(regex);
+  
+    // match[1] contains the captured group if the URL matches the pattern
+    return match ? match[1] : null;
+  }
+
+  const fileId = extractFileIdFromGoogleDriveUrl(fileUrl)
+  
+  if(!fileId) {
+    return
+  }
+
+  try {
+    const response = await drive.files.get({
+      fileId,
+      alt: "media",
+    }, {
+      responseType: "stream",
+    });
+
+    return new Promise((resolve, reject) => {
+      let chunks: Uint8Array[] = [];
+      response.data
+        .on("data", chunk => chunks.push(chunk))
+        .on("end", () => {
+          const buffer = Buffer.concat(chunks);
+          const base64String = buffer.toString("base64");
+          resolve(base64String);
+        })
+        .on("error", err => {
+          console.error("Error fetching file content:", err);
+          reject(err);
+        });
+    });
+  } catch (error) {
+    console.error("Error retrieving file from Google Drive:", error);
+    throw error; // Rethrow the error for further handling
   }
 };
