@@ -8,12 +8,11 @@ export async function createDocument(bookingInfo: Booking, boatDetails: Boat) {
   try {
     console.log(">>>>>>>bookingInfo", bookingInfo)
     console.log(">>>>>>>boatDetails", boatDetails)
-    const currentYear = new Date().getFullYear()
     const date = bookingInfo["Date"];
     const bookingDateYear = moment(date).format("YYYY");
     const bookingDateMonth = moment(date).format("MM");
     const bookingDateDay = moment(date).format("HH");
-    const {Nombre, Code, RegistrationPlate, icon} = boatDetails
+    const {Nombre, Code, RegistrationPlate} = boatDetails
     const apiUrl = "https://api.pdfmonkey.io/api/v1/documents"
 
     const response = await fetch(apiUrl, {
@@ -27,7 +26,6 @@ export async function createDocument(bookingInfo: Booking, boatDetails: Boat) {
         document: {
           document_template_id: PDFMONKEY_DOCUMENT_ID,
           payload: {
-            currentYear,
             boatName: Nombre,
             boatCode: Code,
             boatRegistrationPlate: RegistrationPlate,
@@ -40,20 +38,20 @@ export async function createDocument(bookingInfo: Booking, boatDetails: Boat) {
             customerName: `${bookingInfo["First Name"]} ` + `${bookingInfo["Last Name"]}`,
             bookingDate: moment(bookingInfo["SubmittedFormAt"]).format("DD/MM/YYYY"),
             registrationPort:"Ibiza 01",
-            boatFlag: icon,
+            boatFlag: "boatFlag",
             boatType:"Yatch",
-            departureMaximumHour: "21:30",
-            PortOfDisembark: "Ibiza",
-            MaximumNumberOfGuestCruisingOnBoard: boatDetails["Max.Passengers"],
-            CrewComposedOfCaptain:"1",
+            departureMaximumHour:"21:30",
+            PortOfDisembark:"Ibiza",
+            MaximumNumberOfGuestCruisingOnBoard:"4",
+            CrewComposedOfCaptain:"5",
             taxableBase:"233",
             taxVAT:"18",
             TotalRentalRate:"43",
             DeliveryPort:"Ibiza port"
           },
           meta: {
-            clientId: "MEDITERANEA-MARINA",
-            _filename: `${bookingInfo["First Name"]} ` + `${bookingInfo["Last Name"]} - ` + `${Nombre} ` + `${RegistrationPlate} ` + `${moment(bookingInfo["Date"]).format("DD/MM/YYYY")}.pdf`
+            clientId: "ABC1234-DE",
+            _filename: "my-document.pdf"
           }
         }
       })
