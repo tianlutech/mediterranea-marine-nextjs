@@ -103,6 +103,7 @@
     "error_eden_ia_last_name": "Last Name",
     "error_eden_ia_given_names": "Name",
     "error_eden_ia_document_id": "Document Id",
+    "error_sumup_payment": "Error making the payment: ",
     "GMFL-424": "Google map failed to load!",
     "PNF-404": "Page not found!",
     "ASB-409": "This booking is already submitted.",

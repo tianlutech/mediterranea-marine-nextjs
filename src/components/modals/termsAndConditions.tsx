@@ -72,7 +72,6 @@ export default function TermsAndConditions({
     maximumDepartureTime()
   }, [bookingInfo]);
 
-
   const getImage = async (
     {
       canvas,
