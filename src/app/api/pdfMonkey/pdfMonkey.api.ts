@@ -84,6 +84,7 @@ export async function createDocument(bookingInfo: Booking, boatDetails: Boat, ca
     });
     
     const res = await response.json();
+    console.log(">>>>>>>Resp", res)
     return res
   } 
   catch (error: any)

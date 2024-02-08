@@ -21,8 +21,6 @@ export default function SignPage({ params }: { params: { id: string } }) {
       const bookingInfo = new Booking({
         captainSignedAt: new Date(),
       });
-      console.log(">>>>testing if the captain is removed", bookingInfo)
-
       const { error } = await updateBookingInfo(params.id, bookingInfo);
 
       if (error) {
@@ -30,8 +28,8 @@ export default function SignPage({ params }: { params: { id: string } }) {
         return;
       }
 
-      // const res = await createDocument(booking, boatDetails, captainDetails)
-      // console.log(">>>>here is your response", res)
+      const res = await createDocument(booking, boatDetails, captainDetails)
+      console.log(">>>>here is your response", res)
       router.replace("/success");
     };
 
