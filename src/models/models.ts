@@ -101,8 +101,8 @@ export class Booking extends NotionItem {
   @NotionType("number")
   "Payment Deposit": number = 0;
 
-  @NotionType("rich_text")
-  Whatsapp: string = "";
+  @NotionType("relation")
+  Whatsapp: string[] = [];
 
   @NotionType("rich_text")
   "Departure Time": string = "";
@@ -137,7 +137,6 @@ export class Booking extends NotionItem {
   @NotionType("rich_text")
   "ID Number": string = "";
 
-  @NotionType("rich_text")
   "Total Passengers": number;
 
   @NotionType("file")
@@ -147,9 +146,8 @@ export class Booking extends NotionItem {
   "ID Back Picture": string;
 
   @NotionType("checkbox")
-  AllowFollowUp: number = 0;
+  AllowFollowUp?: number;
 
-  @NotionType("relation")
   Captain: string[] = [];
 
   @NotionType("number")
