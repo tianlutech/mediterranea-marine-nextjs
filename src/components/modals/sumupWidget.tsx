@@ -31,7 +31,6 @@ export default function SumupWidget({
         id: "sumup-card",
         checkoutId,
         onResponse: function (type: string, body: PaymentBody) {
-          console.log(type);
           if (type === "sent") {
             return;
           }
@@ -41,7 +40,7 @@ export default function SumupWidget({
             if (bodyData.status === "FAILED") {
               onError(
                 t("error.error_sumup_payment") +
-                  `ID #${bodyData.transaction_code}`
+                `ID #${bodyData.transaction_code}`
               );
               return;
             }
@@ -53,7 +52,7 @@ export default function SumupWidget({
         },
       });
     },
-    [onSuccess, onError]
+    [onError, t, onSuccess]
   );
   useEffect(() => {
     if (!isOpen) {
