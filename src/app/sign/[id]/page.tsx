@@ -29,7 +29,11 @@ export default function SignPage({ params }: { params: { id: string } }) {
       }
 
       const res = await createDocument(booking, boatDetails, captainDetails)
-      console.log(">>>>here is your response", res)
+      const { errors } = res
+      if (errors.length > 0) {
+        setError(errors[0].detail)
+        return
+      }
       router.replace("/success");
     };
 
@@ -66,9 +70,9 @@ export default function SignPage({ params }: { params: { id: string } }) {
         router.replace("/");
         return;
       }
-      // if (!isNaN(data.captainSignedAt?.getTime())) {
-      //   return window.location.replace("/not-found?code=CSC-503");
-      // }
+      if (!isNaN(data.captainSignedAt?.getTime())) {
+        return window.location.replace("/not-found?code=CSC-503");
+      }
       updateCaptainSignSignAt(data, boatDetails, captainDetails);
     };
 

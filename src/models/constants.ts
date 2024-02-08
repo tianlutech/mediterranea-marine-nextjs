@@ -5,7 +5,7 @@ export const NOTION_DATABASES = {
   BOATS: "54a3f8e4de06416db6f1affc8da49f55",
   CAPTAINS: "ba114e3cae854159803fde2ae3861d71",
 };
-
+export const DAVID_SIGNATURE = "https://prod-files-secure.s3.us-west-2.amazonaws.com/f3abf20a-fdd0-4935-ac22-79bc84930534/17fd272e-fca8-4d03-9921-68a61298dd5b/SCR-20240207-jzzg.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI%2F20240208%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240208T144507Z&X-Amz-Expires=3600&X-Amz-Signature=2cb27dcc96a55a5d5c6a810cc64b62209c1e03961b0ef88dc61a12df051c2cae&X-Amz-SignedHeaders=host&x-id=GetObject"
 export const PDFMONKEY_DOCUMENT_ID = "6A2C6EC1-509F-4688-9282-D942E754E1AC";
 export const WHATSAPP_APPLICATION_ID = "157321974140617";
 export const WHATSAPP_PHONE_ID = "158038010736924";

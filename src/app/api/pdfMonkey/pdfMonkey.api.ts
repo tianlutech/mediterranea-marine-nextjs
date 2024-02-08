@@ -3,29 +3,31 @@ import { Booking, Boat, Captian } from "@/models/models";
 import moment from "moment";
 import { getFileContentBase64FromGoogleDrive } from "../googleDrive/googleDrive.api"
 import axios from "axios"
+import { DAVID_SIGNATURE } from "@/models/constants"
 
 const pdfMonkey_api_key = process.env.PDFMONKEY_API_KEY
 
 export async function createDocument(bookingInfo: Booking, boatDetails: Boat, captainDetails: any) {
   try {
-    const convertCaptainSignature = async () => {
+    const convertSignature = async (signature_url: string) => {
       try {
         // Fetch the image as a response stream
-        const response = await axios.get(captainDetails.Signature[0].url, {
+        const response = await axios.get(signature_url, {
           responseType: "arraybuffer" // Important to handle binary data correctly
         });
     
         // Convert the response data (buffer) to a base64 string
         const base64String = Buffer.from(response.data, "binary").toString("base64");
         
-        return base64String;
+        return `data:image/png;base64,${base64String}`;
       } catch (error) {
         console.error("Error retrieving file from URL:", error);
         throw error; // Rethrow the error for further handling
       }
     };
     
-    const captainSignature = await convertCaptainSignature()
+    const davidSignature = await convertSignature(DAVID_SIGNATURE)
+    const captainSignature = await convertSignature(captainDetails.Signature[0].url)
     const customerSignature = await getFileContentBase64FromGoogleDrive(bookingInfo.CustomerSignature)
 
     const date = bookingInfo["Date"];
@@ -69,7 +71,8 @@ export async function createDocument(bookingInfo: Booking, boatDetails: Boat, ca
             TotalRentalRate:"43",
             DeliveryPort:"Ibiza port",
             CustomerSignature: `data:image/png;base64,${customerSignature}`,
-            CaptainSignature: `data:image/png;base64,${captainSignature}`
+            CaptainSignature: captainSignature,
+            DavidSignature: davidSignature
           },
           meta: {
             clientId: "ABC1234-DE",
