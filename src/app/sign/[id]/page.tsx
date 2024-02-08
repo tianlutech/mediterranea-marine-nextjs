@@ -30,7 +30,7 @@ export default function SignPage({ params }: { params: { id: string } }) {
 
       const res = await createDocument(booking, boatDetails, captainDetails)
       const { errors } = res
-      if (errors.length > 0) {
+      if (errors?.length > 0) {
         setError(errors[0].detail)
         return
       }
