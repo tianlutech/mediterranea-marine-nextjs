@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState, useRef } from "react";
 import { getBookingInfo, getBoatInfo } from "@/services/notion.service";
 import { useRouter } from "next/navigation";
-import { Boat, Booking, Captian } from "@/models/models";
+import { Boat, Booking, Captain } from "@/models/models";
 import { useTranslation } from "react-i18next";
 import { updateBookingInfo } from "@/services/notion.service";
 import { getCaptains } from "@/services/notion.service";
@@ -19,7 +19,7 @@ export default function SignPage({ params }: { params: { id: string } }) {
   const [documentCreated, setDocumentCreated] = useState(false)
 
   useEffect(() => {
-    const updateCaptainSignSignAt = async (booking: Booking, boatDetails: Boat, captainDetails: Captian) => {
+    const updateCaptainSignSignAt = async (booking: Booking, boatDetails: Boat, captainDetails: Captain) => {
       const bookingInfo = new Booking({
         captainSignedAt: new Date(),
       });
@@ -69,7 +69,7 @@ export default function SignPage({ params }: { params: { id: string } }) {
         return captainsData.find((captain: any) => captain.id === data.Captain[0]);
       };
 
-      const captainDetails: Captian | undefined = await getCaptain()
+      const captainDetails = await getCaptain() as Captain
 
       if (!captainDetails) {
         setError(t("error.error_captain_details"))

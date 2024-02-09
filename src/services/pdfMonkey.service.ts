@@ -1,6 +1,6 @@
-import { Booking, Boat, Captian } from "@/models/models";
+import { Booking, Boat, Captain } from "@/models/models";
 
-export async function createDocument(bookingInfo: Booking, boatDetails: Boat, captainDetails: Captian) {
+export async function createDocument(bookingInfo: Booking, boatDetails: Boat, captainDetails: Captain) {
   try {
     const response = await fetch(
       "/api/pdfMonkey",

@@ -1,10 +1,5 @@
 import { NotionItem, NotionType } from "./notion.model";
 
-export type Captian = {
-  Signature: { url: string }[];
-  id: string;
-};
-
 export type FileMetadata = {
   name: string;
   mimeType: string;
@@ -81,6 +76,8 @@ export class Captain extends NotionItem {
 
   @NotionType("rich_text")
   "id": string = "";
+
+  Signature: { url: string }[] = [];
 }
 
 export class Booking extends NotionItem {

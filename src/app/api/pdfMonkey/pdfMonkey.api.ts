@@ -1,12 +1,12 @@
 import { PDFMONKEY_DOCUMENT_ID } from "@/models/constants";
-import { Booking, Boat, Captian } from "@/models/models";
+import { Booking, Boat, Captain } from "@/models/models";
 import moment from "moment";
 import { getFileContentBase64FromGoogleDrive } from "../googleDrive/googleDrive.api"
 import axios from "axios"
 
 const pdfMonkey_api_key = process.env.PDFMONKEY_API_KEY
 
-export async function createDocument(bookingInfo: Booking, boatDetails: Boat, captainDetails: Captian) {
+export async function createDocument(bookingInfo: Booking, boatDetails: Boat, captainDetails: Captain) {
   try {
     const convertSignature = async (signature_url: string) => {
       try {
