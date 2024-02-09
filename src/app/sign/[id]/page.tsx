@@ -76,9 +76,9 @@ export default function SignPage({ params }: { params: { id: string } }) {
         return;
       }
 
-      if (!isNaN(data.captainSignedAt?.getTime())) {
-        return window.location.replace("/not-found?code=CSC-503");
-      }
+      // if (!isNaN(data.captainSignedAt?.getTime())) {
+      //   return window.location.replace("/not-found?code=CSC-503");
+      // }
       await updateCaptainSignSignAt(data, boatDetails, captainDetails);
       setDocumentCreated(true);
     };

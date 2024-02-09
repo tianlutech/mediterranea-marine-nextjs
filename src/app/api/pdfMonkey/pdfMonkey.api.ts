@@ -45,7 +45,7 @@ export async function createDocument(bookingInfo: Booking, boatDetails: Boat, ca
       body: JSON.stringify({
         document: {
           document_template_id: PDFMONKEY_DOCUMENT_ID,
-          status:"pending",
+          status: "pending",
           payload: {
             boatName: Nombre,
             boatCode: Code,
@@ -78,7 +78,7 @@ export async function createDocument(bookingInfo: Booking, boatDetails: Boat, ca
             boatId: id,
             captainId: `${captainDetails.id}`,
             _filename: `${bookingInfo["First Name"]} ` + `${bookingInfo["Last Name"]} - ${moment(bookingInfo.Date).format("YYYY-MM-DD")} - contract`,
-            NotionId: `${bookingInfo.notion_id}`,
+            NotionId: bookingInfo.id,
           }
         }
       })
