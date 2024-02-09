@@ -3,7 +3,6 @@ import { Booking, Boat, Captian } from "@/models/models";
 import moment from "moment";
 import { getFileContentBase64FromGoogleDrive } from "../googleDrive/googleDrive.api"
 import axios from "axios"
-import { DAVID_SIGNATURE } from "@/models/constants"
 
 const pdfMonkey_api_key = process.env.PDFMONKEY_API_KEY
 
@@ -26,7 +25,6 @@ export async function createDocument(bookingInfo: Booking, boatDetails: Boat, ca
       }
     };
     
-    const davidSignature = await convertSignature(DAVID_SIGNATURE)
     const captainSignature = await convertSignature(captainDetails.Signature[0].url)
     const customerSignature = await getFileContentBase64FromGoogleDrive(bookingInfo.CustomerSignature)
 
@@ -72,7 +70,6 @@ export async function createDocument(bookingInfo: Booking, boatDetails: Boat, ca
             DeliveryPort:"Ibiza port",
             CustomerSignature: `data:image/png;base64,${customerSignature}`,
             CaptainSignature: captainSignature,
-            DavidSignature: davidSignature
           },
           meta: {
             clientId: "ABC1234-DE",

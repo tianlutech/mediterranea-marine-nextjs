@@ -111,7 +111,10 @@
     "ASB-409": "¡Ya enviaste tu reserva!",
     "CSC-503": "Este contrato ya ha sido firmado",
     "maximum_number_250": "El límite máximo para enviar mensajes a la vez es de 250 clientes.",
-    "failed_to_send_message_to": "No se pudo enviar el mensaje a este número"
+    "failed_to_send_message_to": "No se pudo enviar el mensaje a este número",
+    "error_booking_details": "Detalles de la reserva no encontrados",
+    "error_boat_details": "Detalles del barco no encontrados",
+    "error_captain_details": "Detalles del capitán no encontrados"
   },
   "title": {
     "feed_back_form": "Feedback del Viaje",

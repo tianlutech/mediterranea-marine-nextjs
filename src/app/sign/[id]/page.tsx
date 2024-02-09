@@ -41,7 +41,7 @@ export default function SignPage({ params }: { params: { id: string } }) {
       const data = (await getBookingInfo(params.id)) as Booking;
 
       if (!data || !data.Boat || !data.Date) {
-        router.replace("/");
+        setError(t("error.error_booking_details"))
         return;
       }
 
@@ -50,11 +50,12 @@ export default function SignPage({ params }: { params: { id: string } }) {
       ]);
 
       if (!boatDetails) {
-        router.replace("/");
+        setError(t("error.error_boat_details"))
         return;
       }
 
       if (!data || !data.Captain) {
+        setError(t("error.error_captain_details"))
         return
       }
 
