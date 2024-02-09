@@ -1,6 +1,6 @@
 "use client";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getBookingInfo, getBoatInfo } from "@/services/notion.service";
 import { useRouter } from "next/navigation";
 import { Boat, Booking, Captian } from "@/models/models";
@@ -11,10 +11,12 @@ import Spinner from "@/components/common/containers/spinner";
 import BoatSvg from "@/assets/svgs/BoatSvg";
 import NoSSR from "react-no-ssr";
 import { createDocument } from "@/services/pdfMonkey.service";
+
 export default function SignPage({ params }: { params: { id: string } }) {
   const { t } = useTranslation();
   const [error, setError] = useState<string>("");
   const router = useRouter();
+  const [documentCreated, setDocumentCreated] = useState(false)
 
   useEffect(() => {
     const updateCaptainSignSignAt = async (booking: Booking, boatDetails: Boat, captainDetails: Captian) => {
@@ -27,7 +29,6 @@ export default function SignPage({ params }: { params: { id: string } }) {
         setError(error);
         return;
       }
-
       const res = await createDocument(booking, boatDetails, captainDetails)
       const { errors } = res
       if (errors?.length > 0) {
@@ -38,6 +39,9 @@ export default function SignPage({ params }: { params: { id: string } }) {
     };
 
     const getBookingDetails = async () => {
+      if (documentCreated) {
+        return;
+      }
       const data = (await getBookingInfo(params.id)) as Booking;
 
       if (!data || !data.Boat || !data.Date) {
@@ -68,17 +72,19 @@ export default function SignPage({ params }: { params: { id: string } }) {
       const captainDetails: Captian | undefined = await getCaptain()
 
       if (!captainDetails) {
-        router.replace("/");
+        setError(t("error.error_captain_details"))
         return;
       }
+
       if (!isNaN(data.captainSignedAt?.getTime())) {
         return window.location.replace("/not-found?code=CSC-503");
       }
-      updateCaptainSignSignAt(data, boatDetails, captainDetails);
+      await updateCaptainSignSignAt(data, boatDetails, captainDetails);
+      setDocumentCreated(true);
     };
 
     getBookingDetails();
-  }, [params.id, router]);
+  }, [params.id, t, router, documentCreated]);
 
   return (
     <NoSSR>

@@ -1,6 +1,9 @@
 import { NotionItem, NotionType } from "./notion.model";
 
-export type Captian = NotionItem & {};
+export type Captian = {
+  Signature: { url: string }[];
+  id: string;
+};
 
 export type FileMetadata = {
   name: string;

@@ -6,7 +6,7 @@ import axios from "axios"
 
 const pdfMonkey_api_key = process.env.PDFMONKEY_API_KEY
 
-export async function createDocument(bookingInfo: Booking, boatDetails: Boat, captainDetails: any) {
+export async function createDocument(bookingInfo: Booking, boatDetails: Boat, captainDetails: Captian) {
   try {
     const convertSignature = async (signature_url: string) => {
       try {
@@ -45,6 +45,7 @@ export async function createDocument(bookingInfo: Booking, boatDetails: Boat, ca
       body: JSON.stringify({
         document: {
           document_template_id: PDFMONKEY_DOCUMENT_ID,
+          status:"pending",
           payload: {
             boatName: Nombre,
             boatCode: Code,
@@ -75,8 +76,8 @@ export async function createDocument(bookingInfo: Booking, boatDetails: Boat, ca
             clientId: "ABC1234-DE",
             clientName: `${bookingInfo["First Name"]} ` + `${bookingInfo["Last Name"]}`,
             boatId: id,
-            captainId: `${bookingInfo["First Name"]}`,
-            _filename: "my-document.pdf",
+            captainId: `${captainDetails.id}`,
+            _filename: `${bookingInfo["First Name"]} ` + `${bookingInfo["Last Name"]} - ${moment(bookingInfo.Date).format("YYYY-MM-DD")} - contract`,
             NotionId: `${bookingInfo.notion_id}`,
           }
         }
