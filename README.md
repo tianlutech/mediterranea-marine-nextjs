@@ -56,7 +56,7 @@ All the values are also accessible from the [credentials page](https://www.notio
 - NEXT_PUBLIC_SKIP_BOOKING_STEPS: Add the steps by comma (from the file steps-actions) to skip some sensibles or charged steps during the booking validation
 - WHATSAPP_TOKEN: To send messages on the message bulk functionality to whatsapp numbers. You can get a temporal one in the application [API Config](https://developers.facebook.com/apps/6964882823566210/whatsapp-business/wa-dev-console/?business_id=2330989420463473) but you require permissions.
 For the production was is generated as a system user in the facebook business section (pretty complex)
-- PDFMONKEY_API_KEY: This API key you can get it from the PDF monkey in the account page or in notion env variables
+- PDFMONKEY_API_KEY: This API key you can get it from the PDF monkey in the account page or in notion env variables [PDF Monkey URL](https://dashboard.pdfmonkey.io/account)
 
 ### Application state
 

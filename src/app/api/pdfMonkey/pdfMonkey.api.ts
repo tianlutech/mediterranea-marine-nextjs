@@ -94,9 +94,9 @@ export async function createDocument(
             captainId: `${captainDetails.id}`,
             _filename:
               `${bookingInfo["First Name"]} ` +
-              `${bookingInfo["Last Name"]} - ${moment(bookingInfo.Date).format(
-                "YYYY-MM-DD"
-              )} - contract`,
+              `${bookingInfo["Last Name"]} - ${boatDetails.Nombre} - ${moment(
+                bookingInfo.Date
+              ).format("YYYY-MM-DD")} - contract`,
             NotionId: bookingInfo.id,
           },
         },
@@ -104,6 +104,9 @@ export async function createDocument(
     });
 
     const res = await response.json();
+    if (res.errors) {
+      return { error: res.errors[0].detail };
+    }
     return res;
   } catch (error: any) {
     console.error("Error while creating document", error.message);

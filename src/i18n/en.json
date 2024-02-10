@@ -34,8 +34,8 @@
     "submit": "Submit",
     "pay": "Pay",
     "nautical_miles": "Nautical Miles",
-    "25_miles_description":"NM - IBIZA - SA TORRETA/ESPALMADOR - EL PASO - ILLETAS - IBIZA",
-    "35_miles_description":"NM - IBIZA -SA TORRETA/ESPALMADOR - EL PASO - ILLETAS - CALA SAONA - IBIZA",
+    "25_miles_description": "NM - IBIZA - SA TORRETA/ESPALMADOR - EL PASO - ILLETAS - IBIZA",
+    "35_miles_description": "NM - IBIZA -SA TORRETA/ESPALMADOR - EL PASO - ILLETAS - CALA SAONA - IBIZA",
     "id_number": "ID Number / Passport Number",
     "complete_field": "Complete all fields to sign the contract",
     "engine_hours": "Engine Hours",
@@ -112,7 +112,7 @@
     "failed_to_send_message_to": "Failed to send message to this number",
     "error_booking_details": "Booking details not found",
     "error_boat_details": "Boat details not found",
-    "error_captain_details": "Captain details not found"
+    "error_captain_details": "Captain signature not found"
   },
   "title": {
     "feed_back_form": "Treatment Received Feedback Form",

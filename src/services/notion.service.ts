@@ -48,6 +48,48 @@ export async function getBookingInfo(bookingId: string) {
   }
 }
 
+export async function getCaptain(captainId: string) {
+  try {
+    // Append the bookingId as a query parameter to the URL
+    const response = await fetch(
+      `/api/notion/page?id=${encodeURIComponent(captainId)}`
+    );
+
+    const json = await response.json();
+
+    if (json.error) {
+      console.error(json.error);
+      return undefined;
+    }
+    const captain = new Captain();
+    return parseNotionObject<Captain>(captain, json.result as NotionPage);
+  } catch (error) {
+    console.error("Error retrieving page from Notion:", error);
+    return undefined;
+  }
+}
+
+export async function getBoat(boatId: string) {
+  try {
+    // Append the bookingId as a query parameter to the URL
+    const response = await fetch(
+      `/api/notion/page?id=${encodeURIComponent(boatId)}`
+    );
+
+    const json = await response.json();
+
+    if (json.error) {
+      console.error(json.error);
+      return undefined;
+    }
+    const boat = new Boat();
+    return parseNotionObject<Boat>(boat, json.result as NotionPage);
+  } catch (error) {
+    console.error("Error retrieving page from Notion:", error);
+    return undefined;
+  }
+}
+
 export async function getBookedTimeSlots(date: Date) {
   const filter = {
     and: [

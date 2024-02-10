@@ -1,7 +1,11 @@
 "use client";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState, useRef } from "react";
-import { getBookingInfo, getBoatInfo } from "@/services/notion.service";
+import {
+  getBookingInfo,
+  getBoatInfo,
+  getCaptain,
+} from "@/services/notion.service";
 import { useRouter } from "next/navigation";
 import { Boat, Booking, Captain } from "@/models/models";
 import { useTranslation } from "react-i18next";
@@ -16,75 +20,62 @@ export default function SignPage({ params }: { params: { id: string } }) {
   const { t } = useTranslation();
   const [error, setError] = useState<string>("");
   const router = useRouter();
-  const [documentCreated, setDocumentCreated] = useState(false)
-
+  const id = useRef(params.id);
   useEffect(() => {
-    const updateCaptainSignSignAt = async (booking: Booking, boatDetails: Boat, captainDetails: Captain) => {
+    const updateCaptainSignSignAt = async (
+      booking: Booking,
+      boatDetails: Boat,
+      captainDetails: Captain
+    ) => {
       const bookingInfo = new Booking({
         captainSignedAt: new Date(),
       });
-      const { error } = await updateBookingInfo(params.id, bookingInfo);
+      const { error } = await updateBookingInfo(id.current, bookingInfo);
 
       if (error) {
         setError(error);
         return;
       }
-      const res = await createDocument(booking, boatDetails, captainDetails)
-      const { errors } = res
-      if (errors?.length > 0) {
-        setError(errors[0].detail)
-        return
+      const res = await createDocument(booking, boatDetails, captainDetails);
+      const { error: createError } = res;
+      if (createError) {
+        setError(createError);
+        return;
       }
       router.replace("/success");
     };
 
     const getBookingDetails = async () => {
-      if (documentCreated) {
-        return;
-      }
-      const data = (await getBookingInfo(params.id)) as Booking;
+      const data = (await getBookingInfo(id.current)) as Booking;
 
       if (!data || !data.Boat || !data.Date) {
-        setError(t("error.error_booking_details"))
+        setError(t("error.error_booking_details"));
+        return;
+      }
+      if (!data || !data.Captain) {
+        setError(t("error.error_captain_details"));
         return;
       }
 
-      const [boatDetails] = await Promise.all([
+      const [boatDetails, captainDetails] = await Promise.all([
         getBoatInfo(data.Boat[0]),
+        getCaptain(data.Captain[0]),
       ]);
 
       if (!boatDetails) {
-        setError(t("error.error_boat_details"))
+        setError(t("error.error_boat_details"));
+        return;
+      }
+      if (!captainDetails || !captainDetails.Signature[0]) {
+        setError(t("error.error_captain_details"));
         return;
       }
 
-      if (!data || !data.Captain) {
-        setError(t("error.error_captain_details"))
-        return
-      }
-
-      const getCaptain = async () => {
-        const captainsData = await getCaptains();
-        // I will change the any later 
-        return captainsData.find((captain: any) => captain.id === data.Captain[0]);
-      };
-
-      const captainDetails = await getCaptain() as Captain
-
-      if (!captainDetails) {
-        setError(t("error.error_captain_details"))
-        return;
-      }
-
-      // if (!isNaN(data.captainSignedAt?.getTime())) {
-      //   return window.location.replace("/not-found?code=CSC-503");
-      // }
       await updateCaptainSignSignAt(data, boatDetails, captainDetails);
-      setDocumentCreated(true);
     };
 
     getBookingDetails();
-  }, [params.id, t, router, documentCreated]);
+  }, [id, t, router]);
 
   return (
     <NoSSR>
