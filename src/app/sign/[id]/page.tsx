@@ -15,6 +15,7 @@ import Spinner from "@/components/common/containers/spinner";
 import BoatSvg from "@/assets/svgs/BoatSvg";
 import NoSSR from "react-no-ssr";
 import { createDocument } from "@/services/pdfMonkey.service";
+import { runSavePDFScenario } from "@/services/make.service";
 
 export default function SignPage({ params }: { params: { id: string } }) {
   const { t } = useTranslation();
@@ -42,7 +43,11 @@ export default function SignPage({ params }: { params: { id: string } }) {
         setError(createError);
         return;
       }
-      router.replace("/success");
+      // Wait few secodnds for PDF monkey to generate the PDF
+      setInterval(() => {
+        runSavePDFScenario();
+        router.replace("/success");
+      }, 10000);
     };
 
     const getBookingDetails = async () => {
