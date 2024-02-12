@@ -4,7 +4,7 @@ import CommonInput from "../common/inputs/input";
 import CommonCheckbox from "../common/inputs/checkbox";
 import CommonLabel from "../common/containers/label";
 import React from "react";
-import { Boat, Booking } from "../../models/models";
+import { Booking } from "../../models/models";
 import { useTranslation } from "react-i18next";
 import StarRatings from "react-star-ratings";
 import SubmitButton from "../common/containers/submit-button";
@@ -21,12 +21,8 @@ const FormWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default function FeedbackForm({
-  data,
-  boatInfo,
   id,
 }: {
-  data: Booking;
-  boatInfo: Boat;
   id: string;
 }) {
   const { t } = useTranslation();

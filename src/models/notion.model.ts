@@ -14,12 +14,15 @@ export type NotionType =
   | "multi_select"
   | "title"
   | "files"
+  | "email"
   | "file"
   | "formula"
   | "emoji"
   | "checkbox"
   | "rollup"
   | "url";
+
+type NotionRollupFunction = "show_original"; // TO are more, for roll ups
 
 export type NotionProperty = { type: NotionType } & Record<string, unknown>;
 
@@ -109,6 +112,8 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
   switch (property.type) {
     case "number":
       return property["number"] as number;
+    case "email":
+      return property["email"] || "";
     case "rich_text":
       return (property["rich_text"] as Array<{ text: { content: string } }>)
         .map((textItem) => textItem.text.content)
@@ -129,9 +134,17 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
       const item = property["rollup"] as {
         type: "array";
         array?: NotionProperty[];
+        function: NotionRollupFunction;
       };
       if (item.type === "array") {
-        return item.array?.map((prop) => parseNotionProperty(prop));
+        const value = item.array?.map((prop) => parseNotionProperty(prop));
+        if (!value) {
+          return undefined;
+        }
+        if (item.function === "show_original") {
+          return value[0];
+        }
+        return value;
       }
       return [];
 
@@ -162,81 +175,83 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
   }
 };
 
-const propToNotion: Record<string, (value: any) => NotionProperty> = {
-  title: (value: string) => ({
-    type: "title",
-    title: [{ type: "text", text: { content: value } }],
-  }),
-  multi_select: (value: unknown[]) => ({
-    type: "multi_select",
-    multi_select: value.map((item) => ({
-      name: item,
-    })),
-  }),
-  select: (value: unknown) => ({
-    type: "select",
-    select: { name: value },
-  }),
-  date: (value: Date) => ({
-    type: "date",
-    date: { start: moment(value).toISOString() },
-  }),
-  range: ([start, end]: Date[]) => ({
-    type: "date",
-    date: {
-      start: moment(start).toISOString(),
-      end: moment(end).toISOString(),
-    },
-  }),
-  number: (value: number) => ({
-    type: "number",
-    number: +value,
-  }),
-  formula: (value: number) => ({
-    type: "number",
-    number: +value,
-  }),
-  files: (value: string[]) => ({
-    type: "files",
-    files: value.map((url) => ({
-      name: value,
-      type: "external",
-      external: {
-        url,
+const propToNotion: Record<string, (value: any) => NotionProperty | undefined> =
+  {
+    title: (value: string) => ({
+      type: "title",
+      title: [{ type: "text", text: { content: value } }],
+    }),
+    multi_select: (value: unknown[]) => ({
+      type: "multi_select",
+      multi_select: value.map((item) => ({
+        name: item,
+      })),
+    }),
+    select: (value: unknown) => ({
+      type: "select",
+      select: { name: value },
+    }),
+    date: (value: Date) => ({
+      type: "date",
+      date: { start: moment(value).toISOString() },
+    }),
+    range: ([start, end]: Date[]) => ({
+      type: "date",
+      date: {
+        start: moment(start).toISOString(),
+        end: moment(end).toISOString(),
       },
-    })),
-  }),
-  checkbox: (value: boolean | string) => ({
-    type: "checkbox",
-    checkbox: value === true || value === "true",
-  }),
-  file: (value: string) => ({
-    type: "files",
-    files: [
-      {
+    }),
+    number: (value: number) => ({
+      type: "number",
+      number: +value,
+    }),
+    formula: (value: number) => undefined,
+    email: (value: string) => ({
+      type: "email",
+      eamil: +value,
+    }),
+    files: (value: string[]) => ({
+      type: "files",
+      files: value.map((url) => ({
         name: value,
         type: "external",
         external: {
-          url: value,
+          url,
         },
-      },
-    ],
-  }),
-  rich_text: (value: string) => ({
-    type: "rich_text",
-    rich_text: [
-      {
-        type: "text",
-        text: { content: value },
-      },
-    ],
-  }),
-  relation: (value: string[] | string) => {
-    value = Array.isArray(value) ? value : [value];
+      })),
+    }),
+    checkbox: (value: boolean | string) => ({
+      type: "checkbox",
+      checkbox: value === true || value === "true",
+    }),
+    file: (value: string) => ({
+      type: "files",
+      files: [
+        {
+          name: value,
+          type: "external",
+          external: {
+            url: value,
+          },
+        },
+      ],
+    }),
+    rich_text: (value: string) => ({
+      type: "rich_text",
+      rich_text: [
+        {
+          type: "text",
+          text: { content: value },
+        },
+      ],
+    }),
+    relation: (value: string[] | string) => {
+      value = Array.isArray(value) ? value : [value];
 
-    return { type: "relation", relation: value.map((id) => ({ id })) };
-  },
-};
+      return { type: "relation", relation: value.map((id) => ({ id })) };
+    },
+  };
 
 export const parseObjectToNotion = <T extends NotionItem>(
   item: T
@@ -249,8 +264,9 @@ export const parseObjectToNotion = <T extends NotionItem>(
     if (!value || !parser) {
       return obj;
     }
-
-    obj[notionProp.property] = parser(value);
+    const parsedvalue = parser(value);
+    // Skip undefine
+    parsedvalue !== undefined && (obj[notionProp.property] = parsedvalue);
     return obj;
   }, {} as Record<string, NotionProperty>);
 

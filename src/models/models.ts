@@ -1,7 +1,5 @@
 import { NotionItem, NotionType } from "./notion.model";
 
-export type Captian = NotionItem & {};
-
 export type FileMetadata = {
   name: string;
   mimeType: string;
@@ -36,6 +34,7 @@ export type BookingFormData = {
   "ID Number": string;
   documentType: "National ID" | "Passport";
   OutstandingPayment: number;
+  CustomerSignature: string;
 };
 
 export type FileBody = {
@@ -74,6 +73,11 @@ export class Captain extends NotionItem {
   }
   @NotionType("title")
   "Name": string = "";
+
+  @NotionType("rich_text")
+  "id": string = "";
+
+  Signature: { url: string }[] = [];
 }
 
 export class Booking extends NotionItem {
@@ -97,8 +101,8 @@ export class Booking extends NotionItem {
   @NotionType("number")
   "Payment Deposit": number = 0;
 
-  @NotionType("rich_text")
-  Whatsapp: string = "";
+  @NotionType("relation")
+  Whatsapp: string[] = [];
 
   @NotionType("rich_text")
   "Departure Time": string = "";
@@ -125,9 +129,14 @@ export class Booking extends NotionItem {
   "First Name": string = "";
 
   @NotionType("rich_text")
-  "ID Number": string = "";
+  "notion_id": string = "";
 
   @NotionType("rich_text")
+  "CustomerSignature": string = "";
+
+  @NotionType("rich_text")
+  "ID Number": string = "";
+
   "Total Passengers": number;
 
   @NotionType("file")
@@ -137,10 +146,9 @@ export class Booking extends NotionItem {
   "ID Back Picture": string;
 
   @NotionType("checkbox")
-  AllowFollowUp: number = 0;
+  AllowFollowUp?: number;
 
-  @NotionType("relation")
-  Captain?: Captian;
+  Captain: string[] = [];
 
   @NotionType("number")
   "No Adults": number;

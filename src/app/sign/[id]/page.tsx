@@ -1,50 +1,86 @@
 "use client";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect, useState } from "react";
-import { getBookingInfo } from "@/services/notion.service";
+import { useEffect, useState, useRef } from "react";
+import {
+  getBookingInfo,
+  getBoatInfo,
+  getCaptain,
+} from "@/services/notion.service";
 import { useRouter } from "next/navigation";
-import { Booking } from "@/models/models";
+import { Boat, Booking, Captain } from "@/models/models";
 import { useTranslation } from "react-i18next";
 import { updateBookingInfo } from "@/services/notion.service";
-import { toast } from "react-toastify";
+import { getCaptains } from "@/services/notion.service";
 import Spinner from "@/components/common/containers/spinner";
 import BoatSvg from "@/assets/svgs/BoatSvg";
 import NoSSR from "react-no-ssr";
+import { createDocument } from "@/services/pdfMonkey.service";
+import { runSavePDFScenario } from "@/services/make.service";
 
 export default function SignPage({ params }: { params: { id: string } }) {
   const { t } = useTranslation();
   const [error, setError] = useState<string>("");
-
   const router = useRouter();
-
+  const id = useRef(params.id);
   useEffect(() => {
-    const updateCaptainSignSignAt = async () => {
+    const updateCaptainSignSignAt = async (
+      booking: Booking,
+      boatDetails: Boat,
+      captainDetails: Captain
+    ) => {
       const bookingInfo = new Booking({
         captainSignedAt: new Date(),
       });
-      const { error } = await updateBookingInfo(params.id, bookingInfo);
+      const { error } = await updateBookingInfo(id.current, bookingInfo);
+
       if (error) {
         setError(error);
         return;
       }
-      router.replace("/success");
+      const res = await createDocument(booking, boatDetails, captainDetails);
+      const { error: createError } = res;
+      if (createError) {
+        setError(createError);
+        return;
+      }
+      // Wait few secodnds for PDF monkey to generate the PDF
+      setInterval(() => {
+        runSavePDFScenario();
+        router.replace("/success");
+      }, 10000);
     };
 
     const getBookingDetails = async () => {
-      const data = (await getBookingInfo(params.id)) as Booking;
+      const data = (await getBookingInfo(id.current)) as Booking;
 
       if (!data || !data.Boat || !data.Date) {
-        router.replace("/");
+        setError(t("error.error_booking_details"));
         return;
       }
-      if (!isNaN(data.captainSignedAt?.getTime())) {
-        return window.location.replace("/not-found?code=CSC-503");
+      if (!data || !data.Captain) {
+        setError(t("error.error_captain_details"));
+        return;
       }
-      updateCaptainSignSignAt();
+
+      const [boatDetails, captainDetails] = await Promise.all([
+        getBoatInfo(data.Boat[0]),
+        getCaptain(data.Captain[0]),
+      ]);
+
+      if (!boatDetails) {
+        setError(t("error.error_boat_details"));
+        return;
+      }
+      if (!captainDetails || !captainDetails.Signature[0]) {
+        setError(t("error.error_captain_details"));
+        return;
+      }
+
+      await updateCaptainSignSignAt(data, boatDetails, captainDetails);
     };
 
     getBookingDetails();
-  }, [params.id, router]);
+  }, [id, t, router]);
 
   return (
     <NoSSR>

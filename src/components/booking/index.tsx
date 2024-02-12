@@ -47,6 +47,7 @@ export default function BookingComponent({
     "ID Number": "",
     documentType: "National ID",
     OutstandingPayment: data.OutstandingPayment || 0,
+    CustomerSignature: "",
   });
 
   const formik = useFormik({

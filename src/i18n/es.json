@@ -35,8 +35,8 @@
     "submit": "Enviar",
     "pay": "Pagar",
     "nautical_miles": "Millas Náuticas",
-    "25_miles_description":"NM - IBIZA - SA TORRETA/ESPALMADOR - EL PASO - ILLETAS - IBIZA",
-    "35_miles_description":"NM - IBIZA -SA TORRETA/ESPALMADOR - EL PASO - ILLETAS - CALA SAONA - IBIZA",
+    "25_miles_description": "NM - IBIZA - SA TORRETA/ESPALMADOR - EL PASO - ILLETAS - IBIZA",
+    "35_miles_description": "NM - IBIZA -SA TORRETA/ESPALMADOR - EL PASO - ILLETAS - CALA SAONA - IBIZA",
     "id_number": "Número de identificación / Pasaporte",
     "complete_field": "Complete todos los campos para firmar el contrato.",
     "engine_hours": "Horas de motor",
@@ -111,7 +111,10 @@
     "ASB-409": "¡Ya enviaste tu reserva!",
     "CSC-503": "Este contrato ya ha sido firmado",
     "maximum_number_250": "El límite máximo para enviar mensajes a la vez es de 250 clientes.",
-    "failed_to_send_message_to": "No se pudo enviar el mensaje a este número"
+    "failed_to_send_message_to": "No se pudo enviar el mensaje a este número",
+    "error_booking_details": "Detalles de la reserva no encontrados",
+    "error_boat_details": "Detalles del barco no encontrados",
+    "error_captain_details": "Firma del capitán no configurada"
   },
   "title": {
     "feed_back_form": "Feedback del Viaje",

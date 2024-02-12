@@ -241,7 +241,6 @@ export const stepsActions = ({
     },
   };
 
-  // Abel here I used any becuase the Booking was causing errors and same for the FormData
   const saveData = {
     execute: async (formData: BookingFormData, boat: Boat) => {
       setModalInfo({

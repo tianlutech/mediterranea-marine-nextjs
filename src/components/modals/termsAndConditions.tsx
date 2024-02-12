@@ -4,7 +4,8 @@ import SignaturePad from "react-signature-canvas";
 import React, { useRef, useState, useEffect } from "react";
 import { Boat, Booking, BookingFormData } from "@/models/models";
 import moment from "moment";
-import { toast } from "react-toastify";
+import { uploadSignatureImage } from "@/services/googleDrive.service";
+import { convertCanvasToImage } from "@/services/utils";
 
 export default function TermsAndConditions({
   isOpen,
@@ -71,20 +72,30 @@ export default function TermsAndConditions({
     maximumDepartureTime()
   }, [bookingInfo]);
 
-  // will uncomment later if we need to use it
-  const getSignatureImage = () => {
+  const getSignatureImage = async () => {
     if (sigPad.current) {
+      const mime = "image/jpeg"
       const canvas = sigPad.current.getTrimmedCanvas();
-      return canvas.toDataURL("image/png");
+      const image = await convertCanvasToImage({ canvas, mime })
+
+      const response = await uploadSignatureImage(image as File);
+      if (!response.id) {
+        return "";
+      }
+      const url = `https://drive.google.com/file/d/${response.id}/view`;
+      setFormData({ ...formData, "CustomerSignature": url })
+      return
     }
     return null;
   };
+
   const agreeContract = () => {
     setFormData({ ...formData, signedContract: !formData["signedContract"] });
     closeModal();
     onUserSigning();
     getSignatureImage();
   };
+
   return (
     <Modal isOpen={isOpen} onClose={() => closeModal()}>
       <div className="relative p-2 md:w-[60%] bg-white rounded-lg shadow overflow-y-scroll pt-0 w-[95%] h-[95%] md:px-12 px-2">
