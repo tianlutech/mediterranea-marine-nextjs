@@ -10,7 +10,6 @@ import { useRouter } from "next/navigation";
 import { Boat, Booking, Captain } from "@/models/models";
 import { useTranslation } from "react-i18next";
 import { updateBookingInfo } from "@/services/notion.service";
-import { getCaptains } from "@/services/notion.service";
 import Spinner from "@/components/common/containers/spinner";
 import BoatSvg from "@/assets/svgs/BoatSvg";
 import NoSSR from "react-no-ssr";

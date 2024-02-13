@@ -10,6 +10,7 @@ import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
 import moment from "moment";
 import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
 import EdenAIService from "@/services/edenAI.service";
+import { sendMessageWebhook } from "@/services/make.service"
 
 type StepAction = {
   execute: (formData: BookingFormData, boat: Boat) => void;
@@ -36,8 +37,9 @@ const storeIdImage = async (
   slag: string
 ) => {
   const response = await uploadFile(file, boatInfo.Nombre, id, slag);
+
   if (!response.id) {
-    return "";
+    return false;
   }
   const url = `https://drive.google.com/file/d/${response.id}/view`;
   return url;
@@ -115,7 +117,6 @@ export const stepsActions = ({
       );
 
       if (!uploadIdFrontResponse) {
-        toast.error(t("error.upload_image"));
         setModalInfo({
           modal: "loading",
           message: "",
@@ -297,6 +298,23 @@ export const stepsActions = ({
           Date: departureTime,
         })
       );
+
+      setModalInfo({
+        modal: "loading",
+        message: t("loadingMessage.send_webhook_message"),
+        error: "",
+      });
+
+      const response = await sendMessageWebhook(res.booking as Booking, boat)
+
+      if (!response) {
+        setModalInfo({
+          modal: "loading",
+          message: "",
+          error: t("error.error_message_webhook"),
+        });
+        return;
+      }
 
       nextStep();
     },
