@@ -1,5 +1,6 @@
-import { MAKE_SCENARIOS } from "@/models/constants";
-import { Booking, Boat, Captain } from "@/models/models";
+import { MAKE_SCENARIOS, MAKE_WEBHOOKS } from "@/models/constants";
+import { Booking, Boat } from "@/models/models";
+import moment from "moment";
 
 export async function runSavePDFScenario() {
   try {
@@ -14,6 +15,40 @@ export async function runSavePDFScenario() {
     const res = await response.json();
 
     return res;
+  } catch (error) {
+    console.error(error);
+    return { error };
+  }
+}
+
+export async function sendMessageWebhook(
+  bookingInfo: Booking,
+  boatDetails: Boat
+) {
+  try {
+    const queryParams = new URLSearchParams({
+      date: moment(bookingInfo.Date).format("DD/MM/YY"),
+      id: bookingInfo.id,
+      firstName: bookingInfo["First Name"],
+      lastName: bookingInfo["Last Name"],
+      customerEmail: bookingInfo.Email,
+      boatName: boatDetails.Nombre,
+      pricePerMile: (boatDetails.MilePrice ?? "0").toString(),
+      totalPassengers: (bookingInfo["Total Passengers"] ?? "0").toString(),
+    }).toString();
+
+    const res = await fetch(
+      `${MAKE_WEBHOOKS.BOOKING_SUBMITTED}?${queryParams}`,
+      {
+        method: "GET",
+      }
+    );
+
+    if (res.status !== 200) {
+      return false;
+    }
+
+    return true;
   } catch (error) {
     console.error(error);
     return { error };

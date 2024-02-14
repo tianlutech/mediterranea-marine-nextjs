@@ -10,6 +10,7 @@ import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
 import moment from "moment";
 import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
 import EdenAIService from "@/services/edenAI.service";
+import { sendMessageWebhook } from "@/services/make.service";
 
 type StepAction = {
   execute: (formData: BookingFormData, boat: Boat) => void;
@@ -27,6 +28,7 @@ export const steps = [
   "uploadBackIdImage",
   "pay",
   "saveData",
+  "notifyCustomer",
 ].filter((step) => !skip_steps.includes(step));
 
 const storeIdImage = async (
@@ -36,8 +38,9 @@ const storeIdImage = async (
   slag: string
 ) => {
   const response = await uploadFile(file, boatInfo.Nombre, id, slag);
+
   if (!response.id) {
-    return "";
+    return false;
   }
   const url = `https://drive.google.com/file/d/${response.id}/view`;
   return url;
@@ -47,6 +50,7 @@ let imageFrontLink = "";
 let imageBackLink = "";
 let imageFrontValidated = false;
 let imageBackValidated = false;
+let bookingSaved: Booking;
 
 export const stepsActions = ({
   setModalInfo,
@@ -115,7 +119,6 @@ export const stepsActions = ({
       );
 
       if (!uploadIdFrontResponse) {
-        toast.error(t("error.upload_image"));
         setModalInfo({
           modal: "loading",
           message: "",
@@ -263,13 +266,18 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${
+          formData["Departure Time"]
         }`
       );
 
       const bookingInfo = new Booking({
         ...bookingData,
-        Name: `${booking["First Name"]} ` + `${booking["Last Name"]} - ${moment(booking.Date).format("YYYY-MM-DD")}`,
+        Name:
+          `${booking["First Name"]} ` +
+          `${booking["Last Name"]} - ${moment(booking.Date).format(
+            "YYYY-MM-DD"
+          )}`,
         "ID Front Picture": imageFrontLink,
         "ID Back Picture": imageBackLink,
         Toys: [paddle, seaBobName].filter((value) => !!value),
@@ -286,7 +294,7 @@ export const stepsActions = ({
         });
         return;
       }
-
+      bookingSaved = res.booking as Booking;
       /**
        * Create a Time Slot so no one can book at the same time
        */
@@ -302,6 +310,27 @@ export const stepsActions = ({
     },
   };
 
+  const notifyCustomer = {
+    execute: async (_formData: BookingFormData, boat: Boat) => {
+      setModalInfo({
+        modal: "loading",
+        message: t("loadingMessage.send_webhook_message"),
+        error: "",
+      });
+      const response = await sendMessageWebhook(bookingSaved, boat);
+
+      if (!response) {
+        setModalInfo({
+          modal: "loading",
+          message: "",
+          error: t("error.error_message_webhook"),
+        });
+        return;
+      }
+      nextStep();
+    },
+  };
+
   return {
     fuel,
     sign,
@@ -311,5 +340,6 @@ export const stepsActions = ({
     uploadBackIdImage,
     pay,
     saveData,
+    notifyCustomer,
   };
 };
