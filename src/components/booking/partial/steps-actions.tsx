@@ -10,7 +10,7 @@ import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
 import moment from "moment";
 import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
 import EdenAIService from "@/services/edenAI.service";
-import { sendMessageWebhook } from "@/services/make.service"
+import { sendMessageWebhook } from "@/services/make.service";
 
 type StepAction = {
   execute: (formData: BookingFormData, boat: Boat) => void;
@@ -264,13 +264,18 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${
+          formData["Departure Time"]
         }`
       );
 
       const bookingInfo = new Booking({
         ...bookingData,
-        Name: `${booking["First Name"]} ` + `${booking["Last Name"]} - ${moment(booking.Date).format("YYYY-MM-DD")}`,
+        Name:
+          `${booking["First Name"]} ` +
+          `${booking["Last Name"]} - ${moment(booking.Date).format(
+            "YYYY-MM-DD"
+          )}`,
         "ID Front Picture": imageFrontLink,
         "ID Back Picture": imageBackLink,
         Toys: [paddle, seaBobName].filter((value) => !!value),
@@ -305,7 +310,7 @@ export const stepsActions = ({
         error: "",
       });
 
-      const response = await sendMessageWebhook(res.booking as Booking, boat)
+      const response = await sendMessageWebhook(res.booking as Booking, boat);
 
       if (!response) {
         setModalInfo({

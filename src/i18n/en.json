@@ -134,7 +134,8 @@
     "loading_fuel_modal": "Loading fuel modal",
     "loading_contract": "Loading contract modal",
     "sending_message_to": "Sending message to",
-    "sending_complete": "Messages sent!"
+    "sending_complete": "Messages sent!",
+    "send_webhook_message": "Sending confirmation to your email"
   },
   "select_options": {
     "None": "None",
