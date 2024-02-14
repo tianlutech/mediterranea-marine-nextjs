@@ -28,6 +28,7 @@ export const steps = [
   "uploadBackIdImage",
   "pay",
   "saveData",
+  "notifyCustomer",
 ].filter((step) => !skip_steps.includes(step));
 
 const storeIdImage = async (
@@ -49,6 +50,7 @@ let imageFrontLink = "";
 let imageBackLink = "";
 let imageFrontValidated = false;
 let imageBackValidated = false;
+let bookingSaved: Booking;
 
 export const stepsActions = ({
   setModalInfo,
@@ -292,7 +294,7 @@ export const stepsActions = ({
         });
         return;
       }
-
+      bookingSaved = res.booking as Booking;
       /**
        * Create a Time Slot so no one can book at the same time
        */
@@ -304,13 +306,18 @@ export const stepsActions = ({
         })
       );
 
+      nextStep();
+    },
+  };
+
+  const notifyCustomer = {
+    execute: async (_formData: BookingFormData, boat: Boat) => {
       setModalInfo({
         modal: "loading",
         message: t("loadingMessage.send_webhook_message"),
         error: "",
       });
-
-      const response = await sendMessageWebhook(res.booking as Booking, boat);
+      const response = await sendMessageWebhook(bookingSaved, boat);
 
       if (!response) {
         setModalInfo({
@@ -320,7 +327,6 @@ export const stepsActions = ({
         });
         return;
       }
-
       nextStep();
     },
   };
@@ -334,5 +340,6 @@ export const stepsActions = ({
     uploadBackIdImage,
     pay,
     saveData,
+    notifyCustomer,
   };
 };
