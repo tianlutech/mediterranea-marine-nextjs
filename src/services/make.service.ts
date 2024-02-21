@@ -33,7 +33,7 @@ export async function sendMessageWebhook(
       lastName: bookingInfo["Last Name"],
       customerEmail: bookingInfo.Email,
       boatName: boatDetails.Nombre,
-      pricePerMile: (boatDetails.MilePrice ?? "0").toString(),
+      pricePerMile: bookingInfo["Fuel Payment"].toString(),
       totalPassengers: (bookingInfo["Total Passengers"] ?? "0").toString(),
     }).toString();
 
