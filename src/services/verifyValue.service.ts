@@ -1,11 +1,11 @@
-export async function verifyPin(Pin: string, captainId?: string) {
+export async function verifyValue(Pin: string, key?: string) {
   try {
-    const response = await fetch("/api/verifyPin", {
+    const response = await fetch("/api/verifyValue", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ captainId, Pin }),
+      body: JSON.stringify({ key, Pin }),
     });
 
     const res = await response.json();

@@ -21,7 +21,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SecretInput from "../common/inputs/secretInput";
-import { verifyPin } from "@/services/verifyPin.service";
+import { verifyValue } from "@/services/verifyValue.service";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -57,7 +57,7 @@ export default function FuelForm() {
   const submitFuelForm = async () => {
     setLoading(true);
     try {
-      const response = await verifyPin(data.Pin, data.Captain)
+      const response = await verifyValue(data.Pin, data.Captain)
       if (!response) {
         return toast.error(t("error.error_invalid_pin"))
       }

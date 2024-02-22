@@ -1,4 +1,4 @@
-import * as verify from "./verifyPin.api";
+import * as verify from "./verifyValue.api";
 
 export async function POST(request: Request) {
   try {
@@ -7,14 +7,14 @@ export async function POST(request: Request) {
       throw new Error("Invalid Content-Type");
     }
     const body = await request.json();
-    const captainId = body.captainId;
+    const key = body.key;
     const Pin = body.Pin;
 
-    if(!captainId) {
-      const response = await verify.verifyMasterPin(Pin);
+    if(!key) {
+      const response = await verify.verifyMasterValue(Pin);
       return response
     }
-    const response = await verify.verifyCaptainPin(captainId, Pin);
+    const response = await verify.verifyValue(key, Pin);
 
     return new Response(JSON.stringify(response), { status: 200 });
   } catch (error) {

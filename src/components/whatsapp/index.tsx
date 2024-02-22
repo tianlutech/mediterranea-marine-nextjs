@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SecretInput from "../common/inputs/secretInput";
-import { verifyPin } from "@/services/verifyPin.service";
+import { verifyValue } from "@/services/verifyValue.service";
 
 const PRICE = 0.0509; // At 2024-01-29
 
@@ -63,7 +63,7 @@ export default function WhatsAppBulkMessagesForm({
   }, [setTemplates]);
 
   const onSubmit = async () => {
-    const response = await verifyPin(data.Pin)
+    const response = await verifyValue(data.Pin)
     if (!response) {
       return toast.error(t("error.error_invalid_pin"))
     }

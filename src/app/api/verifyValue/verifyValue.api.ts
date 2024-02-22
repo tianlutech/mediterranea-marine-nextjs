@@ -2,10 +2,10 @@ import { Client } from "@notionhq/client";
 const notionSecret = process.env.NOTION_SECRET || undefined;
 const masterPin = process.env.MASTER_PIN;
 const notion = new Client({ auth: notionSecret });
-export async function verifyCaptainPin(captainId: string, Pin: string) {
+export async function verifyValue(key: string, Pin: string) {
   try {
     const response: any = await notion.pages.retrieve({
-      page_id: captainId,
+      page_id: key,
     });
     const captainPin = (response.properties["$Pin"].rich_text[0].plain_text).replace(/\n/g, "")
 
@@ -20,7 +20,7 @@ export async function verifyCaptainPin(captainId: string, Pin: string) {
   }
 }
 
-export async function verifyMasterPin(Pin: string) {
+export async function verifyMasterValue(Pin: string) {
   try {
     if(masterPin !== Pin) {
       return false

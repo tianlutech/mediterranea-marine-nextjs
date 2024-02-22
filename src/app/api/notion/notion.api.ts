@@ -15,7 +15,7 @@ export async function getPage(pageId: string) {
     const response = await notion.pages.retrieve({
       page_id: pageId,
     });
-    const filteredResult = await removePrivateProperties(response as any)
+    const filteredResult = await removePrivateProperties(response as Record<string,unknown>)
     return { result: filteredResult };
   } catch (error: any) {
     console.error("Get Notion Page Error:", error.message);
