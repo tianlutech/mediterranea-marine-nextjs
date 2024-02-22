@@ -318,12 +318,13 @@ export const stepsActions = ({
         error: "",
       });
       const response = await sendMessageWebhook(bookingSaved, boat);
-
-      if (!response) {
+      if ("error" in (response as object)) {
         setModalInfo({
           modal: "loading",
           message: "",
-          error: t("error.error_message_webhook"),
+          error:
+            (response as { error: string }).error ||
+            t("error.error_message_webhook"),
         });
         return;
       }
