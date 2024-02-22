@@ -115,7 +115,8 @@
     "failed_to_send_message_to": "No se pudo enviar el mensaje a este número",
     "error_booking_details": "Detalles de la reserva no encontrados",
     "error_boat_details": "Detalles del barco no encontrados",
-    "error_captain_details": "Firma del capitán no configurada"
+    "error_captain_details": "Firma del capitán no configurada",
+    "error_captain_pin":"PIN no válido"
   },
   "title": {
     "feed_back_form": "Feedback del Viaje",

@@ -14,6 +14,7 @@ export default function CommonInput({
   max,
   step,
   checked,
+  minlength
 }: {
   type: string;
   id: string;
@@ -26,6 +27,7 @@ export default function CommonInput({
   max?: number;
   step?: number;
   checked?: boolean;
+  minlength?: any
 }) {
   return (
     <input
@@ -40,6 +42,7 @@ export default function CommonInput({
       min={min}
       max={max}
       step={step}
+      minLength={minlength}
     />
   );
 }

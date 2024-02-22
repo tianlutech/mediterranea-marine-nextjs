@@ -113,7 +113,8 @@
     "failed_to_send_message_to": "Failed to send message to this number",
     "error_booking_details": "Booking details not found",
     "error_boat_details": "Boat details not found",
-    "error_captain_details": "Captain signature not found"
+    "error_captain_details": "Captain signature not found",
+    "error_captain_pin":"Invalid pin"
   },
   "title": {
     "feed_back_form": "Treatment Received Feedback Form",
