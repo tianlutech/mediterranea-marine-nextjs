@@ -1,4 +1,4 @@
-export async function verifyPin(captainId: string, Pin: string) {
+export async function verifyPin(Pin: string, captainId?: string) {
   try {
     const response = await fetch("/api/verifyPin", {
       method: "POST",

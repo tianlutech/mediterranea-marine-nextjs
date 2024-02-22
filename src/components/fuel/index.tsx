@@ -11,15 +11,13 @@ import CommonSelect from "@/components/common/inputs/selectInput";
 import { PORTS } from "@/models/constants";
 import SelectBoat from "../selectBoat/selectBoat";
 import SelectCaptain from "../selectCaptain/selectCaptain";
-import LoadingModal from "../modals/loadingModal";
 import { useFormik } from "formik";
 import { uploadReceiptImage } from "@/services/googleDrive.service";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { createFuelRecord } from "../../services/notion.service";
-import { Captain, Fuel } from "../../models/models";
+import { Fuel } from "../../models/models";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getCaptain } from "@/services/notion.service";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SecretInput from "../common/inputs/secretInput";
@@ -59,12 +57,10 @@ export default function FuelForm() {
   const submitFuelForm = async () => {
     setLoading(true);
     try {
-      const response = await verifyPin(data.Captain, data.Pin)
-
+      const response = await verifyPin(data.Pin, data.Captain)
       if (!response) {
-        return toast.error(t("error.error_captain_pin"))
+        return toast.error(t("error.error_invalid_pin"))
       }
-
       const receiptUrl = await storeReceiptImage(
         data["Picture of the Receipt"]
       );

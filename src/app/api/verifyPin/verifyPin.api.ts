@@ -1,10 +1,8 @@
-import axios from "axios"
 import { Client } from "@notionhq/client";
 const notionSecret = process.env.NOTION_SECRET || undefined;
-const googleApiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+const masterPin = process.env.MASTER_PIN;
 const notion = new Client({ auth: notionSecret });
-
-export async function verifyPin(captainId: string, Pin: string) {
+export async function verifyCaptainPin(captainId: string, Pin: string) {
   try {
     const response: any = await notion.pages.retrieve({
       page_id: captainId,
@@ -18,6 +16,18 @@ export async function verifyPin(captainId: string, Pin: string) {
     return true;
   } catch (error: any) {
     console.error("Get Notion Page Error:", error.message);
+    return { error: error.message };
+  }
+}
+
+export async function verifyMasterPin(Pin: string) {
+  try {
+    if(masterPin !== Pin) {
+      return false
+    }
+    return true;
+  } catch (error: any) {
+    console.error("There has been an error:", error.message);
     return { error: error.message };
   }
 }

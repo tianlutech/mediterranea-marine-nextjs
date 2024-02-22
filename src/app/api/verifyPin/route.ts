@@ -10,12 +10,15 @@ export async function POST(request: Request) {
     const captainId = body.captainId;
     const Pin = body.Pin;
 
-    const response = await verify.verifyPin(captainId, Pin);
+    if(!captainId) {
+      const response = await verify.verifyMasterPin(Pin);
+      return response
+    }
+    const response = await verify.verifyCaptainPin(captainId, Pin);
 
     return new Response(JSON.stringify(response), { status: 200 });
   } catch (error) {
-    // TODO  Not valid address shall not fire an exception but be handle in the if
-    console.error("Please enter more specific address:", error);
+    console.error("There has been an error:", error);
     return new Response(JSON.stringify(error), { status: 500 });
   }
 }
