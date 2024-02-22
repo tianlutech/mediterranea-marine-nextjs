@@ -33,8 +33,10 @@ export async function sendMessageWebhook(
       lastName: bookingInfo["Last Name"],
       customerEmail: bookingInfo.Email,
       boatName: boatDetails.Nombre,
-      pricePerMile: (boatDetails.MilePrice ?? "0").toString(),
+      pricePerMile: (boatDetails.MilePrice ?? "0").toString() + " Euros",
       totalPassengers: (bookingInfo["Total Passengers"] ?? "0").toString(),
+      noAdults: (bookingInfo["No Adults"] ?? "0").toString(),
+      noChilds: (bookingInfo["No Childs"] ?? "0").toString(),
     }).toString();
 
     const res = await fetch(
@@ -45,12 +47,12 @@ export async function sendMessageWebhook(
     );
 
     if (res.status !== 200) {
-      return false;
+      return { error: (res.body as any).error };
     }
 
-    return true;
-  } catch (error) {
+    return { ok: true };
+  } catch (error: any) {
     console.error(error);
-    return { error };
+    return { error: error.message };
   }
 }

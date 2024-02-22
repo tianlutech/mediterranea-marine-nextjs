@@ -29,7 +29,7 @@
     "file_sizes": "The file size shall not be more than {{size}}MB",
     "boat_passenger_info1": "This boat allows a maximum of",
     "boat_passenger_info2": "passengers. We require to know this information to prepare the lifevest and other equipment accordingly",
-    "continue_without_prepayment": "Pay the next after the date booking",
+    "continue_without_prepayment": "Pay on the booking's date",
     "none_option": "None",
     "submit": "Submit",
     "pay": "Pay",
@@ -114,7 +114,8 @@
     "error_booking_details": "Booking details not found",
     "error_boat_details": "Boat details not found",
     "error_captain_details": "Captain signature not found",
-    "error_invalid_pin":"Invalid pin"
+    "error_invalid_pin":"Invalid pin",
+    "error_message_webhook": "Booking confirmado, pero no hemos enviar el mensake de confirmación a tu correo."
   },
   "title": {
     "feed_back_form": "Treatment Received Feedback Form",
