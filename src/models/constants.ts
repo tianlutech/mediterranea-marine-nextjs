@@ -44,12 +44,7 @@ export const DEPARTURES_TIMES = [
 
 export const PAYMENT_METHODS = ["None", "Transfer", "Card", "Cash"];
 
-export const PORTS = [
-  "Marina Botafoc",
-  "Marina Ibiza",
-  "Club Nautico de Ibiza",
-  "Marina Port Ibiza",
-];
+export const PORTS = ["Marina Botafoc", "Marina Ibiza"];
 
 export const SEABOB = [
   {

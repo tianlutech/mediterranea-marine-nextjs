@@ -30,7 +30,7 @@
     "file_sizes": "El tamaño de archivo no superior a 10 MB",
     "boat_passenger_info1": "Este barco permite un máximo de",
     "boat_passenger_info2": "Pasajeros. Necesitamos conocer esta información para preparar el chaleco salvavidas y otros equipos en consecuencia.",
-    "continue_without_prepayment": "Pagar el dia posterior a la reserva",
+    "continue_without_prepayment": "Pagar el mismo dia de la reserva",
     "none_option": "Ninguno",
     "submit": "Enviar",
     "pay": "Pagar",
@@ -147,6 +147,6 @@
     "Mash": "Metálico"
   },
   "signing": {
-    "title": "Firmando acuerdo..."
+    "title": "Firmando contrato..."
   }
 }
