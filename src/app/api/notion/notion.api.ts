@@ -15,8 +15,8 @@ export async function getPage(pageId: string) {
     const response = await notion.pages.retrieve({
       page_id: pageId,
     });
-
-    return { result: response };
+    const filteredResult = await removePrivateProperties(response as any)
+    return { result: filteredResult };
   } catch (error: any) {
     console.error("Get Notion Page Error:", error.message);
     return { error: error.message };
@@ -73,6 +73,25 @@ export async function createDatabaseItem({
     return { result: response };
   } catch (error: any) {
     console.error("Create Item in Database :", error.message);
+    return { error: error.message };
+  }
+}
+
+export async function removePrivateProperties(response: any) {
+  try {
+    if(!response) {
+      return
+    }
+    if (response.properties) {
+      Object.keys(response.properties).forEach(key => {
+        if (key.startsWith("$")) {
+          delete response.properties[key];
+        }
+      });
+    }
+    return response;
+  } catch (error: any) {
+    console.error("Property value not found", error.message);
     return { error: error.message };
   }
 }
