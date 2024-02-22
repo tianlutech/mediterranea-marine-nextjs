@@ -23,6 +23,7 @@ import { getCaptain } from "@/services/notion.service";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SecretInput from "../common/inputs/secretInput";
+import { verifyPin } from "@/services/verifyPin.service";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -58,10 +59,9 @@ export default function FuelForm() {
   const submitFuelForm = async () => {
     setLoading(true);
     try {
-      const { Pin } = await getCaptain(data.Captain) as Captain
-      const CaptainPin = Pin.replace(/\n/g, "");
+      const response = await verifyPin(data.Captain, data.Pin)
 
-      if (CaptainPin !== data.Pin) {
+      if (!response) {
         return toast.error(t("error.error_captain_pin"))
       }
 
