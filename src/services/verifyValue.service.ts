@@ -1,11 +1,11 @@
-export async function verifyValue(Pin: string, key?: string) {
+export async function verifyValue(value: string, compareTo: string, itemID?: string) {
   try {
     const response = await fetch("/api/verifyValue", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ key, Pin }),
+      body: JSON.stringify({ itemID, value, compareTo}),
     });
 
     const res = await response.json();

@@ -57,7 +57,7 @@ export default function FuelForm() {
   const submitFuelForm = async () => {
     setLoading(true);
     try {
-      const response = await verifyValue(data.Pin, data.Captain)
+      const response = await verifyValue(data.Captain, data.Pin, "$Pin")
       if (!response) {
         return toast.error(t("error.error_invalid_pin"))
       }

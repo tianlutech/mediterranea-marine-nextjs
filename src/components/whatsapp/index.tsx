@@ -63,7 +63,7 @@ export default function WhatsAppBulkMessagesForm({
   }, [setTemplates]);
 
   const onSubmit = async () => {
-    const response = await verifyValue(data.Pin)
+    const response = await verifyValue(data.Pin, "MasterKey")
     if (!response) {
       return toast.error(t("error.error_invalid_pin"))
     }
