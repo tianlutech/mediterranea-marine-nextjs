@@ -56,6 +56,9 @@ export default function SignPage({ params }: { params: { id: string } }) {
         setError(t("error.error_booking_details"));
         return;
       }
+      if (!isNaN(data.captainSignedAt?.getTime())) {
+        return window.location.replace("/not-found?code=CSC-503");
+      }
       if (!data || !data.Captain) {
         setError(t("error.error_captain_details"));
         return;
