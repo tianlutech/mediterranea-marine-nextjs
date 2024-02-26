@@ -391,7 +391,7 @@ export default function WhatsAppBulkMessagesForm({
                     id="pin"
                     placeholder={t("input.pin")}
                     value={data.Pin}
-                    minlength="6"
+                    minlength="4"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setData({ ...data, Pin: e.target.value })
                     }
