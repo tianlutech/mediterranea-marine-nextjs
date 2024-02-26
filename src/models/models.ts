@@ -56,6 +56,8 @@ export class Boat extends NotionItem {
   Nombre: string = "";
   @NotionType("rich_text")
   RegistrationPlate: string = "";
+  @NotionType("rich_text")
+  crew: string = "";
 
   // Client Side Injected data Format time HH:mm
   bussySlots: string[] = [];
@@ -170,6 +172,9 @@ export class Booking extends NotionItem {
 
   @NotionType("number")
   "Fuel Payment": number;
+
+  @NotionType("number")
+  "RentPrice": number;
 
   @NotionType("rich_text")
   Email: string = "";
