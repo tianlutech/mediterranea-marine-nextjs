@@ -59,6 +59,7 @@ For the production was is generated as a system user in the facebook business se
 - PDFMONKEY_API_KEY: This API key you can get it from the PDF monkey in the account page or in notion env variables [PDF Monkey URL](https://dashboard.pdfmonkey.io/account)
 - MAKE_KEY: Is a key from make.com with permissions to run scenarios. Is used to run scenarios in demand (Like after generating the PDF)https://eu2.make.com/user/api
 
+- MASTER_PIN: Is a key which is going to be used by the super admin for some actions like sending the whatsapp messages, you can find it Notion
 ### Application state
 
 What information do we have in the application state or context (Which is shared with all the applications)

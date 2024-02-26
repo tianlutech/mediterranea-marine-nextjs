@@ -14,22 +14,19 @@ export default function SelectCaptain({
   onChange: (captainId: string) => void;
 }) {
   const [captains, setCaptains] = useState<SelectType[]>([]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchCaptain = async () => {
-      setLoading(true)
+      setLoading(true);
       const captainsData = await getCaptains();
 
       const formattedCaptains = captainsData.map((captain) => ({
         label: captain.Name,
         value: captain.id.replaceAll("-", ""),
       }));
-      formattedCaptains.push({
-        label: "Other",
-        value: "0",
-      });
+
       setCaptains(formattedCaptains);
-      setLoading(false)
+      setLoading(false);
     };
 
     fetchCaptain();

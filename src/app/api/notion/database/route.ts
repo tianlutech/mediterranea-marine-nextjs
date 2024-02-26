@@ -30,12 +30,9 @@ export async function GET(request: Request) {
     deleteUndefined(query);
     const response = await notion.queryDatabase(query);
 
-    return new Response(
-      JSON.stringify({ results: response.result?.results || [] }),
-      {
-        status: 200,
-      }
-    );
+    return new Response(JSON.stringify({ results: response.results || [] }), {
+      status: 200,
+    });
   } catch (error: any) {
     console.error("Error retrieving page from Notion:", error);
     return new Response(JSON.stringify({ error: error?.message || error }), {

@@ -57,7 +57,8 @@
     "template": "Template",
     "to": "To",
     "default_value": "Default value",
-    "url": "URL"
+    "url": "URL",
+    "pin": "PIN"
   },
   "prepayment_modal": {
     "prepay_your_fuel": "Prepay your fuel",
@@ -113,6 +114,7 @@
     "error_booking_details": "Booking details not found",
     "error_boat_details": "Boat details not found",
     "error_captain_details": "Captain signature not found",
+    "error_invalid_pin": "Invalid Pin",
     "error_message_webhook": "Booking confirmado, pero no hemos enviar el mensake de confirmación a tu correo."
   },
   "title": {
