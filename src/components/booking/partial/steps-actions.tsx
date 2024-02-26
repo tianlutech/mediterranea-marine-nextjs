@@ -20,15 +20,15 @@ const skip_steps = (process.env.NEXT_PUBLIC_SKIP_BOOKING_STEPS || "").split(
   ","
 );
 export const steps = [
-  "fuel",
-  "sign",
-  // "validateFront",
+  // "fuel",
+  // "sign",
+  "validateFront",
   // "validateBack",
-  "uploadFrontIdImage",
-  "uploadBackIdImage",
-  "pay",
-  "saveData",
-  "notifyCustomer",
+  // "uploadFrontIdImage",
+  // "uploadBackIdImage",
+  // "pay",
+  // "saveData",
+  // "notifyCustomer",
 ].filter((step) => !skip_steps.includes(step));
 
 const storeIdImage = async (
@@ -266,8 +266,7 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${
-          formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
         }`
       );
 
