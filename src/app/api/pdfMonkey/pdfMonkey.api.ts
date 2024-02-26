@@ -79,7 +79,6 @@ export async function createDocument(
             departureMaximumHour: "21:30",
             PortOfDisembark: "Ibiza",
             MaximumNumberOfGuestCruisingOnBoard: "4",
-            CrewComposedOfCaptain: "5",
             taxableBase: bookingInfo["RentPrice"],
             crew: boatDetails["crew"],
             taxVAT: 21,
