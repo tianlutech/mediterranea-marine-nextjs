@@ -77,9 +77,6 @@ export class Captain extends NotionItem {
   @NotionType("rich_text")
   "id": string = "";
 
-  @NotionType("rich_text")
-  "Pin": string = "";
-
   Signature: { url: string }[] = [];
 }
 
