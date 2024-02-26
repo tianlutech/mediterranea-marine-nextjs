@@ -34,7 +34,6 @@ export default function FuelForm() {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
-  const [showPin, setShowPin] = useState(false)
   const [data, setData] = useState({
     Date: moment().format("YYYY-MM-DD"),
     Boat: "",
@@ -42,7 +41,7 @@ export default function FuelForm() {
     Captain: searchParams.get("captainId") || "",
     Port: "",
     "Picture of the Receipt": {} as File,
-    Pin: ""
+    Pin: "",
   });
 
   const storeReceiptImage = async (file: File) => {
@@ -57,10 +56,19 @@ export default function FuelForm() {
   const submitFuelForm = async () => {
     setLoading(true);
     try {
-      const response = await verifyValue(data.Captain, data.Pin, "$Pin")
-      if (!response) {
-        return toast.error(t("error.error_invalid_pin"))
+      const response = await verifyValue({
+        itemID: data.Captain,
+        compareTo: "$Pin",
+        value: data.Pin,
+      });
+      if (response.error) {
+        return toast.error(response.error);
       }
+
+      if (!response.ok) {
+        return toast.error(t("error.error_invalid_pin"));
+      }
+
       const receiptUrl = await storeReceiptImage(
         data["Picture of the Receipt"]
       );
@@ -83,7 +91,7 @@ export default function FuelForm() {
       if (!res) {
         return;
       }
-      router.replace("/success");
+      // router.replace("/success");
     } finally {
       setLoading(false);
     }
@@ -124,7 +132,9 @@ export default function FuelForm() {
                   />
                 </FormWrapper>
                 <FormWrapper>
-                  <CommonLabel input="text">{t("input.select_boat")}</CommonLabel>
+                  <CommonLabel input="text">
+                    {t("input.select_boat")}
+                  </CommonLabel>
                   <SelectBoat
                     value={data["Boat"]}
                     onChange={(boat) => setData({ ...data, Boat: boat })}
@@ -133,7 +143,9 @@ export default function FuelForm() {
               </div>
               <div className="flex md:flex-row flex-col justify-between w-full md:mt-6 mt-0">
                 <FormWrapper>
-                  <CommonLabel input="text">{t("input.amount_paid")}</CommonLabel>
+                  <CommonLabel input="text">
+                    {t("input.amount_paid")}
+                  </CommonLabel>
                   <CommonInput
                     type="text"
                     name="AmountPaid"
@@ -178,8 +190,15 @@ export default function FuelForm() {
                 <FormWrapper>
                   <CommonLabel input="text">{t("input.pin")}</CommonLabel>
                   <SecretInput
-                    data={data}
-                    setData={setData}
+                    name="pin"
+                    id="pin"
+                    placeholder={t("input.pin")}
+                    value={data.Pin}
+                    minlength="6"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setData({ ...data, Pin: e.target.value })
+                    }
+                    required={true}
                   />
                 </FormWrapper>
               </div>

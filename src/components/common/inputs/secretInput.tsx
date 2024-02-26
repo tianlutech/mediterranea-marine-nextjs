@@ -7,38 +7,55 @@ import { useTranslation } from "react-i18next";
 import CommonInput from "./input";
 
 export default function SecretInput({
-  data,
-  setData
+  id,
+  name,
+  placeholder,
+  required,
+  onChange,
+  value,
+  minlength,
 }: {
-  data: any,
-  setData: any
+  id: string;
+  name: string;
+  placeholder?: string;
+  required?: boolean;
+  onChange?: any;
+  value?: any;
+  min?: number;
+  max?: number;
+  step?: number;
+  checked?: boolean;
+  minlength?: any;
 }) {
-  const [showPin, setShowPin] = useState(false)
-  const { t } = useTranslation();
+  const [showSecret, setShowSecret] = useState(false);
   return (
     <div className="relative w-full">
       <div className="absolute inset-y-0 right-0 flex items-center px-2">
-        {showPin ?
-          <div onClick={() => setShowPin(!showPin)} className="cursor-pointer">
+        {showSecret ? (
+          <div
+            onClick={() => setShowSecret(!showSecret)}
+            className="cursor-pointer"
+          >
             <EyeSvg />
           </div>
-          :
-          <div onClick={() => setShowPin(!showPin)} className="cursor-pointer">
+        ) : (
+          <div
+            onClick={() => setShowSecret(!showSecret)}
+            className="cursor-pointer"
+          >
             <EyeCloseSvg />
           </div>
-        }
+        )}
       </div>
       <CommonInput
-        type={showPin ? "text" : "password"}
-        name="pin"
-        id="pin"
-        placeholder={t("input.pin")}
-        value={data.Pin}
-        minlength="6"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setData({ ...data, "Pin": e.target.value })
-        }
-        required={true}
+        type={showSecret ? "text" : "password"}
+        name={name}
+        id={id}
+        placeholder={placeholder}
+        value={value}
+        minlength={minlength}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e)}
+        required={required}
       />
     </div>
   );

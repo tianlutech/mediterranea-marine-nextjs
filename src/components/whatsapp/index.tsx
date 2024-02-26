@@ -54,7 +54,7 @@ export default function WhatsAppBulkMessagesForm({
     fields: {} as Record<string, string>, // Column of the CSV where we select the value
     default: {} as Record<string, string>, // Value that we put if the CSV column is empty
     attachment: "", // URL of video or image
-    Pin: ""
+    Pin: "",
   });
   useEffect(() => {
     whatsApp.getMessagesTemplates().then((data) => {
@@ -63,9 +63,15 @@ export default function WhatsAppBulkMessagesForm({
   }, [setTemplates]);
 
   const onSubmit = async () => {
-    const response = await verifyValue(data.Pin, "MasterKey")
-    if (!response) {
-      return toast.error(t("error.error_invalid_pin"))
+    const response = await verifyValue({
+      value: data.Pin,
+      compareTo: "MasterKey",
+    });
+    if (response.error) {
+      return toast.error(response.error);
+    }
+    if (!response.ok) {
+      return toast.error(t("error.error_invalid_pin"));
     }
     if (data.contacts.length > 250) {
       return toast.error(t("error.maximum_number_250"));
@@ -82,7 +88,7 @@ export default function WhatsAppBulkMessagesForm({
         acc.replace(
           `{{${variable}}}`,
           data.default[variable] ||
-          `<span style='color: #999999'>{{${variable}}}</span>`
+            `<span style='color: #999999'>{{${variable}}}</span>`
         ),
       message.replaceAll("\n", "</br>")
     );
@@ -303,8 +309,9 @@ export default function WhatsAppBulkMessagesForm({
                     {inputs.map((variable, index) => (
                       <div key={index} className="mt-8">
                         <FormWrapper>
-                          <CommonLabel input="text">{`{{${index + 1
-                            }}}`}</CommonLabel>
+                          <CommonLabel input="text">{`{{${
+                            index + 1
+                          }}}`}</CommonLabel>
                           <div className="flex gap-4">
                             <div className="flex-1">
                               <CommonSelect
@@ -380,8 +387,14 @@ export default function WhatsAppBulkMessagesForm({
                 <FormWrapper>
                   <CommonLabel input="text">{t("input.pin")}</CommonLabel>
                   <SecretInput
-                    data={data}
-                    setData={setData}
+                    name="pin"
+                    id="pin"
+                    placeholder={t("input.pin")}
+                    value={data.Pin}
+                    minlength="6"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setData({ ...data, Pin: e.target.value })
+                    }
                   />
                 </FormWrapper>
               </div>
@@ -391,8 +404,8 @@ export default function WhatsAppBulkMessagesForm({
                   label={
                     validContacts.length
                       ? "Send (Cost: ~" +
-                      (validContacts.length * PRICE).toFixed(2) +
-                      "€)"
+                        (validContacts.length * PRICE).toFixed(2) +
+                        "€)"
                       : "No valid contacts detected"
                   }
                   disabled={validContacts.length === 0}

@@ -59,7 +59,7 @@
     "to": "Para",
     "default_value": "Valor por defector",
     "url": "URL",
-    "pin":"PIN"
+    "pin": "PIN"
   },
   "prepayment_modal": {
     "prepay_your_fuel": "Prepaga tu combustible",
@@ -116,7 +116,7 @@
     "error_booking_details": "Detalles de la reserva no encontrados",
     "error_boat_details": "Detalles del barco no encontrados",
     "error_captain_details": "Firma del capitán no configurada",
-    "error_invalid_pin":"PIN no válido",
+    "error_invalid_pin": "Tu PIN no es válido",
     "error_message_webhook": "Booking completed, but failed to send a mail notification."
   },
   "title": {

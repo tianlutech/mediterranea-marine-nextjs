@@ -15,7 +15,9 @@ export async function getPage(pageId: string) {
     const response = await notion.pages.retrieve({
       page_id: pageId,
     });
-    const filteredResult = await removePrivateProperties(response as Record<string,unknown>)
+    const filteredResult = await removePrivateProperties(
+      response as Record<string, unknown>
+    );
     return { result: filteredResult };
   } catch (error: any) {
     console.error("Get Notion Page Error:", error.message);
@@ -79,11 +81,11 @@ export async function createDatabaseItem({
 
 export async function removePrivateProperties(response: any) {
   try {
-    if(!response) {
-      return
+    if (!response) {
+      return;
     }
     if (response.properties) {
-      Object.keys(response.properties).forEach(key => {
+      Object.keys(response.properties).forEach((key) => {
         if (key.startsWith("$")) {
           delete response.properties[key];
         }
@@ -92,6 +94,30 @@ export async function removePrivateProperties(response: any) {
     return response;
   } catch (error: any) {
     console.error("Property value not found", error.message);
+    return { error: error.message };
+  }
+}
+
+export async function verifyValue(
+  itemID: string,
+  value: string,
+  compareTo: string
+) {
+  try {
+    const response: any = await notion.pages.retrieve({
+      page_id: itemID,
+    });
+    const captainPin = response.properties[
+      compareTo
+    ].rich_text[0].plain_text.replace(/\n/g, "");
+
+    if (captainPin !== value) {
+      return false;
+    }
+
+    return true;
+  } catch (error: any) {
+    console.error("Get Notion Page Error:", error.message);
     return { error: error.message };
   }
 }
