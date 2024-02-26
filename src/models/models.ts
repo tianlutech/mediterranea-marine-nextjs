@@ -57,7 +57,7 @@ export class Boat extends NotionItem {
   @NotionType("rich_text")
   RegistrationPlate: string = "";
   @NotionType("rich_text")
-  crew: string = "";
+  Crew: string = "";
 
   // Client Side Injected data Format time HH:mm
   bussySlots: string[] = [];
