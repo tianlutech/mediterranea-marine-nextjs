@@ -68,6 +68,8 @@ export async function createDocument(
             bookingDateYear: bookingDateYear,
             customerName:
               `${bookingInfo["First Name"]} ` + `${bookingInfo["Last Name"]}`,
+            customerAddress: bookingInfo["Billing Address"],
+            customerId: bookingInfo["ID Number"],
             bookingDate: moment(bookingInfo["SubmittedFormAt"]).format(
               "DD/MM/YYYY"
             ),
