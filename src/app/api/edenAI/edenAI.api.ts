@@ -42,24 +42,20 @@ export async function validateIdentity(file: File) {
 }
 
 export async function validateIdentityUsingOCR(file: File) {
-  console.log(">>>>got here")
+  console.log(">>>>got here");
   const form = new FormData();
   form.append("providers", "amazon");
   form.append("file", file);
   form.append("language", "en");
 
   try {
-    const response = await axios.post(
-      `${EDEN_URL}/ocr/ocr`,
-      form,
-      {
-        headers: {
-          Authorization: `Bearer ${edenAIApiKey}`,
-          "Content-Type": "multipart/form-data;",
-        },
-      }
-    );
-    console.log(">>>>>>", response)
+    const response = await axios.post(`${EDEN_URL}/ocr/ocr`, form, {
+      headers: {
+        Authorization: `Bearer ${edenAIApiKey}`,
+        "Content-Type": "multipart/form-data;",
+      },
+    });
+    console.log(">>>>>>", response);
 
     if (!response.data["eden-ai"]) {
       // The error come on the providers

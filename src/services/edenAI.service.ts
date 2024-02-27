@@ -66,7 +66,7 @@ const EdenAIService = () => {
       "given_names",
       // "document_id",
     ];
-    console.log(">>>>>formData", formData)
+    console.log(">>>>>formData", formData);
     const result = await checkIdValidity(file);
     if (result.error) {
       return {
@@ -79,13 +79,16 @@ const EdenAIService = () => {
     }
 
     // Check fields
-    const [data] = result.extracted_data
+    const [data] = result.extracted_data;
 
     const checkValidity = async (data: string) => {
-      return data.includes(formData["First Name"]) && data.includes(formData["Last Name"]);
-    }
+      return (
+        data.includes(formData["First Name"]) &&
+        data.includes(formData["Last Name"])
+      );
+    };
 
-    const res = checkValidity(data)
+    const res = checkValidity(data);
     if (!res) {
       let failedTimes = parseInt(localStorage.getItem("failedTimes") || "0");
       failedTimes++;
@@ -199,7 +202,7 @@ const EdenAIService = () => {
     return { ok: true };
   };
 
-  return { checkFrontId };
+  return { checkFrontId, checkIdValidity, checkBackId };
 };
 
 export default EdenAIService;
