@@ -81,8 +81,9 @@ export async function createDocument(
             MaximumNumberOfGuestCruisingOnBoard: boatDetails["Max.Passengers"],
             taxableBase: bookingInfo["RentPrice"],
             crew: boatDetails["Crew"],
-            taxVAT: 21,
-            TotalRentalRate: bookingInfo["RentPrice"] + (21/100),
+            taxVAT: bookingInfo["RentPrice"] * 0.21,
+            TotalRentalRate:
+              bookingInfo["RentPrice"] + bookingInfo["RentPrice"] * 0.21,
             DeliveryPort: "Ibiza port",
             CustomerSignature: `data:image/png;base64,${customerSignature}`,
             CaptainSignature: captainSignature,
