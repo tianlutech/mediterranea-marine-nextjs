@@ -198,39 +198,39 @@ export const stepsActions = ({
       nextStep();
     },
   };
-  const validateBack = {
-    execute: async (formData: BookingFormData, boat: Boat) => {
-      if (imageBackValidated) {
-        nextStep();
-        return;
-      }
-      if (formData.documentType === "Passport") {
-        nextStep();
-        return;
-      }
-      setModalInfo({
-        modal: "loading",
-        message: t("loadingMessage.verifying_back_id"),
-        error: "",
-      });
+  // const validateBack = {
+  //   execute: async (formData: BookingFormData, boat: Boat) => {
+  //     if (imageBackValidated) {
+  //       nextStep();
+  //       return;
+  //     }
+  //     if (formData.documentType === "Passport") {
+  //       nextStep();
+  //       return;
+  //     }
+  //     setModalInfo({
+  //       modal: "loading",
+  //       message: t("loadingMessage.verifying_back_id"),
+  //       error: "",
+  //     });
 
-      const result = await EdenAIService().checkBackId(
-        formData["ID_Back_Picture"] as File,
-        formData
-      );
+  //     const result = await EdenAIService().checkBackId(
+  //       formData["ID_Back_Picture"] as File,
+  //       formData
+  //     );
 
-      if (result.error) {
-        setModalInfo({
-          modal: "loading",
-          message: "",
-          error: result.error,
-        });
-        return;
-      }
-      imageBackValidated = true;
-      nextStep();
-    },
-  };
+  //     if (result.error) {
+  //       setModalInfo({
+  //         modal: "loading",
+  //         message: "",
+  //         error: result.error,
+  //       });
+  //       return;
+  //     }
+  //     imageBackValidated = true;
+  //     nextStep();
+  //   },
+  // };
   const pay = {
     execute: (formData: BookingFormData, boat: Boat) => {
       if (!Booking.totalPayment(formData)) {
@@ -335,7 +335,7 @@ export const stepsActions = ({
     fuel,
     sign,
     validateFront,
-    validateBack,
+    // validateBack,
     uploadFrontIdImage,
     uploadBackIdImage,
     pay,

@@ -66,7 +66,7 @@ const EdenAIService = () => {
       "given_names",
       // "document_id",
     ];
-
+    console.log(">>>>>formData", formData)
     const result = await checkIdValidity(file);
     if (result.error) {
       return {
@@ -79,40 +79,51 @@ const EdenAIService = () => {
     }
 
     // Check fields
-    const [data] = result.extracted_data;
+    const [data] = result.extracted_data
+
+    const checkValidity = async (data: string) => {
+      return data.includes(formData["First Name"]) && data.includes(formData["Last Name"]);
+    }
+
+    const res = checkValidity(data)
+    if (!res) {
+      let failedTimes = parseInt(localStorage.getItem("failedTimes") || "0");
+      failedTimes++;
+      localStorage.setItem("failedTimes", failedTimes.toString());
+    }
 
     const checkFields = verifyFields(front_fields, data);
     if (checkFields.error) {
       return checkFields;
     }
 
-    // if (moment().isAfter(moment(data.expire_date.value))) {
-    //   return { error: i18n.t("error.error_document_expired") };
-    // }
+    if (moment().isAfter(moment(data.expire_date.value))) {
+      return { error: i18n.t("error.error_document_expired") };
+    }
 
-    // if (formData.documentType === "Passport") {
-    //   if (data.document_type.value !== "PASSPORT") {
-    //     return {
-    //       error: i18n.t("error.error_document_type_not_passport"),
-    //     };
-    //   }
-    // }
+    if (formData.documentType === "Passport") {
+      if (data.document_type.value !== "PASSPORT") {
+        return {
+          error: i18n.t("error.error_document_type_not_passport"),
+        };
+      }
+    }
 
-    // if (formData.documentType === "National ID") {
-    //   if (!["ID", "DRIVER LICENSE"].includes(data.document_type.value)) {
-    //     return {
-    //       error: i18n.t("error.error_document_type_not_national_id"),
-    //     };
-    //   }
-    // }
+    if (formData.documentType === "National ID") {
+      if (!["ID", "DRIVER LICENSE"].includes(data.document_type.value)) {
+        return {
+          error: i18n.t("error.error_document_type_not_national_id"),
+        };
+      }
+    }
 
-    // if (!compareStrings(formData["ID Number"], data.document_id.value)) {
-    //   return {
-    //     error:
-    //       i18n.t("error.error_id_written_in_form_different_with_image") +
-    //       data.document_id.value,
-    //   };
-    // }
+    if (!compareStrings(formData["ID Number"], data.document_id.value)) {
+      return {
+        error:
+          i18n.t("error.error_id_written_in_form_different_with_image") +
+          data.document_id.value,
+      };
+    }
 
     if (
       !compareStrings(formData["First Name"], data.given_names[0].value) &&
@@ -160,35 +171,35 @@ const EdenAIService = () => {
 
     const [data] = result.extracted_data;
 
-    // if (
-    //   !["ID", "DRIVER LICENSE"].some((tag) =>
-    //     (data.document_type.value || "").includes(tag)
-    //   )
-    // ) {
-    //   return {
-    //     error: i18n.t("error.error_document_type_not_national_id"),
-    //   };
-    // }
+    if (
+      !["ID", "DRIVER LICENSE"].some((tag) =>
+        (data.document_type.value || "").includes(tag)
+      )
+    ) {
+      return {
+        error: i18n.t("error.error_document_type_not_national_id"),
+      };
+    }
 
-    // if (data.document_id.value) {
-    //   if (!compareStrings(formData["ID Number"], data.document_id.value)) {
-    //     return {
-    //       error:
-    //         i18n.t("error.error_id_written_in_form_different_with_image") +
-    //         data.document_id.value,
-    //     };
-    //   }
-    // }
-    // if (data.expire_date.value) {
-    //   if (moment().isAfter(moment(data.expire_date.value))) {
-    //     return { error: i18n.t("error.error_document_expired") };
-    //   }
-    // }
+    if (data.document_id.value) {
+      if (!compareStrings(formData["ID Number"], data.document_id.value)) {
+        return {
+          error:
+            i18n.t("error.error_id_written_in_form_different_with_image") +
+            data.document_id.value,
+        };
+      }
+    }
+    if (data.expire_date.value) {
+      if (moment().isAfter(moment(data.expire_date.value))) {
+        return { error: i18n.t("error.error_document_expired") };
+      }
+    }
 
     return { ok: true };
   };
 
-  return { checkFrontId, checkBackId };
+  return { checkFrontId };
 };
 
 export default EdenAIService;

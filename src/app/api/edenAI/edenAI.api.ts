@@ -42,6 +42,7 @@ export async function validateIdentity(file: File) {
 }
 
 export async function validateIdentityUsingOCR(file: File) {
+  console.log(">>>>got here")
   const form = new FormData();
   form.append("providers", "amazon");
   form.append("file", file);
