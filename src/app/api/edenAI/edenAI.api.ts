@@ -42,7 +42,7 @@ export async function validateIdentity(file: File) {
 }
 
 export async function validateIdentityUsingOCR(file: File) {
-  console.log(">>>>got here");
+  console.log(">>>>key", edenAIApiKey);
   const form = new FormData();
   form.append("providers", "amazon");
   form.append("file", file);
@@ -53,6 +53,7 @@ export async function validateIdentityUsingOCR(file: File) {
       headers: {
         Authorization: `Bearer ${edenAIApiKey}`,
         "Content-Type": "multipart/form-data;",
+        connection: "close",
       },
     });
     console.log(">>>>>>", response);

@@ -126,7 +126,6 @@ export default function BookingForm1({
               onRemove={() => setData({ ...data, ID_Front_Picture: {} })}
               onChange={async (file) => {
                 setData({ ...data, ID_Front_Picture: file || {} });
-                // file && (await EdenAIService().checkIdValidity(file));
               }}
               required
             />

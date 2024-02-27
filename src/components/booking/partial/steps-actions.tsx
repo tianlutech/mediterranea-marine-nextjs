@@ -16,10 +16,15 @@ type StepAction = {
   execute: (formData: BookingFormData, boat: Boat) => void;
 };
 
+type StepsActionsType = {
+  key: string[];
+};
+
 const skip_steps = (process.env.NEXT_PUBLIC_SKIP_BOOKING_STEPS || "").split(
   ","
 );
-export const steps = [
+// there is an issue here if I put string [] it fails
+export const steps: any = [
   // "fuel",
   // "sign",
   "validateFront",
@@ -51,6 +56,7 @@ let imageBackLink = "";
 let imageFrontValidated = false;
 let imageBackValidated = false;
 let bookingSaved: Booking;
+let failedCounter: number = 0;
 
 export const stepsActions = ({
   setModalInfo,
@@ -169,6 +175,17 @@ export const stepsActions = ({
     },
   };
 
+  const confirmContinue = {
+    execute: () => {
+      setModalInfo({
+        modal: "confirmContinueIdFailed",
+        message: "",
+        error: "",
+      });
+    },
+  };
+
+
   const validateFront = {
     execute: async (formData: BookingFormData, boat: Boat) => {
       if (imageFrontValidated) {
@@ -187,6 +204,13 @@ export const stepsActions = ({
         formData
       );
       if (result.error) {
+        failedCounter++;
+        if (failedCounter >= 2) {
+          steps.splice(steps.indexOf("validateFront") + 1, 0, "confirmContinue");
+          steps["confirmContinue"] = confirmContinue;
+          nextStep();
+          return;
+        }
         setModalInfo({
           modal: "loading",
           message: "",
@@ -194,43 +218,59 @@ export const stepsActions = ({
         });
         return;
       }
+      const bookingInfo = new Booking({
+        ...formData,
+        DocumentsApproved: !formData.DocumentsApproved
+      });
+
+      const res = await updateBookingInfo(bookingId, bookingInfo);
+
+      if ((res as { error: string }).error) {
+        setModalInfo({
+          modal: "loading",
+          message: t("loadingMessage.saving_information"),
+          error: (res as { error: string }).error,
+        });
+        return;
+      }
       imageFrontValidated = true;
       nextStep();
     },
   };
-  // const validateBack = {
-  //   execute: async (formData: BookingFormData, boat: Boat) => {
-  //     if (imageBackValidated) {
-  //       nextStep();
-  //       return;
-  //     }
-  //     if (formData.documentType === "Passport") {
-  //       nextStep();
-  //       return;
-  //     }
-  //     setModalInfo({
-  //       modal: "loading",
-  //       message: t("loadingMessage.verifying_back_id"),
-  //       error: "",
-  //     });
 
-  //     const result = await EdenAIService().checkBackId(
-  //       formData["ID_Back_Picture"] as File,
-  //       formData
-  //     );
+  const validateBack = {
+    execute: async (formData: BookingFormData, boat: Boat) => {
+      if (imageBackValidated) {
+        nextStep();
+        return;
+      }
+      if (formData.documentType === "Passport") {
+        nextStep();
+        return;
+      }
+      setModalInfo({
+        modal: "loading",
+        message: t("loadingMessage.verifying_back_id"),
+        error: "",
+      });
 
-  //     if (result.error) {
-  //       setModalInfo({
-  //         modal: "loading",
-  //         message: "",
-  //         error: result.error,
-  //       });
-  //       return;
-  //     }
-  //     imageBackValidated = true;
-  //     nextStep();
-  //   },
-  // };
+      const result = await EdenAIService().checkBackId(
+        formData["ID_Back_Picture"] as File,
+        formData
+      );
+
+      if (result.error) {
+        setModalInfo({
+          modal: "loading",
+          message: "",
+          error: result.error,
+        });
+        return;
+      }
+      imageBackValidated = true;
+      nextStep();
+    },
+  };
   const pay = {
     execute: (formData: BookingFormData, boat: Boat) => {
       if (!Booking.totalPayment(formData)) {
@@ -334,6 +374,7 @@ export const stepsActions = ({
   return {
     fuel,
     sign,
+    confirmContinue,
     validateFront,
     // validateBack,
     uploadFrontIdImage,
