@@ -23,10 +23,11 @@ const EdenAIService = () => {
       form.append("file", file);
       form.append("language", "en");
       const EDEN_URL = "https://api.edenai.run/v2";
+      const EDEN_API_KEY = process.env.EDEN_API_KEY
 
       const {data} = await axios.post(`${EDEN_URL}/ocr/ocr`, form, {
         headers: {
-          Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNTk4YTNiZjgtY2RiNy00Y2I2LWFkZWQtOGM5ZmY1ZTkwMWJkIiwidHlwZSI6ImFwaV90b2tlbiJ9.S0tTZ_th-mP7i8MLBHYHhbRvQZVW4wVmtge6z-nEPuE",
+          Authorization: `Bearer ${EDEN_API_KEY}`,
           "Content-Type": "multipart/form-data;",
         },
       });
