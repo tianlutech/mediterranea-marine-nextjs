@@ -1,5 +1,5 @@
 import { PDFMONKEY_DOCUMENT_ID } from "@/models/constants";
-import { Booking, Boat, Captain } from "@/models/models";
+import { Booking, Boat, Captain, calculateArrivalTime } from "@/models/models";
 import moment from "moment";
 import { getFileContentBase64FromGoogleDrive } from "../googleDrive/googleDrive.api";
 import axios from "axios";
@@ -41,10 +41,10 @@ export async function createDocument(
     const date = bookingInfo["Date"];
     const bookingDateYear = moment(date).format("YYYY");
     const bookingDateMonth = moment(date).format("MM");
-    const bookingDateDay = moment(date).format("HH");
+    const bookingDateDay = moment(date).format("DD");
     const { Nombre, Code, RegistrationPlate, id } = boatDetails;
     const apiUrl = "https://api.pdfmonkey.io/api/v1/documents";
-
+    const rentPrice = bookingInfo["RentPrice"] || 0;
     const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
@@ -70,20 +70,18 @@ export async function createDocument(
               `${bookingInfo["First Name"]} ` + `${bookingInfo["Last Name"]}`,
             customerAddress: bookingInfo["Billing Address"],
             customerId: bookingInfo["ID Number"],
-            bookingDate: moment(bookingInfo["SubmittedFormAt"]).format(
-              "DD/MM/YYYY"
-            ),
-            registrationPort: "Ibiza 01",
+            bookingDate: moment(bookingInfo["Date"]).format("DD/MM/YYYY"),
             boatFlag: "boatFlag",
-            boatType: "Yatch",
-            departureMaximumHour: "21:30",
+            boatType: "Yacht",
+            departureMaximumHour: calculateArrivalTime(
+              bookingInfo["Departure Time"]
+            ),
             PortOfDisembark: "Ibiza",
             MaximumNumberOfGuestCruisingOnBoard: boatDetails["Max.Passengers"],
-            taxableBase: bookingInfo["RentPrice"],
+            taxableBase: rentPrice,
             crew: boatDetails["Crew"],
-            taxVAT: bookingInfo["RentPrice"] * 0.21,
-            TotalRentalRate:
-              bookingInfo["RentPrice"] + bookingInfo["RentPrice"] * 0.21,
+            taxVAT: rentPrice * 0.21,
+            TotalRentalRate: rentPrice + rentPrice * 0.21,
             DeliveryPort: "Ibiza port",
             CustomerSignature: `data:image/png;base64,${customerSignature}`,
             CaptainSignature: captainSignature,
@@ -95,11 +93,10 @@ export async function createDocument(
             clientEmail: bookingInfo.Email,
             boatId: id,
             captainId: `${captainDetails.id}`,
-            _filename:
-              `${bookingInfo["First Name"]} ` +
-              `${bookingInfo["Last Name"]} - ${boatDetails.Nombre} - ${moment(
-                bookingInfo.Date
-              ).format("YYYY-MM-DD")} - contract`,
+            _filename: `${bookingInfo["First Name"]} 
+              ${bookingInfo["Last Name"]} - ${boatDetails.Nombre} - ${moment(
+              bookingInfo.Date
+            ).format("YYYY-MM-DD")} - contract`,
             NotionId: bookingInfo.id,
           },
         },

@@ -42,7 +42,7 @@ export default function SignPage({ params }: { params: { id: string } }) {
         setError(createError);
         return;
       }
-      // Wait few secodnds for PDF monkey to generate the PDF
+      // Wait few seconds for PDF monkey to generate the PDF
       setInterval(() => {
         runSavePDFScenario();
         router.replace("/success");
