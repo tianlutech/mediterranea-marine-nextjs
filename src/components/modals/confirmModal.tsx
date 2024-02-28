@@ -2,9 +2,7 @@
 
 import React from "react";
 import Modal from "@/components/common/containers/modal";
-import Spinner from "../common/containers/spinner";
-import BoatSvg from "../../assets/svgs/BoatSvg";
-import { useTranslation } from "react-i18next";
+import Button from "../common/buttons/Button";
 
 export default function ConfirmModal({
   isOpen,
@@ -25,8 +23,8 @@ export default function ConfirmModal({
             <span className="flex text-center">{message}</span>
           </div>
           <div className="flex justify-center py-4">
-            <button onClick={() => onCancel()} data-modal-hide="default-modal" type="button" className="mr-6 text-black border border-bgColor2 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Cancel</button>
-            <button onClick={() => onContinue()} data-modal-hide="default-modal" type="button" className="ml-6 text-white bg-buttonColor2 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Continue</button>
+            <Button onClick={() => onCancel()} className={"text-black mr-3"} message="Cancel" />
+            <Button onClick={() => onContinue()} className={"ml-3 bg-buttonColor2 text-white"} message="Continue" />
           </div>
         </div>
       </div>

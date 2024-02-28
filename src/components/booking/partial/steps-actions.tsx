@@ -25,15 +25,15 @@ const skip_steps = (process.env.NEXT_PUBLIC_SKIP_BOOKING_STEPS || "").split(
 );
 // there is an issue here if I put string [] it fails
 export const steps: any = [
-  // "fuel",
-  // "sign",
+  "fuel",
+  "sign",
   "validateFront",
-  // "validateBack",
-  // "uploadFrontIdImage",
-  // "uploadBackIdImage",
-  // "pay",
-  // "saveData",
-  // "notifyCustomer",
+  "validateBack",
+  "uploadFrontIdImage",
+  "uploadBackIdImage",
+  "pay",
+  "saveData",
+  "notifyCustomer",
 ].filter((step) => !skip_steps.includes(step));
 
 const storeIdImage = async (
@@ -185,7 +185,6 @@ export const stepsActions = ({
     },
   };
 
-
   const validateFront = {
     execute: async (formData: BookingFormData, boat: Boat) => {
       if (imageFrontValidated) {
@@ -193,16 +192,21 @@ export const stepsActions = ({
         return;
       }
 
+      if (formData.documentType === "National ID") {
+        nextStep();
+        return;
+      }
+
       setModalInfo({
         modal: "loading",
-        message: t("loadingMessage.verifying_front_id"),
+        message: t("loadingMessage.verifying_id"),
         error: "",
       });
 
-      const result = await EdenAIService().checkFrontId(
-        formData["ID_Front_Picture"] as File,
+      const result = await EdenAIService().verifyIdentity(
         formData
       );
+
       if (result.error) {
         failedCounter++;
         if (failedCounter >= 2) {
@@ -250,16 +254,22 @@ export const stepsActions = ({
       }
       setModalInfo({
         modal: "loading",
-        message: t("loadingMessage.verifying_back_id"),
+        message: t("loadingMessage.verifying_id"),
         error: "",
       });
 
-      const result = await EdenAIService().checkBackId(
-        formData["ID_Back_Picture"] as File,
+      const result = await EdenAIService().verifyIdentity(
         formData
       );
 
       if (result.error) {
+        failedCounter++;
+        if (failedCounter >= 12) {
+          steps.splice(steps.indexOf("validateBack") + 1, 0, "confirmContinue");
+          steps["confirmContinue"] = confirmContinue;
+          nextStep();
+          return;
+        }
         setModalInfo({
           modal: "loading",
           message: "",
@@ -267,6 +277,23 @@ export const stepsActions = ({
         });
         return;
       }
+      const bookingInfo = new Booking({
+        ...formData,
+        DocumentsApproved: !formData.DocumentsApproved
+      });
+
+      const res = await updateBookingInfo(bookingId, bookingInfo);
+
+      if ((res as { error: string }).error) {
+        setModalInfo({
+          modal: "loading",
+          message: t("loadingMessage.saving_information"),
+          error: (res as { error: string }).error,
+        });
+        return;
+      }
+
+      imageFrontValidated = true;
       imageBackValidated = true;
       nextStep();
     },
@@ -376,7 +403,7 @@ export const stepsActions = ({
     sign,
     confirmContinue,
     validateFront,
-    // validateBack,
+    validateBack,
     uploadFrontIdImage,
     uploadBackIdImage,
     pay,

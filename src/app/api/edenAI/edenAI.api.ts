@@ -42,7 +42,6 @@ export async function validateIdentity(file: File) {
 }
 
 export async function validateIdentityUsingOCR(file: File) {
-  console.log(">>>>key", edenAIApiKey);
   const form = new FormData();
   form.append("providers", "amazon");
   form.append("file", file);
@@ -56,7 +55,6 @@ export async function validateIdentityUsingOCR(file: File) {
         connection: "close",
       },
     });
-    console.log(">>>>>>", response);
 
     if (!response.data["eden-ai"]) {
       // The error come on the providers

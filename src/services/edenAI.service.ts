@@ -23,7 +23,7 @@ const EdenAIService = () => {
       form.append("file", file);
       form.append("language", "en");
       const EDEN_URL = "https://api.edenai.run/v2";
-      const EDEN_API_KEY = process.env.EDEN_API_KEY
+      const EDEN_API_KEY = process.env.NEXT_PUBLIC_EDEN_API_KEY
 
       const {data} = await axios.post(`${EDEN_URL}/ocr/ocr`, form, {
         headers: {
@@ -41,25 +41,31 @@ const EdenAIService = () => {
     }
   };
 
-  const verifyFields = (formData: BookingFormData, extracted_data: {text: string}) => {
-    const res = extracted_data.text.includes(
-      formData["First Name"] &&
-      formData["Last Name"] &&
-      formData["ID Number"] 
-      )
-
-    if(!res) {
+  const verifyIdentity = async (formData: BookingFormData) => {
+    const fields = ["First Name", "Last Name", "ID Number"];
+    const ocrResultFront = await checkFrontId(formData["ID_Front_Picture"]);
+    const ocrResultBack = await checkBackId(formData["ID_Back_Picture"]);
+    const missingFields: string[] = [];
+  
+    fields.forEach((field: string) => {
+      const fieldValue = formData[field as keyof BookingFormData] as string;
+      if (!(`${ocrResultFront} ${ocrResultBack}`).includes(fieldValue)) {
+        missingFields.push(field);
+      }
+    });
+    
+    if (missingFields.length > 0) {
       return {
-        error: i18n.t("error.error_picture_not_readable") 
+        error: `${missingFields.join(", ")} ${i18n.t("error.error_field_not_found")}`
       };
     }
-    
+  
     return { ok: true };
   };
+  
 
   const checkFrontId = async (
     file: File,
-    formData: BookingFormData
   ): Promise<{ error?: string; ok?: true }> => {
     const result = await checkIdValidity(file);
 
@@ -69,24 +75,17 @@ const EdenAIService = () => {
       };
     }
 
-    const {amazon} = result
+    const data = result.amazon
 
-    if (!amazon || amazon.status !== "success") {
+    if (!data || data.status !== "success") {
       return { error: i18n.t("error.error_validation_failed") };
     }
-
-    // Check fields
-    const checkFields = verifyFields(formData, amazon);
-    if (checkFields.error) {
-      return checkFields;
-    }
-
-    return { ok: true };
+    
+    return data.text;
   };
 
   const checkBackId = async (
     file: File,
-    formData: BookingFormData
   ): Promise<{ error?: string; ok?: true }> => {
     const result = await checkIdValidity(file);
 
@@ -95,43 +94,18 @@ const EdenAIService = () => {
         error: result.error,
       };
     }
-    if (!result || result.status !== "success") {
-      return {
-        error: i18n.t("error.error_validation_failed"),
-      };
-    }
 
-    const [data] = result.extracted_data;
+    const data = result.amazon
 
-    if (
-      !["ID", "DRIVER LICENSE"].some((tag) =>
-        (data.document_type.value || "").includes(tag)
-      )
-    ) {
-      return {
-        error: i18n.t("error.error_document_type_not_national_id"),
-      };
+    if (!data || data.status !== "success") {
+      return { error: i18n.t("error.error_validation_failed") };
     }
-
-    if (data.document_id.value) {
-      if (!compareStrings(formData["ID Number"], data.document_id.value)) {
-        return {
-          error:
-            i18n.t("error.error_id_written_in_form_different_with_image") +
-            data.document_id.value,
-        };
-      }
-    }
-    if (data.expire_date.value) {
-      if (moment().isAfter(moment(data.expire_date.value))) {
-        return { error: i18n.t("error.error_document_expired") };
-      }
-    }
-
-    return { ok: true };
+    
+    return data.text;
   };
+  
 
-  return { checkFrontId, checkBackId };
+  return { verifyIdentity };
 };
 
 export default EdenAIService;
