@@ -42,7 +42,7 @@ export default function SignPage({ params }: { params: { id: string } }) {
         setError(createError);
         return;
       }
-      // Wait few secodnds for PDF monkey to generate the PDF
+      // Wait few seconds for PDF monkey to generate the PDF
       setInterval(() => {
         runSavePDFScenario();
         router.replace("/success");
@@ -55,6 +55,9 @@ export default function SignPage({ params }: { params: { id: string } }) {
       if (!data || !data.Boat || !data.Date) {
         setError(t("error.error_booking_details"));
         return;
+      }
+      if (!isNaN(data.captainSignedAt?.getTime())) {
+        return window.location.replace("/not-found?code=CSC-503");
       }
       if (!data || !data.Captain) {
         setError(t("error.error_captain_details"));

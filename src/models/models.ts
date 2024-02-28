@@ -56,6 +56,8 @@ export class Boat extends NotionItem {
   Nombre: string = "";
   @NotionType("rich_text")
   RegistrationPlate: string = "";
+  @NotionType("rich_text")
+  Crew: string = "";
 
   // Client Side Injected data Format time HH:mm
   bussySlots: string[] = [];
@@ -171,6 +173,9 @@ export class Booking extends NotionItem {
   @NotionType("number")
   "Fuel Payment": number;
 
+  @NotionType("number")
+  "RentPrice": number;
+
   @NotionType("rich_text")
   Email: string = "";
 
@@ -247,3 +252,28 @@ export class DepartureTime extends NotionItem {
   @NotionType("relation")
   Booking: string[] = [];
 }
+
+export const calculateArrivalTime = (departureTime: string) => {
+  // Split the time string into hours and minutes
+  var parts = departureTime.split(":");
+  var hours = +parts[0];
+  var minutes = +parts[1];
+
+  // Add hours
+  hours += 10;
+
+  // Ensure that hours do not exceed 24
+  if (hours > 21) {
+    hours = 21;
+    minutes = 0;
+  }
+
+  // Formatting hours and minutes to two digits
+  const formattedHours = hours.toString().padStart(2, "0");
+  const formattedMinutes = minutes.toString().padStart(2, "0");
+
+  // Returning the formatted time string
+  const time = formattedHours + ":" + formattedMinutes;
+
+  return time;
+};
