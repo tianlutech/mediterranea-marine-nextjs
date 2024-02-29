@@ -111,13 +111,14 @@
     "PNF-404": "¡Página no encontrada!",
     "ASB-409": "¡Ya enviaste tu reserva!",
     "CSC-503": "Este contrato ya ha sido firmado",
+    "429": "Demasiados intentos, espere un poco antes de volver a realizar esta solicitud.",
     "maximum_number_250": "El límite máximo para enviar mensajes a la vez es de 250 clientes.",
     "failed_to_send_message_to": "No se pudo enviar el mensaje a este número",
     "error_booking_details": "Detalles de la reserva no encontrados",
     "error_boat_details": "Detalles del barco no encontrados",
     "error_captain_details": "Firma del capitán no configurada",
     "error_message_webhook": "Reserva completada, pero no se pudo enviar una notificación por correo.",
-    "error_field_not_found": "campo no encontrado",
+    "error_field_not_found": "Campo no encontrado",
     "error_invalid_pin": "Tu PIN no es válido",
     "ID Number": "Número de identificación / Número de pasaporte",
     "First Name": "Nombre",
@@ -142,7 +143,9 @@
     "loading_contract": "Modalidad de contrato de carga",
     "sending_message_to": "Enviando mensaje a",
     "sending_complete": "Mensajes enviados!",
-    "send_webhook_message": "Enviando mensaje de confirmación"
+    "send_webhook_message": "Enviando mensaje de confirmación",
+    "verifying_id": "Verificando tu identidad",
+    "verifying_continue_on_error": "Parece que el documento de identidad que has enviado ha fallado la verificación dos veces. Para garantizar un proceso fluido y preciso, te recomendamos encarecidamente que subas una nueva imagen de tu documento de identidad.<br/><br/>Sin embargo, si estás seguro de que la imagen actual es correcta y válida, puedes proceder haciendo clic en Continuar.<br/><br/>Ten en cuenta que en caso de que la información de identidad enviada no coincida con los criterios requeridos, incluidas discrepancias en el nombre y el ID, la reserva se considerará inválida.<br/><br/>En caso de que esto ocurra, nuestro equipo te pedirá que vuelvas a cargar la información necesaria y procedas con el proceso de asignación del contrato correspondiente.<br/><br/>Gracias por tu cooperación."
   },
   "select_options": {
     "None": "Ninguno",

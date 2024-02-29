@@ -52,11 +52,18 @@ export async function validateIdentityUsingOCR(file: File) {
       headers: {
         Authorization: `Bearer ${edenAIApiKey}`,
         "Content-Type": "multipart/form-data;",
-        connection: "close",
       },
     });
 
-    if (!response.data["eden-ai"]) {
+    if (!response.data?.amazon) {
+      return {
+        error:
+          response.data?.error?.message ||
+          response.data?.error ||
+          response.error,
+      };
+    }
+    if (response.data.amazon?.status !== "success") {
       // The error come on the providers
       const error = Object.keys(response.data)
         .map(
@@ -68,7 +75,8 @@ export async function validateIdentityUsingOCR(file: File) {
 
       return { error };
     }
-    return response.data["eden-ai"];
+
+    return { text: response.data.amazon.text };
   } catch (error: any) {
     console.error(error);
     return { error: error.message };
