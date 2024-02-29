@@ -116,7 +116,10 @@
     "error_captain_details": "Captain signature not found",
     "error_message_webhook": "Booking confirmed, but we have not sent the confirmation message to your email.",
     "error_field_not_found": "field not found",
-    "error_invalid_pin": "Invalid Pin"
+    "error_invalid_pin": "Invalid Pin",
+    "ID Number": "ID Number / Passport Number",
+    "First Name": "First Name",
+    "Last Name": "Last Name"
   },
   "title": {
     "feed_back_form": "Treatment Received Feedback Form",
@@ -150,6 +153,6 @@
     "title": "Signing Agreement..."
   },
   "message": {
-    "id_validation_failed_confirm_message":"We can not verify your documents, would you like to submited them anyway? If you do and the documents are not valid, the all booking process can be kept on hold and you will need to solve it before being able to board on the booking"
+    "id_validation_failed_confirm_message": "We can not verify your documents, would you like to submited them anyway? If you do and the documents are not valid, the all booking process can be kept on hold and you will need to solve it before being able to board on the booking"
   }
 }

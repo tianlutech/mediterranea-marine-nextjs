@@ -12,6 +12,7 @@ import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
 import EdenAIService from "@/services/edenAI.service";
 import { sendMessageWebhook } from "@/services/make.service";
 
+const MAX_IA_VALIDATION_ATTEMPTS = 2;
 type StepAction = {
   execute: (formData: BookingFormData, boat: Boat) => void;
 };
@@ -53,8 +54,10 @@ const storeIdImage = async (
 
 let imageFrontLink = "";
 let imageBackLink = "";
-let imageFrontValidated = false;
-let imageBackValidated = false;
+let frontOCRResult = "";
+let ocrError = "";
+let backOCRResult = "";
+let identityValidated = false;
 let bookingSaved: Booking;
 let failedCounter: number = 0;
 
@@ -175,27 +178,13 @@ export const stepsActions = ({
     },
   };
 
-  const confirmContinue = {
-    execute: () => {
-      setModalInfo({
-        modal: "confirmContinueIdFailed",
-        message: "",
-        error: "",
-      });
-    },
-  };
-
   const validateFront = {
     execute: async (formData: BookingFormData, boat: Boat) => {
-      if (imageFrontValidated) {
+      if (identityValidated) {
         nextStep();
         return;
       }
-
-      if (formData.documentType === "National ID") {
-        nextStep();
-        return;
-      }
+      ocrError = "";
 
       setModalInfo({
         modal: "loading",
@@ -203,48 +192,18 @@ export const stepsActions = ({
         error: "",
       });
 
-      const result = await EdenAIService().verifyIdentity(
-        formData
+      const result = await EdenAIService().checkFrontId(
+        formData.ID_Front_Picture
       );
-
-      if (result.error) {
-        failedCounter++;
-        if (failedCounter >= 2) {
-          steps.splice(steps.indexOf("validateFront") + 1, 0, "confirmContinue");
-          steps["confirmContinue"] = confirmContinue;
-          nextStep();
-          return;
-        }
-        setModalInfo({
-          modal: "loading",
-          message: "",
-          error: result.error,
-        });
-        return;
-      }
-      const bookingInfo = new Booking({
-        ...formData,
-        DocumentsApproved: !formData.DocumentsApproved
-      });
-
-      const res = await updateBookingInfo(bookingId, bookingInfo);
-
-      if ((res as { error: string }).error) {
-        setModalInfo({
-          modal: "loading",
-          message: t("loadingMessage.saving_information"),
-          error: (res as { error: string }).error,
-        });
-        return;
-      }
-      imageFrontValidated = true;
+      frontOCRResult = result.text || "";
+      ocrError = result.error || "";
       nextStep();
     },
   };
 
   const validateBack = {
     execute: async (formData: BookingFormData, boat: Boat) => {
-      if (imageBackValidated) {
+      if (identityValidated) {
         nextStep();
         return;
       }
@@ -252,52 +211,69 @@ export const stepsActions = ({
         nextStep();
         return;
       }
+      if (ocrError) {
+        nextStep();
+        return;
+      }
+
       setModalInfo({
         modal: "loading",
         message: t("loadingMessage.verifying_id"),
         error: "",
       });
 
-      const result = await EdenAIService().verifyIdentity(
-        formData
+      const result = await EdenAIService().checkBackId(
+        formData.ID_Back_Picture
       );
+      backOCRResult = result.text || "";
+      ocrError = result.error || "";
 
-      if (result.error) {
-        failedCounter++;
-        if (failedCounter >= 12) {
-          steps.splice(steps.indexOf("validateBack") + 1, 0, "confirmContinue");
-          steps["confirmContinue"] = confirmContinue;
-          nextStep();
-          return;
-        }
-        setModalInfo({
-          modal: "loading",
-          message: "",
-          error: result.error,
-        });
-        return;
-      }
-      const bookingInfo = new Booking({
-        ...formData,
-        DocumentsApproved: !formData.DocumentsApproved
-      });
-
-      const res = await updateBookingInfo(bookingId, bookingInfo);
-
-      if ((res as { error: string }).error) {
-        setModalInfo({
-          modal: "loading",
-          message: t("loadingMessage.saving_information"),
-          error: (res as { error: string }).error,
-        });
-        return;
-      }
-
-      imageFrontValidated = true;
-      imageBackValidated = true;
       nextStep();
     },
   };
+
+  const confirmContinue = {
+    execute: async (formData: BookingFormData, boat: Boat) => {
+      if (identityValidated) {
+        nextStep();
+        return;
+      }
+      // Error from API call
+      if (ocrError) {
+        failedCounter++;
+        setModalInfo({
+          modal:
+            failedCounter > MAX_IA_VALIDATION_ATTEMPTS
+              ? "confirmContinue"
+              : "loading",
+          message: t("loadingMessage.verifying_id"),
+          error: ocrError,
+        });
+        return;
+      }
+
+      const result = await EdenAIService().verifyIdentity(
+        formData,
+        `${frontOCRResult} ${backOCRResult}`
+      );
+
+      identityValidated = !!result.ok;
+
+      if ((result as { error: string }).error) {
+        failedCounter++;
+        setModalInfo({
+          modal:
+            failedCounter > MAX_IA_VALIDATION_ATTEMPTS
+              ? "confirmContinue"
+              : "loading",
+          message: t("loadingMessage.verifying_id"),
+          error: ocrError,
+        });
+        return;
+      }
+    },
+  };
+
   const pay = {
     execute: (formData: BookingFormData, boat: Boat) => {
       if (!Booking.totalPayment(formData)) {
@@ -333,7 +309,8 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${
+          formData["Departure Time"]
         }`
       );
 
@@ -348,6 +325,7 @@ export const stepsActions = ({
         "ID Back Picture": imageBackLink,
         Toys: [paddle, seaBobName].filter((value) => !!value),
         SubmittedFormAt: new Date(),
+        DocumentsApproved: identityValidated,
       });
 
       const res = await updateBookingInfo(bookingId, bookingInfo);

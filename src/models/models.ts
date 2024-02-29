@@ -35,7 +35,7 @@ export type BookingFormData = {
   documentType: "National ID" | "Passport";
   OutstandingPayment: number;
   CustomerSignature: string;
-  DocumentsApproved: boolean
+  DocumentsApproved: boolean;
 };
 
 export type FileBody = {

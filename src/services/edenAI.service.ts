@@ -14,18 +14,14 @@ const EdenAIService = () => {
       const formData = new FormData();
       formData.append("file", file);
 
-      // const response = await fetch("/api/edenAI", {
-      //   method: "POST",
-      //   body: formData,
-      // });
       const form = new FormData();
       form.append("providers", "amazon");
       form.append("file", file);
       form.append("language", "en");
       const EDEN_URL = "https://api.edenai.run/v2";
-      const EDEN_API_KEY = process.env.NEXT_PUBLIC_EDEN_API_KEY
+      const EDEN_API_KEY = process.env.NEXT_PUBLIC_EDEN_API_KEY;
 
-      const {data} = await axios.post(`${EDEN_URL}/ocr/ocr`, form, {
+      const { data } = await axios.post(`${EDEN_URL}/ocr/ocr`, form, {
         headers: {
           Authorization: `Bearer ${EDEN_API_KEY}`,
           "Content-Type": "multipart/form-data;",
@@ -41,32 +37,33 @@ const EdenAIService = () => {
     }
   };
 
-  const verifyIdentity = async (formData: BookingFormData) => {
+  const verifyIdentity = async (
+    formData: BookingFormData,
+    ocrResult: string
+  ) => {
     const fields = ["First Name", "Last Name", "ID Number"];
-    const ocrResultFront = await checkFrontId(formData["ID_Front_Picture"]);
-    const ocrResultBack = await checkBackId(formData["ID_Back_Picture"]);
-    const missingFields: string[] = [];
-  
-    fields.forEach((field: string) => {
-      const fieldValue = formData[field as keyof BookingFormData] as string;
-      if (!(`${ocrResultFront} ${ocrResultBack}`).includes(fieldValue)) {
-        missingFields.push(field);
-      }
-    });
-    
+
+    const missingFields = fields
+      .filter((field: string) => {
+        const fieldValue = formData[field as keyof BookingFormData] as string;
+        return !ocrResult.includes(fieldValue);
+      })
+      .map((field) => i18n.t(`error.${field}`));
+
     if (missingFields.length > 0) {
       return {
-        error: `${missingFields.join(", ")} ${i18n.t("error.error_field_not_found")}`
+        error: `${missingFields.join(", ")}. ${i18n.t(
+          "error.error_field_not_found"
+        )}`,
       };
     }
-  
+
     return { ok: true };
   };
-  
 
   const checkFrontId = async (
-    file: File,
-  ): Promise<{ error?: string; ok?: true }> => {
+    file: File
+  ): Promise<{ error?: string; text?: string }> => {
     const result = await checkIdValidity(file);
 
     if (result.error) {
@@ -75,18 +72,18 @@ const EdenAIService = () => {
       };
     }
 
-    const data = result.amazon
+    const data = result.amazon;
 
     if (!data || data.status !== "success") {
       return { error: i18n.t("error.error_validation_failed") };
     }
-    
-    return data.text;
+
+    return { text: data.text };
   };
 
   const checkBackId = async (
-    file: File,
-  ): Promise<{ error?: string; ok?: true }> => {
+    file: File
+  ): Promise<{ error?: string; text?: string }> => {
     const result = await checkIdValidity(file);
 
     if (result.error) {
@@ -95,17 +92,16 @@ const EdenAIService = () => {
       };
     }
 
-    const data = result.amazon
+    const data = result.amazon;
 
     if (!data || data.status !== "success") {
       return { error: i18n.t("error.error_validation_failed") };
     }
-    
-    return data.text;
-  };
-  
 
-  return { verifyIdentity };
+    return { text: data.text };
+  };
+
+  return { verifyIdentity, checkFrontId, checkBackId };
 };
 
 export default EdenAIService;
