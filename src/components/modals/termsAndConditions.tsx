@@ -2,7 +2,13 @@
 import Modal from "@/components/common/containers/modal";
 import SignaturePad from "react-signature-canvas";
 import React, { useRef, useState, useEffect } from "react";
-import { Boat, Booking, BookingFormData } from "@/models/models";
+import {
+  Boat,
+  Booking,
+  BookingFormData,
+  caclulateArrivalTime,
+  calculateArrivalTime,
+} from "@/models/models";
 import moment from "moment";
 import { uploadSignatureImage } from "@/services/googleDrive.service";
 import { convertCanvasToImage } from "@/services/utils";
@@ -31,8 +37,7 @@ export default function TermsAndConditions({
   const date = bookingInfo["Date"];
   const bookingDateYear = moment(date).format("YYYY");
   const bookingDateMonth = moment(date).format("MM");
-  const bookingDateDay = moment(date).format("HH");
-
+  const bookingDateDay = moment(date).format("DD");
   const clearSigPad = () => {
     if (sigPad.current) {
       sigPad.current.clear();
@@ -46,46 +51,28 @@ export default function TermsAndConditions({
 
   useEffect(() => {
     const maximumDepartureTime = () => {
-      // Split the time string into hours and minutes
-      var parts = bookingInfo["Departure Time"].split(":");
-      var hours = parseInt(parts[0], 10);
-      var minutes = parseInt(parts[1], 10);
-
-      // Add hours
-      hours += 8;
-
-      // Ensure that hours do not exceed 24
-      if (hours > 21) {
-        hours = 21;
-      }
-
-      // Formatting hours and minutes to two digits
-      var formattedHours = hours.toString().padStart(2, "0");
-      var formattedMinutes = minutes.toString().padStart(2, "0");
-
-      // Returning the formatted time string
-      const time = formattedHours + ":" + formattedMinutes;
+      const time = calculateArrivalTime(bookingInfo["Departure Time"]);
       setDepartureMaximumHour(time);
     };
     if (sigPad.current && !sigPad.current.isEmpty()) {
       setIsSigned(!sigPad.current.isEmpty());
     }
-    maximumDepartureTime()
+    maximumDepartureTime();
   }, [bookingInfo]);
 
   const getSignatureImage = async () => {
     if (sigPad.current) {
-      const mime = "image/jpeg"
+      const mime = "image/jpeg";
       const canvas = sigPad.current.getTrimmedCanvas();
-      const image = await convertCanvasToImage({ canvas, mime })
+      const image = await convertCanvasToImage({ canvas, mime });
 
       const response = await uploadSignatureImage(image as File);
       if (!response.id) {
         return "";
       }
       const url = `https://drive.google.com/file/d/${response.id}/view`;
-      setFormData({ ...formData, "CustomerSignature": url })
-      return
+      setFormData({ ...formData, CustomerSignature: url });
+      return;
     }
     return null;
   };
@@ -154,32 +141,33 @@ export default function TermsAndConditions({
             <p className="mb-6">
               Through this contract, THE MANAGER leases to THE LESSEE the boat
               described in EXPOSITION I, authorized for the transport of{" "}
-              {boat["Max.Passengers"]} people for navigation through the waters of
-              the Balearic Islands.
+              {boat["Max.Passengers"]} people for navigation through the waters
+              of the Balearic Islands.
             </p>
             <p className="font-bold my-4">
               SECOND. - LEASE PERIOD AND PORT OF EMBARK AND DISEMBARK
             </p>
             <p className="mb-6">The lease period includes:</p>
             <p className="text-sm">
-              From: {bookingInfo["Departure Time"]} of the day {bookingDateDay} of{" "}
-              {bookingDateMonth} of {bookingDateYear}
+              From: {bookingInfo["Departure Time"]} hours of the day{" "}
+              {bookingDateDay} of {bookingDateMonth} of {bookingDateYear}
             </p>
             <p className="text-sm">
               Until: {departureMaximumHour} hours of the day {bookingDateDay} of{" "}
               {bookingDateMonth} of {bookingDateYear}
             </p>
+            <br />
             <h3>THIRD. – FUEL CONSUMPTION AND ALL-INCLUSIVE CLAUSES</h3>
             <p className="mb-6">
-              The fuel consumption of the vessel will be charged at the end of the
-              day according to the nautical miles sailed.
+              The fuel consumption of the vessel will be charged at the end of
+              the day according to the nautical miles sailed.
             </p>
             <p className="mb-6">
               For all-inclusive cases, fuel consumption will be estimated for 25
               nautical miles. NOT MEANTING THAT IT HAS UNLIMITED NAVIGATION
               INCLUDED.
             </p>
-            <h3>FOURTh. - THE CAPTAIN</h3>
+            <h3>FOURTH. - THE CAPTAIN</h3>
             <p className="mb-6">
               Under no circumstances may the authority of the vessel be
               transferred to a person other than the one registered as CAPTAIN.
@@ -189,19 +177,21 @@ export default function TermsAndConditions({
             <h3>FIFTH. - DELIVERY OF THE BOAT</h3>
             <p className="mb-6">
               The boat will be delivered to THE LESSEE at the port and time
-              indicated in this contract, ready to navigate. Any delay in boarding
-              by THE LESSEE will not imply an extension in the period of the
-              lease.All costs of water, electricity and port fees in the base port
-              of the ship in Ibiza are included in the charter rate paid by THE
-              LESSEE. If the boat is docked at a different port during the
-              charter, THE LESSEE will pay mooring fees and charges for the
-              consumptions in that port.
+              indicated in this contract, ready to navigate. Any delay in
+              boarding by THE LESSEE will not imply an extension in the period
+              of the lease.All costs of water, electricity and port fees in the
+              base port of the ship in Ibiza are included in the charter rate
+              paid by THE LESSEE. If the boat is docked at a different port
+              during the charter, THE LESSEE will pay mooring fees and charges
+              for the consumptions in that port.
             </p>
-            <h3>SIXTH. - PERSONAL PROPERTY OF PASSENGERS DURING THE CONTRACT</h3>
+            <h3>
+              SIXTH. - PERSONAL PROPERTY OF PASSENGERS DURING THE CONTRACT
+            </h3>
             <p className="mb-6">
-              The MANAGER/OWNER is not responsible for any damages or losses that
-              may occur during the term of leasing on the personal property of
-              passengers.
+              The MANAGER/OWNER is not responsible for any damages or losses
+              that may occur during the term of leasing on the personal property
+              of passengers.
             </p>
             <h3>SEVENTH. - NAVIGATION AREA</h3>
             <p className="mb-6">
@@ -210,9 +200,9 @@ export default function TermsAndConditions({
               this vessel.
             </p>
             <p className="mb-6">
-              Navigation is limited to a maximum of six (6) hours per day, unless
-              the captain, at his own discretion, agrees to exceed this time
-              limit.
+              Navigation is limited to a maximum of six (6) hours per day,
+              unless the captain, at his own discretion, agrees to exceed this
+              time limit.
             </p>
             <p className="mb-6">
               Navigation time is restricted from 9:00h until 21:00h, being
@@ -225,9 +215,9 @@ export default function TermsAndConditions({
               of the charter in bad weather conditions.
             </p>
             <h3>
-              EIGHTH. - MAXIMUM NUMBER OF PEOPLE ON BOARD, LIABILITY OF MINORS AND
-              HEALTH OF PEOPLE ON BOARD AND BELONGINGS OF THE LESSEE AND THEIR
-              GUESTS
+              EIGHTH. - MAXIMUM NUMBER OF PEOPLE ON BOARD, LIABILITY OF MINORS
+              AND HEALTH OF PEOPLE ON BOARD AND BELONGINGS OF THE LESSEE AND
+              THEIR GUESTS
             </h3>
             <p className="mb-6">
               The maximum number of people authorized on board for navigation is
@@ -244,14 +234,14 @@ export default function TermsAndConditions({
               the moments in which the boat is conveniently moored to the port.
             </p>
             <p className="mb-6">
-              In the event that there are minors on board, THE LESSEE will be the
-              only one responsible for its security, conduct and entertainment. No
-              member of the crew will be held responsible for their safety or
-              entertainment.
+              In the event that there are minors on board, THE LESSEE will be
+              the only one responsible for its security, conduct and
+              entertainment. No member of the crew will be held responsible for
+              their safety or entertainment.
             </p>
             <p className="mb-6">
-              THE MANAGER is not responsible for the loss, theft or deterioration
-              of the belongings of THE LESSEE and their guests.
+              THE MANAGER is not responsible for the loss, theft or
+              deterioration of the belongings of THE LESSEE and their guests.
             </p>
             <p className="mb-6">
               The nature of the charter can make it inadvisable for anyone who
@@ -287,46 +277,47 @@ export default function TermsAndConditions({
             </p>
             <p className="">
               6. Participation in races of any kind, cabotage or professional
-              fishing, teaching navigation courses or using the boat for any other
-              lucrative purpose is prohibited, unless expressly authorized by THE
-              MANAGER.
+              fishing, teaching navigation courses or using the boat for any
+              other lucrative purpose is prohibited, unless expressly authorized
+              by THE MANAGER.
             </p>
             <p className="">
-              7. If weather conditions are not favorable, the captain may prohibit
-              navigation.
+              7. If weather conditions are not favorable, the captain may
+              prohibit navigation.
             </p>
             <p className="">
-              8. Towing other vessels except in emergencies is strictly forbidden,
-              likewise, only the boat subject to this contract will be allowed to
-              tow in cases of emergency and always with their own ropes to avoid
-              the high costs of rescue. THE MANAGER will not accept agreements nor
-              assume any type of responsibilities without the express
-              authorization of THE MANAGER.
+              8. Towing other vessels except in emergencies is strictly
+              forbidden, likewise, only the boat subject to this contract will
+              be allowed to tow in cases of emergency and always with their own
+              ropes to avoid the high costs of rescue. THE MANAGER will not
+              accept agreements nor assume any type of responsibilities without
+              the express authorization of THE MANAGER.
             </p>
             <p className="">
               9. In the event of a rescue or salvage situation of another vessel
               and/or its crew, the captain will be the only authorized person to
-              make the decision to proceed with such rescue and the terms thereof.
-              In the unlikely event of obtaining an award or compensation for a
-              salvage or rescue, this will be equally split between THE MANAGER
-              and THE LESSEE.
+              make the decision to proceed with such rescue and the terms
+              thereof. In the unlikely event of obtaining an award or
+              compensation for a salvage or rescue, this will be equally split
+              between THE MANAGER and THE LESSEE.
             </p>
             <p className="">
               10. THE LESSEE will be responsible for all the possible damages
-              caused to the boat, either by himself or his guests, as well as the
-              loss of objects or breakage of any element or its equipment included
-              or not in the inventory of the boat. The value of said damages or
-              objects will be discounted from the deposit. If the value of the
-              damage or lost or damaged objects exceeds the amount of the deposit
-              deposited, THE LESSEE must pay the remaining amount until covering
-              the required total.
+              caused to the boat, either by himself or his guests, as well as
+              the loss of objects or breakage of any element or its equipment
+              included or not in the inventory of the boat. The value of said
+              damages or objects will be discounted from the deposit. If the
+              value of the damage or lost or damaged objects exceeds the amount
+              of the deposit deposited, THE LESSEE must pay the remaining amount
+              until covering the required total.
             </p>
             <h3>TENTH. - RETURN OF THE BOAT</h3>
             <p className="mb-6">
-              If THE LESSEE wishes, he/she may return the vessel in the fixed port
-              of disembarkation and disembark before the scheduled date for the
-              end of the charter. This will not entail any right for THE LESSEE to
-              claim any type of refund or compensation in the charter rate.
+              If THE LESSEE wishes, he/she may return the vessel in the fixed
+              port of disembarkation and disembark before the scheduled date for
+              the end of the charter. This will not entail any right for THE
+              LESSEE to claim any type of refund or compensation in the charter
+              rate.
             </p>
             <h3>ELEVENTH. – USE OF WATER TOYS</h3>
             <p className="mb-6">
@@ -349,12 +340,12 @@ export default function TermsAndConditions({
             </p>
             <h3>TWELFTH. – CANCELLATION DUE TO BAD WEATHER</h3>
             <p className="mb-6">
-              Bad weather is defined as winds greater than 20 knots, waves greater
-              than 2m and rain. Cloudy skies are not considered bad weather. In
-              the event that a rental has to be canceled due to bad weather, the
-              client will have the option to modify the date for another available
-              day. Cancellation due to bad weather does not imply a refund of the
-              rental.
+              Bad weather is defined as winds greater than 20 knots, waves
+              greater than 2m and rain. Cloudy skies are not considered bad
+              weather. In the event that a rental has to be canceled due to bad
+              weather, the client will have the option to modify the date for
+              another available day. Cancellation due to bad weather does not
+              imply a refund of the rental.
             </p>
             <h3>FOURTEENTH. – TOWING INFLATABLES</h3>
             <p className="mb-6">
@@ -363,9 +354,9 @@ export default function TermsAndConditions({
             </p>
             <h3>FOURTEENTH. - CANCELLATION AND RESOLUTION.</h3>
             <p className="mb-6">
-              In the event that THE LESSEE cancels the lease up to 15 days before
-              the provision of the service, THE MANAGER will retain 50% of the
-              total price as a penalty.
+              In the event that THE LESSEE cancels the lease up to 15 days
+              before the provision of the service, THE MANAGER will retain 50%
+              of the total price as a penalty.
             </p>
             <p className="mb-6">
               In case the cancellation occurs less than 15 days before the start
@@ -373,25 +364,26 @@ export default function TermsAndConditions({
             </p>
             <p className="mb-6">
               The deposit will not be refunded in the cases described above,
-              however, if THE MANAGER or THE BROKER manage to re sell the charter
-              booked dates by THE LESSEE to another client, the money paid will be
-              kept as credit for a later date during the summer or to the
-              following year.
+              however, if THE MANAGER or THE BROKER manage to re sell the
+              charter booked dates by THE LESSEE to another client, the money
+              paid will be kept as credit for a later date during the summer or
+              to the following year.
             </p>
             <p className="mb-6">
-              In the event that THE LESSEE cannot arrive to Ibiza because Spain or
-              USA have closed their airspace THE LESSEE will receive a full refund
-              of the money paid.
+              In the event that THE LESSEE cannot arrive to Ibiza because Spain
+              or USA have closed their airspace THE LESSEE will receive a full
+              refund of the money paid.
             </p>
             <p className="mb-6">
               In the event that Spain declares a state of emergency that forbids
-              chartering and sailing THE LESSEE will receive a full refund of the
-              money paid.
+              chartering and sailing THE LESSEE will receive a full refund of
+              the money paid.
             </p>
             <h3>FIFTEENTH. - INSURANCE</h3>
             <p className="mb-6">
-              The insurance of the boat is included in the price of the lease, the
-              particular conditions of these policies are available to THE LESSEE.
+              The insurance of the boat is included in the price of the lease,
+              the particular conditions of these policies are available to THE
+              LESSEE.
             </p>
             <p className="mb-6">
               THE MANAGER shall not be liable in any case for damages to people,
@@ -405,9 +397,10 @@ export default function TermsAndConditions({
             </p>
             <h3>SIXTEENTH. - RESPONSIBILITY AGAINST THIRD PARTIES</h3>
             <p className="mb-6">
-              THE LESSEE is obliged to indemnify THE MANAGER for damages to third
-              parties due to negligence and that are not covered by the insurance,
-              also running with all expenses, both material and legal.
+              THE LESSEE is obliged to indemnify THE MANAGER for damages to
+              third parties due to negligence and that are not covered by the
+              insurance, also running with all expenses, both material and
+              legal.
             </p>
             <p className="mb-6">
               THE LESSEE takes full responsibility for his acts, especially in
@@ -419,14 +412,14 @@ export default function TermsAndConditions({
             <h3>SEVENTEENTH. - RESOLUTION OF DISCREPANCES.</h3>
             <p className="mb-6">
               For the resolution of any controversy, the contracting parties,
-              after waiving any other jurisdiction or right that may correspond to
-              them, submit to the jurisdiction of the Balearic Courts.
+              after waiving any other jurisdiction or right that may correspond
+              to them, submit to the jurisdiction of the Balearic Courts.
             </p>
             <p className="mb-6">
               And in order for this to be recorded and to have the appropriate
-              effects and proof of compliance, the parties sign this document, in
-              duplicate copies and for a single purpose, in the place and on the
-              date indicated in the heading.
+              effects and proof of compliance, the parties sign this document,
+              in duplicate copies and for a single purpose, in the place and on
+              the date indicated in the heading.
             </p>
           </div>
           <div className="flex flex-wrap justify-between items-end pt-4 md:pt-5 border-gray-200">

@@ -17,6 +17,8 @@ import SimpleButton from "../common/containers/simple-button";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SecretInput from "../common/inputs/secretInput";
+import { verifyValue } from "@/services/verifyValue.service";
 
 const PRICE = 0.0509; // At 2024-01-29
 
@@ -52,6 +54,7 @@ export default function WhatsAppBulkMessagesForm({
     fields: {} as Record<string, string>, // Column of the CSV where we select the value
     default: {} as Record<string, string>, // Value that we put if the CSV column is empty
     attachment: "", // URL of video or image
+    Pin: "",
   });
   useEffect(() => {
     whatsApp.getMessagesTemplates().then((data) => {
@@ -60,6 +63,16 @@ export default function WhatsAppBulkMessagesForm({
   }, [setTemplates]);
 
   const onSubmit = async () => {
+    const response = await verifyValue({
+      value: data.Pin,
+      compareTo: "MasterKey",
+    });
+    if (response.error) {
+      return toast.error(response.error);
+    }
+    if (!response.ok) {
+      return toast.error(t("error.error_invalid_pin"));
+    }
     if (data.contacts.length > 250) {
       return toast.error(t("error.maximum_number_250"));
     }
@@ -370,6 +383,22 @@ export default function WhatsAppBulkMessagesForm({
                   </div>
                 </div>
               )}
+              <div className="mt-6">
+                <FormWrapper>
+                  <CommonLabel input="text">{t("input.pin")}</CommonLabel>
+                  <SecretInput
+                    name="pin"
+                    id="pin"
+                    placeholder={t("input.pin")}
+                    value={data.Pin}
+                    minlength="4"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setData({ ...data, Pin: e.target.value })
+                    }
+                  />
+                </FormWrapper>
+              </div>
+
               <div className="flex flex-col">
                 <SubmitButton
                   label={
