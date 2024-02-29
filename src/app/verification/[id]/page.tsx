@@ -71,7 +71,7 @@ export default function DocumentVerification({ params }: { params: { id: string 
           <p className="mb-6">{t("sidebar.sidebar_p2")}</p>
         </div>{" "}
       </Sidebar>
-      <VerificationForm />
+      <VerificationForm bookingDetails={data} boatInfo={boatInfo} bookingId={params.id} />
     </>
   );
 }

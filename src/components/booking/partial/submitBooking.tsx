@@ -26,6 +26,7 @@ const SaveBooking = forwardRef(function SaveBookingRef(
     onCancel,
     onSuccess,
     bookingId,
+    steps,
   }: {
     booking: Booking;
     boat: Boat;
@@ -34,6 +35,7 @@ const SaveBooking = forwardRef(function SaveBookingRef(
     onCancel?: () => void;
     onSuccess?: () => void;
     bookingId: string;
+    steps: string[]
   },
   ref: ForwardedRef<{ start: () => void }>
 ) {

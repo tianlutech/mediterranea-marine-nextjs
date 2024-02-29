@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import {
   Boat,
   Booking,
@@ -19,11 +18,12 @@ type StepAction = {
 const skip_steps = (process.env.NEXT_PUBLIC_SKIP_BOOKING_STEPS || "").split(
   ","
 );
+
 export const steps = [
   "fuel",
   "sign",
-  // "validateFront",
-  // "validateBack",
+  "validateFront",
+  "validateBack",
   "uploadFrontIdImage",
   "uploadBackIdImage",
   "pay",
@@ -266,8 +266,7 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${
-          formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
         }`
       );
 

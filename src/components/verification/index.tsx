@@ -6,10 +6,11 @@ import CommonLabel from "../common/containers/label";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import SubmitButton from "../common/containers/submit-button";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useFormik } from "formik";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import SaveBooking from "../booking/partial/submitBooking";
+import { Booking, BookingFormData, Boat } from "@/models/models";
+import { useRouter } from "next/navigation";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -17,10 +18,21 @@ const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default function VerificationForm() {
+export default function VerificationForm({
+  bookingDetails,
+  boatInfo,
+  bookingId,
+}: {
+  bookingDetails: Booking,
+  boatInfo: Boat,
+  bookingId: string
+}) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState({
+  const saveModalRef = useRef<{ start: () => void }>(null);
+  const router = useRouter();
+
+  const [data, setData] = useState<Partial<BookingFormData>>({
     "First Name": "",
     "Last Name": "",
     "ID Number": "",
@@ -47,7 +59,16 @@ export default function VerificationForm() {
 
   return (
     <>
-      <ToastContainer />
+      <SaveBooking
+        ref={saveModalRef}
+        formData={data as BookingFormData}
+        setFormData={setData}
+        boat={boatInfo}
+        booking={data as unknown as Booking}
+        onSuccess={() => router.replace("/success")}
+        bookingId={bookingId}
+        steps={["validateFront", "validateBack", "uploadFrontIdImage", "uploadBackIdImage", "pay", "saveData", "notifyCustomer"]}
+      />
       <div className="flex md:w-[77%] w-full  justify-center items-center md:p-6 p-2">
         <div className="bg-white md:w-[70%] w-full rounded-lg">
           <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm">
