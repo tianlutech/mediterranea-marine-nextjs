@@ -71,6 +71,7 @@
   "sidebar": {
     "language": "Language",
     "boat_booking": "BOAT BOOKING",
+    "document_verification": "Document Verification",
     "feedback_form": "CUSTOMER FEEDBACK",
     "putting_fuel_form": "PUTTING FUEL",
     "fuel_Form": "FUEL REPORT",
@@ -120,7 +121,8 @@
   "title": {
     "feed_back_form": "Treatment Received Feedback Form",
     "fuel_form": "Fuel Form",
-    "whatsapp_form": "WhatsApp Form"
+    "whatsapp_form": "WhatsApp Form",
+    "verification_form": "Verification Form"
   },
   "loadingMessage": {
     "uploading_passport": "Uploading your Passport",

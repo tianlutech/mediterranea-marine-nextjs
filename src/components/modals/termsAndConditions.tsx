@@ -6,7 +6,6 @@ import {
   Boat,
   Booking,
   BookingFormData,
-  caclulateArrivalTime,
   calculateArrivalTime,
 } from "@/models/models";
 import moment from "moment";
