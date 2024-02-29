@@ -258,6 +258,9 @@ export class DepartureTime extends NotionItem {
 }
 
 export const calculateArrivalTime = (departureTime: string) => {
+  if(!departureTime) {
+    return
+  }
   // Split the time string into hours and minutes
   var parts = departureTime.split(":");
   var hours = +parts[0];

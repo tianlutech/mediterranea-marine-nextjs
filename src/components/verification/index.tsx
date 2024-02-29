@@ -28,7 +28,6 @@ export default function VerificationForm({
   bookingId: string
 }) {
   const { t } = useTranslation();
-  const [loading, setLoading] = useState<boolean>(false);
   const saveModalRef = useRef<{ start: () => void }>(null);
   const router = useRouter();
 
@@ -42,7 +41,7 @@ export default function VerificationForm({
   });
 
   const submitVerificationForm = async () => {
-    setLoading(true);
+    saveModalRef.current?.start();
     console.log(">>>>>>>>Info", data)
   };
 
@@ -183,7 +182,7 @@ export default function VerificationForm({
                   />
                 </>
               )}
-              <SubmitButton label="Submit" loading={loading} />
+              <SubmitButton label="Submit" />
             </div>
           </form>
         </div>

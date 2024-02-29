@@ -51,7 +51,7 @@ export default function TermsAndConditions({
   useEffect(() => {
     const maximumDepartureTime = () => {
       const time = calculateArrivalTime(bookingInfo["Departure Time"]);
-      setDepartureMaximumHour(time);
+      setDepartureMaximumHour(time as string);
     };
     if (sigPad.current && !sigPad.current.isEmpty()) {
       setIsSigned(!sigPad.current.isEmpty());
