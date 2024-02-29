@@ -35,6 +35,7 @@ export type BookingFormData = {
   documentType: "National ID" | "Passport";
   OutstandingPayment: number;
   CustomerSignature: string;
+  DocumentsApproved: boolean;
 };
 
 export type FileBody = {
@@ -149,6 +150,9 @@ export class Booking extends NotionItem {
 
   @NotionType("checkbox")
   AllowFollowUp?: number;
+
+  @NotionType("checkbox")
+  DocumentsApproved?: boolean;
 
   Captain: string[] = [];
 

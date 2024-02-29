@@ -26,14 +26,14 @@ export default function CommonInputFile({
   const inputRef = useRef<HTMLInputElement>(null);
   const { t } = useTranslation();
   const [photoPreview, setPhotoPreview] = useState<string>("");
-  const [photoFontSize, setPhotoFontSize] = useState<string>("");
+  const [photoSize, setPhotoSize] = useState<string>("");
   const [photoName, setPhotoName] = useState<string>("");
 
   const cancelFile = () => {
     onChange(null);
     setPhotoPreview("");
     setPhotoName("");
-    setPhotoFontSize("");
+    setPhotoSize("");
   };
   const onChangeImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
@@ -53,7 +53,7 @@ export default function CommonInputFile({
 
     const fileUrl = URL.createObjectURL(file);
 
-    setPhotoFontSize(
+    setPhotoSize(
       fileSizeInMegabytes < 1
         ? `${fileSizeInKilobytes} KB`
         : `${fileSizeInMegabytes} MB`
@@ -65,8 +65,11 @@ export default function CommonInputFile({
   };
 
   const removeImage = () => {
+    if (inputRef.current) {
+      inputRef.current.value = ""; // This will reset the input value
+    }
     onRemove?.();
-    setPhotoFontSize("");
+    setPhotoSize("");
     setPhotoPreview("");
     setPhotoName("");
   };
@@ -75,7 +78,7 @@ export default function CommonInputFile({
     (inputRef.current as any).click();
   };
   return (
-    <div className="relative cursor-pointer " onClick={onClick}>
+    <div className="relative cursor-pointer " onClick={(e) => onClick(e)}>
       {photoPreview && (
         <div
           onClick={removeImage}
@@ -93,7 +96,7 @@ export default function CommonInputFile({
           name={name}
           type="file"
           style={{ opacity: 0, height: 1, width: 1, position: "absolute" }}
-          onChange={onChangeImage}
+          onChange={(e) => onChangeImage(e)}
           accept="image/*"
           required={required}
         />
@@ -129,7 +132,7 @@ export default function CommonInputFile({
                 </span>
               </div>
               <span className="text-black md:text-base text-xs">
-                {photoFontSize}
+                {photoSize}
               </span>
             </div>
           )}

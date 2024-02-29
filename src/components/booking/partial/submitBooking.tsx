@@ -16,6 +16,7 @@ import { stepsActions, steps } from "./steps-actions";
 import ProgressModal from "../../modals/progressModal";
 import SumupWidget from "@/components/modals/sumupWidget";
 import { useTranslation } from "react-i18next";
+import ConfirmModal from "@/components/modals/confirmModal";
 
 const SaveBooking = forwardRef(function SaveBookingRef(
   {
@@ -130,6 +131,12 @@ const SaveBooking = forwardRef(function SaveBookingRef(
           })
         }
         onSuccess={() => nextStep(step)}
+      />
+      <ConfirmModal
+        isOpen={modalInfo.modal === "confirmContinueIdFailed"}
+        message={t("message.id_validation_failed_confirm_message")}
+        onCancel={() => cancel()}
+        onContinue={() => nextStep(step)}
       />
     </>
   );

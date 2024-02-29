@@ -11,6 +11,7 @@ import {
 import moment from "moment";
 import { uploadSignatureImage } from "@/services/googleDrive.service";
 import { convertCanvasToImage } from "@/services/utils";
+import Button from "../common/buttons/Button";
 
 export default function TermsAndConditions({
   isOpen,
@@ -455,14 +456,11 @@ export default function TermsAndConditions({
               </svg>
             </button>
             {isSigned ? (
-              <button
+              <Button
                 onClick={agreeContract}
-                data-modal-hide="default-modal"
-                type="button"
-                className="text-white bg-buttonColor2 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-              >
-                Sign
-              </button>
+                className={"bg-buttonColor2 text-white"}
+                message={"sign"}
+              />
             ) : (
               <div />
             )}

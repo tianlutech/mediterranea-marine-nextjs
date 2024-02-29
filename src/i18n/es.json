@@ -117,8 +117,12 @@
     "error_booking_details": "Detalles de la reserva no encontrados",
     "error_boat_details": "Detalles del barco no encontrados",
     "error_captain_details": "Firma del capitán no configurada",
+    "error_message_webhook": "Reserva completada, pero no se pudo enviar una notificación por correo.",
+    "error_field_not_found": "campo no encontrado",
     "error_invalid_pin": "Tu PIN no es válido",
-    "error_message_webhook": "Booking completed, but failed to send a mail notification."
+    "ID Number": "Número de identificación / Número de pasaporte",
+    "First Name": "Nombre",
+    "Last Name": "Apellido"
   },
   "title": {
     "feed_back_form": "Feedback del Viaje",
@@ -130,8 +134,6 @@
     "uploading_passport": "Subiendo tu Pasaporte",
     "uploading_front_id": "Subiendo imagen frontal de tu identidad",
     "uploading_back_id": "Subiendo reverso de tu identidad",
-    "verifying_front_id": "Validando el frontal de tu identidad",
-    "verifying_back_id": "Validando el reverso de tu identidad",
     "preparing_for_payment": "Preparándose para el pago",
     "processing_payment": "Procesando su pago",
     "saving_information": "Guardando tu información",
@@ -152,5 +154,8 @@
   },
   "signing": {
     "title": "Firmando contrato..."
+  },
+  "message": {
+    "id_validation_failed_confirm_message": "No podemos verificar sus documentos, ¿le gustaría enviarlos de todos modos? Si lo haces y los documentos no son válidos, todo el proceso de reserva puede quedar en espera y tendrás que resolverlo antes de poder embarcar en la reserva."
   }
 }

@@ -115,8 +115,12 @@
     "error_booking_details": "Booking details not found",
     "error_boat_details": "Boat details not found",
     "error_captain_details": "Captain signature not found",
+    "error_message_webhook": "Booking confirmed, but we have not sent the confirmation message to your email.",
+    "error_field_not_found": "field not found",
     "error_invalid_pin": "Invalid Pin",
-    "error_message_webhook": "Booking confirmado, pero no hemos enviar el mensake de confirmación a tu correo."
+    "ID Number": "ID Number / Passport Number",
+    "First Name": "First Name",
+    "Last Name": "Last Name"
   },
   "title": {
     "feed_back_form": "Treatment Received Feedback Form",
@@ -128,8 +132,7 @@
     "uploading_passport": "Uploading your Passport",
     "uploading_front_id": "Uploading front image of your identity",
     "uploading_back_id": "Uploading front Back of your identity",
-    "verifying_front_id": "Validating front image of your identity",
-    "verifying_back_id": "Validating back image of your identity",
+    "verifying_id": "Validating your identity",
     "preparing_for_payment": "Preparing for the Payment",
     "processing_payment": "Processing your Payment",
     "saving_information": "Saving your information",
@@ -150,5 +153,8 @@
   },
   "signing": {
     "title": "Signing Agreement..."
+  },
+  "message": {
+    "id_validation_failed_confirm_message": "We can not verify your documents, would you like to submited them anyway? If you do and the documents are not valid, the all booking process can be kept on hold and you will need to solve it before being able to board on the booking"
   }
 }
