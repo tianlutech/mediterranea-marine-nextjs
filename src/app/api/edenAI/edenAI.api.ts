@@ -60,7 +60,7 @@ export async function validateIdentityUsingOCR(file: File) {
         error:
           response.data?.error?.message ||
           response.data?.error ||
-          response.error,
+          response.statusText,
       };
     }
     if (response.data.amazon?.status !== "success") {
