@@ -261,7 +261,11 @@ export const parseObjectToNotion = <T extends NotionItem>(
   const object = notionProperties.reduce((obj, notionProp) => {
     const value = (item as Record<string, unknown>)[notionProp.property];
     const parser = propToNotion[notionProp.type];
-    if (!value || !parser) {
+    // We allow false (for boolean) and 0 for numbers
+    if (value === undefined || value === null || value === "") {
+      return obj;
+    }
+    if (!parser) {
       return obj;
     }
     const parsedvalue = parser(value);

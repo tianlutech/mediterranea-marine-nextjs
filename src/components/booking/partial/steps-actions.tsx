@@ -12,6 +12,7 @@ import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
 import EdenAIService from "@/services/edenAI.service";
 import { sendMessageWebhook } from "@/services/make.service";
 
+const MAX_IA_VALIDATION_ATTEMPTS = 2;
 type StepAction = {
   execute: (formData: BookingFormData, boat: Boat) => void;
 };
@@ -19,11 +20,13 @@ type StepAction = {
 const skip_steps = (process.env.NEXT_PUBLIC_SKIP_BOOKING_STEPS || "").split(
   ","
 );
-export const steps = [
+// there is an issue here if I put string [] it fails
+export const steps: any = [
   "fuel",
   "sign",
-  // "validateFront",
-  // "validateBack",
+  "validateFront",
+  "validateBack",
+  "confirmContinue",
   "uploadFrontIdImage",
   "uploadBackIdImage",
   "pay",
@@ -48,9 +51,12 @@ const storeIdImage = async (
 
 let imageFrontLink = "";
 let imageBackLink = "";
-let imageFrontValidated = false;
-let imageBackValidated = false;
+let frontOCRResult = "";
+let ocrError = "";
+let backOCRResult = "";
+let identityValidated = false;
 let bookingSaved: Booking;
+let failedCounter: number = 0;
 
 export const stepsActions = ({
   setModalInfo,
@@ -171,36 +177,29 @@ export const stepsActions = ({
 
   const validateFront = {
     execute: async (formData: BookingFormData, boat: Boat) => {
-      if (imageFrontValidated) {
+      if (identityValidated) {
         nextStep();
         return;
       }
+      ocrError = "";
 
       setModalInfo({
         modal: "loading",
-        message: t("loadingMessage.verifying_front_id"),
+        message: t("loadingMessage.uploading_front_id"),
         error: "",
       });
-
-      const result = await EdenAIService().checkFrontId(
-        formData["ID_Front_Picture"] as File,
-        formData
+      const result = await EdenAIService().checkIdValidity(
+        formData.ID_Front_Picture
       );
-      if (result.error) {
-        setModalInfo({
-          modal: "loading",
-          message: "",
-          error: result.error,
-        });
-        return;
-      }
-      imageFrontValidated = true;
+      frontOCRResult = result.text || "";
+      ocrError = result.error || "";
       nextStep();
     },
   };
+
   const validateBack = {
     execute: async (formData: BookingFormData, boat: Boat) => {
-      if (imageBackValidated) {
+      if (identityValidated) {
         nextStep();
         return;
       }
@@ -208,29 +207,76 @@ export const stepsActions = ({
         nextStep();
         return;
       }
+      if (ocrError) {
+        nextStep();
+        return;
+      }
+
       setModalInfo({
         modal: "loading",
-        message: t("loadingMessage.verifying_back_id"),
+        message: t("loadingMessage.uploading_back_id"),
         error: "",
       });
 
-      const result = await EdenAIService().checkBackId(
-        formData["ID_Back_Picture"] as File,
-        formData
+      const result = await EdenAIService().checkIdValidity(
+        formData.ID_Back_Picture
       );
+      backOCRResult = result.text || "";
+      ocrError = result.error || "";
 
-      if (result.error) {
-        setModalInfo({
-          modal: "loading",
-          message: "",
-          error: result.error,
-        });
-        return;
-      }
-      imageBackValidated = true;
       nextStep();
     },
   };
+
+  const confirmContinue = {
+    execute: async (formData: BookingFormData, boat: Boat) => {
+      if (identityValidated) {
+        nextStep();
+        return;
+      }
+      identityValidated = false;
+      // Error from API call
+      if (ocrError) {
+        failedCounter++;
+        setModalInfo({
+          modal:
+            failedCounter > MAX_IA_VALIDATION_ATTEMPTS
+              ? "continueWithoutApproval"
+              : "loading",
+          message:
+            failedCounter > MAX_IA_VALIDATION_ATTEMPTS
+              ? t("loadingMessage.verifying_continue_on_error")
+              : t("loadingMessage.verifying_id"),
+          error: ocrError,
+        });
+        return;
+      }
+
+      const result = await EdenAIService().verifyIdentity(
+        formData,
+        `${frontOCRResult} ${backOCRResult}`
+      );
+
+      if ((result as { error: string }).error) {
+        failedCounter++;
+        setModalInfo({
+          modal:
+            failedCounter > MAX_IA_VALIDATION_ATTEMPTS
+              ? "continueWithoutApproval"
+              : "loading",
+          message:
+            failedCounter > MAX_IA_VALIDATION_ATTEMPTS
+              ? t("loadingMessage.verifying_continue_on_error")
+              : t("loadingMessage.verifying_id"),
+          error: result.error as string,
+        });
+        return;
+      }
+      identityValidated = true;
+      nextStep();
+    },
+  };
+
   const pay = {
     execute: (formData: BookingFormData, boat: Boat) => {
       if (!Booking.totalPayment(formData)) {
@@ -282,8 +328,8 @@ export const stepsActions = ({
         "ID Back Picture": imageBackLink,
         Toys: [paddle, seaBobName].filter((value) => !!value),
         SubmittedFormAt: new Date(),
+        DocumentsApproved: identityValidated,
       });
-
       const res = await updateBookingInfo(bookingId, bookingInfo);
 
       if ((res as { error: string }).error) {
@@ -335,6 +381,7 @@ export const stepsActions = ({
   return {
     fuel,
     sign,
+    confirmContinue,
     validateFront,
     validateBack,
     uploadFrontIdImage,

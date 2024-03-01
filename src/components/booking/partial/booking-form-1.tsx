@@ -9,6 +9,7 @@ import ErrorMessage from "./errorMessage";
 import { Boat, BookingFormData } from "../../../models/models";
 import { useTranslation } from "react-i18next";
 import PlaceAutoComplete from "../../common/inputs/addressAutoComplete";
+import EdenAIService from "@/services/edenAI.service";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-[48%]">{children}</div>;
@@ -26,6 +27,7 @@ export default function BookingForm1({
   boatInfo: Boat;
 }) {
   const { t } = useTranslation();
+
   return (
     <div className="flex md:flex-row flex-col md:w-[49%] w-full">
       <div className="w-full bg-white rounded-lg">

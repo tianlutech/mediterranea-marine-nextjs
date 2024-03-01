@@ -10,6 +10,7 @@ import { t } from "i18next";
 import { MILE_RANGES } from "@/models/constants";
 import { Boat, BookingFormData } from "../../models/models";
 import CloseSvg from "@/assets/svgs/CloseSvg";
+import Button from "../common/buttons/Button";
 
 export default function PrepaymentModal({
   isOpen,
@@ -94,23 +95,17 @@ export default function PrepaymentModal({
           </div>
         </div>
         <div className="flex items-center justify-between p-4 md:p-5 border-gray-200  w-full">
-          <button
+          <Button
+            message={t("prepayment_modal.back")}
+            className={"text-black"}
             onClick={() => closeModal()}
-            data-modal-hide="default-modal"
-            type="button"
-            className="text-black border border-bgColor2 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-          >
-            {t("prepayment_modal.back")}
-          </button>
-          <button
-            onClick={() => proceedSubmission()}
-            data-modal-hide="default-modal"
-            type="button"
+          />
+          <Button
             disabled={fuelPrice === -1}
-            className="text-white bg-buttonColor2 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-          >
-            {payment > 0 ? t("input.pay") + ` ${payment}€ ` : t("input.submit")}{" "}
-          </button>
+            message={payment > 0 ? t("input.pay") + ` ${payment}€ ` : t("input.submit")}
+            className={"text-white bg-buttonColor2"}
+            onClick={() => proceedSubmission()}
+          />
         </div>
       </div>
     </Modal>
