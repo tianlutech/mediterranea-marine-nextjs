@@ -3,7 +3,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState, useRef } from "react";
 import {
   getBookingInfo,
-  getBoatInfo,
 } from "@/services/notion.service";
 import { useRouter } from "next/navigation";
 import { Booking } from "@/models/models";
@@ -13,7 +12,7 @@ import Spinner from "@/components/common/containers/spinner";
 import BoatSvg from "@/assets/svgs/BoatSvg";
 import NoSSR from "react-no-ssr";
 
-export default function VerifyDocument({ params }: { params: { id: string } }) {
+export default function VerifyDocument({ params }: { params: { id: string, approved: boolean } }) {
   const { t } = useTranslation();
   const [error, setError] = useState<string>("");
   const router = useRouter();
@@ -21,7 +20,7 @@ export default function VerifyDocument({ params }: { params: { id: string } }) {
   useEffect(() => {
     const updateDocumentVerified = async () => {
       const bookingInfo = new Booking({
-        DocumentsApproved: true,
+        DocumentsApproved: params.approved,
       });
       const { error } = await updateBookingInfo(id.current, bookingInfo);
 
@@ -40,19 +39,11 @@ export default function VerifyDocument({ params }: { params: { id: string } }) {
         setError(t("error.error_booking_details"));
         return;
       }
-
-      const boatDetails = await getBoatInfo(data.Boat[0])
-
-      if (!boatDetails) {
-        setError(t("error.error_boat_details"));
-        return;
-      }
-
       await updateDocumentVerified();
     };
 
     getBookingDetails();
-  }, [id, t, router]);
+  }, [id, t, router, params]);
 
   return (
     <NoSSR>

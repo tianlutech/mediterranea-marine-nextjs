@@ -30,6 +30,7 @@ export const steps: any = [
   "uploadBackIdImage",
   "pay",
   "saveData",
+  "saveDataOnValidation",
   "notifyCustomer",
 ].filter((step) => !skip_steps.includes(step));
 
@@ -347,6 +348,58 @@ export const stepsActions = ({
           Booking: [bookingId],
           Boat: [boat.id],
           Date: departureTime,
+        })
+      );
+
+      nextStep();
+    },
+  };
+
+  const saveDataOnValidation = {
+    execute: async (formData: BookingFormData, boat: Boat) => {
+      setModalInfo({
+        modal: "loading",
+        message: t("loadingMessage.saving_information"),
+        error: "",
+      });
+
+      const {
+        ID_Back_Picture,
+        ID_Front_Picture,
+        ...bookingData
+      } = formData;
+
+
+      const bookingInfo = new Booking({
+        ...bookingData,
+        Name:
+          `${booking["First Name"]} ` +
+          `${booking["Last Name"]} - ${moment(booking.Date).format(
+            "YYYY-MM-DD"
+          )}`,
+        "ID Front Picture": imageFrontLink,
+        "ID Back Picture": imageBackLink,
+        SubmittedFormAt: new Date(),
+        DocumentsApproved: identityValidated,
+      });
+      const res = await updateBookingInfo(bookingId, bookingInfo);
+
+      if ((res as { error: string }).error) {
+        setModalInfo({
+          modal: "loading",
+          message: t("loadingMessage.saving_information"),
+          error: (res as { error: string }).error,
+        });
+        return;
+      }
+      bookingSaved = res.booking as Booking;
+      /**
+       * Create a Time Slot so no one can book at the same time
+       */
+      await createTimeSlot(
+        new DepartureTime({
+          Booking: [bookingId],
+          Boat: [boat.id],
         })
       );
 

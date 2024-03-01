@@ -101,7 +101,7 @@ export default function BookingComponent({
         booking={formData as unknown as Booking}
         onSuccess={() => router.replace("/success")}
         bookingId={id}
-        steps={["fuel", "sign", "validateFront", "validateBack", "uploadFrontIdImage", "uploadBackIdImage", "pay", "saveData", "notifyCustomer"]}
+        steps={["fuel", "sign", "validateFront", "validateBack", "confirmContinue", "uploadFrontIdImage", "uploadBackIdImage", "pay", "saveData", "notifyCustomer"]}
       />
       <div className="relative md:w-[77%] w-full md:p-6 p-2">
         <form onSubmit={formik.handleSubmit}>

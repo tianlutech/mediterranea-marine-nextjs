@@ -19,11 +19,9 @@ const FormWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default function VerificationForm({
-  bookingDetails,
   boatInfo,
   bookingId,
 }: {
-  bookingDetails: Booking,
   boatInfo: Boat,
   bookingId: string
 }) {
@@ -42,7 +40,6 @@ export default function VerificationForm({
 
   const submitVerificationForm = async () => {
     saveModalRef.current?.start();
-    console.log(">>>>>>>>Info", data)
   };
 
   const formik = useFormik({
@@ -66,7 +63,7 @@ export default function VerificationForm({
         booking={data as unknown as Booking}
         onSuccess={() => router.replace("/success")}
         bookingId={bookingId}
-        steps={["validateFront", "validateBack", "uploadFrontIdImage", "uploadBackIdImage", "pay", "saveData", "notifyCustomer"]}
+        steps={["validateFront", "validateBack", "confirmContinue", "uploadFrontIdImage", "uploadBackIdImage", "saveDataOnValidation", "notifyCustomer"]}
       />
       <div className="flex md:w-[77%] w-full  justify-center items-center md:p-6 p-2">
         <div className="bg-white md:w-[70%] w-full rounded-lg">

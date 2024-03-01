@@ -73,7 +73,7 @@ const SaveBooking = forwardRef(function SaveBookingRef(
     const stepObject = stepsActions({
       nextStep: () => nextStep(step),
       setModalInfo,
-      booking: booking,
+      booking,
       bookingId,
       t,
     });
