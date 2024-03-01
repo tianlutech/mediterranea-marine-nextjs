@@ -133,8 +133,9 @@ const SaveBooking = forwardRef(function SaveBookingRef(
         onSuccess={() => nextStep(step)}
       />
       <ConfirmModal
-        isOpen={modalInfo.modal === "confirmContinueIdFailed"}
-        message={t("message.id_validation_failed_confirm_message")}
+        isOpen={modalInfo.modal === "continueWithoutApproval"}
+        message={modalInfo.message}
+        error={modalInfo.error}
         onCancel={() => cancel()}
         onContinue={() => nextStep(step)}
       />

@@ -16,10 +16,6 @@ type StepAction = {
   execute: (formData: BookingFormData, boat: Boat) => void;
 };
 
-type StepsActionsType = {
-  key: string[];
-};
-
 const skip_steps = (process.env.NEXT_PUBLIC_SKIP_BOOKING_STEPS || "").split(
   ","
 );
@@ -29,6 +25,7 @@ export const steps: any = [
   "sign",
   "validateFront",
   "validateBack",
+  "confirmContinue",
   "uploadFrontIdImage",
   "uploadBackIdImage",
   "pay",
@@ -187,11 +184,10 @@ export const stepsActions = ({
 
       setModalInfo({
         modal: "loading",
-        message: t("loadingMessage.verifying_id"),
+        message: t("loadingMessage.uploading_front_id"),
         error: "",
       });
-
-      const result = await EdenAIService().checkFrontId(
+      const result = await EdenAIService().checkIdValidity(
         formData.ID_Front_Picture
       );
       frontOCRResult = result.text || "";
@@ -217,11 +213,11 @@ export const stepsActions = ({
 
       setModalInfo({
         modal: "loading",
-        message: t("loadingMessage.verifying_id"),
+        message: t("loadingMessage.uploading_back_id"),
         error: "",
       });
 
-      const result = await EdenAIService().checkBackId(
+      const result = await EdenAIService().checkIdValidity(
         formData.ID_Back_Picture
       );
       backOCRResult = result.text || "";
@@ -237,15 +233,19 @@ export const stepsActions = ({
         nextStep();
         return;
       }
+      identityValidated = false;
       // Error from API call
       if (ocrError) {
         failedCounter++;
         setModalInfo({
           modal:
             failedCounter > MAX_IA_VALIDATION_ATTEMPTS
-              ? "confirmContinue"
+              ? "continueWithoutApproval"
               : "loading",
-          message: t("loadingMessage.verifying_id"),
+          message:
+            failedCounter > MAX_IA_VALIDATION_ATTEMPTS
+              ? t("loadingMessage.verifying_continue_on_error")
+              : t("loadingMessage.verifying_id"),
           error: ocrError,
         });
         return;
@@ -256,20 +256,23 @@ export const stepsActions = ({
         `${frontOCRResult} ${backOCRResult}`
       );
 
-      identityValidated = !!result.ok;
-
       if ((result as { error: string }).error) {
         failedCounter++;
         setModalInfo({
           modal:
             failedCounter > MAX_IA_VALIDATION_ATTEMPTS
-              ? "confirmContinue"
+              ? "continueWithoutApproval"
               : "loading",
-          message: t("loadingMessage.verifying_id"),
-          error: ocrError,
+          message:
+            failedCounter > MAX_IA_VALIDATION_ATTEMPTS
+              ? t("loadingMessage.verifying_continue_on_error")
+              : t("loadingMessage.verifying_id"),
+          error: result.error as string,
         });
         return;
       }
+      identityValidated = true;
+      nextStep();
     },
   };
 
@@ -325,7 +328,6 @@ export const stepsActions = ({
         SubmittedFormAt: new Date(),
         DocumentsApproved: identityValidated,
       });
-
       const res = await updateBookingInfo(bookingId, bookingInfo);
 
       if ((res as { error: string }).error) {

@@ -48,7 +48,7 @@ export default function BookingComponent({
     documentType: "National ID",
     OutstandingPayment: data.OutstandingPayment || 0,
     CustomerSignature: "",
-    DocumentsApproved: false
+    DocumentsApproved: false,
   });
 
   const formik = useFormik({
