@@ -11,17 +11,26 @@ import { updateBookingInfo } from "@/services/notion.service";
 import Spinner from "@/components/common/containers/spinner";
 import BoatSvg from "@/assets/svgs/BoatSvg";
 import NoSSR from "react-no-ssr";
+import { useSearchParams } from "next/navigation"
 
 export default function VerifyDocument({ params }: { params: { id: string, approved: boolean } }) {
   const { t } = useTranslation();
   const [error, setError] = useState<string>("");
   const router = useRouter();
   const id = useRef(params.id);
+
+  const approved = useSearchParams().get("approved") || ""
+
   useEffect(() => {
+    if (!["true", "false"].includes(approved)) {
+      return
+    }
+
     const updateDocumentVerified = async () => {
       const bookingInfo = new Booking({
-        DocumentsApproved: params.approved,
+        DocumentsApproved: approved === "true",
       });
+
       const { error } = await updateBookingInfo(id.current, bookingInfo);
 
       if (error) {
@@ -43,7 +52,7 @@ export default function VerifyDocument({ params }: { params: { id: string, appro
     };
 
     getBookingDetails();
-  }, [id, t, router, params]);
+  }, [id, t, router, params, approved]);
 
   return (
     <NoSSR>

@@ -50,3 +50,12 @@ export function convertCanvasToImage({ canvas, mime }: { canvas: HTMLCanvasEleme
     tmpCanvas.toBlob(blob => resolve(blob), mime);
   });
 }
+
+export function extractIdFromGoogleDriveLink(link: string) {
+  var id = null;
+  var match = link.match(/\/d\/([^/]+)/);
+  if (match) {
+      id = match[1];
+  }
+  return id;
+}

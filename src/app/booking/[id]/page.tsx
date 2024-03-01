@@ -15,7 +15,6 @@ import { useLoadScript } from "@react-google-maps/api";
 import { useRouter } from "next/navigation";
 import { Booking, Boat } from "@/models/models";
 import moment from "moment";
-import { useTranslation } from "react-i18next";
 import BookingInfoSidebar from "@/components/common/BookingInfoSideBar/BookingInfoSidebar";
 
 const libraries = ["places"] as "places"[];
@@ -26,13 +25,10 @@ export default function BookingPage({ params }: { params: { id: string } }) {
   const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(true);
-  const { t } = useTranslation();
-
-  // will change to ours and put in env file
 
   const apiKey: string = process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "";
 
-  const { isLoaded: googleMapsLoaded, loadError } = useLoadScript({
+  const { isLoaded: googleMapsLoaded } = useLoadScript({
     googleMapsApiKey: apiKey,
     libraries,
   });
