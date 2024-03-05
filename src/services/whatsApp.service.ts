@@ -11,6 +11,8 @@ export async function sendMessage(
     attachment?: { url: string; type: string };
   }
 ) {
+  to = to.replace(/^00/, "+");
+
   try {
     const response = await fetch("/api/whatsApp", {
       method: "POST",

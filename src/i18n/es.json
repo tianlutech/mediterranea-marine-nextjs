@@ -160,5 +160,8 @@
   },
   "message": {
     "id_validation_failed_confirm_message": "No podemos verificar sus documentos, ¿le gustaría enviarlos de todos modos? Si lo haces y los documentos no son válidos, todo el proceso de reserva puede quedar en espera y tendrás que resolverlo antes de poder embarcar en la reserva."
+  },
+  "common": {
+    "loading": "Cargando"
   }
 }
