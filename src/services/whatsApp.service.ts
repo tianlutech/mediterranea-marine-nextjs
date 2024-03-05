@@ -21,7 +21,7 @@ export async function sendMessage(
     });
     const res = await response.json();
     if (res.error?.status === 400) {
-      return { error: "We coudn't read the multimedia file" };
+      return { error: "We can't read the multimedia file" };
     }
     if (res.error) {
       return { error: res.error.message };

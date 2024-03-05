@@ -16,24 +16,6 @@ type StepAction = {
   execute: (formData: BookingFormData, boat: Boat) => void;
 };
 
-const skip_steps = (process.env.NEXT_PUBLIC_SKIP_BOOKING_STEPS || "").split(
-  ","
-);
-// there is an issue here if I put string [] it fails
-export const steps: any = [
-  "fuel",
-  "sign",
-  "validateFront",
-  "validateBack",
-  "confirmContinue",
-  "uploadFrontIdImage",
-  "uploadBackIdImage",
-  "pay",
-  "saveData",
-  "saveDataOnValidation",
-  "notifyCustomer",
-].filter((step) => !skip_steps.includes(step));
-
 const storeIdImage = async (
   id: string,
   boatInfo: Boat,
@@ -312,7 +294,8 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${
+          formData["Departure Time"]
         }`
       );
 
@@ -363,12 +346,7 @@ export const stepsActions = ({
         error: "",
       });
 
-      const {
-        ID_Back_Picture,
-        ID_Front_Picture,
-        ...bookingData
-      } = formData;
-
+      const { ID_Back_Picture, ID_Front_Picture, ...bookingData } = formData;
 
       const bookingInfo = new Booking({
         ...bookingData,

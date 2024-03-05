@@ -12,12 +12,19 @@ import React, {
 } from "react";
 import PrepaymentModal from "@/components/modals/prepaymentModal";
 import TermsAndConditionModal from "@/components/modals/termsAndConditions";
-import { stepsActions, steps } from "./steps-actions";
+import { stepsActions } from "./steps-actions";
 import ProgressModal from "../../modals/progressModal";
 import SumupWidget from "@/components/modals/sumupWidget";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "@/components/modals/confirmModal";
 
+const skip_steps = (process.env.NEXT_PUBLIC_SKIP_BOOKING_STEPS || "").split(
+  ","
+);
+
+const allowedSteps = (steps: string[]) => {
+  return steps.filter((step) => !skip_steps.includes(step));
+};
 const SaveBooking = forwardRef(function SaveBookingRef(
   {
     booking,
@@ -36,7 +43,7 @@ const SaveBooking = forwardRef(function SaveBookingRef(
     onCancel?: () => void;
     onSuccess?: () => void;
     bookingId: string;
-    steps: string[]
+    steps: string[];
   },
   ref: ForwardedRef<{ start: () => void }>
 ) {
@@ -47,11 +54,13 @@ const SaveBooking = forwardRef(function SaveBookingRef(
     message: "",
     error: "",
   });
-
   const nextStep = useCallback(
     (step: string) => {
-      const index = steps.indexOf(step);
-      if (index + 1 >= steps.length) {
+      console.log("next step ", step);
+      const index = allowedSteps(steps).indexOf(step);
+      console.log({ steps: allowedSteps(steps), index });
+
+      if (index + 1 >= allowedSteps.length) {
         onSuccess?.();
         setModalInfo({
           modal: "",
@@ -60,10 +69,10 @@ const SaveBooking = forwardRef(function SaveBookingRef(
         });
         return;
       }
-      const newStep = steps[index + 1];
+      const newStep = allowedSteps(steps)[index + 1];
       setStep(newStep);
     },
-    [onSuccess, setStep]
+    [steps, onSuccess]
   );
 
   useEffect(() => {
@@ -91,7 +100,7 @@ const SaveBooking = forwardRef(function SaveBookingRef(
 
   useImperativeHandle(ref, () => ({
     start: () => {
-      setStep(steps[0]);
+      setStep(allowedSteps(steps)[0]);
     },
   }));
 
