@@ -46,7 +46,6 @@ export default function BookingForm1({
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setData({ ...data, "First Name": e.target.value })
                 }
-                required={true}
               />
               <ErrorMessage formik={formik} name="First Name" />
             </FormWrapper>
@@ -76,7 +75,6 @@ export default function BookingForm1({
               label={t("input.national_id")}
               onChange={() => setData({ ...data, documentType: "National ID" })}
               checked={data.documentType === "National ID"}
-              required={true}
             />
             <RadioInput
               id="passport-default-radio-1"

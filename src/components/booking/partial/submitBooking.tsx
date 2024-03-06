@@ -56,11 +56,8 @@ const SaveBooking = forwardRef(function SaveBookingRef(
   });
   const nextStep = useCallback(
     (step: string) => {
-      console.log("next step ", step);
       const index = allowedSteps(steps).indexOf(step);
-      console.log({ steps: allowedSteps(steps), index });
-
-      if (index + 1 >= allowedSteps.length) {
+      if (index + 1 >= allowedSteps(steps).length) {
         onSuccess?.();
         setModalInfo({
           modal: "",

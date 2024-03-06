@@ -3,6 +3,7 @@ import {
   Booking,
   BookingFormData,
   DepartureTime,
+  SubmitDocumentFormData
 } from "../../../models/models";
 import { uploadFile } from "@/services/googleDrive.service";
 import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
@@ -294,8 +295,7 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${
-          formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
         }`
       );
 
@@ -339,7 +339,7 @@ export const stepsActions = ({
   };
 
   const saveDataOnValidation = {
-    execute: async (formData: BookingFormData, boat: Boat) => {
+    execute: async (formData: SubmitDocumentFormData, boat: Boat) => {
       setModalInfo({
         modal: "loading",
         message: t("loadingMessage.saving_information"),
@@ -349,7 +349,6 @@ export const stepsActions = ({
       const { ID_Back_Picture, ID_Front_Picture, ...bookingData } = formData;
 
       const bookingInfo = new Booking({
-        ...bookingData,
         Name:
           `${booking["First Name"]} ` +
           `${booking["Last Name"]} - ${moment(booking.Date).format(
@@ -357,7 +356,6 @@ export const stepsActions = ({
           )}`,
         "ID Front Picture": imageFrontLink,
         "ID Back Picture": imageBackLink,
-        SubmittedFormAt: new Date(),
         DocumentsApproved: identityValidated,
       });
       const res = await updateBookingInfo(bookingId, bookingInfo);
@@ -371,16 +369,6 @@ export const stepsActions = ({
         return;
       }
       bookingSaved = res.booking as Booking;
-      /**
-       * Create a Time Slot so no one can book at the same time
-       */
-      await createTimeSlot(
-        new DepartureTime({
-          Booking: [bookingId],
-          Boat: [boat.id],
-        })
-      );
-
       nextStep();
     },
   };
@@ -416,6 +404,7 @@ export const stepsActions = ({
     uploadFrontIdImage,
     uploadBackIdImage,
     pay,
+    saveDataOnValidation,
     saveData,
     notifyCustomer,
   };

@@ -38,6 +38,16 @@ export type BookingFormData = {
   DocumentsApproved: boolean;
 };
 
+export type SubmitDocumentFormData = {
+  "First Name": string;
+  "Last Name": string;
+  ID_Back_Picture: File;
+  ID_Front_Picture: File;
+  "ID Number": string;
+  CustomerSignature: string;
+  DocumentsApproved: boolean;
+};
+
 export type FileBody = {
   boatName: string;
   slag: string;
