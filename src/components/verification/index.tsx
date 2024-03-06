@@ -11,6 +11,7 @@ import { useFormik } from "formik";
 import SaveBooking from "../booking/partial/submitBooking";
 import { Booking, BookingFormData, Boat } from "@/models/models";
 import { useRouter } from "next/navigation";
+import RadioInput from "../common/inputs/radioInput";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -107,37 +108,23 @@ export default function VerificationForm({
                 </FormWrapper>
               </div>
               <div className="mt-6 flex items-baseline">
-                <div className="flex items-center mb-4">
-                  <input
-                    id="default-radio-1"
-                    type="radio"
-                    value="nationalId"
-                    checked={data.documentType === "National ID"}
-                    name="document-radio"
-                    onChange={() =>
-                      setData({ ...data, documentType: "National ID" })
-                    }
-                    required
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label className="ms-2 md:text-base text-sm  text-black">
-                    {t("input.national_id")}
-                  </label>
-                </div>
-                <div className="flex items-center ml-10">
-                  <input
-                    id="eat-radio-1"
-                    type="radio"
-                    value="passport"
-                    checked={data.documentType === "Passport"}
-                    name="document-radio"
-                    onChange={() => setData({ ...data, documentType: "Passport" })}
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label className="ms-2 md:text-base text-sm  text-black">
-                    {t("input.passport")}
-                  </label>
-                </div>
+                <RadioInput
+                  id="default-radio-1"
+                  className="mb-4"
+                  inputName="id-document-radio"
+                  label={t("input.national_id")}
+                  onChange={() => setData({ ...data, documentType: "National ID" })}
+                  checked={data.documentType === "National ID"}
+                  required={true}
+                />
+                <RadioInput
+                  id="passport-default-radio-1"
+                  className="ml-10"
+                  inputName="passport-document-radio"
+                  label={t("input.passport")}
+                  onChange={() => setData({ ...data, documentType: "Passport" })}
+                  checked={data.documentType === "Passport"}
+                />
               </div>
               <div className="relative w-full mt-6">
                 <CommonLabel input="text">

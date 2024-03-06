@@ -121,7 +121,8 @@
     "error_invalid_pin": "Invalid Pin",
     "ID Number": "ID Number / Passport Number",
     "First Name": "First Name",
-    "Last Name": "Last Name"
+    "Last Name": "Last Name",
+    "error_invalid_param":"Invalid parameters"
   },
   "title": {
     "feed_back_form": "Treatment Received Feedback Form",

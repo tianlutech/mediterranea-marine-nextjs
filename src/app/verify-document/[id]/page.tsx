@@ -23,6 +23,7 @@ export default function VerifyDocument({ params }: { params: { id: string, appro
 
   useEffect(() => {
     if (!["true", "false"].includes(approved)) {
+      setError(t("error.error_booking_details"));
       return
     }
 

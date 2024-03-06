@@ -12,8 +12,8 @@ import { DEPARTURES_TIMES, STANDUP_PADDLE, SEABOB } from "@/models/constants";
 import { Boat, Booking } from "@/models/models";
 import { useTranslation } from "next-i18next";
 import { MILE_RANGES } from "@/models/constants";
-import { t } from "i18next";
 import TextInfoModal from "@/components/modals/textInfoModal";
+import RadioInput from "@/components/common/inputs/radioInput";
 
 export default function BookingForm2({
   data,
@@ -91,35 +91,23 @@ export default function BookingForm2({
               <ErrorMessage formik={formik} name="Departure Time" />
             </div>
             <div className="mt-6 flex items-baseline">
-              <div className="flex items-center mb-4">
-                <input
-                  id="default-radio-1"
-                  type="radio"
-                  value="onBoat"
-                  checked={eatAtRestaurant === "onBoat"}
-                  name="eat-radio"
-                  onChange={() => setEatAtRestaurant("onBoat")}
-                  required
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
-                />
-                <label className="ms-2 md:text-base text-sm  text-black">
-                  {t("input.we_eat_on_board")}
-                </label>
-              </div>
-              <div className="flex items-center ml-10">
-                <input
-                  id="eat-radio-1"
-                  type="radio"
-                  value="restaurant"
-                  checked={eatAtRestaurant === "restaurant"}
-                  name="eat-radio"
-                  onChange={() => setEatAtRestaurant("restaurant")}
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
-                />
-                <label className="ms-2 md:text-base text-sm  text-black">
-                  {t("input.we_eat_on_a_restaurant")}
-                </label>
-              </div>
+              <RadioInput
+                id="restaurant-default-radio-1"
+                className="mb-4"
+                inputName="id-eat-restaurant-radio"
+                label={t("input.we_eat_on_board")}
+                onChange={() => setEatAtRestaurant("onBoat")}
+                checked={eatAtRestaurant === "onBoat"}
+                required={true}
+              />
+              <RadioInput
+                id="restaurant-default-radio-1"
+                className="ml-10"
+                inputName="id-eat-boat-radio"
+                label={t("input.we_eat_on_a_restaurant")}
+                onChange={() => setEatAtRestaurant("restaurant")}
+                checked={eatAtRestaurant === "restaurant"}
+              />
             </div>
             {eatAtRestaurant === "restaurant" && (
               <div className="flex justify-between w-full mt-2">

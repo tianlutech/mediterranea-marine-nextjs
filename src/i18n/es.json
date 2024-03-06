@@ -121,6 +121,7 @@
     "error_message_webhook": "Reserva completada, pero no se pudo enviar una notificación por correo.",
     "error_field_not_found": "Campo no encontrado",
     "error_invalid_pin": "Tu PIN no es válido",
+    "error_invalid_param":"parámetros inválidos",
     "ID Number": "Número de identificación / Número de pasaporte",
     "First Name": "Nombre",
     "Last Name": "Apellido"
