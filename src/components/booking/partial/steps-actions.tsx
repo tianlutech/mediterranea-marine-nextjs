@@ -3,7 +3,7 @@ import {
   Booking,
   BookingFormData,
   DepartureTime,
-  SubmitDocumentFormData
+  SubmitDocumentFormData,
 } from "../../../models/models";
 import { uploadFile } from "@/services/googleDrive.service";
 import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
@@ -176,6 +176,7 @@ export const stepsActions = ({
       );
       frontOCRResult = result.text || "";
       ocrError = result.error || "";
+
       nextStep();
     },
   };
@@ -295,7 +296,8 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${
+          formData["Departure Time"]
         }`
       );
 
@@ -354,6 +356,9 @@ export const stepsActions = ({
           `${booking["Last Name"]} - ${moment(booking.Date).format(
             "YYYY-MM-DD"
           )}`,
+        "First Name": bookingData["First Name"],
+        "ID Number": bookingData["ID Number"],
+        "Last Name": bookingData["Last Name"],
         "ID Front Picture": imageFrontLink,
         "ID Back Picture": imageBackLink,
         DocumentsApproved: identityValidated,
@@ -380,6 +385,7 @@ export const stepsActions = ({
         message: t("loadingMessage.send_webhook_message"),
         error: "",
       });
+
       const response = await sendMessageWebhook(bookingSaved, boat);
       if ("error" in (response as object)) {
         setModalInfo({

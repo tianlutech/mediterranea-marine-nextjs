@@ -23,8 +23,8 @@ export default function VerificationForm({
   boatInfo,
   bookingId,
 }: {
-  boatInfo: Boat,
-  bookingId: string
+  boatInfo: Boat;
+  bookingId: string;
 }) {
   const { t } = useTranslation();
   const saveModalRef = useRef<{ start: () => void }>(null);
@@ -64,7 +64,15 @@ export default function VerificationForm({
         booking={data as unknown as Booking}
         onSuccess={() => router.replace("/success")}
         bookingId={bookingId}
-        steps={["validateFront", "validateBack", "confirmContinue", "uploadFrontIdImage", "uploadBackIdImage", "saveDataOnValidation", "notifyCustomer"]}
+        steps={[
+          "validateFront",
+          "validateBack",
+          "confirmContinue",
+          "uploadFrontIdImage",
+          "uploadBackIdImage",
+          "saveDataOnValidation",
+          "notifyCustomer",
+        ]}
       />
       <div className="flex md:w-[77%] w-full  justify-center items-center md:p-6 p-2">
         <div className="bg-white md:w-[70%] w-full rounded-lg">
@@ -91,9 +99,7 @@ export default function VerificationForm({
                   />
                 </FormWrapper>
                 <FormWrapper>
-                  <CommonLabel input="text">
-                    {t("input.last_name")}
-                  </CommonLabel>
+                  <CommonLabel input="text">{t("input.last_name")}</CommonLabel>
                   <CommonInput
                     type="text"
                     name="Last Name"
@@ -113,23 +119,26 @@ export default function VerificationForm({
                   className="mb-4"
                   inputName="id-document-radio"
                   label={t("input.national_id")}
-                  onChange={() => setData({ ...data, documentType: "National ID" })}
+                  onChange={() =>
+                    setData({ ...data, documentType: "National ID" })
+                  }
                   checked={data.documentType === "National ID"}
                   required={true}
                 />
                 <RadioInput
                   id="passport-default-radio-1"
                   className="ml-10"
-                  inputName="passport-document-radio"
+                  inputName="id-document-radio"
                   label={t("input.passport")}
-                  onChange={() => setData({ ...data, documentType: "Passport" })}
+                  onChange={() =>
+                    setData({ ...data, documentType: "Passport" })
+                  }
                   checked={data.documentType === "Passport"}
+                  required={true}
                 />
               </div>
               <div className="relative w-full mt-6">
-                <CommonLabel input="text">
-                  {t("input.id_number")}
-                </CommonLabel>
+                <CommonLabel input="text">{t("input.id_number")}</CommonLabel>
                 <CommonInput
                   type="text"
                   name="ID Number"
@@ -146,9 +155,14 @@ export default function VerificationForm({
                 <CommonInputFile
                   name="ID_Front_Picture"
                   label={t("input.ID_Front_Picture")}
-                  onRemove={() => setData({ ...data, ID_Front_Picture: {} as File })}
+                  onRemove={() =>
+                    setData({ ...data, ID_Front_Picture: {} as File })
+                  }
                   onChange={async (file) => {
-                    setData({ ...data, ID_Front_Picture: file || {} as File });
+                    setData({
+                      ...data,
+                      ID_Front_Picture: file || ({} as File),
+                    });
                   }}
                   required
                 />
@@ -158,9 +172,14 @@ export default function VerificationForm({
                   <CommonInputFile
                     name="ID_Back_Picture"
                     label={t("input.ID_Back_Picture")}
-                    onRemove={() => setData({ ...data, ID_Back_Picture: {} as File })}
+                    onRemove={() =>
+                      setData({ ...data, ID_Back_Picture: {} as File })
+                    }
                     onChange={async (file) => {
-                      setData({ ...data, ID_Back_Picture: file || {} as File });
+                      setData({
+                        ...data,
+                        ID_Back_Picture: file || ({} as File),
+                      });
                     }}
                     required
                   />

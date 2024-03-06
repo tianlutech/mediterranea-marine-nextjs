@@ -66,6 +66,7 @@ const SaveBooking = forwardRef(function SaveBookingRef(
         });
         return;
       }
+
       const newStep = allowedSteps(steps)[index + 1];
       setStep(newStep);
     },
@@ -76,6 +77,7 @@ const SaveBooking = forwardRef(function SaveBookingRef(
     if (step === "") {
       return;
     }
+
     const stepObject = stepsActions({
       nextStep: () => nextStep(step),
       setModalInfo,
@@ -87,7 +89,9 @@ const SaveBooking = forwardRef(function SaveBookingRef(
       return;
     }
     stepObject[step].execute(formData, boat);
-  }, [boat, booking, bookingId, formData, nextStep, step, t]);
+    // NOTE: This is in purpose, the step shall execute ONLY on step change, ignoring other dependencies
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
 
   const cancel = () => {
     setModalInfo({ modal: "", message: "", error: "" });

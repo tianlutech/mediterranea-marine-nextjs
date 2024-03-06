@@ -112,10 +112,10 @@ export class Booking extends NotionItem {
   Toys?: String[];
 
   @NotionType("number")
-  "Payment Deposit": number = 0;
+  "Payment Deposit": number;
 
   @NotionType("relation")
-  Whatsapp: string[] = [];
+  "Whatsapp": string[];
 
   @NotionType("rich_text")
   "Departure Time": string = "";
@@ -124,10 +124,10 @@ export class Booking extends NotionItem {
   "Captain Feedback": string = "";
 
   @NotionType("number")
-  "Fuel Left": number = 0;
+  "Fuel Left": number;
 
   @NotionType("number")
-  "Rate": number = 0;
+  "Rate": number;
 
   @NotionType("number")
   "Engine Hours": number;
@@ -164,7 +164,7 @@ export class Booking extends NotionItem {
   @NotionType("checkbox")
   DocumentsApproved?: boolean;
 
-  Captain: string[] = [];
+  "Captain": string[];
 
   @NotionType("number")
   "No Adults": number;
@@ -212,7 +212,7 @@ export class Booking extends NotionItem {
   FeedbackFormAt?: Date;
 
   @NotionType("number")
-  OnBoatPayment: number = 0;
+  OnBoatPayment?: number;
 
   @NotionType("select")
   OnBoatPaymentMethod: string = "";
@@ -268,8 +268,8 @@ export class DepartureTime extends NotionItem {
 }
 
 export const calculateArrivalTime = (departureTime: string) => {
-  if(!departureTime) {
-    return ""
+  if (!departureTime) {
+    return "";
   }
   // Split the time string into hours and minutes
   var parts = departureTime.split(":");
