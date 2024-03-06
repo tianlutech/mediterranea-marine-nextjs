@@ -12,6 +12,7 @@ import Spinner from "@/components/common/containers/spinner";
 import BoatSvg from "@/assets/svgs/BoatSvg";
 import NoSSR from "react-no-ssr";
 import { useSearchParams } from "next/navigation"
+import { resendMessageWebhook } from "@/services/make.service";
 
 export default function VerifyDocument({ params }: { params: { id: string, approved: boolean } }) {
   const { t } = useTranslation();
@@ -48,6 +49,12 @@ export default function VerifyDocument({ params }: { params: { id: string, appro
       if (!data || !data.Boat || !data.Date) {
         setError(t("error.error_booking_details"));
         return;
+      }
+
+      if (approved === "false") {
+        await resendMessageWebhook(data)
+        await updateDocumentVerified();
+        return
       }
       await updateDocumentVerified();
     };

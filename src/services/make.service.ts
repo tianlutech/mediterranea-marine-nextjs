@@ -1,4 +1,4 @@
-import { MAKE_SCENARIOS, MAKE_WEBHOOKS } from "@/models/constants";
+import { MAKE_SCENARIOS, MAKE_WEBHOOKS, RESEND_MESSAGE_MAKE_WEBHOOKS } from "@/models/constants";
 import { Booking, Boat } from "@/models/models";
 import moment from "moment";
 import { extractIdFromGoogleDriveLink } from "./utils";
@@ -55,6 +55,40 @@ export async function sendMessageWebhook(
 
     const res = await fetch(
       `${MAKE_WEBHOOKS.BOOKING_SUBMITTED}?${queryParams}`,
+      {
+        method: "GET",
+      }
+    );
+
+    if (res.status !== 200) {
+      return { error: (res.body as any).error };
+    }
+
+    return { ok: true };
+  } catch (error: any) {
+    console.error(error);
+    return { error: error.message };
+  }
+}
+
+export async function resendMessageWebhook(
+  bookingInfo: Booking,
+) {
+  try {
+    const documentsApproved = bookingInfo["DocumentsApproved"];
+    const documentsApprovedString = documentsApproved !== undefined ? documentsApproved.toString() : "";
+
+    const queryParams = new URLSearchParams({
+      id: bookingInfo.id,
+      firstName: bookingInfo["First Name"],
+      lastName: bookingInfo["Last Name"],
+      customerEmail: bookingInfo.Email,
+      DocumentsApproved: documentsApprovedString,
+    }).toString();
+    
+
+    const res = await fetch(
+      `${RESEND_MESSAGE_MAKE_WEBHOOKS.BOOKING_SUBMITTED}?${queryParams}`,
       {
         method: "GET",
       }

@@ -12,6 +12,10 @@ export const MAKE_WEBHOOKS = {
   BOOKING_SUBMITTED:
     "https://hook.eu2.make.com/mkshx7rk3edsbzg55lty4ej77fwiukg1",
 };
+export const RESEND_MESSAGE_MAKE_WEBHOOKS = {
+  BOOKING_SUBMITTED:
+    "https://hook.eu2.make.com/v3lq6q7kdw20wu204ebiltmig75c8o0h",
+};
 export const PDFMONKEY_DOCUMENT_ID = "6A2C6EC1-509F-4688-9282-D942E754E1AC";
 export const WHATSAPP_APPLICATION_ID = "157321974140617";
 export const WHATSAPP_PHONE_ID = "158038010736924";
