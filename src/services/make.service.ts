@@ -1,4 +1,8 @@
-import { MAKE_SCENARIOS, MAKE_WEBHOOKS, RESEND_MESSAGE_MAKE_WEBHOOKS } from "@/models/constants";
+import {
+  MAKE_SCENARIOS,
+  MAKE_WEBHOOKS,
+  RESEND_MESSAGE_MAKE_WEBHOOKS,
+} from "@/models/constants";
 import { Booking, Boat } from "@/models/models";
 import moment from "moment";
 import { extractIdFromGoogleDriveLink } from "./utils";
@@ -27,18 +31,24 @@ export async function sendMessageWebhook(
   boatDetails: Boat
 ) {
   try {
-    
     const idFront = bookingInfo["ID Front Picture"][0] as { name?: string };
     const idBack = bookingInfo["ID Back Picture"][0] as { name?: string };
 
-    const IdFrontImageId = idFront && idFront.name ? await extractIdFromGoogleDriveLink(idFront.name) || "" : "";
-    const IdBackImageId = idBack && idBack.name ? await extractIdFromGoogleDriveLink(idBack.name) || "" : "";
+    const IdFrontImageId =
+      idFront && idFront.name
+        ? (await extractIdFromGoogleDriveLink(idFront.name)) || ""
+        : "";
+    const IdBackImageId =
+      idBack && idBack.name
+        ? (await extractIdFromGoogleDriveLink(idBack.name)) || ""
+        : "";
     const documentsApproved = bookingInfo["DocumentsApproved"];
-    const documentsApprovedString = documentsApproved !== undefined ? documentsApproved.toString() : "";
+    const documentsApprovedString =
+      documentsApproved !== undefined ? documentsApproved.toString() : "";
 
     const queryParams = new URLSearchParams({
       date: moment(bookingInfo.Date).format("DD/MM/YY"),
-      id: bookingInfo.notion_id,
+      id: bookingInfo.id.replace("-", ""),
       firstName: bookingInfo["First Name"],
       lastName: bookingInfo["Last Name"],
       customerEmail: bookingInfo.Email,
@@ -51,7 +61,6 @@ export async function sendMessageWebhook(
       IdFrontImageId,
       IdBackImageId,
     }).toString();
-    
 
     const res = await fetch(
       `${MAKE_WEBHOOKS.BOOKING_SUBMITTED}?${queryParams}`,
@@ -71,21 +80,19 @@ export async function sendMessageWebhook(
   }
 }
 
-export async function resendMessageWebhook(
-  bookingInfo: Booking,
-) {
+export async function resendMessageWebhook(bookingInfo: Booking) {
   try {
     const documentsApproved = bookingInfo["DocumentsApproved"];
-    const documentsApprovedString = documentsApproved !== undefined ? documentsApproved.toString() : "";
+    const documentsApprovedString =
+      documentsApproved !== undefined ? documentsApproved.toString() : "";
 
     const queryParams = new URLSearchParams({
-      id: bookingInfo.notion_id,
+      id: bookingInfo.id.replace("-", ""),
       firstName: bookingInfo["First Name"],
       lastName: bookingInfo["Last Name"],
       customerEmail: bookingInfo.Email,
       DocumentsApproved: documentsApprovedString,
     }).toString();
-    
 
     const res = await fetch(
       `${RESEND_MESSAGE_MAKE_WEBHOOKS.BOOKING_SUBMITTED}?${queryParams}`,
