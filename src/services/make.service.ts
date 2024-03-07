@@ -38,7 +38,7 @@ export async function sendMessageWebhook(
 
     const queryParams = new URLSearchParams({
       date: moment(bookingInfo.Date).format("DD/MM/YY"),
-      id: bookingInfo.id,
+      id: bookingInfo.notion_id,
       firstName: bookingInfo["First Name"],
       lastName: bookingInfo["Last Name"],
       customerEmail: bookingInfo.Email,
@@ -79,7 +79,7 @@ export async function resendMessageWebhook(
     const documentsApprovedString = documentsApproved !== undefined ? documentsApproved.toString() : "";
 
     const queryParams = new URLSearchParams({
-      id: bookingInfo.id,
+      id: bookingInfo.notion_id,
       firstName: bookingInfo["First Name"],
       lastName: bookingInfo["Last Name"],
       customerEmail: bookingInfo.Email,
