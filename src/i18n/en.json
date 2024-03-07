@@ -71,6 +71,7 @@
   "sidebar": {
     "language": "Language",
     "boat_booking": "BOAT BOOKING",
+    "document_verification": "Document Verification",
     "feedback_form": "CUSTOMER FEEDBACK",
     "putting_fuel_form": "PUTTING FUEL",
     "fuel_Form": "FUEL REPORT",
@@ -120,12 +121,14 @@
     "error_invalid_pin": "Invalid Pin",
     "ID Number": "ID Number / Passport Number",
     "First Name": "First Name",
-    "Last Name": "Last Name"
+    "Last Name": "Last Name",
+    "error_invalid_param":"Invalid parameters"
   },
   "title": {
     "feed_back_form": "Treatment Received Feedback Form",
     "fuel_form": "Fuel Form",
-    "whatsapp_form": "WhatsApp Form"
+    "whatsapp_form": "WhatsApp Form",
+    "verification_form": "Verification Form"
   },
   "loadingMessage": {
     "uploading_passport": "Uploading your Passport",
@@ -154,8 +157,11 @@
   "signing": {
     "title": "Signing Agreement..."
   },
+  "verifyDocument": {
+    "title": "Saving information..."
+  },
   "message": {
-    "id_validation_failed_confirm_message": "We can not verify your documents, would you like to submitted them anyway? If you do and the documents are not valid, the all booking process can be kept on hold and you will need to solve it before being able to board on the booking"
+    "id_validation_failed_confirm_message": "We can not verify your documents, would you like to submited them anyway? If you do and the documents are not valid, the all booking process can be kept on hold and you will need to solve it before being able to board on the booking"
   },
   "common": {
     "loading": "Loading"

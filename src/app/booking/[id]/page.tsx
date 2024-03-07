@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Sidebar from "@/components/sidebar/sidebar";
 import BookingComponent from "@/components/booking";
 import { useEffect, useState } from "react";
 import {
@@ -16,7 +15,7 @@ import { useLoadScript } from "@react-google-maps/api";
 import { useRouter } from "next/navigation";
 import { Booking, Boat } from "@/models/models";
 import moment from "moment";
-import { useTranslation } from "react-i18next";
+import BookingInfoSidebar from "@/components/common/BookingInfoSideBar/BookingInfoSidebar";
 
 const libraries = ["places"] as "places"[];
 
@@ -26,13 +25,10 @@ export default function BookingPage({ params }: { params: { id: string } }) {
   const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(true);
-  const { t } = useTranslation();
-
-  // will change to ours and put in env file
 
   const apiKey: string = process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "";
 
-  const { isLoaded: googleMapsLoaded, loadError } = useLoadScript({
+  const { isLoaded: googleMapsLoaded } = useLoadScript({
     googleMapsApiKey: apiKey,
     libraries,
   });
@@ -93,28 +89,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
       <section className="gradient-form justify-center h-screen w-full text-black">
         <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
           <div className="flex md:flex-row flex-col justify-between w-full lg:flex lg:flex-wrap h-screen">
-            <Sidebar title={t("sidebar.boat_booking")} image={boatInfo.cover}>
-              <div className="px-4 py-4 text-textSecondaryColor lg:text-base text-sm">
-                <p
-                  dangerouslySetInnerHTML={{
-                    __html: t("sidebar.booking_info", {
-                      boat: boatInfo.Nombre,
-                      date: moment(data.Date).format("DD/MM/YY"),
-                      payment: data.OutstandingPayment || 0,
-                      location: data.BoatLocation[0],
-                    }),
-                  }}
-                />
-                <br />
-                <p className="mb-6">
-                  {t(
-                    "sidebar.we_are_excited_to_help_you_plan_your_next_water_adventure"
-                  )}
-                </p>
-                <p className="mb-6">{t("sidebar.sidebar_p1")}</p>
-                <p className="mb-6">{t("sidebar.sidebar_p2")}</p>
-              </div>{" "}
-            </Sidebar>
+            <BookingInfoSidebar bookingInfo={data} boatInfo={boatInfo} />
             {/* forms section */}
             <BookingComponent data={data} id={params.id} boatInfo={boatInfo} />
           </div>

@@ -1,16 +1,14 @@
 "use client";
-import Image from "next/image";
-import BoatImage from "@/assets/boat.png";
 import Modal from "@/components/common/containers/modal";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
 import React from "react";
 import { Booking } from "../../models/models";
-import { t } from "i18next";
 import { MILE_RANGES } from "@/models/constants";
 import { Boat, BookingFormData } from "../../models/models";
 import CloseSvg from "@/assets/svgs/CloseSvg";
 import Button from "../common/buttons/Button";
+import RadioInput from "../common/inputs/radioInput";
 
 export default function PrepaymentModal({
   isOpen,
@@ -76,18 +74,28 @@ export default function PrepaymentModal({
             <div>
               {calculatedMiles.map((item, index: number) => {
                 return (
-                  <div key={index} className="flex mt-4 items-center mb-4">
-                    <input
-                      id="default-radio-2"
-                      type="radio"
+                  // <div key={index} className="flex mt-4 items-center mb-4">
+                  //   <input
+                  //     id="default-radio-2"
+                  //     type="radio"
+                  //     value={item.value}
+                  //     name="default-radio"
+                  //     onClick={() => setFuelPrice(+item.value)}
+                  //     className="w-4 h-4"
+                  //   />
+                  //   <label className="ms-2 text-base text-black">
+                  //     {item.label}
+                  //   </label>
+                  // </div>
+                  <div key={index}>
+                    <RadioInput
+                      id="prepayment-default-radio"
+                      className="mb-4"
                       value={item.value}
-                      name="default-radio"
-                      onClick={() => setFuelPrice(+item.value)}
-                      className="w-4 h-4"
+                      inputName="prepaymen-radio"
+                      label={item.label}
+                      onChange={() => setFuelPrice(+item.value)}
                     />
-                    <label className="ms-2 text-base text-black">
-                      {item.label}
-                    </label>
                   </div>
                 );
               })}

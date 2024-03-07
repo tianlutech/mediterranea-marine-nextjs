@@ -69,6 +69,7 @@
   "sidebar": {
     "language": "Language",
     "boat_booking": "RESERVA",
+    "document_verification": "Verificación de documentos",
     "feedback_form": "COMENTARIOS DE LOS CLIENTES",
     "putting_fuel_form": "PONER COMBUSTIBLE",
     "fuel_Form": "REPOSTAJE",
@@ -120,6 +121,7 @@
     "error_message_webhook": "Reserva completada, pero no se pudo enviar una notificación por correo.",
     "error_field_not_found": "Campo no encontrado",
     "error_invalid_pin": "Tu PIN no es válido",
+    "error_invalid_param":"parámetros inválidos",
     "ID Number": "Número de identificación / Número de pasaporte",
     "First Name": "Nombre",
     "Last Name": "Apellido"
@@ -127,7 +129,8 @@
   "title": {
     "feed_back_form": "Feedback del Viaje",
     "fuel_form": "Forma de combustible",
-    "whatsapp_form": "Formulario WhatsApp"
+    "whatsapp_form": "Formulario WhatsApp",
+    "verification_form": "Formulario de verificación"
   },
   "loadingMessage": {
     "uploading_passport": "Subiendo tu Pasaporte",

@@ -169,7 +169,7 @@ const parseNotionProperty = (property: NotionProperty): unknown => {
         ""
       );
     case "checkbox":
-      return (property["checkbox"] as { checkbox: boolean })?.checkbox;
+      return property["checkbox"];
     default:
       return "";
   }
@@ -269,6 +269,7 @@ export const parseObjectToNotion = <T extends NotionItem>(
       return obj;
     }
     const parsedvalue = parser(value);
+
     // Skip undefine
     parsedvalue !== undefined && (obj[notionProp.property] = parsedvalue);
     return obj;

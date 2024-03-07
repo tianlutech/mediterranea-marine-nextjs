@@ -1,9 +1,9 @@
-import { toast } from "react-toastify";
 import {
   Boat,
   Booking,
   BookingFormData,
   DepartureTime,
+  SubmitDocumentFormData,
 } from "../../../models/models";
 import { uploadFile } from "@/services/googleDrive.service";
 import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
@@ -16,23 +16,6 @@ const MAX_IA_VALIDATION_ATTEMPTS = 2;
 type StepAction = {
   execute: (formData: BookingFormData, boat: Boat) => void;
 };
-
-const skip_steps = (process.env.NEXT_PUBLIC_SKIP_BOOKING_STEPS || "").split(
-  ","
-);
-// there is an issue here if I put string [] it fails
-export const steps: any = [
-  "fuel",
-  "sign",
-  "validateFront",
-  "validateBack",
-  "confirmContinue",
-  "uploadFrontIdImage",
-  "uploadBackIdImage",
-  "pay",
-  "saveData",
-  "notifyCustomer",
-].filter((step) => !skip_steps.includes(step));
 
 const storeIdImage = async (
   id: string,
@@ -193,6 +176,7 @@ export const stepsActions = ({
       );
       frontOCRResult = result.text || "";
       ocrError = result.error || "";
+
       nextStep();
     },
   };
@@ -356,6 +340,44 @@ export const stepsActions = ({
     },
   };
 
+  const saveDataOnValidation = {
+    execute: async (formData: SubmitDocumentFormData, boat: Boat) => {
+      setModalInfo({
+        modal: "loading",
+        message: t("loadingMessage.saving_information"),
+        error: "",
+      });
+
+      const { ID_Back_Picture, ID_Front_Picture, ...bookingData } = formData;
+
+      const bookingInfo = new Booking({
+        Name:
+          `${booking["First Name"]} ` +
+          `${booking["Last Name"]} - ${moment(booking.Date).format(
+            "YYYY-MM-DD"
+          )}`,
+        "First Name": bookingData["First Name"],
+        "ID Number": bookingData["ID Number"],
+        "Last Name": bookingData["Last Name"],
+        "ID Front Picture": imageFrontLink,
+        "ID Back Picture": imageBackLink,
+        DocumentsApproved: identityValidated,
+      });
+      const res = await updateBookingInfo(bookingId, bookingInfo);
+
+      if ((res as { error: string }).error) {
+        setModalInfo({
+          modal: "loading",
+          message: t("loadingMessage.saving_information"),
+          error: (res as { error: string }).error,
+        });
+        return;
+      }
+      bookingSaved = res.booking as Booking;
+      nextStep();
+    },
+  };
+
   const notifyCustomer = {
     execute: async (_formData: BookingFormData, boat: Boat) => {
       setModalInfo({
@@ -363,6 +385,7 @@ export const stepsActions = ({
         message: t("loadingMessage.send_webhook_message"),
         error: "",
       });
+
       const response = await sendMessageWebhook(bookingSaved, boat);
       if ("error" in (response as object)) {
         setModalInfo({
@@ -387,6 +410,7 @@ export const stepsActions = ({
     uploadFrontIdImage,
     uploadBackIdImage,
     pay,
+    saveDataOnValidation,
     saveData,
     notifyCustomer,
   };
