@@ -9,12 +9,12 @@ import { useFormik } from "formik";
 import SaveBooking from "../booking/partial/submitBooking";
 import { Booking, BookingFormData, Boat } from "@/models/models";
 import { useRouter } from "next/navigation";
-import { SEABOB } from "@/models/constants";
+import { SEABOB_OFFER } from "@/models/constants";
 import CommonSelect from "@/components/common/inputs/selectInput";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="relative md:w-[48%] w-full mb-6 md:mb-0">{children}</div>
+    <div className="relative w-full mb-6 md:mb-0">{children}</div>
   );
 };
 
@@ -30,12 +30,7 @@ export default function SeabobOfferForm({
   const router = useRouter();
 
   const [data, setData] = useState<Partial<BookingFormData>>({
-    "First Name": "",
-    "Last Name": "",
-    "ID Number": "",
-    documentType: "National ID",
-    ID_Front_Picture: {} as File,
-    ID_Back_Picture: {} as File,
+    SEABOB: ""
   });
 
   const submitSeabobOfferForm = async () => {
@@ -64,11 +59,11 @@ export default function SeabobOfferForm({
         onSuccess={() => router.replace("/success")}
         bookingId={bookingId}
         steps={[
-          "saveDataOnValidation",
+          "saveData",
         ]}
       />
       <div className="flex md:w-[77%] w-full  justify-center items-center md:p-6 p-2">
-        <div className="bg-white md:w-[70%] w-full rounded-lg">
+        <div className="bg-white md:w-[40%] w-full rounded-lg">
           <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm">
             {t("title.seabob_offer_form")}
           </p>
@@ -84,7 +79,7 @@ export default function SeabobOfferForm({
                 <CommonSelect
                   id="seabob"
                   name="seabob"
-                  data={SEABOB}
+                  data={SEABOB_OFFER}
                   value={data["SEABOB"]}
                   onChange={(e) => setData({ ...data, SEABOB: e.target.value })}
                   required

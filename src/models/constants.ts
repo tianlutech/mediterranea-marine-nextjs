@@ -67,6 +67,18 @@ export const SEABOB = [
     value: "500",
   },
 ];
+export const SEABOB_OFFER = [
+  {
+    name: "1 SEABOB",
+    label: "SEABOB 1 - 100E",
+    value: "100",
+  },
+  {
+    name: "2 SEABOB",
+    label: "SEABOB 2 - 200E",
+    value: "200",
+  },
+];
 export const STANDUP_PADDLE = [
   {
     name: "",
