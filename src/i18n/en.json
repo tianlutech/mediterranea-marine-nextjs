@@ -128,7 +128,8 @@
     "feed_back_form": "Treatment Received Feedback Form",
     "fuel_form": "Fuel Form",
     "whatsapp_form": "WhatsApp Form",
-    "verification_form": "Verification Form"
+    "verification_form": "Verification Form",
+    "seabob_offer_form": "Seabob Offer Form"
   },
   "loadingMessage": {
     "uploading_passport": "Uploading your Passport",

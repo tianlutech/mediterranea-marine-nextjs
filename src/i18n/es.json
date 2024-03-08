@@ -81,7 +81,8 @@
     "sidebar_p2": "Sus respuestas nos ayudarán a programar la reserva de su barco y satisfacer sus necesidades específicas. ¡Gracias por elegirnos para su aventura!",
     "feedback_sidebar": "<p>📅 Fecha: {{date}}<br/>🛥️ Barco: {{boat}}<br/> 👤 Cliente: {{first_name}} {{last_name}} </p><br/><p>Recopilar esta información es realmente importante para nuestra empresa. Podemos mejorar nuestro servicio y mejorar los costos, mejorando la experiencia tanto para el cliente como para el personal.</p>",
     "fuel_sidebar": "<p>Recopilar esta información es realmente importante para nuestra empresa. Podemos mejorar nuestro servicio y mejorar los costos, mejorando la experiencia tanto para el cliente como para el personal.</p>",
-    "whatsapp_form_title": "Formulario WhatsApp"
+    "whatsapp_form_title": "Formulario WhatsApp",
+    "seabob_offer_form": "Formulario de oferta de Seabob"
   },
   "feedback": {
     "rate_required": "De una puntuación de 1 a 5 estrellas"
@@ -130,7 +131,9 @@
     "feed_back_form": "Feedback del Viaje",
     "fuel_form": "Forma de combustible",
     "whatsapp_form": "Formulario WhatsApp",
-    "verification_form": "Formulario de verificación"
+    "verification_form": "Formulario de verificación",
+    "seabob_offer_form": "Formulario de oferta de Seabob"
+
   },
   "loadingMessage": {
     "uploading_passport": "Subiendo tu Pasaporte",
