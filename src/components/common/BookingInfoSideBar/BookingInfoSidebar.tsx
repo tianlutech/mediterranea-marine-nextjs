@@ -19,7 +19,7 @@ export default function BookingInfoSidebar(
       <div className="px-4 py-4 text-textSecondaryColor lg:text-base text-sm">
         <p
           dangerouslySetInnerHTML={{
-            __html: t("sidebar.booking_info", {
+            __html: t("sidebar.boat_booking", {
               boat: boatInfo.Nombre,
               date: moment(bookingInfo.Date).format("DD/MM/YY"),
               payment: bookingInfo.OutstandingPayment || 0,
