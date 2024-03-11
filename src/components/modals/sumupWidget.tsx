@@ -61,6 +61,7 @@ export default function SumupWidget({
 
     const load = async () => {
       const payment = Booking.totalPayment(formData);
+      console.log(">>>>>>payment", payment)
       const response = await generateCheckoutId(payment.toString());
       if (!response) {
         return;

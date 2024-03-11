@@ -48,6 +48,10 @@ export type SubmitDocumentFormData = {
   DocumentsApproved: boolean;
 };
 
+export type SubmitSeaBobOfferFormData = {
+  SEABOB: string;
+};
+
 export type FileBody = {
   boatName: string;
   slag: string;

@@ -4,13 +4,14 @@ import CommonLabel from "../common/containers/label";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import SubmitButton from "../common/containers/submit-button";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useFormik } from "formik";
 import SaveBooking from "../booking/partial/submitBooking";
 import { Booking, BookingFormData, Boat } from "@/models/models";
 import { useRouter } from "next/navigation";
 import { SEABOB_OFFER } from "@/models/constants";
 import CommonSelect from "@/components/common/inputs/selectInput";
+import { getBookingInfo } from "@/services/notion.service";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -28,6 +29,22 @@ export default function SeabobOfferForm({
   const { t } = useTranslation();
   const saveModalRef = useRef<{ start: () => void }>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const getBookingDetails = async () => {
+      const data = (await getBookingInfo(
+        bookingId
+      )) as Booking;
+
+      if (!data || !data.Boat || !data.Date) {
+        router.replace("/");
+        return;
+      }
+      setData(data);
+    };
+
+    getBookingDetails();
+  }, [bookingId, router]);
 
   const [data, setData] = useState<Partial<BookingFormData>>({
     SEABOB: ""
@@ -48,6 +65,11 @@ export default function SeabobOfferForm({
     return;
   }
 
+  const handleChangeSeabob = (e: any) => {
+    setData({ ...data, SEABOB: e.target.value })
+    console.log(">>>>>>>", e.target.value)
+  }
+
   return (
     <>
       <SaveBooking
@@ -59,7 +81,8 @@ export default function SeabobOfferForm({
         onSuccess={() => router.replace("/success")}
         bookingId={bookingId}
         steps={[
-          "saveData",
+          "pay",
+          "saveDataOnSeabobOffer"
         ]}
       />
       <div className="flex md:w-[77%] w-full  justify-center items-center md:p-6 p-2">
@@ -81,7 +104,7 @@ export default function SeabobOfferForm({
                   name="seabob"
                   data={SEABOB_OFFER}
                   value={data["SEABOB"]}
-                  onChange={(e) => setData({ ...data, SEABOB: e.target.value })}
+                  onChange={(e) => handleChangeSeabob(e)}
                   required
                 />
               </FormWrapper>

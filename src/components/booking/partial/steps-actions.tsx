@@ -4,6 +4,7 @@ import {
   BookingFormData,
   DepartureTime,
   SubmitDocumentFormData,
+  SubmitSeaBobOfferFormData
 } from "../../../models/models";
 import { uploadFile } from "@/services/googleDrive.service";
 import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
@@ -296,8 +297,7 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${
-          formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
         }`
       );
 
@@ -378,6 +378,36 @@ export const stepsActions = ({
     },
   };
 
+  const saveDataOnSeabobOffer = {
+    execute: async (formData: SubmitSeaBobOfferFormData, boat: Boat) => {
+      setModalInfo({
+        modal: "loading",
+        message: t("loadingMessage.saving_information"),
+        error: "",
+      });
+
+      const { SEABOB, ...bookingData } = formData;
+      const seaBobName =
+        SEABOB_TOY.find((seabob) => seabob.value === SEABOB)?.name || "";
+
+      const bookingInfo = new Booking({
+        Toys: [seaBobName].filter((value) => !!value),
+      });
+      const res = await updateBookingInfo(bookingId, bookingInfo);
+
+      if ((res as { error: string }).error) {
+        setModalInfo({
+          modal: "loading",
+          message: t("loadingMessage.saving_information"),
+          error: (res as { error: string }).error,
+        });
+        return;
+      }
+      bookingSaved = res.booking as Booking;
+      nextStep();
+    },
+  };
+
   const notifyCustomer = {
     execute: async (_formData: BookingFormData, boat: Boat) => {
       setModalInfo({
@@ -412,6 +442,7 @@ export const stepsActions = ({
     pay,
     saveDataOnValidation,
     saveData,
+    saveDataOnSeabobOffer,
     notifyCustomer,
   };
 };
