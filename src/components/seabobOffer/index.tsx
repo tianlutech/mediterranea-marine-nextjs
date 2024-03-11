@@ -29,6 +29,7 @@ export default function SeabobOfferForm({
   const { t } = useTranslation();
   const saveModalRef = useRef<{ start: () => void }>(null);
   const router = useRouter();
+  const [payment, setPayment] = useState<number>(0);
 
   useEffect(() => {
     const getBookingDetails = async () => {
@@ -67,7 +68,6 @@ export default function SeabobOfferForm({
 
   const handleChangeSeabob = (e: any) => {
     setData({ ...data, SEABOB: e.target.value })
-    console.log(">>>>>>>", e.target.value)
   }
 
   return (
@@ -108,7 +108,6 @@ export default function SeabobOfferForm({
                   required
                 />
               </FormWrapper>
-
               <SubmitButton label="Submit" />
             </div>
           </form>

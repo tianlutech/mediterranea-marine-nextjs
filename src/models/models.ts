@@ -226,10 +226,12 @@ export class Booking extends NotionItem {
   BoatLocation: string[] = [];
 
   public static totalPayment(data: BookingFormData) {
+    const supValue = isNaN(+data["SUP"]) ? 0 : +data["SUP"];
+    const seaBob = isNaN(+data["SEABOB"]) ? 0 : +data["SEABOB"];
     return (
       Math.max(0, +data["Fuel Payment"]) +
-      Math.max(0, +data["SUP"]) +
-      Math.max(0, +data["SEABOB"]) +
+      Math.max(0, +supValue) +
+      Math.max(0, +seaBob) +
       +data.OutstandingPayment
     );
   }
