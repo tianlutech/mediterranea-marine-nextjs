@@ -82,7 +82,8 @@ export default function SeabobOfferForm({
         bookingId={bookingId}
         steps={[
           "pay",
-          "saveDataOnSeabobOffer"
+          "saveDataOnSeabobOffer",
+          "notifyDavidAboutSeabobOffer"
         ]}
       />
       <div className="flex md:w-[77%] w-full  justify-center items-center md:p-6 p-2">

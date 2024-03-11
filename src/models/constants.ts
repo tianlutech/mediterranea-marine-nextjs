@@ -16,6 +16,10 @@ export const RESEND_MESSAGE_MAKE_WEBHOOKS = {
   BOOKING_SUBMITTED:
     "https://hook.eu2.make.com/v3lq6q7kdw20wu204ebiltmig75c8o0h",
 };
+export const DAVID_SEABOB_OFFER_MESSAGE_MAKE_WEBHOOKS = {
+  BOOKING_SUBMITTED:
+    "https://hook.eu2.make.com/9e8hnn55lkaza5b1e5hbvlaup25p5bfd",
+};
 export const PDFMONKEY_DOCUMENT_ID = "6A2C6EC1-509F-4688-9282-D942E754E1AC";
 export const WHATSAPP_APPLICATION_ID = "157321974140617";
 export const WHATSAPP_PHONE_ID = "158038010736924";

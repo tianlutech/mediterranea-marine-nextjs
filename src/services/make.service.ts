@@ -2,6 +2,7 @@ import {
   MAKE_SCENARIOS,
   MAKE_WEBHOOKS,
   RESEND_MESSAGE_MAKE_WEBHOOKS,
+  DAVID_SEABOB_OFFER_MESSAGE_MAKE_WEBHOOKS
 } from "@/models/constants";
 import { Booking, Boat } from "@/models/models";
 import moment from "moment";
@@ -96,6 +97,31 @@ export async function resendMessageWebhook(bookingInfo: Booking) {
 
     const res = await fetch(
       `${RESEND_MESSAGE_MAKE_WEBHOOKS.BOOKING_SUBMITTED}?${queryParams}`,
+      {
+        method: "GET",
+      }
+    );
+
+    if (res.status !== 200) {
+      return { error: (res.body as any).error };
+    }
+
+    return { ok: true };
+  } catch (error: any) {
+    console.error(error);
+    return { error: error.message };
+  }
+}
+
+export async function sendDavidSeabobOfferMessageWebhook(bookingInfo: Booking) {
+  try {
+    const queryParams = new URLSearchParams({
+      bookingId: bookingInfo.id.replace("-", ""),
+      date: moment(bookingInfo.Date).format("DD/MM/YY"),
+    }).toString();
+
+    const res = await fetch(
+      `${DAVID_SEABOB_OFFER_MESSAGE_MAKE_WEBHOOKS.BOOKING_SUBMITTED}?${queryParams}`,
       {
         method: "GET",
       }

@@ -11,7 +11,7 @@ import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
 import moment from "moment";
 import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
 import EdenAIService from "@/services/edenAI.service";
-import { sendMessageWebhook } from "@/services/make.service";
+import { sendMessageWebhook, sendDavidSeabobOfferMessageWebhook } from "@/services/make.service";
 
 const MAX_IA_VALIDATION_ATTEMPTS = 2;
 type StepAction = {
@@ -431,6 +431,29 @@ export const stepsActions = ({
     },
   };
 
+  const notifyDavidAboutSeabobOffer = {
+    execute: async (_formData: BookingFormData, boat: Boat) => {
+      setModalInfo({
+        modal: "loading",
+        message: t("loadingMessage.send_webhook_message"),
+        error: "",
+      });
+
+      const response = await sendDavidSeabobOfferMessageWebhook(bookingSaved);
+      if ("error" in (response as object)) {
+        setModalInfo({
+          modal: "loading",
+          message: "",
+          error:
+            (response as { error: string }).error ||
+            t("error.error_message_webhook"),
+        });
+        return;
+      }
+      nextStep();
+    },
+  };
+
   return {
     fuel,
     sign,
@@ -444,5 +467,6 @@ export const stepsActions = ({
     saveData,
     saveDataOnSeabobOffer,
     notifyCustomer,
+    notifyDavidAboutSeabobOffer
   };
 };
