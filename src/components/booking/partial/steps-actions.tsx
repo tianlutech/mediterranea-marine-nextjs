@@ -7,7 +7,7 @@ import {
   SubmitSeaBobOfferFormData
 } from "../../../models/models";
 import { uploadFile } from "@/services/googleDrive.service";
-import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
+import { SEABOB as SEABOB_TOY, STANDUP_PADDLE, SEABOB_OFFER } from "@/models/constants";
 import moment from "moment";
 import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
 import EdenAIService from "@/services/edenAI.service";
@@ -388,7 +388,7 @@ export const stepsActions = ({
 
       const { SEABOB, ...bookingData } = formData;
       const seaBobName =
-        SEABOB_TOY.find((seabob) => seabob.value === SEABOB)?.name || "";
+        SEABOB_OFFER.find((seabob) => seabob.value === SEABOB)?.name || "";
 
       const bookingInfo = new Booking({
         Toys: [seaBobName].filter((value) => !!value),

@@ -11,7 +11,7 @@ import { Booking, BookingFormData, Boat } from "@/models/models";
 import { useRouter } from "next/navigation";
 import { SEABOB_OFFER } from "@/models/constants";
 import CommonSelect from "@/components/common/inputs/selectInput";
-import { getBookingInfo } from "@/services/notion.service";
+import { getBookingInfo, getBookings } from "@/services/notion.service";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -29,7 +29,6 @@ export default function SeabobOfferForm({
   const { t } = useTranslation();
   const saveModalRef = useRef<{ start: () => void }>(null);
   const router = useRouter();
-  const [payment, setPayment] = useState<number>(0);
 
   useEffect(() => {
     const getBookingDetails = async () => {
@@ -42,6 +41,11 @@ export default function SeabobOfferForm({
         return;
       }
       setData(data);
+      const bookings = await getBookings(data.Date)
+      const toys: string[] = bookings.map((booking: Booking) => booking.Toys?.join(", "))
+      console.log(">>>>>>>>>toys", toys[0])
+
+
     };
 
     getBookingDetails();
