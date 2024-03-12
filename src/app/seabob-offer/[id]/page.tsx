@@ -49,7 +49,7 @@ export default function SeabobOffer({
   return (
     <>
       <BookingInfoSidebar bookingInfo={data} boatInfo={boatInfo} />
-      <SeabobOfferForm boatInfo={boatInfo} bookingId={params.id} />
+      <SeabobOfferForm boatInfo={boatInfo} bookingInfo={data} bookingId={params.id} />
     </>
   );
 }
