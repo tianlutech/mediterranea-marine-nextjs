@@ -164,7 +164,8 @@
   "message": {
     "id_validation_failed_confirm_message": "We can not verify your documents, would you like to submited them anyway? If you do and the documents are not valid, the all booking process can be kept on hold and you will need to solve it before being able to board on the booking",
     "get_seabob_offer": "Get your Sea Bob now!",
-    "seabob_offer_email": "Dear customer, we have {{NUM}} of sea bobs in offer at only 100E instead of 200E, this offer will expire in hours left ({{currentTime}})"
+    "seabob_offer_email": "Dear customer, we have {{NUM}} of sea bobs in offer at only 100E instead of 200E, this offer will expire in hours left ({{currentTime}})",
+    "offer_not_available": "This offer is not available."
   },
   "common": {
     "loading": "Loading"

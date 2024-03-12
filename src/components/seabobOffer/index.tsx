@@ -58,7 +58,7 @@ export default function SeabobOfferForm({
       const toys: string[] = bookings.map((booking: Booking) => booking.Toys?.join(", "))
       const totalSeabobs = getTotalToys(toys);
       if (toys.includes("3 SEABOB") || totalSeabobs >= 2) {
-        return setError("This offer is not available.")
+        return setError(t("message.offer_not_available"))
       }
     }
     const getTotalToys = (bookings: string[]) => {
@@ -73,7 +73,7 @@ export default function SeabobOfferForm({
     }
 
     getBookingsSeabob()
-  }, [bookingInfo])
+  }, [bookingInfo, t])
 
   if (!bookingInfo || !formik) {
     return;
