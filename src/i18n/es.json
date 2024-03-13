@@ -82,7 +82,7 @@
     "feedback_sidebar": "<p>📅 Fecha: {{date}}<br/>🛥️ Barco: {{boat}}<br/> 👤 Cliente: {{first_name}} {{last_name}} </p><br/><p>Recopilar esta información es realmente importante para nuestra empresa. Podemos mejorar nuestro servicio y mejorar los costos, mejorando la experiencia tanto para el cliente como para el personal.</p>",
     "fuel_sidebar": "<p>Recopilar esta información es realmente importante para nuestra empresa. Podemos mejorar nuestro servicio y mejorar los costos, mejorando la experiencia tanto para el cliente como para el personal.</p>",
     "whatsapp_form_title": "Formulario WhatsApp",
-    "seabob_offer_form": "Formulario de oferta de Seabob"
+    "seabob_offer_form": "Compra tu seabob de oferta!"
   },
   "feedback": {
     "rate_required": "De una puntuación de 1 a 5 estrellas"
@@ -122,7 +122,7 @@
     "error_message_webhook": "Reserva completada, pero no se pudo enviar una notificación por correo.",
     "error_field_not_found": "Campo no encontrado",
     "error_invalid_pin": "Tu PIN no es válido",
-    "error_invalid_param":"parámetros inválidos",
+    "error_invalid_param": "parámetros inválidos",
     "ID Number": "Número de identificación / Número de pasaporte",
     "First Name": "Nombre",
     "Last Name": "Apellido",
@@ -134,7 +134,6 @@
     "whatsapp_form": "Formulario WhatsApp",
     "verification_form": "Formulario de verificación",
     "seabob_offer_form": "Formulario de oferta de Seabob"
-
   },
   "loadingMessage": {
     "uploading_passport": "Subiendo tu Pasaporte",
@@ -151,6 +150,7 @@
     "sending_message_to": "Enviando mensaje a",
     "sending_complete": "Mensajes enviados!",
     "send_webhook_message": "Enviando mensaje de confirmación",
+    "notifying_the_company": "Notificationfo a la empresa",
     "verifying_id": "Verificando tu identidad",
     "verifying_continue_on_error": "Parece que el documento de identidad que has enviado ha fallado la verificación dos veces. Para garantizar un proceso fluido y preciso, te recomendamos encarecidamente que subas una nueva imagen de tu documento de identidad.<br/><br/>Sin embargo, si estás seguro de que la imagen actual es correcta y válida, puedes proceder haciendo clic en Continuar.<br/><br/>Ten en cuenta que en caso de que la información de identidad enviada no coincida con los criterios requeridos, incluidas discrepancias en el nombre y el ID, la reserva se considerará inválida.<br/><br/>En caso de que esto ocurra, nuestro equipo te pedirá que vuelvas a cargar la información necesaria y procedas con el proceso de asignación del contrato correspondiente.<br/><br/>Gracias por tu cooperación."
   },
@@ -166,8 +166,8 @@
   "message": {
     "id_validation_failed_confirm_message": "No podemos verificar sus documentos, ¿le gustaría enviarlos de todos modos? Si lo haces y los documentos no son válidos, todo el proceso de reserva puede quedar en espera y tendrás que resolverlo antes de poder embarcar en la reserva.",
     "get_seabob_offer": "¡Consigue tu Sea Bob ahora!",
-    "seabob_offer_email": "Estimado cliente, tenemos {{NUM}} de SeaBobs en oferta a solo 100E en lugar de 200E. Esta oferta caducará en las HORAS QUE FALTAN ",
-    "offer_not_available":"Esta oferta no está disponible."
+    "seabob_offer_email": "Estimado cliente, tenemos {{NUM}} de SeaBobs en oferta a solo 100€ (Mas que un 50% de descuento!). Esta oferta caducará en {{time}}, no pierdas esta oportunidad ",
+    "offer_not_available": "Oferta no disponible."
   },
   "common": {
     "loading": "Cargando"

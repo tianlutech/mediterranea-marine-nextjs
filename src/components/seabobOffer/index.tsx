@@ -9,17 +9,22 @@ import { useFormik } from "formik";
 import SaveBooking from "../booking/partial/submitBooking";
 import { Booking, BookingFormData, Boat } from "@/models/models";
 import { useRouter } from "next/navigation";
-import { SEABOB_OFFER, MEDITERANEAN_SUPPORT_MARINA_EMAIL, MEDITERANEAN_SUPPORT_MARINA_PHONE } from "@/models/constants";
+import {
+  SEABOB_OFFER,
+  MEDITERANEAN_SUPPORT_MARINA_EMAIL,
+  MEDITERANEAN_SUPPORT_MARINA_PHONE,
+  SEABOB,
+  MEDITERANEAN_SUPPORT_MARINA_WHATSAPP,
+} from "@/models/constants";
 import CommonSelect from "@/components/common/inputs/selectInput";
 import { getBookings } from "@/services/notion.service";
 import moment from "moment";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="relative w-full mb-6 md:mb-0">{children}</div>
-  );
+  return <div className="relative w-full mb-6 md:mb-0">{children}</div>;
 };
 
+const LIMIT_HOURS = 22;
 export default function SeabobOfferForm({
   boatInfo,
   bookingId,
@@ -27,19 +32,21 @@ export default function SeabobOfferForm({
 }: {
   boatInfo: Boat;
   bookingId: string;
-  bookingInfo: Booking,
+  bookingInfo: Booking;
 }) {
-  const timeOfferEnds = "22:00"
+  const timeOfferEnds = "22:00";
   const { t } = useTranslation();
   const [error, setError] = useState<string>("");
   const saveModalRef = useRef<{ start: () => void }>(null);
   const router = useRouter();
-  const [totalPayment, setTotalPayment] = useState<number>(0)
-  const [amountTotal, setAmountTotal] = useState(0)
+  const [totalPayment, setTotalPayment] = useState<number>(0);
+  const [amountTotal, setAmountTotal] = useState(0);
   const [data, setData] = useState<Partial<BookingFormData>>({
-    SEABOB: ""
+    SEABOB: "",
   });
-  const [filteredSeabobOffer, setFilteredSeabobOffer] = useState([]);
+  const [filteredSeabobOffer, setFilteredSeabobOffer] = useState<
+    Array<(typeof SEABOB_OFFER)[0]>
+  >([]);
   const [currentTime, setCurrentTime] = useState<string>("");
   const submitSeabobOfferForm = async () => {
     saveModalRef.current?.start();
@@ -54,22 +61,25 @@ export default function SeabobOfferForm({
 
   useEffect(() => {
     const getBookingsSeabob = async () => {
-      const bookings = await getBookings(bookingInfo.Date as Date)
-      const toys: string[] = bookings.map((booking: Booking) => booking.Toys?.join(", "))
+      const bookings = await getBookings(bookingInfo.Date as Date);
+      const toys: string[] = bookings.map((booking: Booking) =>
+        booking.Toys?.join(", ")
+      );
+
+      if (moment(bookingInfo.Date).add(-2, "days").date() !== moment().date()) {
+        return setError(t("message.offer_not_available"));
+      }
       const totalSeabobs = getTotalToys(toys);
-      setAmountTotal(totalSeabobs)
-      if (totalSeabobs == 1) {
-        const option: any = SEABOB_OFFER.slice(0, SEABOB_OFFER.length - 1)
-        setFilteredSeabobOffer(option)
+      if (toys.some((toy) => toy.includes("SEABOB")) || totalSeabobs >= 2) {
+        return setError(t("message.offer_not_available"));
       }
-      if (totalSeabobs == 0) {
-        const option: any = SEABOB_OFFER
-        setFilteredSeabobOffer(option)
-      }
-      if (toys.includes("SEABOB") || totalSeabobs >= 2) {
-        return setError(t("message.offer_not_available"))
-      }
-    }
+      setAmountTotal(totalSeabobs);
+
+      // There are only 2, maybe both are in offer o non is in offer
+      setFilteredSeabobOffer(
+        totalSeabobs == 1 ? [SEABOB_OFFER[0]] : SEABOB_OFFER
+      );
+    };
     const getTotalToys = (bookings: string[]) => {
       let totalToys = 0;
       for (const booking of bookings) {
@@ -79,27 +89,20 @@ export default function SeabobOfferForm({
         }
       }
       return totalToys;
-    }
+    };
 
-    getBookingsSeabob()
-  }, [bookingInfo, t])
+    getBookingsSeabob();
+  }, [bookingInfo, t]);
 
   useEffect(() => {
-    const countdownTo22 = () => {
+    const countdown = () => {
       const now = new Date();
       if (moment(now).format("HH:mm") === timeOfferEnds) {
         setError(t("error.offer_has_ended"));
         return;
       }
 
-      const targetTime = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-        22,
-        0,
-        0
-      );
+      const targetTime = moment().startOf("day").hours(LIMIT_HOURS).toDate();
 
       const difference = targetTime.getTime() - now.getTime();
 
@@ -117,10 +120,10 @@ export default function SeabobOfferForm({
         `${formattedHours}:${formattedMinutes}:${formattedSeconds}`
       );
 
-      setTimeout(countdownTo22, 1000);
+      setTimeout(countdown, 1000);
     };
 
-    countdownTo22();
+    countdown();
   }, [t]);
 
   if (!bookingInfo || !formik) {
@@ -128,9 +131,9 @@ export default function SeabobOfferForm({
   }
 
   const handleChangeSeabob = (e: any) => {
-    setData({ ...data, SEABOB: e.target.value })
-    setTotalPayment(e.target.value)
-  }
+    setData({ ...data, SEABOB: e.target.value });
+    setTotalPayment(e.target.value);
+  };
 
   return (
     <>
@@ -142,11 +145,7 @@ export default function SeabobOfferForm({
         booking={data as unknown as Booking}
         onSuccess={() => router.replace("/success")}
         bookingId={bookingId}
-        steps={[
-          "pay",
-          "saveDataOnSeabobOffer",
-          "notifyDavidAboutSeabobOffer"
-        ]}
+        steps={["pay", "saveDataOnSeabobOffer", "notifyDavidAboutSeabobOffer"]}
       />
       <div className="flex md:w-[77%] w-full  justify-center items-center md:p-6 p-2">
         <div className="bg-white text-black md:w-[40%] w-full rounded-lg">
@@ -158,12 +157,11 @@ export default function SeabobOfferForm({
               <div className="px-6">
                 <p className="flex mt-4 text-sm">
                   {t("message.seabob_offer_email", {
-                    NUM: 2 - amountTotal
+                    NUM: 2 - amountTotal,
+                    time: currentTime,
                   })}
                 </p>
-                <p>
-                  {currentTime}
-                </p>
+
                 <p className="flex mt-4 font-semibold md:text-xl text-sm">
                   {t("message.get_seabob_offer")}
                 </p>
@@ -171,9 +169,7 @@ export default function SeabobOfferForm({
               <form onSubmit={formik.handleSubmit}>
                 <div className="md:p-6 sm:p-8 p-6">
                   <FormWrapper>
-                    <CommonLabel
-                      input="select"
-                    >
+                    <CommonLabel input="select">
                       {" "}
                       {t("input.toy_seabob")}{" "}
                     </CommonLabel>
@@ -199,10 +195,22 @@ export default function SeabobOfferForm({
           ) : (
             <div className="my-6 mx-10 rounded-md p-2">
               <p className="font-bold text-md">{error}</p>
-              <p className="pt-2">Contact us:</p>
+              <p className="pt-2">{t("offer.contact-us")}</p>
               <ul className="list-unstyled ml-4">
-                <li>Email: {MEDITERANEAN_SUPPORT_MARINA_EMAIL}</li>
-                <li>Phone: {MEDITERANEAN_SUPPORT_MARINA_PHONE}</li>
+                <a href={`mailto:${MEDITERANEAN_SUPPORT_MARINA_EMAIL}`}>
+                  {t("offer.email")}: {MEDITERANEAN_SUPPORT_MARINA_EMAIL}
+                </a>
+                <br />
+                <a href={`tel:${MEDITERANEAN_SUPPORT_MARINA_PHONE}`}>
+                  {t("offer.pjone")}: {MEDITERANEAN_SUPPORT_MARINA_PHONE}
+                </a>
+                <br />
+                <a
+                  href={`https://wa.me/${MEDITERANEAN_SUPPORT_MARINA_WHATSAPP}`}
+                >
+                  Whatsapp: {MEDITERANEAN_SUPPORT_MARINA_PHONE}
+                </a>
+                <br />
               </ul>
             </div>
           )}

@@ -4,14 +4,21 @@ import {
   BookingFormData,
   DepartureTime,
   SubmitDocumentFormData,
-  SubmitSeaBobOfferFormData
+  SubmitSeaBobOfferFormData,
 } from "../../../models/models";
 import { uploadFile } from "@/services/googleDrive.service";
-import { SEABOB as SEABOB_TOY, STANDUP_PADDLE, SEABOB_OFFER } from "@/models/constants";
+import {
+  SEABOB as SEABOB_TOY,
+  STANDUP_PADDLE,
+  SEABOB_OFFER,
+} from "@/models/constants";
 import moment from "moment";
 import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
 import EdenAIService from "@/services/edenAI.service";
-import { sendMessageWebhook, sendDavidSeabobOfferMessageWebhook } from "@/services/make.service";
+import {
+  sendMessageWebhook,
+  sendDavidSeabobOfferMessageWebhook,
+} from "@/services/make.service";
 
 const MAX_IA_VALIDATION_ATTEMPTS = 2;
 type StepAction = {
@@ -297,7 +304,8 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${
+          formData["Departure Time"]
         }`
       );
 
@@ -435,7 +443,7 @@ export const stepsActions = ({
     execute: async (_formData: BookingFormData, boat: Boat) => {
       setModalInfo({
         modal: "loading",
-        message: t("loadingMessage.send_webhook_message"),
+        message: t("loadingMessage.notifying_the_company"),
         error: "",
       });
 
@@ -467,6 +475,6 @@ export const stepsActions = ({
     saveData,
     saveDataOnSeabobOffer,
     notifyCustomer,
-    notifyDavidAboutSeabobOffer
+    notifyDavidAboutSeabobOffer,
   };
 };

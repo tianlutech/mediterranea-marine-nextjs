@@ -2,7 +2,7 @@ import {
   MAKE_SCENARIOS,
   MAKE_WEBHOOKS,
   RESEND_MESSAGE_MAKE_WEBHOOKS,
-  DAVID_SEABOB_OFFER_MESSAGE_MAKE_WEBHOOKS
+  DAVID_SEABOB_OFFER_MESSAGE_MAKE_WEBHOOKS,
 } from "@/models/constants";
 import { Booking, Boat } from "@/models/models";
 import moment from "moment";
@@ -117,7 +117,7 @@ export async function sendDavidSeabobOfferMessageWebhook(bookingInfo: Booking) {
   try {
     const queryParams = new URLSearchParams({
       bookingId: bookingInfo.id.replace("-", ""),
-      date: moment(bookingInfo.Date).format("DD/MM/YY"),
+      date: moment().toISOString(),
     }).toString();
 
     const res = await fetch(
