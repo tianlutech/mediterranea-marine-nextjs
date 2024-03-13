@@ -39,8 +39,7 @@ export default function SeabobOfferForm({
     SEABOB: ""
   });
 
-
-
+  const [currentTime, setCurrentTime] = useState<string>("");
   const submitSeabobOfferForm = async () => {
     saveModalRef.current?.start();
   };
@@ -75,6 +74,52 @@ export default function SeabobOfferForm({
     getBookingsSeabob()
   }, [bookingInfo, t])
 
+  useEffect(() => {
+    const countdownTo22 = () => {
+      const now = new Date();
+      if (moment(now).format("HH:mm") === timeOfferEnds) {
+        setError("It's currently 22:00. The offer has ended.");
+        return;
+      }
+
+      const targetTime = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        22,
+        0,
+        0
+      );
+
+      const difference = targetTime.getTime() - now.getTime();
+
+      if (difference <= 0) {
+        console.log(
+          "Target time has already passed for today. Countdown for tomorrow will begin shortly."
+        );
+        return;
+      }
+
+      const seconds = Math.floor(difference / 1000);
+
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const remainingSeconds = seconds % 60;
+
+      const formattedHours = hours.toString().padStart(2, "0");
+      const formattedMinutes = minutes.toString().padStart(2, "0");
+      const formattedSeconds = remainingSeconds.toString().padStart(2, "0");
+
+      setCurrentTime(
+        `${formattedHours}:${formattedMinutes}:${formattedSeconds}`
+      );
+
+      setTimeout(countdownTo22, 1000);
+    };
+
+    countdownTo22();
+  }, []);
+
   if (!bookingInfo || !formik) {
     return;
   }
@@ -84,38 +129,7 @@ export default function SeabobOfferForm({
     setTotalPayment(e.target.value)
   }
 
-  let currentTime
 
-  const countdownTo22 = () => {
-    const now = new Date();
-    if (moment(now).format("HH:mm") === timeOfferEnds) {
-      setError("It's currently 22:00. The offer has ended.")
-      return
-    }
-
-    const targetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 0, 0);
-
-    const difference = targetTime.getTime() - now.getTime();
-
-    if (difference <= 0) {
-      console.log("Target time has already passed for today. Countdown for tomorrow will begin shortly.");
-      return;
-    }
-
-    const seconds = Math.floor(difference / 1000);
-
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
-
-    const formattedHours = hours.toString().padStart(2, "0");
-    const formattedMinutes = minutes.toString().padStart(2, "0");
-
-    currentTime = `${formattedHours}:${formattedMinutes}`
-    setTimeout(countdownTo22, 1000);
-  }
-
-  countdownTo22()
   return (
     <>
       <SaveBooking
@@ -140,13 +154,10 @@ export default function SeabobOfferForm({
                 {t("title.seabob_offer_form")}
               </p>
               <div className="px-6">
-                <p className="flex items-center justify-center mt-4 text-sm"
-                  dangerouslySetInnerHTML={{
-                    __html: t("message.seabob_offer_email", {
-                      currentTime,
-                    }),
-                  }}
-                />
+                <p className="flex mt-4 text-sm">
+                  {t("message.seabob_offer_email")}
+                  {currentTime}
+                </p>
                 <p className="flex mt-4 font-semibold md:text-xl text-sm">
                   {t("message.get_seabob_offer")}
                 </p>
