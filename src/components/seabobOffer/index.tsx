@@ -31,7 +31,7 @@ export default function SeabobOfferForm({
 }) {
   const timeOfferEnds = "22:00"
   const { t } = useTranslation();
-  const [error, setError] = useState<string>(t("error.offer_has_ended"));
+  const [error, setError] = useState<string>("");
   const saveModalRef = useRef<{ start: () => void }>(null);
   const router = useRouter();
   const [totalPayment, setTotalPayment] = useState<number>(0)
