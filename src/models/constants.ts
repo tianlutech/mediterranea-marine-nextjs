@@ -1,7 +1,8 @@
 export const MEDITERANEAN_SUPPORT_MARINA_EMAIL =
   "mediterraneamarine@tianlu.tech";
-export const MEDITERANEAN_SUPPORT_MARINA_PHONE = "+332 324 432 32";
-export const MEDITERANEAN_MARINA_EMAIL = "mediterraneamarine@tianlu.tech";
+export const MEDITERANEAN_SUPPORT_MARINA_PHONE = "+34 686 59 84 18";
+export const MEDITERANEAN_SUPPORT_MARINA_WHATSAPP = "34686598418";
+export const MEDITERANEAN_MARINA_EMAIL = "info@mediterraneamarine.com";
 export const NOTION_DATABASES = {
   BOOKINGS: "0aac587c9c8a4ad9b52c7a138efb3111",
   DEPARTURE_SLOTS: "497d7a3a4699435091b112c70ab982f5",

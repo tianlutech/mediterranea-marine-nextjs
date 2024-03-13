@@ -13,6 +13,8 @@ import {
   SEABOB_OFFER,
   MEDITERANEAN_SUPPORT_MARINA_EMAIL,
   MEDITERANEAN_SUPPORT_MARINA_PHONE,
+  SEABOB,
+  MEDITERANEAN_SUPPORT_MARINA_WHATSAPP,
 } from "@/models/constants";
 import CommonSelect from "@/components/common/inputs/selectInput";
 import { getBookings } from "@/services/notion.service";
@@ -41,7 +43,9 @@ export default function SeabobOfferForm({
   const [data, setData] = useState<Partial<BookingFormData>>({
     SEABOB: "",
   });
-  const [filteredSeabobOffer, setFilteredSeabobOffer] = useState([]);
+  const [filteredSeabobOffer, setFilteredSeabobOffer] = useState<
+    Array<(typeof SEABOB_OFFER)[0]>
+  >([]);
   const [currentTime, setCurrentTime] = useState<string>("");
   const submitSeabobOfferForm = async () => {
     saveModalRef.current?.start();
@@ -61,18 +65,16 @@ export default function SeabobOfferForm({
         booking.Toys?.join(", ")
       );
       const totalSeabobs = getTotalToys(toys);
-      setAmountTotal(totalSeabobs);
-      if (totalSeabobs == 1) {
-        const option: any = SEABOB_OFFER.slice(0, SEABOB_OFFER.length - 1);
-        setFilteredSeabobOffer(option);
-      }
-      if (totalSeabobs == 0) {
-        const option: any = SEABOB_OFFER
-        setFilteredSeabobOffer(option)
-      }
+
       if (toys.includes("SEABOB") || totalSeabobs >= 2) {
         return setError(t("message.offer_not_available"));
       }
+      setAmountTotal(totalSeabobs);
+
+      // There are only 2, maybe both are in offer o non is in offer
+      setFilteredSeabobOffer(
+        totalSeabobs == 1 ? [SEABOB_OFFER[0]] : SEABOB_OFFER
+      );
     };
     const getTotalToys = (bookings: string[]) => {
       let totalToys = 0;
@@ -198,8 +200,20 @@ export default function SeabobOfferForm({
               <p className="font-bold text-md">{error}</p>
               <p className="pt-2">Contact us:</p>
               <ul className="list-unstyled ml-4">
-                <li>Email: {MEDITERANEAN_SUPPORT_MARINA_EMAIL}</li>
-                <li>Phone: {MEDITERANEAN_SUPPORT_MARINA_PHONE}</li>
+                <a href={`mailto:${MEDITERANEAN_SUPPORT_MARINA_EMAIL}`}>
+                  Email: {MEDITERANEAN_SUPPORT_MARINA_EMAIL}
+                </a>
+                <br />
+                <a href={`tel:${MEDITERANEAN_SUPPORT_MARINA_PHONE}`}>
+                  Phone: {MEDITERANEAN_SUPPORT_MARINA_PHONE}
+                </a>
+                <br />
+                <a
+                  href={`https://wa.me/${MEDITERANEAN_SUPPORT_MARINA_WHATSAPP}`}
+                >
+                  Whatsapp: {MEDITERANEAN_SUPPORT_MARINA_WHATSAPP}
+                </a>
+                <br />
               </ul>
             </div>
           )}
