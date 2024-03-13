@@ -145,7 +145,7 @@ export default function SeabobOfferForm({
         formData={data as BookingFormData}
         setFormData={setData}
         boat={boatInfo}
-        booking={bookingInfo as unknown as Booking}
+        booking={data as unknown as Booking}
         onSuccess={() => router.replace("/success")}
         bookingId={bookingId}
         steps={["pay", "saveDataOnSeabobOffer", "notifyDavidAboutSeabobOffer"]}
