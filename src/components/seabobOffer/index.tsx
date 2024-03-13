@@ -19,6 +19,9 @@ import {
 import CommonSelect from "@/components/common/inputs/selectInput";
 import { getBookings } from "@/services/notion.service";
 import moment from "moment";
+import dynamic from "next/dynamic";
+
+const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-full mb-6 md:mb-0">{children}</div>;
@@ -165,6 +168,15 @@ export default function SeabobOfferForm({
                 <p className="flex mt-4 font-semibold md:text-xl text-sm">
                   {t("message.get_seabob_offer")}
                 </p>
+                <div className="flex mt-4 font-semibold md:text-xl text-sm">
+                  <ReactPlayer
+                    url={"https://www.youtube.com/watch?v=IKj0A5DDN0g"}
+                    playing={true}
+                    controls
+                    muted={true}
+                    style={{ width: 500 }}
+                  />
+                </div>
               </div>
               <form onSubmit={formik.handleSubmit}>
                 <div className="md:p-6 sm:p-8 p-6">
