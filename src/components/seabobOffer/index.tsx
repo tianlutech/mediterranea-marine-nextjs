@@ -66,6 +66,10 @@ export default function SeabobOfferForm({
         const option: any = SEABOB_OFFER.slice(0, SEABOB_OFFER.length - 1);
         setFilteredSeabobOffer(option);
       }
+      if (totalSeabobs == 0) {
+        const option: any = SEABOB_OFFER
+        setFilteredSeabobOffer(option)
+      }
       if (toys.includes("SEABOB") || totalSeabobs >= 2) {
         return setError(t("message.offer_not_available"));
       }
