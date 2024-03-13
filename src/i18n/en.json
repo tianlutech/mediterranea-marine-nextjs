@@ -148,7 +148,8 @@
     "loading_contract": "Loading contract modal",
     "sending_message_to": "Sending message to",
     "sending_complete": "Messages sent!",
-    "send_webhook_message": "Sending confirmation to your email"
+    "send_webhook_message": "Sending confirmation to your email",
+    "notifying_the_company": "Notifying your captain."
   },
   "select_options": {
     "None": "None",
@@ -166,9 +167,14 @@
     "id_validation_failed_confirm_message": "We can not verify your documents, would you like to submited them anyway? If you do and the documents are not valid, the all booking process can be kept on hold and you will need to solve it before being able to board on the booking",
     "get_seabob_offer": "Get your Sea Bob now!",
     "seabob_offer_email": "Dear customer, we have {{NUM}} of seabobs in offer at only 100€ (more than 50% discount), this offer will expire in {{time}} left ",
-    "offer_not_available": "This offer is not available."
+    "offer_not_available": "Offer currently not available."
   },
   "common": {
     "loading": "Loading"
+  },
+  "offer": {
+    "contact-us": "Contact us",
+    "email": "Email",
+    "phone": "Phone"
   }
 }

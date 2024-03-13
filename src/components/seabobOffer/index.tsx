@@ -24,6 +24,7 @@ const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-full mb-6 md:mb-0">{children}</div>;
 };
 
+const LIMIT_HOURS = 22;
 export default function SeabobOfferForm({
   boatInfo,
   bookingId,
@@ -64,9 +65,12 @@ export default function SeabobOfferForm({
       const toys: string[] = bookings.map((booking: Booking) =>
         booking.Toys?.join(", ")
       );
-      const totalSeabobs = getTotalToys(toys);
 
-      if (toys.includes("SEABOB") || totalSeabobs >= 2) {
+      if (moment(bookingInfo.Date).add(-2, "days").date() !== moment().date()) {
+        return setError(t("message.offer_not_available"));
+      }
+      const totalSeabobs = getTotalToys(toys);
+      if (toys.some((toy) => toy.includes("SEABOB")) || totalSeabobs >= 2) {
         return setError(t("message.offer_not_available"));
       }
       setAmountTotal(totalSeabobs);
@@ -91,21 +95,14 @@ export default function SeabobOfferForm({
   }, [bookingInfo, t]);
 
   useEffect(() => {
-    const countdownTo22 = () => {
+    const countdown = () => {
       const now = new Date();
       if (moment(now).format("HH:mm") === timeOfferEnds) {
         setError(t("error.offer_has_ended"));
         return;
       }
 
-      const targetTime = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-        22,
-        0,
-        0
-      );
+      const targetTime = moment().startOf("day").hours(LIMIT_HOURS).toDate();
 
       const difference = targetTime.getTime() - now.getTime();
 
@@ -123,10 +120,10 @@ export default function SeabobOfferForm({
         `${formattedHours}:${formattedMinutes}:${formattedSeconds}`
       );
 
-      setTimeout(countdownTo22, 1000);
+      setTimeout(countdown, 1000);
     };
 
-    countdownTo22();
+    countdown();
   }, [t]);
 
   if (!bookingInfo || !formik) {
@@ -198,20 +195,20 @@ export default function SeabobOfferForm({
           ) : (
             <div className="my-6 mx-10 rounded-md p-2">
               <p className="font-bold text-md">{error}</p>
-              <p className="pt-2">Contact us:</p>
+              <p className="pt-2">{t("offer.contact-us")}</p>
               <ul className="list-unstyled ml-4">
                 <a href={`mailto:${MEDITERANEAN_SUPPORT_MARINA_EMAIL}`}>
-                  Email: {MEDITERANEAN_SUPPORT_MARINA_EMAIL}
+                  {t("offer.email")}: {MEDITERANEAN_SUPPORT_MARINA_EMAIL}
                 </a>
                 <br />
                 <a href={`tel:${MEDITERANEAN_SUPPORT_MARINA_PHONE}`}>
-                  Phone: {MEDITERANEAN_SUPPORT_MARINA_PHONE}
+                  {t("offer.pjone")}: {MEDITERANEAN_SUPPORT_MARINA_PHONE}
                 </a>
                 <br />
                 <a
                   href={`https://wa.me/${MEDITERANEAN_SUPPORT_MARINA_WHATSAPP}`}
                 >
-                  Whatsapp: {MEDITERANEAN_SUPPORT_MARINA_WHATSAPP}
+                  Whatsapp: {MEDITERANEAN_SUPPORT_MARINA_PHONE}
                 </a>
                 <br />
               </ul>

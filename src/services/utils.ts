@@ -27,8 +27,14 @@ export function compareStrings(stringA: string, stringB: string) {
   return parsedB.includes(parsedA);
 }
 
-export function convertCanvasToImage({ canvas, mime }: { canvas: HTMLCanvasElement, mime: string,}) {
-  return new Promise<Blob | null>(resolve => {
+export function convertCanvasToImage({
+  canvas,
+  mime,
+}: {
+  canvas: HTMLCanvasElement;
+  mime: string;
+}) {
+  return new Promise<Blob | null>((resolve) => {
     const tmpCanvas = document.createElement("canvas");
     // Use the original canvas's dimensions
     tmpCanvas.width = canvas.width;
@@ -47,7 +53,7 @@ export function convertCanvasToImage({ canvas, mime }: { canvas: HTMLCanvasEleme
     ctx.drawImage(canvas, 0, 0);
 
     // Convert the temporary canvas to a Blob
-    tmpCanvas.toBlob(blob => resolve(blob), mime);
+    tmpCanvas.toBlob((blob) => resolve(blob), mime);
   });
 }
 
@@ -55,7 +61,7 @@ export function extractIdFromGoogleDriveLink(link: string) {
   var id = null;
   var match = link.match(/\/d\/([^/]+)/);
   if (match) {
-      id = match[1];
+    id = match[1];
   }
   return id;
 }
