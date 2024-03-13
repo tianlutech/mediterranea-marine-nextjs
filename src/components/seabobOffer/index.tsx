@@ -9,9 +9,9 @@ import { useFormik } from "formik";
 import SaveBooking from "../booking/partial/submitBooking";
 import { Booking, BookingFormData, Boat } from "@/models/models";
 import { useRouter } from "next/navigation";
-import { SEABOB_OFFER } from "@/models/constants";
+import { SEABOB_OFFER, MEDITERANEAN_SUPPORT_MARINA_EMAIL, MEDITERANEAN_SUPPORT_MARINA_PHONE } from "@/models/constants";
 import CommonSelect from "@/components/common/inputs/selectInput";
-import { getBookingInfo, getBookings } from "@/services/notion.service";
+import { getBookings } from "@/services/notion.service";
 import moment from "moment";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -29,16 +29,17 @@ export default function SeabobOfferForm({
   bookingId: string;
   bookingInfo: Booking,
 }) {
-  const { t } = useTranslation();
   const timeOfferEnds = "22:00"
-  const [error, setError] = useState<string>("");
+  const { t } = useTranslation();
+  const [error, setError] = useState<string>(t("error.offer_has_ended"));
   const saveModalRef = useRef<{ start: () => void }>(null);
   const router = useRouter();
   const [totalPayment, setTotalPayment] = useState<number>(0)
+  const [amountTotal, setAmountTotal] = useState(0)
   const [data, setData] = useState<Partial<BookingFormData>>({
     SEABOB: ""
   });
-
+  const [filteredSeabobOffer, setFilteredSeabobOffer] = useState([]);
   const [currentTime, setCurrentTime] = useState<string>("");
   const submitSeabobOfferForm = async () => {
     saveModalRef.current?.start();
@@ -56,7 +57,12 @@ export default function SeabobOfferForm({
       const bookings = await getBookings(bookingInfo.Date as Date)
       const toys: string[] = bookings.map((booking: Booking) => booking.Toys?.join(", "))
       const totalSeabobs = getTotalToys(toys);
-      if (toys.includes("3 SEABOB") || totalSeabobs >= 2) {
+      setAmountTotal(totalSeabobs)
+      if (totalSeabobs == 1) {
+        const option: any = SEABOB_OFFER.slice(0, SEABOB_OFFER.length - 1)
+        setFilteredSeabobOffer(option)
+      }
+      if (toys.includes("SEABOB") || totalSeabobs >= 2) {
         return setError(t("message.offer_not_available"))
       }
     }
@@ -78,7 +84,7 @@ export default function SeabobOfferForm({
     const countdownTo22 = () => {
       const now = new Date();
       if (moment(now).format("HH:mm") === timeOfferEnds) {
-        setError("It's currently 22:00. The offer has ended.");
+        setError(t("error.offer_has_ended"));
         return;
       }
 
@@ -92,13 +98,6 @@ export default function SeabobOfferForm({
       );
 
       const difference = targetTime.getTime() - now.getTime();
-
-      if (difference <= 0) {
-        console.log(
-          "Target time has already passed for today. Countdown for tomorrow will begin shortly."
-        );
-        return;
-      }
 
       const seconds = Math.floor(difference / 1000);
 
@@ -118,7 +117,7 @@ export default function SeabobOfferForm({
     };
 
     countdownTo22();
-  }, []);
+  }, [t]);
 
   if (!bookingInfo || !formik) {
     return;
@@ -155,7 +154,11 @@ export default function SeabobOfferForm({
               </p>
               <div className="px-6">
                 <p className="flex mt-4 text-sm">
-                  {t("message.seabob_offer_email")}
+                  {t("message.seabob_offer_email", {
+                    NUM: 2 - amountTotal
+                  })}
+                </p>
+                <p>
                   {currentTime}
                 </p>
                 <p className="flex mt-4 font-semibold md:text-xl text-sm">
@@ -174,7 +177,7 @@ export default function SeabobOfferForm({
                     <CommonSelect
                       id="seabob"
                       name="seabob"
-                      data={SEABOB_OFFER}
+                      data={filteredSeabobOffer}
                       value={data["SEABOB"]}
                       onChange={(e) => handleChangeSeabob(e)}
                       required
@@ -191,8 +194,13 @@ export default function SeabobOfferForm({
               </form>
             </div>
           ) : (
-            <div className="my-6 mx-10">
-              <span className="font-bold text-md">{error}</span>
+            <div className="my-6 mx-10 rounded-md p-2">
+              <p className="font-bold text-md">{error}</p>
+              <p className="pt-2">Contact us:</p>
+              <ul className="list-unstyled ml-4">
+                <li>Email: {MEDITERANEAN_SUPPORT_MARINA_EMAIL}</li>
+                <li>Phone: {MEDITERANEAN_SUPPORT_MARINA_PHONE}</li>
+              </ul>
             </div>
           )}
         </div>

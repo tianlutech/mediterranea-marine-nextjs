@@ -125,7 +125,8 @@
     "error_invalid_param":"parámetros inválidos",
     "ID Number": "Número de identificación / Número de pasaporte",
     "First Name": "Nombre",
-    "Last Name": "Apellido"
+    "Last Name": "Apellido",
+    "offer_has_ended": "Nuestra oferta especial de Seabob expiró hoy a las 22:00"
   },
   "title": {
     "feed_back_form": "Feedback del Viaje",
