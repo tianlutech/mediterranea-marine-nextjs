@@ -48,6 +48,10 @@ export type SubmitDocumentFormData = {
   DocumentsApproved: boolean;
 };
 
+export type SubmitSeaBobOfferFormData = {
+  SEABOB: string;
+};
+
 export type FileBody = {
   boatName: string;
   slag: string;
@@ -222,13 +226,19 @@ export class Booking extends NotionItem {
   BoatLocation: string[] = [];
 
   public static totalPayment(data: BookingFormData) {
+    const supValue = parseInt(data["SUP"] || "0", 10);
+    const seaBob = parseInt(data["SEABOB"] || "0", 10);
+    const fuelPayment = data["Fuel Payment"] || 0
+    const outStandingPayment =  data.OutstandingPayment || 0
+
     return (
-      Math.max(0, +data["Fuel Payment"]) +
-      Math.max(0, +data["SUP"]) +
-      Math.max(0, +data["SEABOB"]) +
-      +data.OutstandingPayment
+      Math.max(0, fuelPayment) +
+      Math.max(0, supValue) +
+      Math.max(0, seaBob) +
+      +outStandingPayment
     );
   }
+  
 }
 
 export class Fuel extends NotionItem {

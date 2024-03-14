@@ -1,3 +1,8 @@
+export const MEDITERANEAN_SUPPORT_MARINA_EMAIL =
+  "mediterraneamarine@tianlu.tech";
+export const MEDITERANEAN_SUPPORT_MARINA_PHONE = "+34 686 59 84 18";
+export const MEDITERANEAN_SUPPORT_MARINA_WHATSAPP = "34686598418";
+export const MEDITERANEAN_MARINA_EMAIL = "info@mediterraneamarine.com";
 export const NOTION_DATABASES = {
   BOOKINGS: "0aac587c9c8a4ad9b52c7a138efb3111",
   DEPARTURE_SLOTS: "497d7a3a4699435091b112c70ab982f5",
@@ -15,6 +20,10 @@ export const MAKE_WEBHOOKS = {
 export const RESEND_MESSAGE_MAKE_WEBHOOKS = {
   BOOKING_SUBMITTED:
     "https://hook.eu2.make.com/v3lq6q7kdw20wu204ebiltmig75c8o0h",
+};
+export const DAVID_SEABOB_OFFER_MESSAGE_MAKE_WEBHOOKS = {
+  BOOKING_SUBMITTED:
+    "https://hook.eu2.make.com/9e8hnn55lkaza5b1e5hbvlaup25p5bfd",
 };
 export const PDFMONKEY_DOCUMENT_ID = "6A2C6EC1-509F-4688-9282-D942E754E1AC";
 export const WHATSAPP_APPLICATION_ID = "157321974140617";
@@ -58,13 +67,25 @@ export const SEABOB = [
   },
   {
     name: "1 SEABOB",
-    label: "SEABOB 1 - 250E",
+    label: "SEABOB 1 - 250€",
     value: "250",
   },
   {
     name: "2 SEABOB",
-    label: "SEABOB 2 - 500E",
+    label: "SEABOB 2 - 500€",
     value: "500",
+  },
+];
+export const SEABOB_OFFER = [
+  {
+    name: "1 SEABOB",
+    label: "SEABOB 1 - 100€",
+    value: "100",
+  },
+  {
+    name: "2 SEABOB",
+    label: "SEABOB 2 - 200€",
+    value: "200",
   },
 ];
 export const STANDUP_PADDLE = [
@@ -75,12 +96,12 @@ export const STANDUP_PADDLE = [
   },
   {
     name: "1 SUP",
-    label: "SUP 1 - 50E",
+    label: "SUP 1 - 50€",
     value: "50",
   },
   {
     name: "2 SUP",
-    label: "SUP 2 - 100E",
+    label: "SUP 2 - 100€",
     value: "100",
   },
 ];

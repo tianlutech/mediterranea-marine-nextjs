@@ -74,19 +74,6 @@ export default function PrepaymentModal({
             <div>
               {calculatedMiles.map((item, index: number) => {
                 return (
-                  // <div key={index} className="flex mt-4 items-center mb-4">
-                  //   <input
-                  //     id="default-radio-2"
-                  //     type="radio"
-                  //     value={item.value}
-                  //     name="default-radio"
-                  //     onClick={() => setFuelPrice(+item.value)}
-                  //     className="w-4 h-4"
-                  //   />
-                  //   <label className="ms-2 text-base text-black">
-                  //     {item.label}
-                  //   </label>
-                  // </div>
                   <div key={index}>
                     <RadioInput
                       id="prepayment-default-radio"

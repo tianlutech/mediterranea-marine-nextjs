@@ -138,6 +138,69 @@ export async function getBookedTimeSlots(date: Date) {
   }
 }
 
+export async function getBookings(date: Date) {
+  const filter = {
+    and: [
+      {
+        property: "Date",
+        date: {
+          after: moment(date).startOf("day").format(),
+        },
+      },
+      {
+        property: "Date",
+        date: {
+          before: moment(date).endOf("day").format(),
+        },
+      },
+      {
+        or:[
+          {
+            property: "Toys",
+            multi_select: {
+              contains: "1 SEABOB"
+            }
+          },
+          {
+            property: "Toys",
+            multi_select: {
+              contains: "2 SEABOB"
+            }
+          }
+        ]
+      }
+    ],
+  };
+  try {
+    // Append the bookingId as a query parameter to the URL
+    const response = await fetch(
+      `/api/notion/database?databaseId=${encodeURIComponent(
+        NOTION_DATABASES.BOOKINGS
+      )}&filter=${encodeURIComponent(JSON.stringify(filter))}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const json = await response.json();
+    if (json.error) {
+      console.error(json.error);
+      return [];
+    }
+
+    const results = json.results
+    // @abel here am missing the type
+    const bookings = results.map((booking: any) => parseNotionObject<Booking>(booking, booking as NotionPage));
+    return bookings;
+  } catch (error) {
+    console.error("Error retrieving page from Notion:", error);
+    return [];
+  }
+}
+
 export async function createTimeSlot(timeSlot: DepartureTime) {
   try {
     // Append the bookingId as a query parameter to the URL

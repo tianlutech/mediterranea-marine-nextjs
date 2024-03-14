@@ -4,13 +4,21 @@ import {
   BookingFormData,
   DepartureTime,
   SubmitDocumentFormData,
+  SubmitSeaBobOfferFormData,
 } from "../../../models/models";
 import { uploadFile } from "@/services/googleDrive.service";
-import { SEABOB as SEABOB_TOY, STANDUP_PADDLE } from "@/models/constants";
+import {
+  SEABOB as SEABOB_TOY,
+  STANDUP_PADDLE,
+  SEABOB_OFFER,
+} from "@/models/constants";
 import moment from "moment";
 import { createTimeSlot, updateBookingInfo } from "@/services/notion.service";
 import EdenAIService from "@/services/edenAI.service";
-import { sendMessageWebhook } from "@/services/make.service";
+import {
+  sendMessageWebhook,
+  sendDavidSeabobOfferMessageWebhook,
+} from "@/services/make.service";
 
 const MAX_IA_VALIDATION_ATTEMPTS = 2;
 type StepAction = {
@@ -378,6 +386,36 @@ export const stepsActions = ({
     },
   };
 
+  const saveDataOnSeabobOffer = {
+    execute: async (formData: SubmitSeaBobOfferFormData, boat: Boat) => {
+      setModalInfo({
+        modal: "loading",
+        message: t("loadingMessage.saving_information"),
+        error: "",
+      });
+
+      const { SEABOB, ...bookingData } = formData;
+      const seaBobName =
+        SEABOB_OFFER.find((seabob) => seabob.value === SEABOB)?.name || "";
+
+      const bookingInfo = new Booking({
+        Toys: [seaBobName].filter((value) => !!value),
+      });
+      const res = await updateBookingInfo(bookingId, bookingInfo);
+
+      if ((res as { error: string }).error) {
+        setModalInfo({
+          modal: "loading",
+          message: t("loadingMessage.saving_information"),
+          error: (res as { error: string }).error,
+        });
+        return;
+      }
+      bookingSaved = res.booking as Booking;
+      nextStep();
+    },
+  };
+
   const notifyCustomer = {
     execute: async (_formData: BookingFormData, boat: Boat) => {
       setModalInfo({
@@ -387,6 +425,29 @@ export const stepsActions = ({
       });
 
       const response = await sendMessageWebhook(bookingSaved, boat);
+      if ("error" in (response as object)) {
+        setModalInfo({
+          modal: "loading",
+          message: "",
+          error:
+            (response as { error: string }).error ||
+            t("error.error_message_webhook"),
+        });
+        return;
+      }
+      nextStep();
+    },
+  };
+
+  const notifyDavidAboutSeabobOffer = {
+    execute: async (_formData: BookingFormData, boat: Boat) => {
+      setModalInfo({
+        modal: "loading",
+        message: t("loadingMessage.notifying_the_company"),
+        error: "",
+      });
+
+      const response = await sendDavidSeabobOfferMessageWebhook(bookingSaved);
       if ("error" in (response as object)) {
         setModalInfo({
           modal: "loading",
@@ -412,6 +473,8 @@ export const stepsActions = ({
     pay,
     saveDataOnValidation,
     saveData,
+    saveDataOnSeabobOffer,
     notifyCustomer,
+    notifyDavidAboutSeabobOffer,
   };
 };

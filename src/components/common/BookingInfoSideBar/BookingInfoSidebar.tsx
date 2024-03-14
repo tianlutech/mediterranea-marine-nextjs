@@ -15,7 +15,7 @@ export default function BookingInfoSidebar(
 ) {
   const { t } = useTranslation();
   return (
-    <Sidebar title={t("sidebar.document_verification")} image={boatInfo.cover}>
+    <Sidebar title={t("sidebar.boat_booking")} image={boatInfo.cover}>
       <div className="px-4 py-4 text-textSecondaryColor lg:text-base text-sm">
         <p
           dangerouslySetInnerHTML={{

@@ -9,7 +9,7 @@ import { useMemo, useState } from "react";
 import VideoModal from "../../modals/videoModal";
 import ErrorMessage from "./errorMessage";
 import { DEPARTURES_TIMES, STANDUP_PADDLE, SEABOB } from "@/models/constants";
-import { Boat, Booking } from "@/models/models";
+import { Boat } from "@/models/models";
 import { useTranslation } from "next-i18next";
 import { MILE_RANGES } from "@/models/constants";
 import TextInfoModal from "@/components/modals/textInfoModal";
