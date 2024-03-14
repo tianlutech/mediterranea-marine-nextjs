@@ -220,7 +220,7 @@ export default function SeabobOfferForm({
                 </a>
                 <br />
                 <a href={`tel:${MEDITERANEAN_SUPPORT_MARINA_PHONE}`}>
-                  {t("offer.pjone")}: {MEDITERANEAN_SUPPORT_MARINA_PHONE}
+                  {t("offer.phone")}: {MEDITERANEAN_SUPPORT_MARINA_PHONE}
                 </a>
                 <br />
                 <a
