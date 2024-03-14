@@ -50,6 +50,7 @@ export type SubmitDocumentFormData = {
 
 export type SubmitSeaBobOfferFormData = {
   SEABOB: string;
+  previousToys?: string[];
 };
 
 export type FileBody = {
@@ -113,7 +114,7 @@ export class Booking extends NotionItem {
   Client?: Record<string, unknown>;
 
   @NotionType("multi_select")
-  Toys?: String[];
+  Toys?: string[];
 
   @NotionType("number")
   "Payment Deposit": number;
@@ -228,8 +229,8 @@ export class Booking extends NotionItem {
   public static totalPayment(data: BookingFormData) {
     const supValue = parseInt(data["SUP"] || "0", 10);
     const seaBob = parseInt(data["SEABOB"] || "0", 10);
-    const fuelPayment = data["Fuel Payment"] || 0
-    const outStandingPayment =  data.OutstandingPayment || 0
+    const fuelPayment = data["Fuel Payment"] || 0;
+    const outStandingPayment = data.OutstandingPayment || 0;
 
     return (
       Math.max(0, fuelPayment) +
@@ -238,7 +239,6 @@ export class Booking extends NotionItem {
       +outStandingPayment
     );
   }
-  
 }
 
 export class Fuel extends NotionItem {

@@ -399,7 +399,10 @@ export const stepsActions = ({
         SEABOB_OFFER.find((seabob) => seabob.value === SEABOB)?.name || "";
 
       const bookingInfo = new Booking({
-        Toys: [seaBobName].filter((value) => !!value),
+        Toys: [
+          ...(formData.previousToys || []),
+          ...[seaBobName].filter((value) => !!value),
+        ],
       });
       const res = await updateBookingInfo(bookingId, bookingInfo);
 

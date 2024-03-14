@@ -7,7 +7,12 @@ import SubmitButton from "../common/containers/submit-button";
 import { useState, useRef, useEffect } from "react";
 import { useFormik } from "formik";
 import SaveBooking from "../booking/partial/submitBooking";
-import { Booking, BookingFormData, Boat } from "@/models/models";
+import {
+  Booking,
+  BookingFormData,
+  Boat,
+  SubmitSeaBobOfferFormData,
+} from "@/models/models";
 import { useRouter } from "next/navigation";
 import {
   SEABOB_OFFER,
@@ -44,8 +49,9 @@ export default function SeabobOfferForm({
   const router = useRouter();
   const [totalPayment, setTotalPayment] = useState<number>(0);
   const [amountTotal, setAmountTotal] = useState(0);
-  const [data, setData] = useState<Partial<BookingFormData>>({
+  const [data, setData] = useState<SubmitSeaBobOfferFormData>({
     SEABOB: "",
+    previousToys: bookingInfo.Toys || [],
   });
   const [filteredSeabobOffer, setFilteredSeabobOffer] = useState<
     Array<(typeof SEABOB_OFFER)[0]>
