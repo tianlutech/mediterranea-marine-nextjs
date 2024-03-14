@@ -89,7 +89,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
       <section className="gradient-form justify-center h-screen w-full text-black">
         <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
           <div className="flex md:flex-row flex-col justify-between w-full lg:flex lg:flex-wrap h-screen">
-            <BookingInfoSidebar bookingInfo={data} boatInfo={boatInfo} />
+            <BookingInfoSidebar bookingInfo={data} boatInfo={boatInfo} showRemainingPayment={true} />
             {/* forms section */}
             <BookingComponent data={data} id={params.id} boatInfo={boatInfo} />
           </div>

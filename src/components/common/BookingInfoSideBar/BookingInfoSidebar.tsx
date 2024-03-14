@@ -6,9 +6,11 @@ import moment from "moment";
 export default function BookingInfoSidebar({
   bookingInfo,
   boatInfo,
+  showRemainingPayment,
 }: {
   bookingInfo: Booking;
   boatInfo: Boat;
+  showRemainingPayment: boolean
 }) {
   const { t } = useTranslation();
 
@@ -17,12 +19,21 @@ export default function BookingInfoSidebar({
       <div className="px-4 py-4 text-textSecondaryColor lg:text-base text-sm">
         <p
           dangerouslySetInnerHTML={{
-            __html: t("sidebar.booking_info", {
-              boat: boatInfo.Nombre,
-              date: moment(bookingInfo.Date).format("DD/MM/YY"),
-              payment: bookingInfo.OutstandingPayment || 0,
-              location: bookingInfo.BoatLocation,
-            }),
+            __html:
+              showRemainingPayment ?
+                t("sidebar.booking_info", {
+                  boat: boatInfo.Nombre,
+                  date: moment(bookingInfo.Date).format("DD/MM/YY"),
+                  payment: bookingInfo.OutstandingPayment || 0,
+                  location: bookingInfo.BoatLocation,
+                })
+                :
+                t("sidebar.booking_info_without_remain", {
+                  boat: boatInfo.Nombre,
+                  date: moment(bookingInfo.Date).format("DD/MM/YY"),
+                  location: bookingInfo.BoatLocation,
+                })
+            ,
           }}
         />
         <br />
