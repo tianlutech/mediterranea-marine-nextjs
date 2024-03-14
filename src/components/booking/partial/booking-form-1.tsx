@@ -71,7 +71,7 @@ export default function BookingForm1({
             <RadioInput
               id="default-radio-1"
               className="mb-4"
-              inputName="id-document-radio"
+              inputName="id-document"
               label={t("input.national_id")}
               onChange={() => setData({ ...data, documentType: "National ID" })}
               checked={data.documentType === "National ID"}
@@ -79,7 +79,7 @@ export default function BookingForm1({
             <RadioInput
               id="passport-default-radio-1"
               className="ml-10"
-              inputName="passport-document-radio"
+              inputName="id-document"
               label={t("input.passport")}
               onChange={() => setData({ ...data, documentType: "Passport" })}
               checked={data.documentType === "Passport"}

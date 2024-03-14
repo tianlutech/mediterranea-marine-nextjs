@@ -50,8 +50,7 @@ export default function BookingForm2({
     const pricePerMile = boatInfo.MilePrice || 0;
     return MILE_RANGES.map((miles: number) => ({
       label: miles
-        ? `${miles}` +
-        t(`input.${miles}_miles_description`)
+        ? `${miles}` + t(`input.${miles}_miles_description`)
         : t("input.continue_without_prepayment"),
       value: (miles * pricePerMile).toString(),
     }));
@@ -94,7 +93,7 @@ export default function BookingForm2({
               <RadioInput
                 id="restaurant-default-radio-1"
                 className="mb-4"
-                inputName="id-eat-restaurant-radio"
+                inputName="id-eat-radio"
                 label={t("input.we_eat_on_board")}
                 onChange={() => setEatAtRestaurant("onBoat")}
                 checked={eatAtRestaurant === "onBoat"}
@@ -103,7 +102,7 @@ export default function BookingForm2({
               <RadioInput
                 id="restaurant-default-radio-1"
                 className="ml-10"
-                inputName="id-eat-boat-radio"
+                inputName="id-eat-radio"
                 label={t("input.we_eat_on_a_restaurant")}
                 onChange={() => setEatAtRestaurant("restaurant")}
                 checked={eatAtRestaurant === "restaurant"}
