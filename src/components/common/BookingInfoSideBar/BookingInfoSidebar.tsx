@@ -11,6 +11,7 @@ export default function BookingInfoSidebar({
   boatInfo: Boat;
 }) {
   const { t } = useTranslation();
+
   return (
     <Sidebar title={t("sidebar.boat_booking")} image={boatInfo.cover}>
       <div className="px-4 py-4 text-textSecondaryColor lg:text-base text-sm">
@@ -20,7 +21,7 @@ export default function BookingInfoSidebar({
               boat: boatInfo.Nombre,
               date: moment(bookingInfo.Date).format("DD/MM/YY"),
               payment: bookingInfo.OutstandingPayment || 0,
-              location: bookingInfo.BoatLocation[0],
+              location: bookingInfo.BoatLocation,
             }),
           }}
         />
