@@ -30,7 +30,7 @@ export default function ErrorPage() {
       <button
         type="button"
         onClick={() => goHome()}
-        className="mt-6 text-black focus:ring-4 font-semibold rounded-lg text-lg px-2 py-2 border border-gray-400"
+        className="mt-6 text-black focus:outline-none font-semibold rounded-lg text-lg px-2 py-2 border border-gray-400"
       >
         Go to home
       </button>

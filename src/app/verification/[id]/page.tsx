@@ -48,7 +48,7 @@ export default function DocumentVerification({
 
   return (
     <>
-      <BookingInfoSidebar bookingInfo={data} boatInfo={boatInfo} />
+      <BookingInfoSidebar bookingInfo={data} boatInfo={boatInfo} showRemainingPayment={true} />
       <VerificationForm boatInfo={boatInfo} bookingId={params.id} />
     </>
   );

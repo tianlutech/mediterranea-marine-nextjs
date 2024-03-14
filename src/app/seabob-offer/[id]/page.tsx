@@ -48,7 +48,7 @@ export default function SeabobOffer({
 
   return (
     <>
-      <BookingInfoSidebar bookingInfo={data} boatInfo={boatInfo} />
+      <BookingInfoSidebar bookingInfo={data} boatInfo={boatInfo} showRemainingPayment={false} />
       <SeabobOfferForm boatInfo={boatInfo} bookingInfo={data} bookingId={params.id} />
     </>
   );

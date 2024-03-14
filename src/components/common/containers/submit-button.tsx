@@ -28,7 +28,7 @@ export default function SubmitButton({
       type={type}
       onClick={onClickButton}
       disabled={disabled}
-      className="mt-6 text-white bg-buttonColor focus:ring-4 font-semibold rounded-lg text-lg px-10 py-3"
+      className="mt-6 text-white bg-buttonColor focus:outline-none font-semibold rounded-lg text-lg px-10 py-3"
     >
       {loading ? <Spinner color="white" /> : label}
     </button>
