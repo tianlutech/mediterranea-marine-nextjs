@@ -23,8 +23,7 @@ export const uploadFile = async (file: File, body: FileBody) => {
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const googleDriveFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
-    const date = moment(Date.now()).format("DD-MM-YYYY");
-    const { boatName, id, slag } = body;
+    const { boatName, id, slag, date } = body;
 
     /**
      * Follow this to check if a folder exists then no need to create it again

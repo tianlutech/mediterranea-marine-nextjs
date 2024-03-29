@@ -29,9 +29,10 @@ const storeIdImage = async (
   id: string,
   boatInfo: Boat,
   file: File,
-  slag: string
+  slag: string,
+  bookingDate: string
 ) => {
-  const response = await uploadFile(file, boatInfo.Nombre, id, slag);
+  const response = await uploadFile(file, boatInfo.Nombre, id, slag, bookingDate);
 
   if (!response.id) {
     return false;
@@ -112,7 +113,10 @@ export const stepsActions = ({
         formData["ID Number"],
         boat,
         formData["ID_Front_Picture"] as File,
-        "front"
+        "front",
+        `${moment(booking.Date).format(
+          "YYYY-MM-DD"
+        )}`
       );
 
       if (!uploadIdFrontResponse) {
@@ -150,7 +154,10 @@ export const stepsActions = ({
         formData["ID Number"],
         boat,
         formData["ID_Back_Picture"] as File,
-        "back"
+        "back",
+        `${moment(booking.Date).format(
+          "YYYY-MM-DD"
+        )}`
       );
 
       if (!uploadIdBackImageResponse) {
@@ -304,8 +311,7 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${
-          formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
         }`
       );
 

@@ -22,6 +22,7 @@ export async function POST(request: Request) {
       boatName: data.get("boatName"),
       id: data.get("id"),
       slag: data.get("slag"),
+      date: data.get("date"),
     };
 
     if (!type) {
