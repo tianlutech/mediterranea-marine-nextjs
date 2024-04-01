@@ -40,7 +40,7 @@ export default function SumupWidget({
             if (bodyData.status === "FAILED") {
               onError(
                 t("error.error_sumup_payment") +
-                `ID #${bodyData.transaction_code}`
+                  `ID #${bodyData.transaction_code}`
               );
               return;
             }
@@ -48,7 +48,7 @@ export default function SumupWidget({
             return;
           }
 
-          onError(t("error.error_sumup_payment") + `ID #${body.toString()}`);
+          onError(t("error.error_sumup_payment") + `${JSON.stringify(body)}`);
         },
       });
     },
