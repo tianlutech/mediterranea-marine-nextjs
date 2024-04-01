@@ -22,6 +22,7 @@ export async function POST(request: Request) {
       boatName: data.get("boatName"),
       id: data.get("id"),
       slag: data.get("slag"),
+      date: data.get("date"),
     };
 
     if (!type) {
@@ -41,8 +42,8 @@ export async function POST(request: Request) {
 
     const config: any = {
       idCard: () => googleDrive.uploadFile(file, body),
-      receipt: () => googleDrive.uploadReceiptImage(file),
-      customerSignature: () => googleDrive.uploadSignatureImage(file),
+      receipt: () => googleDrive.uploadReceiptImage(file, body),
+      customerSignature: () => googleDrive.uploadSignatureImage(file, body),
     };
 
     if (!config[type]) {

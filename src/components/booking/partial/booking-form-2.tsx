@@ -135,7 +135,7 @@ export default function BookingForm2({
                     id="bookingTime"
                     placeholder={t("input.booking_time")}
                     onChange={(e: any) => {
-                      const date = new Date();
+                      const date = data["Date"];
                       const [hour, minutes] = e.target.value.split(
                         ":"
                       ) as string[];

@@ -57,6 +57,7 @@ export type FileBody = {
   boatName: string;
   slag: string;
   id: string;
+  date: string
 };
 
 export class Boat extends NotionItem {

@@ -23,8 +23,7 @@ export const uploadFile = async (file: File, body: FileBody) => {
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const googleDriveFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
-    const date = moment(Date.now()).format("DD-MM-YYYY");
-    const { boatName, id, slag } = body;
+    const { boatName, id, slag, date } = body;
 
     /**
      * Follow this to check if a folder exists then no need to create it again
@@ -66,14 +65,14 @@ export const uploadFile = async (file: File, body: FileBody) => {
   }
 };
 
-export const uploadReceiptImage = async (file: File) => {
+export const uploadReceiptImage = async (file: File, body: FileBody) => {
   // allows you to use drive API methods e.g. listing files, creating files.
   const drive = google.drive({ version: "v3", auth });
   try {
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const googleDriveFolderId = "1isbXrWgy5MZ0oZ_UKwOW2hsYyANQejNm";
-    const date = moment(Date.now()).format("DD-MM-YYYY");
+    const { date } = body;
 
     const res = await drive.files.create({
       requestBody: {
@@ -94,14 +93,14 @@ export const uploadReceiptImage = async (file: File) => {
   }
 };
 
-export const uploadSignatureImage = async (file: File) => {
+export const uploadSignatureImage = async (file: File, body: FileBody) => {
   // allows you to use drive API methods e.g. listing files, creating files.
   const drive = google.drive({ version: "v3", auth });
   try {
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const googleDriveFolderId = "1welC1ONHo-T2-U1fYQvm5P3fKXrQvA9L";
-    const date = moment(Date.now()).format("DD-MM-YYYY");
+    const { date } = body;
 
     const res = await drive.files.create({
       requestBody: {
