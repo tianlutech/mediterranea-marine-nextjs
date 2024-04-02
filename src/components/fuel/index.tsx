@@ -45,7 +45,7 @@ export default function FuelForm() {
   });
 
   const storeReceiptImage = async (file: File) => {
-    const response = await uploadReceiptImage(file);
+    const response = await uploadReceiptImage(file, data["Date"]);
     if (!response.id) {
       return "";
     }

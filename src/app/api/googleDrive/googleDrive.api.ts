@@ -104,7 +104,7 @@ export const uploadSignatureImage = async (file: File, body: FileBody) => {
 
     const res = await drive.files.create({
       requestBody: {
-        name: `${date}_${file.name}.${path.extname(file.name)}`,
+        name: `${date}_${file.name}.png`,
         mimeType: file.type,
         // parents: [`${folder.data.id}`],
         parents: [`${googleDriveFolderId}`],

@@ -22,11 +22,12 @@ export const uploadFile = async (file: File, boatName: string, id: string ,slag:
   }
 }
 
-export const uploadReceiptImage = async (file: File) => {
+export const uploadReceiptImage = async (file: File, bookingDate: string) => {
   try {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("type", "receipt");
+    formData.append("date", bookingDate);
 
     const response = await fetch("/api/googleDrive", {
       method: "POST",
@@ -42,11 +43,12 @@ export const uploadReceiptImage = async (file: File) => {
   }
 }
 
-export const uploadSignatureImage = async (file: File) => {
+export const uploadSignatureImage = async (file: File, bookingDate: string) => {
   try {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("type", "customerSignature");
+    formData.append("date", bookingDate);
 
     const response = await fetch("/api/googleDrive", {
       method: "POST",
