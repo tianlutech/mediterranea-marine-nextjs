@@ -34,6 +34,14 @@ export default function SumupWidget({
           if (type === "sent") {
             return;
           }
+          // TODO: Do we need to do something?  or is already handled by the form
+          if (type === "invalid") {
+            return;
+          }
+          // TODO: Do we need to do something?  or is already handled by the form
+          if (type === "auth-screen") {
+            return;
+          }
 
           if (type === "success") {
             const bodyData = body as PaymentResponseBody;
@@ -47,8 +55,19 @@ export default function SumupWidget({
             onSuccess();
             return;
           }
+          // Users cancel or time out
+          if (type === "fail") {
+            onError(t("error.error_sumup_payment") + `${JSON.stringify(body)}`);
+            return;
+          }
 
-          onError(t("error.error_sumup_payment") + `${JSON.stringify(body)}`);
+          if (type === "error") {
+            onError(t("error.error_sumup_payment") + `${JSON.stringify(body)}`);
+            return;
+          }
+          onError(
+            t("error.sumup_unhandled_response") + `${JSON.stringify(body)}`
+          );
         },
       });
     },

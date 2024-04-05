@@ -107,6 +107,7 @@
     "error_eden_ia_given_names": "Name",
     "error_eden_ia_document_id": "Document Id",
     "error_sumup_payment": "Error making the payment: ",
+    "sumup_unhandled_response": "The payment has received a responsed which is not handled by us, this is probably and issue in our end, please screenshot the information and contact the admin  ",
     "429": "Too many attempts, please wait few seconds before trying again. ",
     "GMFL-424": "Google map failed to load!",
     "PNF-404": "Page not found!",

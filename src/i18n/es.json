@@ -110,6 +110,7 @@
     "error_eden_ia_given_names": "Nombre",
     "error_eden_ia_document_id": "Número de Identidad",
     "error_sumup_payment": "Error al realizar el pago.",
+    "sumup_unhandled_response": "Hemos recibido una respuesta de la pasarela de pago que no sabemos como gestionar, seguramente es un error en nuestro lado, para evitar pagos duplicados porfavor contacte el administrador",
     "GMFL-424": "¡El mapa de Google no se pudo cargar!",
     "PNF-404": "¡Página no encontrada!",
     "ASB-409": "¡Ya enviaste tu reserva!",
