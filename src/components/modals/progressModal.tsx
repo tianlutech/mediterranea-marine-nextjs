@@ -71,8 +71,14 @@ function ErrorModal({
         <div className="flex justify-center items-center ">
           <div className="p-2">
             <div className="flex-col text-center">
-              <div className="">{message}</div>
-              <div className="mt-4">{error}</div>
+              <div
+                className=""
+                dangerouslySetInnerHTML={{ __html: message }}
+              ></div>
+              <div
+                className="mt-4"
+                dangerouslySetInnerHTML={{ __html: error }}
+              ></div>
               <button
                 onClick={() => closeModal()}
                 data-modal-hide="default-modal"

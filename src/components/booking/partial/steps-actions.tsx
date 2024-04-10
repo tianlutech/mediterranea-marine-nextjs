@@ -20,7 +20,7 @@ import {
   sendDavidSeabobOfferMessageWebhook,
 } from "@/services/make.service";
 
-const MAX_IA_VALIDATION_ATTEMPTS = 2;
+const MAX_IA_VALIDATION_ATTEMPTS = 1;
 type StepAction = {
   execute: (formData: BookingFormData, boat: Boat) => void;
 };
@@ -32,7 +32,13 @@ const storeIdImage = async (
   slag: string,
   bookingDate: string
 ) => {
-  const response = await uploadFile(file, boatInfo.Nombre, id, slag, bookingDate);
+  const response = await uploadFile(
+    file,
+    boatInfo.Nombre,
+    id,
+    slag,
+    bookingDate
+  );
 
   if (!response.id) {
     return false;
@@ -114,9 +120,7 @@ export const stepsActions = ({
         boat,
         formData["ID_Front_Picture"] as File,
         "front",
-        `${moment(booking.Date).format(
-          "YYYY-MM-DD"
-        )}`
+        `${moment(booking.Date).format("YYYY-MM-DD")}`
       );
 
       if (!uploadIdFrontResponse) {
@@ -155,9 +159,7 @@ export const stepsActions = ({
         boat,
         formData["ID_Back_Picture"] as File,
         "back",
-        `${moment(booking.Date).format(
-          "YYYY-MM-DD"
-        )}`
+        `${moment(booking.Date).format("YYYY-MM-DD")}`
       );
 
       if (!uploadIdBackImageResponse) {
@@ -267,7 +269,11 @@ export const stepsActions = ({
             failedCounter > MAX_IA_VALIDATION_ATTEMPTS
               ? t("loadingMessage.verifying_continue_on_error")
               : t("loadingMessage.verifying_id"),
-          error: result.error as string,
+          error: (failedCounter > MAX_IA_VALIDATION_ATTEMPTS
+            ? result.error
+            : t("loadingMessage.verifying_id_error") +
+              "<br/><br/>" +
+              result.error) as string,
         });
         return;
       }
@@ -311,7 +317,8 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
+        `${moment(booking.Date).format("YYYY-MM-DD")} ${
+          formData["Departure Time"]
         }`
       );
 

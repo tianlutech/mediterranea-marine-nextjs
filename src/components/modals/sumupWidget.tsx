@@ -47,8 +47,9 @@ export default function SumupWidget({
             const bodyData = body as PaymentResponseBody;
             if (bodyData.status === "FAILED") {
               onError(
-                t("error.error_sumup_payment") +
-                  `ID #${bodyData.transaction_code}`
+                t("error.error_sumup_payment") + bodyData.transaction_code
+                  ? `ID #${bodyData.transaction_code}`
+                  : ""
               );
               return;
             }
