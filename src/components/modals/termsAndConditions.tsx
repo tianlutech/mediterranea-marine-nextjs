@@ -84,7 +84,7 @@ export default function TermsAndConditions({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={() => closeModal()}>
+    <Modal isOpen={true} onClose={() => closeModal()}>
       <div className="relative p-2 md:w-[60%] bg-white rounded-lg shadow overflow-y-scroll pt-0 w-[95%] h-[95%] md:px-12 px-2">
         <div className="flex items-center justify-between px-4 pt-6 md:px-4 md:pt-4 sticky top-0 bg-white">
           <button
@@ -464,6 +464,127 @@ export default function TermsAndConditions({
             ) : (
               <div />
             )}
+          </div>
+          <div className="w-full flex justify-between mb-16">
+            <table>
+              <tr className="border-black border-2">
+                <th className=" border-black font-normal px-14">Boat</th>
+              </tr>
+              <tr className="border-black border-2">
+                <th className=" border-black  font-normal h-8"></th>
+              </tr>
+            </table>
+            <table>
+              <tr className="border-black border-2">
+                <th className=" border-black font-normal px-14">Date</th>
+              </tr>
+              <tr className="border-black border-2">
+                <th className=" border-black  font-normal h-8"></th>
+              </tr>
+            </table>
+            <table>
+              <tr className="border-black border-2">
+                <th className=" border-black font-normal px-14">O.N.</th>
+              </tr>
+              <tr className="border-black border-2">
+                <th className=" border-black  font-normal h-8"></th>
+              </tr>
+            </table>
+          </div>
+          <div>
+            <table className="w-full">
+              <tr>
+                <th className=""></th>
+                <th className=" border-black border-t-2 border-b-2 border-l-2 font-normal">Name</th>
+                <th className=" border-black border-t-2 border-b-2 font-normal">Nationality</th>
+                <th className=" border-black border-t-2 border-b-2 font-normal">DOB</th>
+                <th className=" border-black border-t-2 border-r-2 border-b-2 font-normal">PASSPORT NO.</th>
+              </tr>
+              <tr>
+                <td className="border border-black border-t-2 border-b-2 border-l-2 border-r-2 text-sm h-10">#1</td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+              </tr>
+              <tr>
+                <td className="border border-black border-t-2 border-b-2 border-l-2 border-r-2 h-10">#2</td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+              </tr>
+              <tr>
+                <td className="border border-black border-t-2 border-b-2 border-l-2 border-r-2 h-10">#3</td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+              </tr>
+              <tr>
+                <td className="border border-black border-t-2 border-b-2 border-l-2 border-r-2 h-10">#4</td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+              </tr>
+              <tr>
+                <td className="border border-black border-t-2 border-b-2 border-l-2 border-r-2 h-10">#5</td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+              </tr>
+              <tr>
+                <td className="border border-black border-t-2 border-b-2 border-l-2 border-r-2 h-10">#6</td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+              </tr>
+              <tr>
+                <td className="border border-black border-t-2 border-b-2 border-l-2 border-r-2 h-10">#7</td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+              </tr>
+              <tr>
+                <td className="border border-black border-t-2 border-b-2 border-l-2 border-r-2 h-10">#8</td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+              </tr>
+              <tr>
+                <td className="border border-black border-t-2 border-b-2 border-l-2 border-r-2 h-10">#9</td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+              </tr>
+              <tr>
+                <td className="border border-black border-t-2 border-b-2 border-l-2 border-r-2 h-10">#10</td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+              </tr>
+              <tr>
+                <td className="border border-black border-t-2 border-b-2 border-l-2 border-r-2 h-10">#11</td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+              </tr>
+              <tr>
+                <td className="border border-black border-t-2 border-b-2 border-l-2 border-r-2">#12</td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+                <td className="border border-black border-t-2 border-b-2 border-r-2"></td>
+              </tr>
+            </table>
           </div>
         </div>
       </div>
