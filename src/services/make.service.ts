@@ -49,7 +49,7 @@ export async function sendMessageWebhook(
       documentsApproved !== undefined ? documentsApproved.toString() : "";
 
     const queryParams = new URLSearchParams({
-      date: moment(bookingInfo.Date).format("DD/MM/YY"),
+      date: moment(bookingInfo.Date).format("DD/MM/YYYY"),
       id: bookingInfo.id.replace("-", ""),
       firstName: bookingInfo["First Name"],
       lastName: bookingInfo["Last Name"],
