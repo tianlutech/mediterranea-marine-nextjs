@@ -4,7 +4,7 @@ import {
   RESEND_MESSAGE_MAKE_WEBHOOKS,
   DAVID_SEABOB_OFFER_MESSAGE_MAKE_WEBHOOKS,
 } from "@/models/constants";
-import { Booking, Boat } from "@/models/models";
+import { Booking, Boat, BookingFormData } from "@/models/models";
 import moment from "moment";
 import { extractIdFromGoogleDriveLink } from "./utils";
 
@@ -34,6 +34,7 @@ export async function sendMessageWebhook(
   try {
     const idFront = bookingInfo["ID Front Picture"][0] as { name?: string };
     const idBack = bookingInfo["ID Back Picture"][0] as { name?: string };
+    const amountPaid: string = (Booking.totalPayment(bookingInfo as any)).toString()
 
     const IdFrontImageId =
       idFront && idFront.name
@@ -61,6 +62,7 @@ export async function sendMessageWebhook(
       DocumentsApproved: documentsApprovedString,
       IdFrontImageId,
       IdBackImageId,
+      confirmedPayment: amountPaid
     }).toString();
 
     const res = await fetch(
