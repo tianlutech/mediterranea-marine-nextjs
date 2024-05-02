@@ -23,7 +23,7 @@ export default function ConfirmModal({
         <div className="">
           <div className="p-4 md:p-5">
             <span
-              className="flex text-center"
+              className="text-center"
               dangerouslySetInnerHTML={{ __html: message || "" }}
             ></span>
             <div className="mt-4 flex text-red-400 justify-center">{error}</div>
