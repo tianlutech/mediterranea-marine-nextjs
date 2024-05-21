@@ -30,6 +30,8 @@ export default function BookingComponent({
   const [formData, setFormData] = useState<BookingFormData>({
     "First Name": "",
     "Last Name": "",
+    NotificationEmail: "",
+    SumupCode: "",
     Date: data.Date as Date,
     "Billing Address": "",
     "No Adults": 0,
@@ -101,7 +103,18 @@ export default function BookingComponent({
         booking={formData as unknown as Booking}
         onSuccess={() => router.replace("/success")}
         bookingId={id}
-        steps={["fuel", "sign", "validateFront", "validateBack", "confirmContinue", "uploadFrontIdImage", "uploadBackIdImage", "pay", "saveData", "notifyCustomer"]}
+        steps={[
+          "fuel",
+          "sign",
+          "validateFront",
+          "validateBack",
+          "confirmContinue",
+          "uploadFrontIdImage",
+          "uploadBackIdImage",
+          "pay",
+          "saveData",
+          "notifyCustomer",
+        ]}
       />
       <div className="relative md:w-[77%] w-full md:p-6 p-2">
         <form onSubmit={formik.handleSubmit}>
@@ -110,7 +123,6 @@ export default function BookingComponent({
               {/* first form */}
               <BookingForm1
                 data={formData}
-                boatInfo={boatInfo}
                 setData={setFormData}
                 formik={formik}
               />

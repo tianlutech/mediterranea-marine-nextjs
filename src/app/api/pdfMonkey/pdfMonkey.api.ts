@@ -91,7 +91,7 @@ export async function createDocument(
             clientId: "ABC1234-DE",
             clientName:
               `${bookingInfo["First Name"]} ` + `${bookingInfo["Last Name"]}`,
-            clientEmail: bookingInfo.Email,
+            clientEmail: bookingInfo.NotificationEmail,
             boatId: id,
             captainId: `${captainDetails.id}`,
             _filename: `${bookingInfo["First Name"]} 

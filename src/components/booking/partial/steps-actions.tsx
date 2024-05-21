@@ -3,6 +3,7 @@ import {
   Booking,
   BookingFormData,
   DepartureTime,
+  getBookingName,
   SubmitDocumentFormData,
   SubmitSeaBobOfferFormData,
 } from "../../../models/models";
@@ -324,11 +325,7 @@ export const stepsActions = ({
 
       const bookingInfo = new Booking({
         ...bookingData,
-        Name:
-          `${booking["First Name"]} ` +
-          `${booking["Last Name"]} - ${moment(booking.Date).format(
-            "YYYY-MM-DD"
-          )}`,
+        Name: getBookingName(formData),
         "ID Front Picture": imageFrontLink,
         "ID Back Picture": imageBackLink,
         Toys: [paddle, seaBobName].filter((value) => !!value),
@@ -372,11 +369,7 @@ export const stepsActions = ({
       const { ID_Back_Picture, ID_Front_Picture, ...bookingData } = formData;
 
       const bookingInfo = new Booking({
-        Name:
-          `${booking["First Name"]} ` +
-          `${booking["Last Name"]} - ${moment(booking.Date).format(
-            "YYYY-MM-DD"
-          )}`,
+        Name: getBookingName({ ...formData, Date: booking.Date as Date }),
         "First Name": bookingData["First Name"],
         "ID Number": bookingData["ID Number"],
         "Last Name": bookingData["Last Name"],

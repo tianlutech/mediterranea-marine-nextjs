@@ -1,17 +1,23 @@
-export async function generateCheckoutId(amount: string) {
+export async function generateCheckoutId({
+  amount,
+  description,
+}: {
+  amount: string;
+  description: string;
+}) {
   try {
     const response = await fetch("/api/sumupPayment", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ amount }),
+      body: JSON.stringify({ amount, description }),
     });
     const res = await response.json();
     return res;
   } catch (error) {
     console.error("Error while processing payment", error);
-    return undefined;
+    return { error: (error as Error).message };
   }
 }
 
@@ -21,9 +27,7 @@ export interface PaymentSentBody {
 export interface PaymentResponseBody {
   amount: number;
   checkout_reference: string;
-
   currency: string;
-
   description: string;
   id: string;
   merchant_code: string;

@@ -209,7 +209,7 @@ const propToNotion: Record<string, (value: any) => NotionProperty | undefined> =
     formula: (value: number) => undefined,
     email: (value: string) => ({
       type: "email",
-      eamil: +value,
+      email: value,
     }),
     files: (value: string[]) => ({
       type: "files",
@@ -268,10 +268,11 @@ export const parseObjectToNotion = <T extends NotionItem>(
     if (!parser) {
       return obj;
     }
-    const parsedvalue = parser(value);
+    const parsedValue = parser(value);
+    console.log({ notionProp, value, parsedValue });
 
     // Skip undefine
-    parsedvalue !== undefined && (obj[notionProp.property] = parsedvalue);
+    parsedValue !== undefined && (obj[notionProp.property] = parsedValue);
     return obj;
   }, {} as Record<string, NotionProperty>);
 

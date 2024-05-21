@@ -6,6 +6,8 @@
     "ID_Front_Picture": "Fotografía de Identidad/Pasaporte (Frontal)",
     "ID_Back_Picture": "Fotografía de Identidad/Pasaporte (Posterior)",
     "billing_address": "Dirección de Facturación",
+    "email_address": "Correo Electrónico",
+    "email_info": "Recibirás las notificaciones de este booking en esta dirección de correo electrónico",
     "adult_passengers": "Adultos",
     "kids_passengers": "Niños",
     "select_file": "Seleccione un archivo o arrástrelo y suéltelo aquí",

@@ -6,6 +6,8 @@
     "ID_Front_Picture": "Identity / Passport Picture (Front)",
     "ID_Back_Picture": "Identity / Passport Picture (Back)",
     "billing_address": "Billing address",
+    "email_address": "Email address",
+    "email_info": "The booking notifications will be sent to this email address",
     "adult_passengers": "Adults",
     "kids_passengers": "Kids",
     "select_file": "Select a file or drag and drop here",

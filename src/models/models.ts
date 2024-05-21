@@ -1,3 +1,4 @@
+import moment from "moment";
 import { NotionItem, NotionType } from "./notion.model";
 
 export type FileMetadata = {
@@ -18,6 +19,7 @@ export type BookingFormData = {
   Date: Date;
   "First Name": string;
   "Last Name": string;
+  NotificationEmail: string;
   "Billing Address": string;
   "No Adults": number;
   "No Childs": number;
@@ -36,6 +38,21 @@ export type BookingFormData = {
   OutstandingPayment: number;
   CustomerSignature: string;
   DocumentsApproved: boolean;
+  SumupCode: string;
+};
+
+export const getBookingName = (booking: {
+  ["First Name"]: string;
+  ["Last Name"]: string;
+  ["Boat"]?: string;
+  Date: Date;
+}) => {
+  return (
+    `${booking["First Name"]} ` +
+    `${booking["Last Name"]} ${booking["Boat"] || ""} - ${moment(
+      booking.Date
+    ).format("DD.MM.YY")}`
+  );
 };
 
 export type SubmitDocumentFormData = {
@@ -57,7 +74,7 @@ export type FileBody = {
   boatName: string;
   slag: string;
   id: string;
-  date: string
+  date: string;
 };
 
 export class Boat extends NotionItem {
@@ -190,6 +207,9 @@ export class Booking extends NotionItem {
   @NotionType("rich_text")
   "Port": string = "";
 
+  @NotionType("email")
+  "NotificationEmail": string = "";
+
   @NotionType("number")
   "Fuel Payment": number;
 
@@ -198,6 +218,9 @@ export class Booking extends NotionItem {
 
   @NotionType("rich_text")
   Email: string = "";
+
+  @NotionType("rich_text")
+  SumupCode: string = "";
 
   @NotionType("title")
   Name: string = "";

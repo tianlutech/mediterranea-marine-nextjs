@@ -52,7 +52,7 @@ export async function sendMessageWebhook(
       id: bookingInfo.id.replace("-", ""),
       firstName: bookingInfo["First Name"],
       lastName: bookingInfo["Last Name"],
-      customerEmail: bookingInfo.Email,
+      customerEmail: bookingInfo.NotificationEmail,
       boatName: boatDetails.Nombre,
       pricePerMile: (boatDetails.MilePrice ?? "0").toString() + " Euros",
       totalPassengers: (bookingInfo["Total Passengers"] ?? "0").toString(),
@@ -91,7 +91,7 @@ export async function resendMessageWebhook(bookingInfo: Booking) {
       id: bookingInfo.id.replace("-", ""),
       firstName: bookingInfo["First Name"],
       lastName: bookingInfo["Last Name"],
-      customerEmail: bookingInfo.Email,
+      customerEmail: bookingInfo.NotificationEmail,
       DocumentsApproved: documentsApprovedString,
     }).toString();
 
