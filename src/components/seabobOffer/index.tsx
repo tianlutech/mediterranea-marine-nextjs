@@ -50,6 +50,7 @@ export default function SeabobOfferForm({
   const [totalPayment, setTotalPayment] = useState<number>(0);
   const [amountTotal, setAmountTotal] = useState(0);
   const [data, setData] = useState<SubmitSeaBobOfferFormData>({
+    SumupCode: "",
     SEABOB: "",
     previousToys: bookingInfo.Toys || [],
   });

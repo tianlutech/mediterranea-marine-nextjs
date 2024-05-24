@@ -43,7 +43,7 @@ const SaveBooking = forwardRef(function SaveBookingRef(
     onCancel?: () => void;
     onSuccess?: () => void;
     bookingId: string;
-    steps: string[];
+    steps: string[]
   },
   ref: ForwardedRef<{ start: () => void }>
 ) {

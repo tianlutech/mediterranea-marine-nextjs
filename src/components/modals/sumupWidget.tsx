@@ -73,7 +73,7 @@ export default function SumupWidget({
         },
       });
     },
-    [onError, t, onSuccess]
+    [onError, t, onSuccess,formData]
   );
   useEffect(() => {
     if (!isOpen) {

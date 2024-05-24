@@ -127,7 +127,10 @@
     "First Name": "First Name",
     "Last Name": "Last Name",
     "error_invalid_param": "Invalid parameters",
-    "offer_has_ended": "Our special Seabob offer expired at 22:00 today"
+    "offer_has_ended": "Our special Seabob offer expired at 22:00 today",
+    "error_address_not_accurate": "The address is not accurate enough. Make sure it includes thed house number.",
+    "error_no_passengers": "Add number of passengers. Boat allows {{passengers}} passengers",
+    "error_max_passengers": "Reduce the passengers count, this boat allows a maximum of {{passengers}} passengers."
   },
   "title": {
     "feed_back_form": "Treatment Received Feedback Form",

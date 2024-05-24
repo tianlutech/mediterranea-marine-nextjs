@@ -130,7 +130,10 @@
     "ID Number": "Número de identificación / Número de pasaporte",
     "First Name": "Nombre",
     "Last Name": "Apellido",
-    "offer_has_ended": "Nuestra oferta especial de Seabob expiró hoy a las 22:00"
+    "offer_has_ended": "Nuestra oferta especial de Seabob expiró hoy a las 22:00",
+    "error_address_not_accurate": "La dirección no es lo suficientemente precisa, asegurate de que el numero de la calle aparece en la dirección.",
+    "error_no_passengers": "No has seleccionado el número de pasajeros. Este barco permite {{passengers}} tripulantes",
+    "error_max_passengers": "Reduzca el número de pasajerors, este barco solo permite un máximo de {{passengers}} passengers."
   },
   "title": {
     "feed_back_form": "Feedback del Viaje",

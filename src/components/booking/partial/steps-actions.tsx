@@ -314,9 +314,9 @@ export const stepsActions = ({
       } = formData;
 
       const seaBobName =
-        SEABOB_TOY.find((seabob) => seabob.value === SEABOB)?.name || "";
+        SEABOB_TOY.find((seabob) => seabob.value === SEABOB);
       const paddle =
-        STANDUP_PADDLE.find((sup) => sup.value === SUP)?.name || "";
+        STANDUP_PADDLE.find((sup) => sup.value === SUP);
       const departureTime = moment(
         `${moment(booking.Date).format("YYYY-MM-DD")} ${
           formData["Departure Time"]
@@ -325,10 +325,11 @@ export const stepsActions = ({
 
       const bookingInfo = new Booking({
         ...bookingData,
+        paymentToys: [paddle?.value, seaBobName?.value].reduce( (total, value) =>   value? total + +value: total , 0) as number,
         Name: getBookingName(formData),
         "ID Front Picture": imageFrontLink,
         "ID Back Picture": imageBackLink,
-        Toys: [paddle, seaBobName].filter((value) => !!value),
+        Toys: [paddle?.name, seaBobName?.name].filter((value) => !!value) as string[],
         SubmittedFormAt: new Date(),
         DocumentsApproved: identityValidated,
       });
@@ -402,13 +403,15 @@ export const stepsActions = ({
 
       const { SEABOB, ...bookingData } = formData;
       const seaBobName =
-        SEABOB_OFFER.find((seabob) => seabob.value === SEABOB)?.name || "";
+        SEABOB_OFFER.find((seabob) => seabob.value === SEABOB);
 
       const bookingInfo = new Booking({
         Toys: [
           ...(formData.previousToys || []),
-          ...[seaBobName].filter((value) => !!value),
+          ...[seaBobName?.name].filter((value) => !!value) as string[],
         ],
+        SumupOfferCode:  formData.SumupCode,
+        paymentToysOffer: seaBobName ? +seaBobName.value : 0
       });
       const res = await updateBookingInfo(bookingId, bookingInfo);
 

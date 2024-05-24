@@ -68,6 +68,7 @@ export type SubmitDocumentFormData = {
 export type SubmitSeaBobOfferFormData = {
   SEABOB: string;
   previousToys?: string[];
+  SumupCode: string;
 };
 
 export type FileBody = {
@@ -92,6 +93,8 @@ export class Boat extends NotionItem {
   RegistrationPlate: string = "";
   @NotionType("rich_text")
   Crew: string = "";
+  @NotionType("url")
+  ["Ubicación"]: string = "";
 
   // Client Side Injected data Format time HH:mm
   bussySlots: string[] = [];
@@ -138,7 +141,7 @@ export class Booking extends NotionItem {
   "Payment Deposit": number;
 
   @NotionType("relation")
-  "Whatsapp": string[];
+  "Whatsapp": string;
 
   @NotionType("rich_text")
   "Departure Time": string = "";
@@ -220,7 +223,16 @@ export class Booking extends NotionItem {
   Email: string = "";
 
   @NotionType("rich_text")
-  SumupCode: string = "";
+  SumupCode?: string;
+
+  @NotionType("rich_text")
+  SumupOfferCode?: string;
+
+  @NotionType("number")
+  paymentToys?: number;
+
+  @NotionType("number")
+  paymentToysOffer?: number;
 
   @NotionType("title")
   Name: string = "";
