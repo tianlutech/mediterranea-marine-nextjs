@@ -46,13 +46,16 @@ export async function sendMessageWebhook(
     const documentsApproved = bookingInfo["DocumentsApproved"];
     const documentsApprovedString =
       documentsApproved !== undefined ? documentsApproved.toString() : "";
-
-    const queryParams = new URLSearchParams({
+    const query = {
+      customerMobile: bookingInfo.Whatsapp,
       date: moment(bookingInfo.Date).format("DD/MM/YY"),
+      time: bookingInfo["Departure Time"],
+      boatLocation: boatDetails.Ubicación,
+      totalPayment: bookingInfo["Total Payment"].toString(),
       id: bookingInfo.id.replace("-", ""),
       firstName: bookingInfo["First Name"],
       lastName: bookingInfo["Last Name"],
-      customerEmail: bookingInfo.Email,
+      customerEmail: bookingInfo.NotificationEmail,
       boatName: boatDetails.Nombre,
       pricePerMile: (boatDetails.MilePrice ?? "0").toString() + " Euros",
       totalPassengers: (bookingInfo["Total Passengers"] ?? "0").toString(),
@@ -61,7 +64,9 @@ export async function sendMessageWebhook(
       DocumentsApproved: documentsApprovedString,
       IdFrontImageId,
       IdBackImageId,
-    }).toString();
+    };
+
+    const queryParams = new URLSearchParams(query).toString();
 
     const res = await fetch(
       `${MAKE_WEBHOOKS.BOOKING_SUBMITTED}?${queryParams}`,
@@ -91,7 +96,7 @@ export async function resendMessageWebhook(bookingInfo: Booking) {
       id: bookingInfo.id.replace("-", ""),
       firstName: bookingInfo["First Name"],
       lastName: bookingInfo["Last Name"],
-      customerEmail: bookingInfo.Email,
+      customerEmail: bookingInfo.NotificationEmail,
       DocumentsApproved: documentsApprovedString,
     }).toString();
 

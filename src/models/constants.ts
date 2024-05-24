@@ -1,5 +1,4 @@
-export const MEDITERANEAN_SUPPORT_MARINA_EMAIL =
-  "mediterraneamarine@tianlu.tech";
+export const MEDITERANEAN_SUPPORT_MARINA_EMAIL = "info@mediterraneamarine.com";
 export const MEDITERANEAN_SUPPORT_MARINA_PHONE = "+34 686 59 84 18";
 export const MEDITERANEAN_SUPPORT_MARINA_WHATSAPP = "34686598418";
 export const MEDITERANEAN_MARINA_EMAIL = "info@mediterraneamarine.com";

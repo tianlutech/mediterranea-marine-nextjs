@@ -7,7 +7,7 @@ import {
   PaymentResponseBody,
   generateCheckoutId,
 } from "@/services/sumup.service";
-import { Booking, BookingFormData } from "@/models/models";
+import { Booking, BookingFormData, getBookingName } from "@/models/models";
 import { useTranslation } from "react-i18next";
 
 export default function SumupWidget({
@@ -53,6 +53,7 @@ export default function SumupWidget({
               );
               return;
             }
+            formData.SumupCode = bodyData.transaction_code;
             onSuccess();
             return;
           }
@@ -72,7 +73,7 @@ export default function SumupWidget({
         },
       });
     },
-    [onError, t, onSuccess]
+    [onError, t, onSuccess,formData]
   );
   useEffect(() => {
     if (!isOpen) {
@@ -80,15 +81,19 @@ export default function SumupWidget({
     }
     const load = async () => {
       const payment = Booking.totalPayment(formData);
-      const response = await generateCheckoutId(payment.toString());
-      if (!response) {
+      const response = await generateCheckoutId({
+        amount: payment.toString(),
+        description: `APP - ${getBookingName(formData)}`,
+      });
+      if (response.error) {
+        onError(t("error.error_sumup_payment") + response.error);
         return;
       }
       handleScriptLoad(response.id);
     };
 
     load();
-  }, [formData, handleScriptLoad, isOpen]);
+  }, [formData, handleScriptLoad, isOpen, onError, t]);
 
   if (!isOpen) {
     return null;

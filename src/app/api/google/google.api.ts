@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "axios";
 const googleApiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 
 export async function validateAddressZipCode(address: string) {
@@ -12,15 +12,15 @@ export async function validateAddressZipCode(address: string) {
     return response.data.error_message;
   }
   const dataResponse = response.data.results[0].address_components;
-  
   // not sure about the component type
-  const zipCodeComponent = dataResponse.find((component: any) =>
-    component.types.includes("postal_code")
+  const requiredComponent = dataResponse.find((component: any) =>
+    component.types.includes("street_number")
   );
-  const zipcode = zipCodeComponent ? zipCodeComponent.long_name : "N/A";
 
-  if (zipcode === "N/A") {
-    return false
+  console.log({ requiredComponent });
+
+  if (!requiredComponent?.long_name) {
+    return false;
   }
   return true;
 }

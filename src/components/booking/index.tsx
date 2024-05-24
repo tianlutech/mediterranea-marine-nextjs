@@ -28,23 +28,25 @@ export default function BookingComponent({
   const [totalPayment, setTotalPayment] = useState<number>(0);
 
   const [formData, setFormData] = useState<BookingFormData>({
-    "First Name": "",
-    "Last Name": "",
+    "First Name": data["First Name"],
+    "Last Name": data["Last Name"],
+    NotificationEmail: data.NotificationEmail,
+    SumupCode: data.SumupCode || "",
     Date: data.Date as Date,
-    "Billing Address": "",
-    "No Adults": 0,
-    "No Childs": 0,
+    "Billing Address": data["Billing Address"],
+    "No Adults": data["No Adults"],
+    "No Childs":data["No Childs"],
     ID_Back_Picture: {} as File,
     ID_Front_Picture: {} as File,
     "Departure Time": "",
     SUP: "",
     SEABOB: "",
     "Fuel Payment": -1,
-    Comments: "",
-    "Restaurant Name": "",
-    "Restaurant Time": "",
+    Comments: data.Comments,
+    "Restaurant Name": data["Restaurant Name"],
+    "Restaurant Time": data["Restaurant Time"] || "",
     signedContract: false,
-    "ID Number": "",
+    "ID Number": data["ID Number"],
     documentType: "National ID",
     OutstandingPayment: data.OutstandingPayment || 0,
     CustomerSignature: "",
@@ -67,13 +69,13 @@ export default function BookingComponent({
     const res = await validateAddress(formData["Billing Address"]);
 
     if (res === false) {
-      return toast.error("The address is not accurate enough");
+      return toast.error(t("error.error_address_not_accurate"));
     }
 
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
       return toast.error(
-        `Add number of passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
-      );
+        t("error.error_no_passengers",{passengers: boatInfo["Max.Passengers"]})
+       );
     }
 
     if (
@@ -81,7 +83,7 @@ export default function BookingComponent({
       boatInfo["Max.Passengers"]
     ) {
       return toast.error(
-        `You have exceeded the boat passengers. Boat allows ${boatInfo["Max.Passengers"]} passengers`
+           t("error.error_max_passengers",{passengers: boatInfo["Max.Passengers"]})
       );
     }
     saveModalRef.current?.start();
@@ -99,9 +101,20 @@ export default function BookingComponent({
         setFormData={setFormData}
         boat={boatInfo}
         booking={formData as unknown as Booking}
-        onSuccess={() => router.replace("/success")}
+        // onSuccess={() => router.replace("/success")}
         bookingId={id}
-        steps={["fuel", "sign", "validateFront", "validateBack", "confirmContinue", "uploadFrontIdImage", "uploadBackIdImage", "pay", "saveData", "notifyCustomer"]}
+        steps={[
+          "fuel",
+          "sign",
+          "validateFront",
+          "validateBack",
+          "confirmContinue",
+          "uploadFrontIdImage",
+          "uploadBackIdImage",
+          "pay",
+          "saveData",
+          "notifyCustomer",
+        ]}
       />
       <div className="relative md:w-[77%] w-full md:p-6 p-2">
         <form onSubmit={formik.handleSubmit}>
@@ -110,7 +123,6 @@ export default function BookingComponent({
               {/* first form */}
               <BookingForm1
                 data={formData}
-                boatInfo={boatInfo}
                 setData={setFormData}
                 formik={formik}
               />

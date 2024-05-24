@@ -19,12 +19,10 @@ export default function BookingForm1({
   data,
   setData,
   formik,
-  boatInfo,
 }: {
   data: BookingFormData;
   setData: any;
   formik: any;
-  boatInfo: Boat;
 }) {
   const { t } = useTranslation();
 
@@ -46,6 +44,7 @@ export default function BookingForm1({
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setData({ ...data, "First Name": e.target.value })
                 }
+                required={true}
               />
               <ErrorMessage formik={formik} name="First Name" />
             </FormWrapper>
@@ -129,7 +128,29 @@ export default function BookingForm1({
               <ErrorMessage formik={formik} name="ID_Back_Picture" />
             </>
           )}
-
+          <div className="relative w-full mt-6">
+            <CommonLabel input="text" error={formik.errors["Last Name"]}>
+              {t("input.email_address")}
+            </CommonLabel>
+            <CommonInput
+              type="email"
+              name="NotificationEmail"
+              id="notification_email"
+              placeholder={t("input.email_address")}
+              value={data["NotificationEmail"]}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setData({ ...data, NotificationEmail: e.target.value })
+              }
+              required={true}
+            />
+            <ErrorMessage formik={formik} name="ID Number" />
+          </div>
+          <div className="mt-3 mb-6 text-black flex">
+            <div>
+              <InfoSvg />
+            </div>
+            <span className="text-sm ml-2">{t("input.email_info")}</span>
+          </div>
           <div className="relative w-full mt-6">
             <CommonLabel input="text" error={formik.errors["Last Name"]}>
               {t("input.billing_address")}
@@ -143,51 +164,6 @@ export default function BookingForm1({
                 setData({ ...data, "Billing Address": position.address });
               }}
             />
-          </div>
-          <div className="flex justify-between w-full mt-6">
-            <FormWrapper>
-              <CommonLabel input="text">
-                {t("input.adult_passengers")}
-              </CommonLabel>
-              <CommonInput
-                type="number"
-                name="number"
-                id="adultNumber"
-                placeholder="Adult number"
-                value={data["No Adults"]}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setData({ ...data, "No Adults": e.target.value })
-                }
-                min={1}
-                step={1}
-                required={true}
-              />
-            </FormWrapper>
-            <FormWrapper>
-              <CommonLabel input="text">
-                {t("input.kids_passengers")}
-              </CommonLabel>
-              <CommonInput
-                type="number"
-                name="number"
-                id="kidsNumber"
-                placeholder="Kids number"
-                value={data["No Childs"]}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setData({ ...data, "No Childs": e.target.value })
-                }
-                step={1}
-              />
-            </FormWrapper>
-          </div>
-          <div className="mt-6 text-black flex">
-            <div>
-              <InfoSvg />
-            </div>
-            <span className="text-sm ml-2">
-              {t("input.boat_passenger_info1")} {boatInfo["Max.Passengers"]}{" "}
-              {t("input.boat_passenger_info2")}
-            </span>
           </div>
         </div>
       </div>

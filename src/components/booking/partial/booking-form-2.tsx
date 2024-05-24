@@ -15,6 +15,10 @@ import { MILE_RANGES } from "@/models/constants";
 import TextInfoModal from "@/components/modals/textInfoModal";
 import RadioInput from "@/components/common/inputs/radioInput";
 
+const FormWrapper = ({ children }: { children: React.ReactNode }) => {
+  return <div className="relative w-[48%]">{children}</div>;
+};
+
 export default function BookingForm2({
   data,
   setData,
@@ -71,6 +75,51 @@ export default function BookingForm2({
         <div className="w-full bg-white rounded-lg">
           <div className="md:p-6 sm:p-8 p-6">
             <div className="relative w-full">
+              <div className="flex justify-between w-full mt-6">
+                <FormWrapper>
+                  <CommonLabel input="text">
+                    {t("input.adult_passengers")}
+                  </CommonLabel>
+                  <CommonInput
+                    type="number"
+                    name="number"
+                    id="adultNumber"
+                    placeholder="Adult number"
+                    value={data["No Adults"]}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setData({ ...data, "No Adults": e.target.value })
+                    }
+                    min={1}
+                    step={1}
+                    required={true}
+                  />
+                </FormWrapper>
+                <FormWrapper>
+                  <CommonLabel input="text">
+                    {t("input.kids_passengers")}
+                  </CommonLabel>
+                  <CommonInput
+                    type="number"
+                    name="number"
+                    id="kidsNumber"
+                    placeholder="Kids number"
+                    value={data["No Childs"]}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setData({ ...data, "No Childs": e.target.value })
+                    }
+                    step={1}
+                  />
+                </FormWrapper>
+              </div>
+              <div className="mt-3 mb-6 text-black flex">
+                <div>
+                  <InfoSvg />
+                </div>
+                <span className="text-sm ml-2">
+                  {t("input.boat_passenger_info1")} {boatInfo["Max.Passengers"]}{" "}
+                  {t("input.boat_passenger_info2")}
+                </span>
+              </div>
               <CommonLabel
                 input="select"
                 error={formik.errors["Departure Time"]}
