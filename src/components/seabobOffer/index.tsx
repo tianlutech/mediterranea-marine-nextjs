@@ -76,7 +76,7 @@ export default function SeabobOfferForm({
         booking.Toys?.join(", ")
       );
 
-      if (moment(bookingInfo.Date).add(-2, "days").date() !== moment().date()) {
+      if (moment(bookingInfo.Date).add(-1, "days").date() !== moment().date()) {
         return setError(t("message.offer_not_available"));
       }
       const totalSeabobs = getTotalToys(toys);
