@@ -31,7 +31,7 @@ export default function BookingComponent({
     "First Name": data["First Name"],
     "Last Name": data["Last Name"],
     NotificationEmail: data.NotificationEmail,
-    SumupCode: data.SumupCode,
+    SumupCode: data.SumupCode || "",
     Date: data.Date as Date,
     "Billing Address": data["Billing Address"],
     "No Adults": data["No Adults"],
