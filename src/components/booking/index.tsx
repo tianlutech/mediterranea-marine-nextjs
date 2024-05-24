@@ -101,7 +101,7 @@ export default function BookingComponent({
         setFormData={setFormData}
         boat={boatInfo}
         booking={formData as unknown as Booking}
-        // onSuccess={() => router.replace("/success")}
+        onSuccess={() => router.replace("/success")}
         bookingId={id}
         steps={[
           "fuel",
