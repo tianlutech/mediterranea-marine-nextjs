@@ -269,7 +269,6 @@ export const parseObjectToNotion = <T extends NotionItem>(
       return obj;
     }
     const parsedValue = parser(value);
-    console.log({ notionProp, value, parsedValue });
 
     // Skip undefine
     parsedValue !== undefined && (obj[notionProp.property] = parsedValue);

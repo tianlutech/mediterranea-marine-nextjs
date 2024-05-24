@@ -17,8 +17,6 @@ export async function validateAddressZipCode(address: string) {
     component.types.includes("street_number")
   );
 
-  console.log({ requiredComponent });
-
   if (!requiredComponent?.long_name) {
     return false;
   }
