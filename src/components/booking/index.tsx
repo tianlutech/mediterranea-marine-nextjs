@@ -28,8 +28,8 @@ export default function BookingComponent({
   const [totalPayment, setTotalPayment] = useState<number>(0);
 
   const [formData, setFormData] = useState<BookingFormData>({
-    "First Name": data["First Name"],
-    "Last Name": data["Last Name"],
+    "First Name": "",
+    "Last Name": "",
     NotificationEmail: data.NotificationEmail,
     SumupCode: data.SumupCode || "",
     Date: data.Date as Date,
@@ -43,8 +43,8 @@ export default function BookingComponent({
     SEABOB: "",
     "Fuel Payment": -1,
     Comments: data.Comments,
-    "Restaurant Name": data["Restaurant Name"],
-    "Restaurant Time": data["Restaurant Time"] || "",
+    "Restaurant Name": "",
+    "Restaurant Time": "",
     signedContract: false,
     "ID Number": data["ID Number"],
     documentType: "National ID",
