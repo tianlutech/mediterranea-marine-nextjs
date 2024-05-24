@@ -186,7 +186,7 @@ export const stepsActions = ({
 
       setModalInfo({
         modal: "loading",
-        message: t("loadingMessage.uploading_front_id"),
+        message: t("loadingMessage.validating_front_id"),
         error: "",
       });
       const result = await EdenAIService().checkIdValidity(
@@ -216,7 +216,7 @@ export const stepsActions = ({
 
       setModalInfo({
         modal: "loading",
-        message: t("loadingMessage.uploading_back_id"),
+        message: t("loadingMessage.validating_back_id"),
         error: "",
       });
 
