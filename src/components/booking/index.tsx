@@ -134,7 +134,7 @@ export default function BookingComponent({
                 boatInfo={boatInfo}
               />
             </div>
-            {/* terms and policy */}
+             {/* terms and policy */}
             <div>
               <div className="mt-6">
                 <div className="flex items-center">

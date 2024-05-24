@@ -121,7 +121,7 @@ export const stepsActions = ({
         boat,
         formData["ID_Front_Picture"] as File,
         "front",
-        `${moment(booking.Date).format("YYYY-MM-DD")}`
+        `${moment.utc(booking.Date).format("YYYY-MM-DD")}`
       );
 
       if (!uploadIdFrontResponse) {
@@ -160,7 +160,7 @@ export const stepsActions = ({
         boat,
         formData["ID_Back_Picture"] as File,
         "back",
-        `${moment(booking.Date).format("YYYY-MM-DD")}`
+        `${moment.utc(booking.Date).format("YYYY-MM-DD")}`
       );
 
       if (!uploadIdBackImageResponse) {
@@ -318,7 +318,7 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP);
       const departureTime = moment(
-        `${moment(booking.Date).format("YYYY-MM-DD")} ${
+        `${moment.utc(booking.Date).format("YYYY-MM-DD")} ${
           formData["Departure Time"]
         }`
       );

@@ -65,7 +65,7 @@ export default function TermsAndConditions({
       const canvas = sigPad.current.getTrimmedCanvas();
       const image = await convertCanvasToImage({ canvas, mime });
 
-      const response = await uploadSignatureImage(image as File, moment(formData["Date"]).format("YYYY-MM-DD"));
+      const response = await uploadSignatureImage(image as File, moment.utc(formData["Date"]).format("YYYY-MM-DD"));
       if (!response.id) {
         return "";
       }

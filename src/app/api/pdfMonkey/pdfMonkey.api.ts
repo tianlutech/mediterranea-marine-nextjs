@@ -95,9 +95,9 @@ export async function createDocument(
             boatId: id,
             captainId: `${captainDetails.id}`,
             _filename: `${bookingInfo["First Name"]} 
-              ${bookingInfo["Last Name"]} - ${boatDetails.Nombre} - ${moment(
-              bookingInfo.Date
-            ).format("YYYY-MM-DD")} - contract`,
+              ${bookingInfo["Last Name"]} - ${boatDetails.Nombre} - ${moment
+              .utc(bookingInfo.Date)
+              .format("YYYY-MM-DD")} - contract`,
             NotionId: bookingInfo.id,
           },
         },
