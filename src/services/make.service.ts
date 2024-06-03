@@ -48,7 +48,7 @@ export async function sendMessageWebhook(
       documentsApproved !== undefined ? documentsApproved.toString() : "";
     const query = {
       customerMobile: bookingInfo.Whatsapp,
-      date: moment(bookingInfo.Date).format("DD/MM/YY"),
+      date: moment.utc(bookingInfo.Date).format("DD/MM/YY"),
       time: bookingInfo["Departure Time"],
       boatLocation: boatDetails.Ubicación,
       totalPayment: bookingInfo["Total Payment"].toString(),

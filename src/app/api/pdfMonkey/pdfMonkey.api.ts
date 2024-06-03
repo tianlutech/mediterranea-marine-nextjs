@@ -39,9 +39,9 @@ export async function createDocument(
     );
 
     const date = bookingInfo["Date"];
-    const bookingDateYear = moment(date).format("YYYY");
-    const bookingDateMonth = moment(date).format("MM");
-    const bookingDateDay = moment(date).format("DD");
+    const bookingDateYear = moment.utc(date).format("YYYY");
+    const bookingDateMonth = moment.utc(date).format("MM");
+    const bookingDateDay = moment.utc(date).format("DD");
     const { Nombre, Code, RegistrationPlate, id } = boatDetails;
     const apiUrl = "https://api.pdfmonkey.io/api/v1/documents";
     const rentPrice = bookingInfo["RentPrice"] || 0;
@@ -70,7 +70,7 @@ export async function createDocument(
               `${bookingInfo["First Name"]} ` + `${bookingInfo["Last Name"]}`,
             customerAddress: bookingInfo["Billing Address"],
             customerId: bookingInfo["ID Number"],
-            bookingDate: moment(bookingInfo["Date"]).format("DD/MM/YYYY"),
+            bookingDate: moment.utc(bookingInfo["Date"]).format("DD/MM/YYYY"),
             boatFlag: "boatFlag",
             boatType: "Yacht",
             departureMaximumHour: calculateArrivalTime(

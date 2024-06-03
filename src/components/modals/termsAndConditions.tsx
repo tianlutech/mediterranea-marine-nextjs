@@ -34,9 +34,9 @@ export default function TermsAndConditions({
   const [isSigned, setIsSigned] = useState(false);
   const [departureMaximumHour, setDepartureMaximumHour] = useState("");
   const date = bookingInfo["Date"];
-  const bookingDateYear = moment(date).format("YYYY");
-  const bookingDateMonth = moment(date).format("MM");
-  const bookingDateDay = moment(date).format("DD");
+  const bookingDateYear = moment.utc(date).format("YYYY");
+  const bookingDateMonth = moment.utc(date).format("MM");
+  const bookingDateDay = moment.utc(date).format("DD");
   const clearSigPad = () => {
     if (sigPad.current) {
       sigPad.current.clear();

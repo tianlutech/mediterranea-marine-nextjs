@@ -35,7 +35,7 @@ export default function FuelForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const [data, setData] = useState({
-    Date: moment().format("YYYY-MM-DD"),
+    Date: moment.utc().format("YYYY-MM-DD"),
     Boat: "",
     "Amount Paid": "",
     Captain: searchParams.get("captainId") || "",

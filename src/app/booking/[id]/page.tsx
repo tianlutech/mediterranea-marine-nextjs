@@ -52,7 +52,7 @@ export default function BookingPage({ params }: { params: { id: string } }) {
       }
 
       boatDetails.bussySlots = timeSlots.map((timeSlot) =>
-        moment(timeSlot.Date).format("HH:mm")
+        moment.utc(timeSlot.Date).format("HH:mm")
       );
       setBoatInfo(boatDetails);
 

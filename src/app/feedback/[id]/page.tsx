@@ -66,7 +66,7 @@ export default function UserFeedbackPage({
                 dangerouslySetInnerHTML={{
                   __html: t("sidebar.feedback_sidebar", {
                     boat: boatInfo.Nombre,
-                    date: moment(data.Date).format("DD/MM/YY"),
+                    date: moment.utc(data.Date).format("DD/MM/YY"),
                     first_name: data["First Name"],
                     last_name: data["Last Name"],
                   }),

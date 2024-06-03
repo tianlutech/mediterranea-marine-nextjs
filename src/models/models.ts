@@ -49,7 +49,7 @@ export const getBookingName = (booking: {
 }) => {
   return (
     `${booking["First Name"]} ` +
-    `${booking["Last Name"]} ${booking["Boat"] || ""} - ${moment(
+    `${booking["Last Name"]} ${booking["Boat"] || ""} - ${moment.utc(
       booking.Date
     ).format("DD.MM.YY")}`
   );

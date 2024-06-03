@@ -23,14 +23,14 @@ export default function BookingInfoSidebar({
               showRemainingPayment ?
                 t("sidebar.booking_info", {
                   boat: boatInfo.Nombre,
-                  date: moment(bookingInfo.Date).format("DD/MM/YY"),
+                  date: moment.utc(bookingInfo.Date).format("DD/MM/YY"),
                   payment: bookingInfo.OutstandingPayment || 0,
                   location: bookingInfo.BoatLocation,
                 })
                 :
                 t("sidebar.booking_info_without_remain", {
                   boat: boatInfo.Nombre,
-                  date: moment(bookingInfo.Date).format("DD/MM/YY"),
+                  date: moment.utc(bookingInfo.Date).format("DD/MM/YY"),
                   location: bookingInfo.BoatLocation,
                 })
             ,
