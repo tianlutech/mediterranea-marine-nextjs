@@ -35,7 +35,7 @@ export default function BookingComponent({
     Date: data.Date as Date,
     "Billing Address": data["Billing Address"],
     "No Adults": data["No Adults"],
-    "No Childs":data["No Childs"],
+    "No Childs": data["No Childs"],
     ID_Back_Picture: {} as File,
     ID_Front_Picture: {} as File,
     "Departure Time": "",
@@ -65,17 +65,10 @@ export default function BookingComponent({
   }, [formData]);
 
   const submitBooking = async () => {
-    // validate address first
-    const res = await validateAddress(formData["Billing Address"]);
-
-    if (res === false) {
-      return toast.error(t("error.error_address_not_accurate"));
-    }
-
     if (+formData["No Adults"] + +formData["No Childs"] <= 0) {
       return toast.error(
-        t("error.error_no_passengers",{passengers: boatInfo["Max.Passengers"]})
-       );
+        t("error.error_no_passengers", { passengers: boatInfo["Max.Passengers"] })
+      );
     }
 
     if (
@@ -83,7 +76,7 @@ export default function BookingComponent({
       boatInfo["Max.Passengers"]
     ) {
       return toast.error(
-           t("error.error_max_passengers",{passengers: boatInfo["Max.Passengers"]})
+        t("error.error_max_passengers", { passengers: boatInfo["Max.Passengers"] })
       );
     }
     saveModalRef.current?.start();
@@ -134,7 +127,7 @@ export default function BookingComponent({
                 boatInfo={boatInfo}
               />
             </div>
-             {/* terms and policy */}
+            {/* terms and policy */}
             <div>
               <div className="mt-6">
                 <div className="flex items-center">
