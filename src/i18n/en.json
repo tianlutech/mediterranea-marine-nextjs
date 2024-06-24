@@ -61,7 +61,10 @@
     "to": "To",
     "default_value": "Default value",
     "url": "URL",
-    "pin": "PIN"
+    "pin": "PIN",
+    "manual-valid-address": "We can not verify your address door number. Clicking in this checkbox you guarantee that address submitted is valid and accurate as a billing address",
+    "address-placeholder": "Fill the billing address",
+    "sign": "Sign"
   },
   "prepayment_modal": {
     "prepay_your_fuel": "Prepay your fuel",

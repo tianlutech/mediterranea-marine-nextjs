@@ -63,7 +63,10 @@
     "to": "Para",
     "default_value": "Valor por defector",
     "url": "URL",
-    "pin": "PIN"
+    "pin": "PIN",
+    "manual-valid-address": "No podemos verificar el número de calle de esta dirección. Haciendo click en este checkbox confirmas que la dirección escrita es una dirección de facturación válida.",
+    "address-placeholder": "Dirección de Facturación",
+    "sign": "Firmar"
   },
   "prepayment_modal": {
     "prepay_your_fuel": "Prepaga tu combustible",

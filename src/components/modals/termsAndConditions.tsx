@@ -12,6 +12,7 @@ import moment from "moment";
 import { uploadSignatureImage } from "@/services/googleDrive.service";
 import { convertCanvasToImage } from "@/services/utils";
 import Button from "../common/buttons/Button";
+import { useTranslation } from "react-i18next";
 
 export default function TermsAndConditions({
   isOpen,
@@ -30,6 +31,7 @@ export default function TermsAndConditions({
   onUserSigning: () => void;
   bookingInfo: Booking;
 }) {
+  const { t } = useTranslation()
   const sigPad = useRef<SignaturePad>(null);
   const [isSigned, setIsSigned] = useState(false);
   const [departureMaximumHour, setDepartureMaximumHour] = useState("");
@@ -459,7 +461,7 @@ export default function TermsAndConditions({
               <Button
                 onClick={agreeContract}
                 className={"bg-buttonColor2 text-white"}
-                message={"sign"}
+                message={t("input.sign")}
               />
             ) : (
               <div />

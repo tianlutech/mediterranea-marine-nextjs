@@ -10,10 +10,8 @@ import "../../i18n";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
 import SubmitButton from "../common/containers/submit-button";
-import { validateAddress } from "@/services/google.service";
 import SaveBooking from "./partial/submitBooking";
 import CommonCheckbox from "../common/inputs/checkbox";
-import TermsAndConditions from "../modals/termsAndConditions";
 import PrivacyPolicy from "../modals/privacy-policy";
 
 export default function BookingComponent({
@@ -55,6 +53,7 @@ export default function BookingComponent({
     OutstandingPayment: data.OutstandingPayment || 0,
     CustomerSignature: "",
     DocumentsApproved: false,
+    AddressVerified: false,
   });
 
   const formik = useFormik({

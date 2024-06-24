@@ -10,6 +10,9 @@ import { Boat, BookingFormData } from "../../../models/models";
 import { useTranslation } from "react-i18next";
 import PlaceAutoComplete from "../../common/inputs/addressAutoComplete";
 import RadioInput from "@/components/common/inputs/radioInput";
+import { validateAddress } from "@/services/google.service";
+import CommonCheckbox from "@/components/common/inputs/checkbox";
+import Spinner from "@/components/common/containers/spinner";
 
 const FormWrapper = ({ children }: { children: React.ReactNode }) => {
   return <div className="relative w-[48%]">{children}</div>;
@@ -25,6 +28,7 @@ export default function BookingForm1({
   formik: any;
 }) {
   const { t } = useTranslation();
+  const [addressCheck, setAddressCheck] = useState({ dirty: false, loading: false })
 
   return (
     <div className="flex md:flex-row flex-col md:w-[49%] w-full">
@@ -151,20 +155,36 @@ export default function BookingForm1({
             </div>
             <span className="text-sm ml-2">{t("input.email_info")}</span>
           </div>
-          <div className="relative w-full mt-6">
-            <CommonLabel input="text" error={formik.errors["Last Name"]}>
-              {t("input.billing_address")}
-            </CommonLabel>
-            <PlaceAutoComplete
-              setLatLng={(position: {
-                lat: number;
-                lng: number;
-                address: string;
-              }) => {
-                setData({ ...data, "Billing Address": position.address });
-              }}
-            />
+          <div className="flex items-center w-full">
+            <div className="relative w-full mt-6">
+              <CommonLabel input="text" error={formik.errors["Last Name"]}>
+                {t("input.billing_address")}
+              </CommonLabel>
+              <PlaceAutoComplete
+                placeholder={t("input.address-placeholder")}
+
+                setLatLng={(position: {
+                  lat: number;
+                  lng: number;
+                  address: string;
+                }) => {
+                  setAddressCheck({ dirty: false, loading: true })
+                  validateAddress(position.address).then(valid => {
+                    setData({ ...data, "Billing Address": position.address, AddressVerified: valid });
+                    setAddressCheck({ dirty: !valid, loading: false })
+                  })
+                }}
+              />
+            </div>
+            {addressCheck.loading && (<div className="mt-6 px-4"><Spinner size={4} /></div>)}
           </div>
+
+          {addressCheck.dirty && (<div className="relative w-full mt-6">
+            <div className="pt-2">
+              {/* We dont mind about keeping the value, the `required` is enough to force the user check the checkbox */}
+              <CommonCheckbox required id="manual-valid-address" name="manual-valid-address" /> {t("input.manual-valid-address")}
+            </div>
+          </div>)}
         </div>
       </div>
     </div>
