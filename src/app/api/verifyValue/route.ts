@@ -1,5 +1,6 @@
 import * as verify from "./verifyValue.api";
-
+import * as Sentry from "@sentry/nextjs";
+ 
 export async function POST(request: Request): Promise<Response> {
   try {
     // Ensure the Content-Type is 'application/json' for correct parsing
@@ -22,6 +23,8 @@ export async function POST(request: Request): Promise<Response> {
     const result = await verify.verifyValue({ itemID, value, compareTo });
     return new Response(JSON.stringify(result), { status: 200 });
   } catch (error) {
+    Sentry.captureException(error);
+
     console.error("There has been an error:", error);
     return new Response(JSON.stringify({ error: error }), {
       status: 500,

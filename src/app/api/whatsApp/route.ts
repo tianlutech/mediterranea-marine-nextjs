@@ -1,4 +1,5 @@
 import * as whatsapp from "./whatsapp.api";
+import * as Sentry from "@sentry/nextjs";
 
 export async function POST(request: Request) {
   try {
@@ -10,6 +11,8 @@ export async function POST(request: Request) {
       status: 200,
     });
   } catch (error) {
+    Sentry.captureException(error);
+
     // TODO: Not valid address shall not fire an exception but be handled in the if
     console.error("Message not sent", error);
 
@@ -31,6 +34,8 @@ export async function GET(request: Request) {
 
     return jsonResponse;
   } catch (error) {
+    Sentry.captureException(error);
+
     // TODO: Not valid address shall not fire an exception but be handled in the if
     console.error("Error calling get templates", error);
 

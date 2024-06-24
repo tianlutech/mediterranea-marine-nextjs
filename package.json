@@ -21,6 +21,7 @@
     "@notionhq/client": "^2.2.13",
     "@react-google-maps/api": "^2.19.2",
     "@sentry/nextjs": "^8.11.0",
+    "@sentry/utils": "^8.11.0",
     "@types/papaparse": "^5.3.14",
     "@types/react-no-ssr": "^1.1.7",
     "axios": "^1.6.2",
