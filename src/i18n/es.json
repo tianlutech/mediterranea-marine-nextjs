@@ -26,7 +26,9 @@
     "toy_seabob": "Juguete Acuático: SEABOB",
     "toy_seabob_info": "Haga clic aquí para ver un vídeo del SEABOB",
     "read_and_sign_the_contract": "Leer y firmar el contrato",
-    "i_agree_with_the_privacy_policy": "Estoy de acuerdo con la política de privacidad",
+    "i_agree_with_the_privacy_policy": "Estoy de acuerdo con",
+    "privacy_policy": "la política de privacidad",
+
     "guarantee_label": "Garantizo que la información del usuario es de una persona que irá abordo a bordo.",
     "select_option": "Seleccione una opción",
     "file_sizes": "El tamaño de archivo no superior a 10 MB",
