@@ -25,7 +25,8 @@
     "toy_seabob": "Water Toy: SEABOB",
     "toy_seabob_info": "Click chere to see a video of the SEABOB",
     "read_and_sign_the_contract": "Read and Sign the contract",
-    "i_agree_with_the_privacy_policy": "I agree with the privacy policy",
+    "i_agree_with_the_privacy_policy": "I agree with the",
+    "privacy_policy": "privacy policy",
     "guarantee_label": "I guarantee that the user information is from a person who will be on board.",
     "select_option": "Select an option",
     "file_sizes": "The file size shall not be more than {{size}}MB",
@@ -60,7 +61,10 @@
     "to": "To",
     "default_value": "Default value",
     "url": "URL",
-    "pin": "PIN"
+    "pin": "PIN",
+    "manual-valid-address": "We can not verify your address door number. Clicking in this checkbox you guarantee that address submitted is valid and accurate as a billing address",
+    "address-placeholder": "Fill the billing address",
+    "sign": "Sign"
   },
   "prepayment_modal": {
     "prepay_your_fuel": "Prepay your fuel",

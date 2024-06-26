@@ -11,6 +11,8 @@ export async function POST(request: Request) {
     }
     return new Response(JSON.stringify(response), { status: 200 });
   } catch (error) {
+    Sentry.captureException(error);
+
     console.error(error);
     return new Response(JSON.stringify(error), { status: 500 });
   }

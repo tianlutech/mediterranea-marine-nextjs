@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "preinstall": "npx only-allow pnpm"
   },
   "browser": {
     "fs": false,
@@ -19,6 +20,8 @@
     "@netlify/plugin-nextjs": "^4.41.1",
     "@notionhq/client": "^2.2.13",
     "@react-google-maps/api": "^2.19.2",
+    "@sentry/nextjs": "^8.11.0",
+    "@sentry/utils": "^8.11.0",
     "@types/papaparse": "^5.3.14",
     "@types/react-no-ssr": "^1.1.7",
     "axios": "^1.6.2",
@@ -36,6 +39,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^13.5.0",
+    "react-microsoft-clarity": "^1.2.0",
     "react-no-ssr": "^1.1.0",
     "react-player": "^2.13.0",
     "react-signature-canvas": "^1.0.6",

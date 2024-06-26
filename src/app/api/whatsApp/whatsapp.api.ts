@@ -1,5 +1,6 @@
 import { WHATSAPP_APPLICATION_ID, WHATSAPP_PHONE_ID } from "@/models/constants";
 import axios from "axios";
+import * as Sentry from "@sentry/nextjs";
 
 const WHATAPP_URL = "https://graph.facebook.com/v19.0";
 
@@ -78,6 +79,8 @@ export async function sendMessage({
     );
     return response.data;
   } catch (error) {
+    Sentry.captureException(error);
+
     return { error };
   }
 }

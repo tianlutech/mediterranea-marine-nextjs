@@ -39,6 +39,7 @@ export type BookingFormData = {
   CustomerSignature: string;
   DocumentsApproved: boolean;
   SumupCode: string;
+  AddressVerified: boolean;
 };
 
 export const getBookingName = (booking: {
@@ -258,6 +259,9 @@ export class Booking extends NotionItem {
   @NotionType("select")
   OnBoatPaymentMethod: string = "";
 
+  @NotionType("checkbox")
+  AddressVerified?: boolean;
+
   OutstandingPayment?: number;
 
   BoatLocation: string[] = [];
@@ -298,6 +302,8 @@ export class Fuel extends NotionItem {
 
   @NotionType("file")
   "Receipt": string;
+
+
 }
 
 export class DepartureTime extends NotionItem {

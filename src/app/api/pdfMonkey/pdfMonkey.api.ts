@@ -3,6 +3,7 @@ import { Booking, Boat, Captain, calculateArrivalTime } from "@/models/models";
 import moment from "moment";
 import { getFileContentBase64FromGoogleDrive } from "../googleDrive/googleDrive.api";
 import axios from "axios";
+import * as Sentry from "@sentry/nextjs";
 
 const pdfMonkey_api_key = process.env.PDFMONKEY_API_KEY;
 
@@ -26,6 +27,8 @@ export async function createDocument(
 
         return `data:image/png;base64,${base64String}`;
       } catch (error) {
+        Sentry.captureException(error);
+
         console.error("Error retrieving file from URL:", error);
         throw error; // Rethrow the error for further handling
       }

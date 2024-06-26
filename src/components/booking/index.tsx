@@ -10,8 +10,9 @@ import "../../i18n";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/navigation";
 import SubmitButton from "../common/containers/submit-button";
-import { validateAddress } from "@/services/google.service";
 import SaveBooking from "./partial/submitBooking";
+import CommonCheckbox from "../common/inputs/checkbox";
+import PrivacyPolicy from "../modals/privacy-policy";
 
 export default function BookingComponent({
   data,
@@ -25,6 +26,7 @@ export default function BookingComponent({
   const { t } = useTranslation();
   const router = useRouter();
   const saveModalRef = useRef<{ start: () => void }>(null);
+  const [viewPolicy, setViewPolicy] = useState(false)
   const [totalPayment, setTotalPayment] = useState<number>(0);
 
   const [formData, setFormData] = useState<BookingFormData>({
@@ -51,6 +53,7 @@ export default function BookingComponent({
     OutstandingPayment: data.OutstandingPayment || 0,
     CustomerSignature: "",
     DocumentsApproved: false,
+    AddressVerified: false,
   });
 
   const formik = useFormik({
@@ -131,26 +134,20 @@ export default function BookingComponent({
             <div>
               <div className="mt-6">
                 <div className="flex items-center">
-                  <input
-                    id="checked-checkbox"
-                    type="checkbox"
-                    value=""
-                    required
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
+                  <CommonCheckbox required id="privacy-policy" name="privacy_policy" />
                   <label className="ms-2 text-sm cursor-pointer text-white">
-                    {t("input.i_agree_with_the_privacy_policy")}
+                    <>
+                      {t("input.i_agree_with_the_privacy_policy")}{" "}
+                      <a onClick={() => setViewPolicy(true)} className="underline" >
+                        {t("input.privacy_policy")}
+                      </a>
+                    </>
                   </label>
                 </div>
               </div>
               <div className="mt-3">
                 <div className="flex items-center">
-                  <input
-                    id="checked-checkbox"
-                    type="checkbox"
-                    required
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
+                  <CommonCheckbox required id="guarantee" name="guarantee" />
                   <label className="ms-2 text-sm text-white">
                     {t("input.guarantee_label")}
                   </label>
@@ -164,6 +161,7 @@ export default function BookingComponent({
                   : t("input.submit")
               }
             />
+            <PrivacyPolicy isOpen={viewPolicy} closeModal={() => setViewPolicy(false)} />
           </div>
         </form>
       </div>

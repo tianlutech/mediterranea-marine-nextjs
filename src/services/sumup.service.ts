@@ -1,3 +1,5 @@
+import * as Sentry from "@sentry/nextjs";
+
 export async function generateCheckoutId({
   amount,
   description,
@@ -16,6 +18,7 @@ export async function generateCheckoutId({
     const res = await response.json();
     return res;
   } catch (error) {
+    Sentry.captureException(error);
     console.error("Error while processing payment", error);
     return { error: (error as Error).message };
   }

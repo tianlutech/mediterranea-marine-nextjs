@@ -273,8 +273,8 @@ export const stepsActions = ({
           error: (failedCounter > MAX_IA_VALIDATION_ATTEMPTS
             ? result.error
             : t("loadingMessage.verifying_id_error") +
-              "<br/><br/>" +
-              result.error) as string,
+            "<br/><br/>" +
+            result.error) as string,
         });
         return;
       }
@@ -285,8 +285,11 @@ export const stepsActions = ({
 
   const pay = {
     execute: (formData: BookingFormData, boat: Boat) => {
-      if (!Booking.totalPayment(formData)) {
+      const pendingPayment = Booking.totalPayment(formData)
+      console.log({ pendingPayment })
+      if (!pendingPayment) {
         nextStep();
+        return
       }
       setModalInfo({
         modal: "pay",
@@ -318,14 +321,13 @@ export const stepsActions = ({
       const paddle =
         STANDUP_PADDLE.find((sup) => sup.value === SUP);
       const departureTime = moment(
-        `${moment.utc(booking.Date).format("YYYY-MM-DD")} ${
-          formData["Departure Time"]
+        `${moment.utc(booking.Date).format("YYYY-MM-DD")} ${formData["Departure Time"]
         }`
       );
 
       const bookingInfo = new Booking({
         ...bookingData,
-        paymentToys: [paddle?.value, seaBobName?.value].reduce( (total, value) =>   value? total + +value: total , 0) as number,
+        paymentToys: [paddle?.value, seaBobName?.value].reduce((total, value) => value ? total + +value : total, 0) as number,
         Name: getBookingName(formData),
         "ID Front Picture": imageFrontLink,
         "ID Back Picture": imageBackLink,
@@ -410,7 +412,7 @@ export const stepsActions = ({
           ...(formData.previousToys || []),
           ...[seaBobName?.name].filter((value) => !!value) as string[],
         ],
-        SumupOfferCode:  formData.SumupCode,
+        SumupOfferCode: formData.SumupCode,
         paymentToysOffer: seaBobName ? +seaBobName.value : 0
       });
       const res = await updateBookingInfo(bookingId, bookingInfo);
