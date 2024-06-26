@@ -6,7 +6,9 @@ import { clarity } from "react-microsoft-clarity";
 
 const MicrosoftClarity = () => {
     useEffect(() => {
-        clarity.init("my0y39m5xp"); // Replace with your actual Clarity tracking code
+        if (process.env.NODE_ENV === "production") {
+            clarity.init("my0y39m5xp"); // Replace with your actual Clarity tracking code
+        }
     }, []);
 
     return null;
