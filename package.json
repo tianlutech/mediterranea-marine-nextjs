@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
-    "@netlify/plugin-nextjs": "^4.41.3",
+    "@netlify/plugin-nextjs": "^4.41.1",
     "@notionhq/client": "^2.2.13",
     "@react-google-maps/api": "^2.19.2",
     "@sentry/nextjs": "^8.11.0",
