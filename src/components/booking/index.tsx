@@ -54,6 +54,7 @@ export default function BookingComponent({
     CustomerSignature: "",
     DocumentsApproved: false,
     AddressVerified: false,
+    KidsAge: "" // Comment about the kids 
   });
 
   const formik = useFormik({

@@ -18,7 +18,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@netlify/blobs": "^7.3.0",
-    "@netlify/plugin-nextjs": "^4.41.1",
+    "@netlify/plugin-nextjs": "^5.3.3",
     "@notionhq/client": "^2.2.13",
     "@react-google-maps/api": "^2.19.2",
     "@sentry/nextjs": "^8.11.0",
@@ -28,6 +28,7 @@
     "axios": "^1.6.2",
     "csv": "^6.3.6",
     "dotenv": "^16.3.1",
+    "follow-redirects": "^1.15.6",
     "formik": "^2.4.5",
     "fs": "^0.0.1-security",
     "googleapis": "^129.0.0",

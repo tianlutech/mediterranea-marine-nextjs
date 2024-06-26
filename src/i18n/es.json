@@ -10,6 +10,7 @@
     "email_info": "Recibirás las notificaciones de este booking en esta dirección de correo electrónico",
     "adult_passengers": "Adultos",
     "kids_passengers": "Niños",
+    "kids_age": "Por favor especifica la edad de cada niño a bordo.",
     "select_file": "Seleccione un archivo o arrástrelo y suéltelo aquí",
     "select_csv_file": "Seleccione un archivo csv o arrástrelo y suéltelo aquí",
     "departure_time": "Hora de salida",

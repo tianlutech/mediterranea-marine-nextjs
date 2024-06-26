@@ -9,6 +9,7 @@
     "email_address": "Email address",
     "email_info": "The booking notifications will be sent to this email address",
     "adult_passengers": "Adults",
+    "kids_age": "Please specify the age for each kid on board.",
     "kids_passengers": "Kids",
     "select_file": "Select a file or drag and drop here",
     "select_csv_file": "Select a CSV file or drag and drop here",

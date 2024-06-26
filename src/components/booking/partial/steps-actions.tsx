@@ -313,6 +313,8 @@ export const stepsActions = ({
         SEABOB,
         SUP,
         signedContract,
+        KidsAge,
+        Comments,
         ...bookingData
       } = formData;
 
@@ -334,6 +336,8 @@ export const stepsActions = ({
         Toys: [paddle?.name, seaBobName?.name].filter((value) => !!value) as string[],
         SubmittedFormAt: new Date(),
         DocumentsApproved: identityValidated,
+        Comments: `${Comments} ${KidsAge ? ` | Menores : ${KidsAge}` : ""}`
+
       });
       const res = await updateBookingInfo(bookingId, bookingInfo);
 

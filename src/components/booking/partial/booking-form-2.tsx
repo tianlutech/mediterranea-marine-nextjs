@@ -4,12 +4,13 @@ import InfoSvg from "@/assets/svgs/InfoSvg";
 import PlayerSvg from "@/assets/svgs/PlayerSvg";
 import CommonInput from "@/components/common/inputs/input";
 import CommonSelect from "@/components/common/inputs/selectInput";
+import CommonTextArea from "@/components/common/inputs/textarea"
 import CommonLabel from "../../common/containers/label";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import VideoModal from "../../modals/videoModal";
 import ErrorMessage from "./errorMessage";
 import { DEPARTURES_TIMES, STANDUP_PADDLE, SEABOB } from "@/models/constants";
-import { Boat } from "@/models/models";
+import { Boat, BookingFormData } from "@/models/models";
 import { useTranslation } from "next-i18next";
 import { MILE_RANGES } from "@/models/constants";
 import TextInfoModal from "@/components/modals/textInfoModal";
@@ -25,8 +26,8 @@ export default function BookingForm2({
   formik,
   boatInfo,
 }: {
-  data: any;
-  setData: any;
+  data: BookingFormData;
+  setData: (data: BookingFormData) => void;
   formik: any;
   boatInfo: Boat;
 }) {
@@ -35,6 +36,7 @@ export default function BookingForm2({
   const [eatAtRestaurant, setEatAtRestaurant] = useState<string>("");
   const [videoModalOpen, setVideoModalOpen] = useState<boolean>(false);
   const [infoModalText, setInfoModalText] = useState<string>("");
+  const [noKids, setNoKids] = useState<number>(0);
 
   const [videoLink, setVideoLink] = useState<string>("");
 
@@ -87,7 +89,7 @@ export default function BookingForm2({
                     placeholder="Adult number"
                     value={data["No Adults"]}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setData({ ...data, "No Adults": e.target.value })
+                      setData({ ...data, "No Adults": +e.target.value })
                     }
                     min={1}
                     step={1}
@@ -104,12 +106,25 @@ export default function BookingForm2({
                     id="kidsNumber"
                     placeholder="Kids number"
                     value={data["No Childs"]}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setData({ ...data, "No Childs": e.target.value })
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      console.log("NO KIDS", +e.target.value)
+                      setNoKids(+e.target.value)
+                      setData({ ...data, "No Childs": +e.target.value })
+                    }
                     }
                     step={1}
                   />
                 </FormWrapper>
+              </div>
+              <div>
+                {noKids > 0 && (
+                  <div className="relative w-full mt-6">
+                    <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 bottom-[2.8rem] bg-white left-4 px-2">
+                      {t("input.kids_age")}
+                    </label>
+                    <CommonTextArea id="kids_age" required onChange={(value) => setData({ ...data, KidsAge: value })} placeholder="" />
+                  </div>
+                )}
               </div>
               <div className="mt-3 mb-6 text-black flex">
                 <div>
@@ -120,6 +135,7 @@ export default function BookingForm2({
                   {t("input.boat_passenger_info2")}
                 </span>
               </div>
+
               <CommonLabel
                 input="select"
                 error={formik.errors["Departure Time"]}
@@ -189,7 +205,7 @@ export default function BookingForm2({
                         ":"
                       ) as string[];
                       date.setHours(+hour, +minutes, 0, 0);
-                      setData({ ...data, "Restaurant Time": date });
+                      setData({ ...data, "Restaurant Time": date.toString() });
                     }}
                     required={true}
                   />
@@ -208,12 +224,8 @@ export default function BookingForm2({
               <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 bottom-[2.8rem] bg-white left-4 px-2">
                 {t("input.general_comments")}
               </label>{" "}
-              <textarea
-                id="message"
-                className="block p-2.5 w-full text-sm text-black rounded-lg border border-gray-300"
-                placeholder=""
-                onChange={(e) => setData({ ...data, Comments: e.target.value })}
-              ></textarea>
+              <CommonTextArea id="message" onChange={(value) => setData({ ...data, Comments: value })} />
+
             </div>
             <div className="relative w-full mt-6  flex justify-between items-center">
               <div className="w-[90%]">
@@ -227,9 +239,9 @@ export default function BookingForm2({
                   id="miles"
                   name="miles"
                   data={miles}
-                  value={data["Fuel Payment"]}
+                  value={data["Fuel Payment"].toString()}
                   onChange={(e) =>
-                    setData({ ...data, "Fuel Payment": e.target.value })
+                    setData({ ...data, "Fuel Payment": +e.target.value })
                   }
                   required
                 />

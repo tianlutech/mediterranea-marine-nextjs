@@ -40,6 +40,7 @@ export type BookingFormData = {
   DocumentsApproved: boolean;
   SumupCode: string;
   AddressVerified: boolean;
+  KidsAge: string;
 };
 
 export const getBookingName = (booking: {
