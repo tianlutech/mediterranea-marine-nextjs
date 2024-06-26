@@ -4,6 +4,7 @@ import { Readable } from "stream";
 import { FileBody } from "@/models/models";
 import path from "path";
 import { credentials } from "../config/credentials";
+import * as Sentry from "@sentry/nextjs";
 
 const auth = new google.auth.GoogleAuth({
   // your credentials to authenticate
@@ -162,6 +163,7 @@ export const getFileContentBase64FromGoogleDrive = async (fileUrl: string) => {
         });
     });
   } catch (error) {
+    Sentry.captureException(error);
     console.error("Error retrieving file from Google Drive:", error);
     throw error; // Rethrow the error for further handling
   }

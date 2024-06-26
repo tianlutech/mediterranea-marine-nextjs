@@ -1,6 +1,6 @@
-import { google, drive_v3  } from "googleapis";
+import {  drive_v3  } from "googleapis";
 import * as googleDrive from "./googleDrive.api";
-import { credentials } from "../config/credentials";
+import * as Sentry from "@sentry/nextjs";
 
 interface Config {
   type: string;
@@ -63,6 +63,7 @@ export async function POST(request: Request) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
+    Sentry.captureException(error);
     console.error("Error uploading file:", error);
     return new Response(JSON.stringify({ success: false, error }), {
       status: 500,

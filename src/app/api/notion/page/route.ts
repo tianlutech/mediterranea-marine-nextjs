@@ -1,4 +1,5 @@
 import * as notion from "../notion.api";
+import * as Sentry from "@sentry/nextjs";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -11,6 +12,8 @@ export async function GET(request: Request) {
     const result = await notion.getPage(id); // Make sure getPage is an async function or remove await
     return new Response(JSON.stringify(result), { status: 200 });
   } catch (error) {
+    Sentry.captureException(error);
+
     console.error(error);
     return new Response(JSON.stringify(error), { status: 500 });
   }

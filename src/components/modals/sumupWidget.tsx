@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Modal from "@/components/common/containers/modal";
 import Script from "next/script";
-import { toast } from "react-toastify";
+import * as Sentry from "@sentry/nextjs";
 import {
   PaymentBody,
   PaymentResponseBody,
@@ -34,11 +34,9 @@ export default function SumupWidget({
           if (type === "sent") {
             return;
           }
-          // TODO: Do we need to do something?  or is already handled by the form
           if (type === "invalid") {
             return;
           }
-          // TODO: Do we need to do something?  or is already handled by the form
           if (type === "auth-screen") {
             return;
           }
@@ -62,8 +60,13 @@ export default function SumupWidget({
             onError(t("error.error_sumup_payment") + `${JSON.stringify(body)}`);
             return;
           }
+          /**
+           * Errors or unknown messages
+           */
+          Sentry.captureMessage(JSON.stringify({ type, body }))
 
           if (type === "error") {
+
             onError(t("error.error_sumup_payment") + `${JSON.stringify(body)}`);
             return;
           }
@@ -73,7 +76,7 @@ export default function SumupWidget({
         },
       });
     },
-    [onError, t, onSuccess,formData]
+    [onError, t, onSuccess, formData]
   );
   useEffect(() => {
     if (!isOpen) {
