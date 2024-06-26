@@ -179,10 +179,12 @@ export default function BookingForm1({
             {addressCheck.loading && (<div className="mt-6 px-4"><Spinner size={4} /></div>)}
           </div>
 
-          {addressCheck.dirty && (<div className="relative w-full mt-6">
+          {addressCheck.dirty && (<div className="w-full mt-6">
             <div className="pt-2">
               {/* We dont mind about keeping the value, the `required` is enough to force the user check the checkbox */}
-              <CommonCheckbox required id="manual-valid-address" name="manual-valid-address" /> {t("input.manual-valid-address")}
+              <CommonCheckbox required id="manual-valid-address" name="manual-valid-address" /> <span className="text-black">
+                {t("input.manual-valid-address")}
+              </span>
             </div>
           </div>)}
         </div>
