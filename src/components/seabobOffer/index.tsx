@@ -80,7 +80,8 @@ export default function SeabobOfferForm({
         return setError(t("message.offer_not_available"));
       }
       const totalSeabobs = getTotalToys(toys);
-      if (toys.some((toy) => toy.includes("SEABOB")) || totalSeabobs >= 2) {
+      // If I have a toy already, or there is more than 2 toys among all the other bookings
+      if ((bookingInfo.Toys || []).some((toy) => toy.includes("SEABOB")) || totalSeabobs >= 2) {
         return setError(t("message.offer_not_available"));
       }
       setAmountTotal(totalSeabobs);
@@ -90,10 +91,10 @@ export default function SeabobOfferForm({
         totalSeabobs == 1 ? [SEABOB_OFFER[0]] : SEABOB_OFFER
       );
     };
-    const getTotalToys = (bookings: string[]) => {
+    const getTotalToys = (toys: string[]) => {
       let totalToys = 0;
-      for (const booking of bookings) {
-        const match = booking.match(/^\d+/);
+      for (const toy of toys) {
+        const match = toy.match(/^\d+/);
         if (match) {
           totalToys += parseInt(match[0], 10);
         }
