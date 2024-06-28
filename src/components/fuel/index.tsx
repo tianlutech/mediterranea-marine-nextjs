@@ -46,7 +46,7 @@ export default function FuelForm() {
 
   const storeReceiptImage = async (file: File) => {
     const response = await uploadReceiptImage(file, data["Date"]);
-    if (!response.id) {
+    if (!response?.id) {
       return "";
     }
     const url = `https://drive.google.com/file/d/${response.id}/view`;

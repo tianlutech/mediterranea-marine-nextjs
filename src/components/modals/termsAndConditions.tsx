@@ -68,7 +68,7 @@ export default function TermsAndConditions({
       const image = await convertCanvasToImage({ canvas, mime });
 
       const response = await uploadSignatureImage(image as File, moment.utc(formData["Date"]).format("YYYY-MM-DD"));
-      if (!response.id) {
+      if (!response?.id) {
         return "";
       }
       const url = `https://drive.google.com/file/d/${response.id}/view`;

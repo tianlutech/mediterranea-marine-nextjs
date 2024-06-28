@@ -41,7 +41,7 @@ const storeIdImage = async (
     bookingDate
   );
 
-  if (!response.id) {
+  if (!response?.id) {
     return false;
   }
   const url = `https://drive.google.com/file/d/${response.id}/view`;
