@@ -162,7 +162,7 @@ export default function BookingForm1({
               </CommonLabel>
               <PlaceAutoComplete
                 placeholder={t("input.address-placeholder")}
-
+                required={true}
                 setLatLng={(position: {
                   lat: number;
                   lng: number;

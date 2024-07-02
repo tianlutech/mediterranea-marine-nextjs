@@ -12,9 +12,10 @@ function classNames(...classes: (string | boolean)[]) {
 type Props = {
   setLatLng: (position: { lat: number; lng: number, address: string }) => void;
   placeholder?: string;
+  required: boolean
 };
 
-export default function PlaceAutoComplete({ setLatLng, placeholder }: Props) {
+export default function PlaceAutoComplete({ setLatLng, placeholder, required }: Props) {
   const {
     ready,
     value,
@@ -39,6 +40,7 @@ export default function PlaceAutoComplete({ setLatLng, placeholder }: Props) {
           className="w-full border md:text-sm text-xs border-gray-300 text-black text-start p-[0.7rem] md:px-8 px-4 rounded-lg"
           onChange={(e) => setValue(e.target.value)}
           value={value}
+          required={required}
           placeholder={placeholder || ""}
         />
         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none"></Combobox.Button>
