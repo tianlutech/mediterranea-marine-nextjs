@@ -32,7 +32,7 @@ const storeIdImage = async (
   file: File,
   slag: string,
   bookingDate: string
-) => {
+): Promise<{ url: string } | { error: string }> => {
   const response = await uploadFile(
     file,
     boatInfo.Nombre,
@@ -42,10 +42,10 @@ const storeIdImage = async (
   );
 
   if (!response?.id) {
-    return false;
+    return { error: response.error || "Unknown Error" };
   }
   const url = `https://drive.google.com/file/d/${response.id}/view`;
-  return url;
+  return { url };
 };
 
 let imageFrontLink = "";
@@ -124,15 +124,15 @@ export const stepsActions = ({
         `${moment.utc(booking.Date).format("YYYY-MM-DD")}`
       );
 
-      if (!uploadIdFrontResponse) {
+      if ("error" in uploadIdFrontResponse) {
         setModalInfo({
           modal: "loading",
-          message: "",
+          message: uploadIdFrontResponse.error,
           error: t("error.error_uploading_front_image"),
         });
         return;
       }
-      imageFrontLink = uploadIdFrontResponse;
+      imageFrontLink = uploadIdFrontResponse.url;
 
       nextStep();
     },
@@ -163,7 +163,7 @@ export const stepsActions = ({
         `${moment.utc(booking.Date).format("YYYY-MM-DD")}`
       );
 
-      if (!uploadIdBackImageResponse) {
+      if ("error" in uploadIdBackImageResponse) {
         setModalInfo({
           modal: "loading",
           message: "",
@@ -171,7 +171,7 @@ export const stepsActions = ({
         });
         return;
       }
-      imageBackLink = uploadIdBackImageResponse;
+      imageBackLink = uploadIdBackImageResponse.url;
       nextStep();
     },
   };
@@ -307,6 +307,40 @@ export const stepsActions = ({
         error: "",
       });
 
+      // TODO: Divide in two steps, done after payment and upload image
+      const bookingInfo = new Booking({
+        SumupCode: formData.SumupCode,
+        "ID Front Picture": imageFrontLink,
+        "ID Back Picture": imageBackLink,
+        SubmittedFormAt: new Date(),
+        DocumentsApproved: identityValidated,
+
+      });
+      const res = await updateBookingInfo(bookingId, bookingInfo);
+
+      if ((res as { error: string }).error) {
+        setModalInfo({
+          modal: "loading",
+          message: t("loadingMessage.saving_information"),
+          error: (res as { error: string }).error,
+        });
+        return;
+      }
+      bookingSaved = res.booking as Booking;
+
+      nextStep();
+    },
+  };
+
+
+  const preSaveData = {
+    execute: async (formData: BookingFormData, boat: Boat) => {
+      setModalInfo({
+        modal: "loading",
+        message: t("loadingMessage.saving_information"),
+        error: "",
+      });
+
       const {
         ID_Back_Picture,
         ID_Front_Picture,
@@ -331,13 +365,8 @@ export const stepsActions = ({
         ...bookingData,
         paymentToys: [paddle?.value, seaBobName?.value].reduce((total, value) => value ? total + +value : total, 0) as number,
         Name: getBookingName(formData),
-        "ID Front Picture": imageFrontLink,
-        "ID Back Picture": imageBackLink,
         Toys: [paddle?.name, seaBobName?.name].filter((value) => !!value) as string[],
-        SubmittedFormAt: new Date(),
-        DocumentsApproved: identityValidated,
-        Comments: `${Comments} ${KidsAge ? ` | Menores : ${KidsAge}` : ""}`
-
+        Comments: `${Comments} ${KidsAge ? ` | Menores : ${KidsAge}` : ""} ${booking.Overnight ? "| Viaje con noche incluida" : ""}`
       });
       const res = await updateBookingInfo(bookingId, bookingInfo);
 
@@ -364,7 +393,6 @@ export const stepsActions = ({
       nextStep();
     },
   };
-
   const saveDataOnValidation = {
     execute: async (formData: SubmitDocumentFormData, boat: Boat) => {
       setModalInfo({
@@ -491,6 +519,7 @@ export const stepsActions = ({
     pay,
     saveDataOnValidation,
     saveData,
+    preSaveData,
     saveDataOnSeabobOffer,
     notifyCustomer,
     notifyDavidAboutSeabobOffer,

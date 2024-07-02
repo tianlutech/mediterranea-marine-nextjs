@@ -14,6 +14,8 @@
     "select_file": "Seleccione un archivo o arrástrelo y suéltelo aquí",
     "select_csv_file": "Seleccione un archivo csv o arrástrelo y suéltelo aquí",
     "departure_time": "Hora de salida",
+    "one-day-trip": "Un día",
+    "overnight-trip": "Un día y una noche",
     "we_eat_on_board": "Comemos a bordo",
     "we_eat_on_a_restaurant": "Reserva en restaurante",
     "name_of_restaurant": "Restaurante",

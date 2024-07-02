@@ -191,10 +191,14 @@ const propToNotion: Record<string, (value: any) => NotionProperty | undefined> =
       type: "select",
       select: { name: value },
     }),
-    date: (value: Date) => ({
+    date: (value: Date) => {
+      if(!moment(value).isValid()) {
+        return undefined
+      }
+      return ({
       type: "date",
       date: { start: moment(value).toISOString() },
-    }),
+    })},
     range: ([start, end]: Date[]) => ({
       type: "date",
       date: {

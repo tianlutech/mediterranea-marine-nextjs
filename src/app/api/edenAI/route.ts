@@ -7,6 +7,11 @@ export async function POST(request: Request) {
     const file: File = data.get("file") as File;
 
     const response = await edenAI.validateIdentityUsingOCR(file);
+
+    if(response.error) {
+      Sentry.captureMessage(JSON.stringify({response}))
+    }
+
     return new Response(JSON.stringify(response), { status: 200 });
   } catch (error) {
     Sentry.captureException(error);

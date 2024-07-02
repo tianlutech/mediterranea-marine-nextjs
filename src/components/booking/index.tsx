@@ -30,14 +30,14 @@ export default function BookingComponent({
   const [totalPayment, setTotalPayment] = useState<number>(0);
 
   const [formData, setFormData] = useState<BookingFormData>({
-    "First Name": "",
-    "Last Name": "",
+    "First Name": data["First Name"] || "",
+    "Last Name": data["Last Name"] || "",
     NotificationEmail: data.NotificationEmail,
     SumupCode: data.SumupCode || "",
     Date: data.Date as Date,
-    "Billing Address": data["Billing Address"],
-    "No Adults": data["No Adults"],
-    "No Childs": data["No Childs"],
+    "Billing Address": data["Billing Address"] || "",
+    "No Adults": data["No Adults"] || 0,
+    "No Childs": data["No Childs"] || 0,
     ID_Back_Picture: {} as File,
     ID_Front_Picture: {} as File,
     "Departure Time": "",
@@ -45,16 +45,17 @@ export default function BookingComponent({
     SEABOB: "",
     "Fuel Payment": -1,
     Comments: data.Comments,
-    "Restaurant Name": "",
-    "Restaurant Time": "",
+    "Restaurant Name": data["Restaurant Name"] || "",
+    "Restaurant Time": data["Restaurant Time"] || "",
     signedContract: false,
-    "ID Number": data["ID Number"],
+    "ID Number": data["ID Number"] || "",
     documentType: "National ID",
     OutstandingPayment: data.OutstandingPayment || 0,
     CustomerSignature: "",
     DocumentsApproved: false,
     AddressVerified: false,
-    KidsAge: "" // Comment about the kids 
+    KidsAge: "", // Comment about the kids 
+    Overnight: data.Overnight || false
   });
 
   const formik = useFormik({
@@ -103,6 +104,7 @@ export default function BookingComponent({
         steps={[
           "fuel",
           "sign",
+          "preSaveData",
           "validateFront",
           "validateBack",
           "confirmContinue",

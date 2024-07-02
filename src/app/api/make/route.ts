@@ -6,6 +6,7 @@ export async function POST(request: Request) {
     const { scenarioId, data } = await request.json();
     const response = await make.runScenario(scenarioId, data);
     if (response.error) {
+      Sentry.captureMessage(JSON.stringify({scenarioId, data, response}))
       return new Response(JSON.stringify(response), {
         status: response.code || 424,
       });

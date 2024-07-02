@@ -48,6 +48,12 @@ export async function createDocument(
     const { Nombre, Code, RegistrationPlate, id } = boatDetails;
     const apiUrl = "https://api.pdfmonkey.io/api/v1/documents";
     const rentPrice = bookingInfo["RentPrice"] || 0;
+    const arrival = calculateArrivalTime({
+         date:  moment.utc(bookingInfo["Date"]).toDate(),
+         departureTime: bookingInfo["Departure Time"],
+         overnight: bookingInfo.Overnight || false,
+    });
+    
     const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
@@ -76,9 +82,10 @@ export async function createDocument(
             bookingDate: moment.utc(bookingInfo["Date"]).format("DD/MM/YYYY"),
             boatFlag: "boatFlag",
             boatType: "Yacht",
-            departureMaximumHour: calculateArrivalTime(
-              bookingInfo["Departure Time"]
-            ),
+            arrivalTime: arrival.time,
+            arrivalDateDay: arrival.date.format("DD"),
+            arrivalDateMonth: arrival.date.format("MM"),
+            arrivalDateYear: arrival.date.format("YYYY"),
             PortOfDisembark: "Ibiza",
             MaximumNumberOfGuestCruisingOnBoard: boatDetails["Max.Passengers"],
             crew: boatDetails["Crew"],

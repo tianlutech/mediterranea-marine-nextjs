@@ -34,11 +34,12 @@ export default function TermsAndConditions({
   const { t } = useTranslation()
   const sigPad = useRef<SignaturePad>(null);
   const [isSigned, setIsSigned] = useState(false);
-  const [departureMaximumHour, setDepartureMaximumHour] = useState("");
   const date = bookingInfo["Date"];
   const bookingDateYear = moment.utc(date).format("YYYY");
   const bookingDateMonth = moment.utc(date).format("MM");
   const bookingDateDay = moment.utc(date).format("DD");
+  const [arrival, setArrival] = useState({ time: "", date: moment.utc(bookingInfo["Date"]) });
+
   const clearSigPad = () => {
     if (sigPad.current) {
       sigPad.current.clear();
@@ -52,14 +53,14 @@ export default function TermsAndConditions({
 
   useEffect(() => {
     const maximumDepartureTime = () => {
-      const time = calculateArrivalTime(bookingInfo["Departure Time"]);
-      setDepartureMaximumHour(time as string);
+      const result = calculateArrivalTime({ date: moment.utc(date).toDate(), departureTime: bookingInfo["Departure Time"], overnight: bookingInfo.Overnight || false });
+      setArrival(result);
     };
     if (sigPad.current && !sigPad.current.isEmpty()) {
       setIsSigned(!sigPad.current.isEmpty());
     }
     maximumDepartureTime();
-  }, [bookingInfo]);
+  }, [bookingInfo, date]);
 
   const getSignatureImage = async () => {
     if (sigPad.current) {
@@ -154,8 +155,8 @@ export default function TermsAndConditions({
               {bookingDateDay} of {bookingDateMonth} of {bookingDateYear}
             </p>
             <p className="text-sm">
-              Until: {departureMaximumHour} hours of the day {bookingDateDay} of{" "}
-              {bookingDateMonth} of {bookingDateYear}
+              Until: {arrival.time} hours of the day {arrival.date.format("DD")} of{" "}
+              {arrival.date.format("MM")} of {arrival.date.format("YYYY")}
             </p>
             <br />
             <h3>THIRD. – FUEL CONSUMPTION AND ALL-INCLUSIVE CLAUSES</h3>

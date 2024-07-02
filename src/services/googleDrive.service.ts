@@ -14,11 +14,11 @@ export const uploadFile = async (file: File, boatName: string, id: string ,slag:
       // Note: Don't set Content-Type header when using FormData, as the browser sets it automatically with the correct boundary string
     });
 
-    const json = await response.json() as { id: string};
+    const json = await response.json() satisfies { id: string} | {error: string };
     return json;
   } catch (error) {
     console.error("Error retrieving data", error);
-    return undefined;
+    return {error};
   }
 }
 
@@ -36,6 +36,7 @@ export const uploadReceiptImage = async (file: File, bookingDate: string) => {
     });
 
     const json = await response.json() as {id: string};
+
     return json;
   } catch (error) {
     console.error("Error retrieving data", error);

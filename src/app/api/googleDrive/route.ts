@@ -57,6 +57,9 @@ export async function POST(request: Request) {
     }
 
     const result = await config[type]();
+    if(result.error) {
+      Sentry.captureMessage(JSON.stringify({result, body}))
+    }
 
     return new Response(JSON.stringify(result), {
       status: 200,

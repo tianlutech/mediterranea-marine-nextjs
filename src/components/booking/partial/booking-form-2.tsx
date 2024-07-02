@@ -135,7 +135,24 @@ export default function BookingForm2({
                   {t("input.boat_passenger_info2")}
                 </span>
               </div>
-
+              <div className="mt-6 flex items-baseline">
+                <RadioInput
+                  id="duration-default-radio-1"
+                  className="mb-4"
+                  inputName="id-duration-one-day"
+                  label={t("input.one-day-trip")}
+                  onChange={() => setData({ ...data, Overnight: false })}
+                  checked={!data.Overnight}
+                />
+                <RadioInput
+                  id="duration-default-radio-1"
+                  className="ml-10"
+                  inputName="id-duration-one-night"
+                  label={t("input.overnight-trip")}
+                  onChange={() => setData({ ...data, Overnight: true })}
+                  checked={!!data.Overnight}
+                />
+              </div>
               <CommonLabel
                 input="select"
                 error={formik.errors["Departure Time"]}

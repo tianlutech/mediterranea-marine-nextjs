@@ -14,6 +14,8 @@
     "select_file": "Select a file or drag and drop here",
     "select_csv_file": "Select a CSV file or drag and drop here",
     "departure_time": "Departure time",
+    "one-day-trip": "One day-trip",
+    "overnight-trip": "One day and one night trip",
     "we_eat_on_board": "We eat on board",
     "we_eat_on_a_restaurant": "We eat on a restaurant",
     "name_of_restaurant": "Name of restaurant",

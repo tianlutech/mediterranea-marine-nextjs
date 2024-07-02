@@ -1,5 +1,6 @@
 import * as notion from "../notion.api";
 import { deleteUndefined } from "@/services/utils";
+import * as Sentry from "@sentry/nextjs";
 
 // A complex GET where we pass the filter as a body
 export async function GET(request: Request) {
@@ -29,6 +30,10 @@ export async function GET(request: Request) {
     };
     deleteUndefined(query);
     const response = await notion.queryDatabase(query);
+
+    if(response.error) {
+      Sentry.captureMessage(JSON.stringify({query, response}))
+    }
 
     return new Response(JSON.stringify({ results: response.results || [] }), {
       status: 200,

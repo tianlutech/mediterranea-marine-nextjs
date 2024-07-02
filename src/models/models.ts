@@ -41,6 +41,7 @@ export type BookingFormData = {
   SumupCode: string;
   AddressVerified: boolean;
   KidsAge: string;
+  Overnight: boolean;
 };
 
 export const getBookingName = (booking: {
@@ -192,6 +193,9 @@ export class Booking extends NotionItem {
   @NotionType("checkbox")
   DocumentsApproved?: boolean;
 
+  @NotionType("checkbox")
+  Overnight?: boolean;
+  
   "Captain": string[];
 
   @NotionType("number")
@@ -320,9 +324,12 @@ export class DepartureTime extends NotionItem {
   Booking: string[] = [];
 }
 
-export const calculateArrivalTime = (departureTime: string) => {
+export const calculateArrivalTime = ({date, departureTime, overnight}:{date: Date, departureTime: string, overnight: boolean}) => {
   if (!departureTime) {
-    return "";
+    return {date: moment.utc(), time: ""};
+  }
+  if(overnight) {
+    return { date: moment.utc(date).add(1,"day"), time: "09:00"}
   }
   // Split the time string into hours and minutes
   var parts = departureTime.split(":");
@@ -345,5 +352,5 @@ export const calculateArrivalTime = (departureTime: string) => {
   // Returning the formatted time string
   const time = formattedHours + ":" + formattedMinutes;
 
-  return time;
+  return {time, date: moment.utc(date) };
 };
