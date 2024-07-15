@@ -78,13 +78,13 @@ export const SEABOB = [
 export const SEABOB_OFFER = [
   {
     name: "1 SEABOB",
-    label: "SEABOB 1 - 100€",
-    value: "100",
+    label: "SEABOB 1 - 121€",
+    value: "121",
   },
   {
     name: "2 SEABOB",
-    label: "SEABOB 2 - 200€",
-    value: "200",
+    label: "SEABOB 2 - 242€",
+    value: "242",
   },
 ];
 export const STANDUP_PADDLE = [
