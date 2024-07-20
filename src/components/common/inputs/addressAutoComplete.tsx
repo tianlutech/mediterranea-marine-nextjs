@@ -1,4 +1,5 @@
 import { Combobox } from "@headlessui/react";
+import { useState } from "react";
 
 import usePlacesAutocomplete, {
   getGeocode,
@@ -23,13 +24,14 @@ export default function PlaceAutoComplete({ setLatLng, placeholder, required }: 
     suggestions: { status, data },
     clearSuggestions,
   } = usePlacesAutocomplete();
-
+  const [selected, setSelected] = useState(false)
   const handleSelect = async (val: string) => {
     setValue(val, false);
     clearSuggestions();
 
     const results = await getGeocode({ address: val });
     const { lat, lng } = await getLatLng(results[0] as any);
+    setSelected(true)
     setLatLng({ lat, lng, address: val });
   };
 
@@ -38,7 +40,8 @@ export default function PlaceAutoComplete({ setLatLng, placeholder, required }: 
       <div className="relative mt-1">
         <Combobox.Input
           className="w-full border md:text-sm text-xs border-gray-300 text-black text-start p-[0.7rem] md:px-8 px-4 rounded-lg"
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => { setValue(e.target.value); setSelected(false) }}
+          onBlur={() => !selected && setValue("", false)}
           value={value}
           required={required}
           placeholder={placeholder || ""}
