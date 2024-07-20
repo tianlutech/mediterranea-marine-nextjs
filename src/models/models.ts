@@ -337,14 +337,13 @@ export const calculateArrivalTime = ({date, departureTime, overnight}:{date: Dat
   var minutes = +parts[1];
 
   // Add hours
-  hours += 10;
+  hours += 9;
 
   // Ensure that hours do not exceed 24
   if (hours > 21) {
     hours = 21;
     minutes = 0;
   }
-
   // Formatting hours and minutes to two digits
   const formattedHours = hours.toString().padStart(2, "0");
   const formattedMinutes = minutes.toString().padStart(2, "0");
