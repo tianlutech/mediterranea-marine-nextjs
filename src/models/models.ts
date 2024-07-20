@@ -337,7 +337,7 @@ export const calculateArrivalTime = ({date, departureTime, overnight}:{date: Dat
   var minutes = +parts[1];
 
   // Add hours
-  hours += 9;
+  hours += 8;
 
   // Ensure that hours do not exceed 24
   if (hours > 21) {
