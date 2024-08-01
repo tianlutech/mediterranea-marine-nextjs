@@ -35,6 +35,7 @@ export default function SumupWidget({
             return;
           }
           if (type === "invalid") {
+            Sentry.captureMessage(JSON.stringify({ type, body }))
             return;
           }
           if (type === "auth-screen") {
@@ -43,7 +44,9 @@ export default function SumupWidget({
 
           if (type === "success") {
             const bodyData = body as PaymentResponseBody;
+            console.log({ bodyData })
             if (bodyData.status === "FAILED") {
+              Sentry.captureMessage(JSON.stringify({ type, body }))
               onError(
                 t("error.error_sumup_payment") + bodyData.transaction_code
                   ? `ID #${bodyData.transaction_code}`
@@ -51,19 +54,24 @@ export default function SumupWidget({
               );
               return;
             }
-            formData.SumupCode = bodyData.transaction_code;
-            onSuccess();
+            if (bodyData.status === "PAID") {
+              formData.SumupCode = bodyData.transaction_code;
+              onSuccess();
+              return
+            }
+
             return;
           }
+          /**
+          * Errors or unknown messages
+          */
+          Sentry.captureMessage(JSON.stringify({ type, body }))
           // Users cancel or time out
           if (type === "fail") {
             onError(t("error.error_sumup_payment") + `${JSON.stringify(body)}`);
             return;
           }
-          /**
-           * Errors or unknown messages
-           */
-          Sentry.captureMessage(JSON.stringify({ type, body }))
+
 
           if (type === "error") {
 
