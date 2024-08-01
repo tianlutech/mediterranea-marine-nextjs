@@ -44,7 +44,6 @@ export default function SumupWidget({
 
           if (type === "success") {
             const bodyData = body as PaymentResponseBody;
-            console.log({ bodyData })
             if (bodyData.status === "FAILED") {
               Sentry.captureMessage(JSON.stringify({ type, body }))
               onError(
