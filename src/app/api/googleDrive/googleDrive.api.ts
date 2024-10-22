@@ -168,3 +168,33 @@ export const getFileContentBase64FromGoogleDrive = async (fileUrl: string) => {
     throw error; // Rethrow the error for further handling
   }
 };
+
+export const uploadPDFDocument = async (file: File, body: any) => {
+  const drive = google.drive({ version: "v3", auth });
+  try {
+    if (file.type !== "application/pdf") {
+      throw new Error("Only PDF files are allowed");
+    }
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const googleDriveFolderId = "1_hOtlZT1WOfaEQVB5P9l3jXhdAOd0dzY";
+    const { date, boatName, slag } = body;
+    const fileName = `${boatName}-${date}-${slag}`;
+    const res = await drive.files.create({
+      requestBody: {
+        name: fileName,
+        mimeType: file.type,
+        parents: [googleDriveFolderId],
+      },
+      media: {
+        mimeType: file.type,
+        body: Readable.from(buffer),
+      },
+    });
+
+    // Return uploaded file data
+    return res.data;
+  } catch (error: any) {
+    console.error("Error uploading PDF:", error.message);
+    return { error: error.message };
+  }
+};

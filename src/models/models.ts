@@ -307,8 +307,26 @@ export class Fuel extends NotionItem {
 
   @NotionType("file")
   "Receipt": string;
+}
 
+export class Bill extends NotionItem {
+  @NotionType("title")
+  "Name": string;
 
+  @NotionType("date")
+  "Date": string;
+
+  @NotionType("relation")
+  "Boat": string;
+
+  @NotionType("number")
+  "Amount": number;
+
+  @NotionType("rich_text")
+  "Bill": string;
+
+  @NotionType("rich_text")
+  "Type": string;
 }
 
 export class DepartureTime extends NotionItem {
