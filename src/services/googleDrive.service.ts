@@ -64,35 +64,26 @@ export const uploadSignatureImage = async (file: File, bookingDate: string) => {
   }
 }
 
-export const uploadBill = async (file: File, data: any) => {
+export const uploadBill = async (file: File, fileName: string, folderId: string) => {
   try {
-    // Create a FormData object
     const formData = new FormData();
-    const {Date, Boat, Type, Amount} = data
-    // Ensure the file is a PDF
     if (file.type !== "application/pdf") {
       throw new Error("Only PDF files are allowed");
     }
     formData.append("file", file);
     formData.append("type", "billPdf");
-    formData.append("date", Date);
-    formData.append("boatName", Boat);
-    formData.append("slag", `${Amount}-${Type}`);
+    formData.append("slag", fileName);
+    formData.append("id", folderId);
 
-    // Send the request to the /api/googleDrive endpoint
     const response = await fetch("/api/googleDrive", {
       method: "POST",
-      body: formData // Send the FormData object
-      // No need to manually set the 'Content-Type', the browser handles it
+      body: formData
     });
 
-    // Parse the JSON response, expecting an object with the 'id' of the uploaded file
     const json = await response.json() as { id: string };
 
-    // Return the file ID from the response
     return json;
   } catch (error) {
-    // Log and handle errors
     console.error("Error uploading PDF document", error);
     return undefined;
   }

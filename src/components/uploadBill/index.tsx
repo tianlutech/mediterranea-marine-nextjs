@@ -33,7 +33,7 @@ const FormWrapper = ({ children }: { children: React.ReactNode }) => {
 
 export default function UploadBillForm() {
   const [loading, setLoading] = useState<boolean>(false);
-  const [key, setKey] = useState(0); // Key to force component re-render
+  const [key, setKey] = useState(0);
 
   const types = ["Charter", "Boat"];
   const initialState: Data = {
@@ -54,8 +54,8 @@ export default function UploadBillForm() {
         toast.error("Error fetching boat details");
         return "";
       }
-      const updatedData = { ...data, Boat: boatDetails["Nombre"] };
-      const response = await uploadBill(file, updatedData);
+      const fileName = `${boatDetails["Nombre"]}-${data.Date}-${data.Type}-${data.Amount}`
+      const response = await uploadBill(file, fileName, boatDetails["FolderId"]);
       if (!response?.id) {
         return "";
       }
@@ -102,9 +102,8 @@ export default function UploadBillForm() {
 
       toast.success("Successfully uploaded!");
 
-      // Reset the form data and re-render the component by changing the key
       setData(initialState);
-      setKey((prevKey) => prevKey + 1); // Increment the key to trigger re-render
+      setKey((prevKey) => prevKey + 1);
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {

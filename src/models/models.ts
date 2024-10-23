@@ -98,7 +98,8 @@ export class Boat extends NotionItem {
   Crew: string = "";
   @NotionType("url")
   ["Ubicación"]: string = "";
-
+  @NotionType("rich_text")
+  ["FolderId"]: string = "";
   // Client Side Injected data Format time HH:mm
   bussySlots: string[] = [];
 }

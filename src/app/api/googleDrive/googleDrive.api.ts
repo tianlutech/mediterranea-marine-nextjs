@@ -176,9 +176,9 @@ export const uploadBill = async (file: File, body: any) => {
       throw new Error("Only PDF files are allowed");
     }
     const buffer = Buffer.from(await file.arrayBuffer());
-    const googleDriveFolderId = "1_hOtlZT1WOfaEQVB5P9l3jXhdAOd0dzY";
-    const { date, boatName, slag } = body;
-    const fileName = `${boatName}-${date}-${slag}`;
+    const { slag, id } = body;
+    const googleDriveFolderId = id;
+    const fileName = slag;
     const res = await drive.files.create({
       requestBody: {
         name: fileName,
