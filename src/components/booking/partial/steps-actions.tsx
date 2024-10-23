@@ -286,7 +286,6 @@ export const stepsActions = ({
   const pay = {
     execute: (formData: BookingFormData, boat: Boat) => {
       const pendingPayment = Booking.totalPayment(formData)
-      console.log({ pendingPayment })
       if (!pendingPayment) {
         nextStep();
         return

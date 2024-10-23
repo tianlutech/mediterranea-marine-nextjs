@@ -107,7 +107,6 @@ export default function BookingForm2({
                     placeholder="Kids number"
                     value={data["No Childs"]}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      console.log("NO KIDS", +e.target.value)
                       setNoKids(+e.target.value)
                       setData({ ...data, "No Childs": +e.target.value })
                     }

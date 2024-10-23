@@ -8,6 +8,7 @@ export const NOTION_DATABASES = {
   FUEL: "67efc31683b44e61b037d49cc79f49a8",
   BOATS: "54a3f8e4de06416db6f1affc8da49f55",
   CAPTAINS: "ba114e3cae854159803fde2ae3861d71",
+  BILLS: "126f8ec99d21808b971ac3c822f1e178"
 };
 export const MAKE_SCENARIOS = {
   SAVE_PDF: 685739, // https://eu2.make.com/230048/scenarios/685739
