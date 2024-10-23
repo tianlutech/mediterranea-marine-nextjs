@@ -169,7 +169,7 @@ export const getFileContentBase64FromGoogleDrive = async (fileUrl: string) => {
   }
 };
 
-export const uploadPDFDocument = async (file: File, body: any) => {
+export const uploadBill = async (file: File, body: any) => {
   const drive = google.drive({ version: "v3", auth });
   try {
     if (file.type !== "application/pdf") {

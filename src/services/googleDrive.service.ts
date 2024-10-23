@@ -64,7 +64,7 @@ export const uploadSignatureImage = async (file: File, bookingDate: string) => {
   }
 }
 
-export const uploadPDFDocument = async (file: File, data: any) => {
+export const uploadBill = async (file: File, data: any) => {
   try {
     // Create a FormData object
     const formData = new FormData();

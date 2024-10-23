@@ -44,7 +44,7 @@ export async function POST(request: Request) {
       idCard: () => googleDrive.uploadFile(file, body),
       receipt: () => googleDrive.uploadReceiptImage(file, body),
       customerSignature: () => googleDrive.uploadSignatureImage(file, body),
-      billPdf: () => googleDrive.uploadPDFDocument(file, body)
+      billPdf: () => googleDrive.uploadBill(file, body)
     };
 
     if (!config[type]) {

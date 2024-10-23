@@ -188,7 +188,8 @@
     "id_validation_failed_confirm_message": "No podemos verificar sus documentos, ¿le gustaría enviarlos de todos modos? Si lo haces y los documentos no son válidos, todo el proceso de reserva puede quedar en espera y tendrás que resolverlo antes de poder embarcar en la reserva.",
     "get_seabob_offer": "¡Consigue tu Sea Bob ahora!",
     "seabob_offer_email": "Estimado cliente, tenemos {{NUM}} de SeaBobs en oferta a solo 121€ (IVA Inc.) Mas que un 50% de descuento! Esta oferta caducará en {{time}}, no pierdas esta oportunidad ",
-    "offer_not_available": "Oferta no disponible."
+    "offer_not_available": "Oferta no disponible.",
+    "successfully_uploaded": "Factura cargada exitosamente"
   },
   "common": {
     "loading": "Cargando"

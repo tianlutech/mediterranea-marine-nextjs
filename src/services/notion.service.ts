@@ -323,7 +323,7 @@ export async function createBillRecord(data: Bill) {
     return parseNotionObject<Bill>(new Bill(), json.result as NotionPage);
   } catch (error) {
     console.error("Error retrieving page from Notion:", error);
-    return undefined;
+    return {error: error};
   }
 }
 
