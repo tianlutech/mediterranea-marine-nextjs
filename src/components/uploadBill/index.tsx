@@ -11,11 +11,14 @@ import { useFormik } from "formik";
 import { toast, ToastContainer } from "react-toastify";
 import moment from "moment";
 import { createBillRecord } from "../../services/notion.service";
-import { Bill } from "../../models/models";
+import { Bill, Boat } from "../../models/models";
 import { uploadBill } from "@/services/googleDrive.service";
 import { getBoatInfo } from "@/services/notion.service";
 import * as Sentry from "@sentry/nextjs";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  sendBillInfoMessageWebhook,
+} from "@/services/make.service";
 
 interface Data {
   pdfFile: File;
@@ -34,7 +37,7 @@ const FormWrapper = ({ children }: { children: React.ReactNode }) => {
 export default function UploadBillForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const [key, setKey] = useState(0);
-
+  var fileId = ""
   const types = ["Charter", "Boat"];
   const initialState: Data = {
     Date: moment.utc().format("YYYY-MM-DD"),
@@ -45,21 +48,21 @@ export default function UploadBillForm() {
   };
 
   const [data, setData] = useState(initialState);
-
+  var boatInfo = {} as Boat
   const storeBillPdf = async (file: File, data: Data) => {
     try {
       const [boatDetails] = await Promise.all([getBoatInfo(data.Boat)]);
-
       if (!boatDetails) {
         toast.error("Error fetching boat details");
         return "";
       }
+      boatInfo = boatDetails
       const fileName = `${boatDetails["Nombre"]}-${data.Date}-${data.Type}-${data.Amount}`
       const response = await uploadBill(file, fileName, boatDetails["FolderId"]);
       if (!response?.id) {
         return "";
       }
-
+      fileId = response.id
       const url = `https://drive.google.com/file/d/${response.id}/view`;
       return url;
     } catch (error) {
@@ -99,7 +102,14 @@ export default function UploadBillForm() {
         toast.error("Failed to create the record");
         return;
       }
-
+      const updatedData = {
+        file: fileId,
+        boatName: boatInfo["Nombre"],
+        date: data["Date"],
+        type: data["Type"],
+        amount: data["Amount"]
+      }
+      sendBillInfoMessageWebhook(updatedData)
       toast.success("Successfully uploaded!");
 
       setData(initialState);

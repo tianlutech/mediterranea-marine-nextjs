@@ -3,6 +3,7 @@ import {
   MAKE_WEBHOOKS,
   RESEND_MESSAGE_MAKE_WEBHOOKS,
   DAVID_SEABOB_OFFER_MESSAGE_MAKE_WEBHOOKS,
+  BILL_UPLOAD_MESSAGE_WEBHOOK
 } from "@/models/constants";
 import { Booking, Boat } from "@/models/models";
 import moment from "moment";
@@ -136,6 +137,32 @@ export async function sendDavidSeabobOfferMessageWebhook(bookingInfo: Booking) {
       return { error: (res.body as any).error };
     }
 
+    return { ok: true };
+  } catch (error: any) {
+    console.error(error);
+    return { error: error.message };
+  }
+}
+
+export async function sendBillInfoMessageWebhook(data: any) {
+  try {
+    const queryParams = new URLSearchParams({
+      file: data.file,
+      boatName: data.boatName,
+      date: data.date,
+      Amount: data.amount,
+      Type: data.type
+    }).toString();
+    const res = await fetch(
+      `${BILL_UPLOAD_MESSAGE_WEBHOOK}?${queryParams}`,
+      {
+        method: "GET",
+      }
+    );
+
+    if (res.status !== 200) {
+      return { error: (res.body as any).error };
+    }
     return { ok: true };
   } catch (error: any) {
     console.error(error);
