@@ -1,11 +1,11 @@
 import React, { useRef, useState } from "react";
 import { jsPDF } from "jspdf";
 import UploadSvg from "@/assets/svgs/UploadSvg";
+import PdfSvg from "@/assets/svgs/pdfSvg";
 
-// Standard A4 page dimensions in points (72 points = 1 inch)
 const A4_WIDTH = 595;
 const A4_HEIGHT = 842;
-const MARGIN = 40; // 40 points margin on all sides
+const MARGIN = 40;
 
 export default function PdfUploadComponent({
   label,
@@ -15,17 +15,18 @@ export default function PdfUploadComponent({
   onRemove,
   maxSize = 10,
 }: {
-  label: string;
-  name: string;
-  required?: boolean;
-  maxSize?: number;
-  onChange: (file: File | null) => void;
-  onRemove?: () => void;
+  label: string,
+  name: string,
+  required: boolean,
+  onChange: any,
+  onRemove: () => void,
+  maxSize: number
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string>("");
   const [fileSize, setFileSize] = useState<string>("");
   const [fileName, setFileName] = useState<string>("");
+  const [fileType, setFileType] = useState<string>(""); // Store file type here
   const [isConverting, setIsConverting] = useState<boolean>(false);
 
   const cancelFile = () => {
@@ -33,75 +34,32 @@ export default function PdfUploadComponent({
     setPreview("");
     setFileName("");
     setFileSize("");
+    setFileType("");
   };
 
-  const calculateScaledDimensions = (imgWidth: number, imgHeight: number) => {
-    const availableWidth = A4_WIDTH - (2 * MARGIN);
-    const availableHeight = A4_HEIGHT - (2 * MARGIN);
+  const convertImageToPdf = async (imageFile: File) => {
+    return new Promise<File>((resolve, reject) => {
+      const img = new Image();
+      img.src = URL.createObjectURL(imageFile);
+      img.onload = () => {
+        const pdf = new jsPDF("portrait", "pt", "a4");
+        const imgWidth = A4_WIDTH - 2 * MARGIN;
+        const imgHeight = (img.height / img.width) * imgWidth;
+        pdf.addImage(img, "JPEG", MARGIN, MARGIN, imgWidth, imgHeight);
 
-    // Calculate scaling ratios
-    const widthRatio = availableWidth / imgWidth;
-    const heightRatio = availableHeight / imgHeight;
+        const pdfBlob = pdf.output("blob");
 
-    // Use the smaller ratio to ensure image fits within margins
-    const scale = Math.min(widthRatio, heightRatio);
-
-    return {
-      width: imgWidth * scale,
-      height: imgHeight * scale
-    };
-  };
-
-  const convertImageToPdf = async (imageFile: File): Promise<File> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        try {
-          const img = new Image();
-          img.src = e.target?.result as string;
-
-          await new Promise((res) => (img.onload = res));
-
-          // Create PDF with A4 size
-          const pdf = new jsPDF({
-            orientation: "p", // Always portrait
-            unit: "pt", // Use points for precise sizing
-            format: "a4"
-          });
-
-          // Calculate scaled dimensions
-          const { width, height } = calculateScaledDimensions(img.width, img.height);
-
-          // Calculate centering offsets
-          const xOffset = (A4_WIDTH - width) / 2;
-          const yOffset = (A4_HEIGHT - height) / 2;
-
-          // Add image to PDF with calculated dimensions and position
-          pdf.addImage(
-            img,
-            "JPEG",
-            xOffset,
-            yOffset,
-            width,
-            height
-          );
-
-          const pdfBlob = pdf.output("blob");
-
-          const convertedPdfFile = new File(
-            [pdfBlob],
-            `${imageFile.name.split(".")[0]}.pdf`,
-            { type: "application/pdf" }
-          );
-
-          resolve(convertedPdfFile);
-        } catch (error) {
-          reject(error);
-        }
+        // Set file name to just the original name without extension, plus ".pdf"
+        const originalNameWithoutExtension = imageFile.name.replace(/\.[^/.]+$/, "");
+        const pdfFile = new File([pdfBlob], `${originalNameWithoutExtension}.pdf`, {
+          type: "application/pdf",
+        });
+        resolve(pdfFile);
       };
-      reader.readAsDataURL(imageFile);
+      img.onerror = reject;
     });
   };
+
 
   const handleFile = async (file: File) => {
     const fileSizeInBytes = file.size;
@@ -120,7 +78,8 @@ export default function PdfUploadComponent({
         : `${fileSizeInMegabytes} MB`
     );
 
-    // If it's an image, convert to PDF
+    setFileType(file.type); // Save file type
+
     if (file.type.startsWith("image/")) {
       setIsConverting(true);
       try {
@@ -134,7 +93,7 @@ export default function PdfUploadComponent({
       }
     }
 
-    return file;
+    return file; // Return the original file if not an image
   };
 
   const onChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -167,6 +126,7 @@ export default function PdfUploadComponent({
     setFileSize("");
     setPreview("");
     setFileName("");
+    setFileType("");
   };
 
   const onClick = () => {
@@ -236,28 +196,16 @@ export default function PdfUploadComponent({
             <div className="flex justify-between items-center mt-4 p-2 bg-gray-100">
               <div className="flex justify-center items-center text-center">
                 <div>
-                  {preview ? (
+                  {fileType === "application/pdf" ? (
+                    <PdfSvg />
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       width={20}
                       height={20}
                       src={preview}
                       alt="file-preview"
                     />
-                  ) : (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
-                      />
-                    </svg>
                   )}
                 </div>
                 <span className="text-black text-center md:ml-4 ml-2 md:text-base text-xs">

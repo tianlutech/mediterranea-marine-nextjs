@@ -19,6 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   sendBillInfoMessageWebhook,
 } from "@/services/make.service";
+import { useTranslation } from "react-i18next";
 
 interface Data {
   pdfFile: File;
@@ -35,6 +36,7 @@ const FormWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default function UploadBillForm() {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState<boolean>(false);
   const [key, setKey] = useState(0);
   var fileId = ""
@@ -138,7 +140,7 @@ export default function UploadBillForm() {
             <div className="md:p-6 sm:p-8 p-6">
               <div className="flex md:flex-row flex-col justify-between w-full mt-6">
                 <FormWrapper>
-                  <CommonLabel input="text">Date</CommonLabel>
+                  <CommonLabel input="text">{t("input.date")}</CommonLabel>
                   <CommonInput
                     type="date"
                     name="date"
@@ -154,7 +156,7 @@ export default function UploadBillForm() {
                   />
                 </FormWrapper>
                 <FormWrapper>
-                  <CommonLabel input="text">Select Boat</CommonLabel>
+                  <CommonLabel input="text">{t("input.select_boat")}</CommonLabel>
                   <SelectBoat
                     value={data.Boat}
                     onChange={(boat) => setData({ ...data, Boat: boat })}
@@ -163,7 +165,7 @@ export default function UploadBillForm() {
               </div>
               <div className="flex md:flex-row flex-col justify-between w-full md:mt-6 mt-0">
                 <FormWrapper>
-                  <CommonLabel input="text">Amount Paid</CommonLabel>
+                  <CommonLabel input="text">{t("input.amount_paid")}</CommonLabel>
                   <CommonInput
                     type="text"
                     name="AmountPaid"
@@ -178,7 +180,7 @@ export default function UploadBillForm() {
                   <p className="text-black absolute z-10 bottom-[0.5rem] right-[1.2rem]">€</p>
                 </FormWrapper>
                 <FormWrapper>
-                  <CommonLabel input="text">Type</CommonLabel>
+                  <CommonLabel input="text">{t("input.type")}</CommonLabel>
                   <CommonSelect
                     id="type"
                     name="type"
@@ -193,7 +195,7 @@ export default function UploadBillForm() {
               </div>
               <CommonPdfInputFile
                 name="Pdf_Bill"
-                label="Picture of the receipt"
+                label={t("input.picture_of_the_receipt")}
                 onRemove={() => setData({ ...data, pdfFile: {} as File })}
                 onChange={(file: any) => setData({ ...data, pdfFile: file })}
                 required
