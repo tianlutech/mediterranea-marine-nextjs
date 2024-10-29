@@ -20,7 +20,7 @@ export default function PdfUploadComponent({
   required: boolean,
   onChange: any,
   onRemove: () => void,
-  maxSize: number
+  maxSize?: number
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string>("");
