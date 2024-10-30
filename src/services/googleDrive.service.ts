@@ -32,7 +32,6 @@ export const uploadReceiptImage = async (file: File, bookingDate: string) => {
     const response = await fetch("/api/googleDrive", {
       method: "POST",
       body: formData // Sending FormData object directly
-      // Note: Don't set Content-Type header when using FormData, as the browser sets it automatically with the correct boundary string
     });
 
     const json = await response.json() as {id: string};
@@ -64,3 +63,28 @@ export const uploadSignatureImage = async (file: File, bookingDate: string) => {
     return undefined;
   }
 }
+
+export const uploadBill = async (file: File, fileName: string, folderId: string) => {
+  try {
+    const formData = new FormData();
+    if (file.type !== "application/pdf") {
+      throw new Error("Only PDF files are allowed");
+    }
+    formData.append("file", file);
+    formData.append("type", "billPdf");
+    formData.append("slag", fileName);
+    formData.append("id", folderId);
+
+    const response = await fetch("/api/googleDrive", {
+      method: "POST",
+      body: formData
+    });
+
+    const json = await response.json() as { id: string };
+
+    return json;
+  } catch (error) {
+    console.error("Error uploading PDF document", error);
+    return undefined;
+  }
+};

@@ -31,7 +31,6 @@
     "read_and_sign_the_contract": "Leer y firmar el contrato",
     "i_agree_with_the_privacy_policy": "Estoy de acuerdo con",
     "privacy_policy": "la política de privacidad",
-
     "guarantee_label": "Garantizo que la información del usuario es de una persona que irá abordo a bordo.",
     "select_option": "Seleccione una opción",
     "file_sizes": "El tamaño de archivo no superior a 10 MB",
@@ -69,7 +68,9 @@
     "pin": "PIN",
     "manual-valid-address": "No podemos verificar el número de calle de esta dirección. Haciendo click en este checkbox confirmas que la dirección escrita es una dirección de facturación válida.",
     "address-placeholder": "Dirección de Facturación",
-    "sign": "Firmar"
+    "sign": "Firmar",
+    "type": "Tipo",
+    "accepted_file": "Formatos aceptados: PDF, Imágenes (JPG, PNG, etc.)"
   },
   "prepayment_modal": {
     "prepay_your_fuel": "Prepaga tu combustible",
@@ -93,7 +94,9 @@
     "feedback_sidebar": "<p>📅 Fecha: {{date}}<br/>🛥️ Barco: {{boat}}<br/> 👤 Cliente: {{first_name}} {{last_name}} </p><br/><p>Recopilar esta información es realmente importante para nuestra empresa. Podemos mejorar nuestro servicio y mejorar los costos, mejorando la experiencia tanto para el cliente como para el personal.</p>",
     "fuel_sidebar": "<p>Recopilar esta información es realmente importante para nuestra empresa. Podemos mejorar nuestro servicio y mejorar los costos, mejorando la experiencia tanto para el cliente como para el personal.</p>",
     "whatsapp_form_title": "Formulario WhatsApp",
-    "seabob_offer_form": "Compra tu seabob de oferta!"
+    "seabob_offer_form": "Compra tu seabob de oferta!",
+    "upload_bill": "Subir factura",
+    "upload_bill_sidebar": "<p>Recopilar esta información es realmente importante para nuestra empresa. Podemos mejorar nuestro servicio y mejorar los costos, mejorando la experiencia tanto para el cliente como para el personal.</p>"
   },
   "feedback": {
     "rate_required": "De una puntuación de 1 a 5 estrellas"
@@ -146,6 +149,7 @@
   "title": {
     "feed_back_form": "Feedback del Viaje",
     "fuel_form": "Forma de combustible",
+    "upload_bill_form": "Formulario de factura",
     "whatsapp_form": "Formulario WhatsApp",
     "verification_form": "Formulario de verificación",
     "seabob_offer_form": "Formulario de oferta de Seabob"
@@ -185,7 +189,8 @@
     "id_validation_failed_confirm_message": "No podemos verificar sus documentos, ¿le gustaría enviarlos de todos modos? Si lo haces y los documentos no son válidos, todo el proceso de reserva puede quedar en espera y tendrás que resolverlo antes de poder embarcar en la reserva.",
     "get_seabob_offer": "¡Consigue tu Sea Bob ahora!",
     "seabob_offer_email": "Estimado cliente, tenemos {{NUM}} de SeaBobs en oferta a solo 121€ (IVA Inc.) Mas que un 50% de descuento! Esta oferta caducará en {{time}}, no pierdas esta oportunidad ",
-    "offer_not_available": "Oferta no disponible."
+    "offer_not_available": "Oferta no disponible.",
+    "successfully_uploaded": "Factura cargada exitosamente"
   },
   "common": {
     "loading": "Cargando"

@@ -67,7 +67,10 @@
     "pin": "PIN",
     "manual-valid-address": "We can not verify your address door number. Clicking in this checkbox you guarantee that address submitted is valid and accurate as a billing address",
     "address-placeholder": "Fill the billing address",
-    "sign": "Sign"
+    "sign": "Sign",
+    "type": "Type",
+    "pdf": "Bill pdf",
+    "accepted_file": "Accepted formats: PDF, Images (JPG, PNG, etc.)"
   },
   "prepayment_modal": {
     "prepay_your_fuel": "Prepay your fuel",
@@ -93,7 +96,9 @@
     "sidebar_p2": "Your responses will help us schedule your boat reservation and cater to your specific needs. Thank you for choosing us for your boating adventure!",
     "feedback_sidebar": "<p>📅 Date: {{date}}<br/>🛥️ Boat: {{boat}}<br/> 👤 Guest: {{first_name}} {{last_name}} </p><br/><p>Collecting this information is really important for our company. We can improve our service and cost enhancing the experience fo both client and staff.</p>",
     "fuel_sidebar": "<p>Collecting this information is really important for our company. We can improve our service and cost enhancing the experience fo both client and staff.</p>",
-    "whatsapp_form_title": "WhatsApp Form"
+    "whatsapp_form_title": "WhatsApp Form",
+    "upload_bill": "Upload Bill",
+    "upload_bill_sidebar": "<p>Collecting this information is really important for our company. We can improve our service and cost enhancing the experience fo both client and staff.</p>"
   },
   "error": {
     "upload_front_image": "There has been an error while uploading front id picture",
@@ -142,9 +147,9 @@
   "title": {
     "feed_back_form": "Treatment Received Feedback Form",
     "fuel_form": "Fuel Form",
+    "upload_bill_form": "Bill Form",
     "whatsapp_form": "WhatsApp Form",
-    "verification_form": "Verification Form",
-    "seabob_offer_form": "Seabob Offer Form"
+    "verification_form": "Verification Form"
   },
   "loadingMessage": {
     "uploading_passport": "Uploading your Passport",
@@ -184,7 +189,8 @@
     "id_validation_failed_confirm_message": "We can not verify your documents, would you like to submited them anyway? If you do and the documents are not valid, the all booking process can be kept on hold and you will need to solve it before being able to board on the booking",
     "get_seabob_offer": "Get your Sea Bob now!",
     "seabob_offer_email": "Dear customer, we have {{NUM}} of SEABOB's in offer at only 121€ - Included VAT - (more than 50% discount), this offer will expire in {{time}} ",
-    "offer_not_available": "Offer currently not available."
+    "offer_not_available": "Offer currently not available.",
+    "successfully_uploaded": "Bill successfully uploaded"
   },
   "common": {
     "loading": "Loading"

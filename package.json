@@ -34,6 +34,7 @@
     "googleapis": "^129.0.0",
     "i18next": "^23.7.6",
     "i18next-browser-languagedetector": "^7.2.0",
+    "jspdf": "^2.5.2",
     "moment": "^2.29.4",
     "next": "14.0.1",
     "next-i18next": "^15.0.0",
@@ -55,6 +56,7 @@
   },
   "devDependencies": {
     "@types/google.maps": "^3.54.10",
+    "@types/jspdf": "^2.0.0",
     "@types/node": "^20",
     "@types/papaparse": "^5.3.14",
     "@types/react": "^18",
