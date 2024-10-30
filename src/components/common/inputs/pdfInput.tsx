@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { jsPDF } from "jspdf";
 import UploadSvg from "@/assets/svgs/UploadSvg";
 import PdfSvg from "@/assets/svgs/pdfSvg";
+import { useTranslation } from "react-i18next";
 
 const A4_WIDTH = 595;
 const A4_HEIGHT = 842;
@@ -28,6 +29,7 @@ export default function PdfUploadComponent({
   const [fileName, setFileName] = useState<string>("");
   const [fileType, setFileType] = useState<string>(""); // Store file type here
   const [isConverting, setIsConverting] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   const cancelFile = () => {
     onChange(null);
@@ -93,7 +95,7 @@ export default function PdfUploadComponent({
       }
     }
 
-    return file; // Return the original file if not an image
+    return file;
   };
 
   const onChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -178,12 +180,12 @@ export default function PdfUploadComponent({
               <UploadSvg />
             </div>
             <div className="flex flex-col ml-4">
-              <span className="text-black">Select File</span>
+              <span className="text-black">{t("input.select_file")}</span>
               <span className="text-gray-500 mt-2">
-                File size limit: {maxSize} MB
+                {t("input.file_sizes", { size: maxSize })}
               </span>
               <span className="text-gray-500">
-                Accepted formats: PDF, Images (JPG, PNG, etc.)
+                {t("input.accepted_file")}
               </span>
             </div>
           </div>

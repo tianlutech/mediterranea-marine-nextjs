@@ -14,7 +14,7 @@ export default function UploadBill({ params }: { params: { id: string } }) {
   return (
     <>
       {/*  here we will change with real message */}
-      <Sidebar title={t("sidebar.upload_bill_form")}>
+      <Sidebar title={t("sidebar.upload_bill")}>
         <div
           className="p-4 text-black"
           dangerouslySetInnerHTML={{

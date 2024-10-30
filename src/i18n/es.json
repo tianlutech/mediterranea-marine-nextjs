@@ -69,7 +69,8 @@
     "manual-valid-address": "No podemos verificar el número de calle de esta dirección. Haciendo click en este checkbox confirmas que la dirección escrita es una dirección de facturación válida.",
     "address-placeholder": "Dirección de Facturación",
     "sign": "Firmar",
-    "type": "Tipo"
+    "type": "Tipo",
+    "accepted_file": "Formatos aceptados: PDF, Imágenes (JPG, PNG, etc.)"
   },
   "prepayment_modal": {
     "prepay_your_fuel": "Prepaga tu combustible",
@@ -94,7 +95,7 @@
     "fuel_sidebar": "<p>Recopilar esta información es realmente importante para nuestra empresa. Podemos mejorar nuestro servicio y mejorar los costos, mejorando la experiencia tanto para el cliente como para el personal.</p>",
     "whatsapp_form_title": "Formulario WhatsApp",
     "seabob_offer_form": "Compra tu seabob de oferta!",
-    "upload_bill_form": "Subir factura",
+    "upload_bill": "Subir factura",
     "upload_bill_sidebar": "<p>Recopilar esta información es realmente importante para nuestra empresa. Podemos mejorar nuestro servicio y mejorar los costos, mejorando la experiencia tanto para el cliente como para el personal.</p>"
   },
   "feedback": {

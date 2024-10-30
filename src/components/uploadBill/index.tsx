@@ -89,9 +89,8 @@ export default function UploadBillForm() {
         toast.error("Error uploading the bill file");
         return;
       }
-
       const notionObject = new Bill({
-        Name: `${data["Boat"]}-${moment(data["Date"]).format("DD-MM-YY")}`,
+        Name: `${boatInfo["Nombre"]}-${moment(data["Date"]).format("DD-MM-YY")}`,
         Date: data["Date"],
         Amount: +data["Amount"],
         Boat: data["Boat"],
@@ -134,7 +133,7 @@ export default function UploadBillForm() {
       <div className="flex md:w-[77%] w-full justify-center items-center md:p-6 p-2">
         <div className="bg-white md:w-[70%] w-full rounded-lg">
           <p className="text-black flex items-center justify-center mt-4 font-semibold md:text-xl text-sm">
-            Upload Bill Form
+            {t("title.upload_bill_form")}
           </p>
           <form key={key} onSubmit={formik.handleSubmit}>
             <div className="md:p-6 sm:p-8 p-6">
