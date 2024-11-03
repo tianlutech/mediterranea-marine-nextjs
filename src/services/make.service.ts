@@ -150,6 +150,7 @@ type BillInfoData = {
   date: string;
   Amount: string;
   Type: string;
+  boatOwner: string;
 };
 export async function sendBillInfoMessageWebhook(data: BillInfoData) {
   try {

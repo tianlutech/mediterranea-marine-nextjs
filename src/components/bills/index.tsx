@@ -113,7 +113,7 @@ export default function UploadBillForm() {
         boatName: boatInfo["Nombre"],
         date: data["Date"],
         Type: data["Type"],
-        Amount: data["Amount"],
+        Amount: (+data["Amount"]).toFixed(2),
         boatOwner: boatInfo["Owner"],
       });
       toast.success("Successfully uploaded!");
