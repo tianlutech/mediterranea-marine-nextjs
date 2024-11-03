@@ -3,7 +3,7 @@ import {
   MAKE_WEBHOOKS,
   RESEND_MESSAGE_MAKE_WEBHOOKS,
   DAVID_SEABOB_OFFER_MESSAGE_MAKE_WEBHOOKS,
-  BILL_UPLOAD_MESSAGE_WEBHOOK
+  BILL_UPLOAD_MESSAGE_WEBHOOK,
 } from "@/models/constants";
 import { Booking, Boat } from "@/models/models";
 import moment from "moment";
@@ -144,21 +144,21 @@ export async function sendDavidSeabobOfferMessageWebhook(bookingInfo: Booking) {
   }
 }
 
-export async function sendBillInfoMessageWebhook(data: any) {
+type BillInfoData = {
+  file: string;
+  boatName: string;
+  date: string;
+  Amount: string;
+  Type: string;
+};
+export async function sendBillInfoMessageWebhook(data: BillInfoData) {
   try {
-    const queryParams = new URLSearchParams({
-      file: data.file,
-      boatName: data.boatName,
-      date: data.date,
-      Amount: data.amount,
-      Type: data.type
-    }).toString();
-    const res = await fetch(
-      `${BILL_UPLOAD_MESSAGE_WEBHOOK}?${queryParams}`,
-      {
-        method: "GET",
-      }
-    );
+    const queryParams = new URLSearchParams(
+      data as Record<string, string>
+    ).toString();
+    const res = await fetch(`${BILL_UPLOAD_MESSAGE_WEBHOOK}?${queryParams}`, {
+      method: "GET",
+    });
 
     if (res.status !== 200) {
       return { error: (res.body as any).error };

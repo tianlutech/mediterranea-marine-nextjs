@@ -1,9 +1,6 @@
 "use client";
 
 import Sidebar from "@/components/sidebar/sidebar";
-import { getBookingInfo, getBoatInfo } from "@/services/notion.service";
-import { useEffect, useState } from "react";
-import router from "next/router";
 import UploadBillForm from "@/components/bills";
 import { useTranslation } from "react-i18next";
 import React from "react";

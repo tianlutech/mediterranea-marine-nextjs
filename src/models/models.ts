@@ -52,9 +52,9 @@ export const getBookingName = (booking: {
 }) => {
   return (
     `${booking["First Name"]} ` +
-    `${booking["Last Name"]} ${booking["Boat"] || ""} - ${moment.utc(
-      booking.Date
-    ).format("DD.MM.YY")}`
+    `${booking["Last Name"]} ${booking["Boat"] || ""} - ${moment
+      .utc(booking.Date)
+      .format("DD.MM.YY")}`
   );
 };
 
@@ -102,6 +102,9 @@ export class Boat extends NotionItem {
   ["FolderId"]: string = "";
   // Client Side Injected data Format time HH:mm
   bussySlots: string[] = [];
+
+  @NotionType("select")
+  Owner?: string;
 }
 
 export type SelectType = {
@@ -196,7 +199,7 @@ export class Booking extends NotionItem {
 
   @NotionType("checkbox")
   Overnight?: boolean;
-  
+
   "Captain": string[];
 
   @NotionType("number")
@@ -326,7 +329,7 @@ export class Bill extends NotionItem {
   @NotionType("rich_text")
   "Bill": string;
 
-  @NotionType("rich_text")
+  @NotionType("select")
   "Type": string;
 }
 
@@ -343,12 +346,20 @@ export class DepartureTime extends NotionItem {
   Booking: string[] = [];
 }
 
-export const calculateArrivalTime = ({date, departureTime, overnight}:{date: Date, departureTime: string, overnight: boolean}) => {
+export const calculateArrivalTime = ({
+  date,
+  departureTime,
+  overnight,
+}: {
+  date: Date;
+  departureTime: string;
+  overnight: boolean;
+}) => {
   if (!departureTime) {
-    return {date: moment.utc(), time: ""};
+    return { date: moment.utc(), time: "" };
   }
-  if(overnight) {
-    return { date: moment.utc(date).add(1,"day"), time: "09:00"}
+  if (overnight) {
+    return { date: moment.utc(date).add(1, "day"), time: "09:00" };
   }
   // Split the time string into hours and minutes
   var parts = departureTime.split(":");
@@ -370,5 +381,5 @@ export const calculateArrivalTime = ({date, departureTime, overnight}:{date: Dat
   // Returning the formatted time string
   const time = formattedHours + ":" + formattedMinutes;
 
-  return {time, date: moment.utc(date) };
+  return { time, date: moment.utc(date) };
 };

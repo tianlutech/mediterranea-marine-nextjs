@@ -16,9 +16,7 @@ import { uploadBill } from "@/services/googleDrive.service";
 import { getBoatInfo } from "@/services/notion.service";
 import * as Sentry from "@sentry/nextjs";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  sendBillInfoMessageWebhook,
-} from "@/services/make.service";
+import { sendBillInfoMessageWebhook } from "@/services/make.service";
 import { useTranslation } from "react-i18next";
 
 interface Data {
@@ -39,8 +37,8 @@ export default function UploadBillForm() {
   const { t } = useTranslation();
   const [loading, setLoading] = useState<boolean>(false);
   const [key, setKey] = useState(0);
-  var fileId = ""
-  const types = ["Charter", "Boat"];
+  var fileId = "";
+  const types = ["Charter/Apa", "Owner"];
   const initialState: Data = {
     Date: moment.utc().format("YYYY-MM-DD"),
     Boat: "",
@@ -50,7 +48,7 @@ export default function UploadBillForm() {
   };
 
   const [data, setData] = useState(initialState);
-  var boatInfo = {} as Boat
+  var boatInfo = {} as Boat;
   const storeBillPdf = async (file: File, data: Data) => {
     try {
       const [boatDetails] = await Promise.all([getBoatInfo(data.Boat)]);
@@ -58,13 +56,17 @@ export default function UploadBillForm() {
         toast.error("Error fetching boat details");
         return "";
       }
-      boatInfo = boatDetails
-      const fileName = `${boatDetails["Nombre"]}-${data.Date}-${data.Type}-${data.Amount}`
-      const response = await uploadBill(file, fileName, boatDetails["FolderId"]);
+      boatInfo = boatDetails;
+      const fileName = `${boatDetails["Nombre"]}-${data.Date}-${data.Type}-${data.Amount}`;
+      const response = await uploadBill(
+        file,
+        fileName,
+        boatDetails["FolderId"]
+      );
       if (!response?.id) {
         return "";
       }
-      fileId = response.id
+      fileId = response.id;
       const url = `https://drive.google.com/file/d/${response.id}/view`;
       return url;
     } catch (error) {
@@ -90,7 +92,9 @@ export default function UploadBillForm() {
         return;
       }
       const notionObject = new Bill({
-        Name: `${boatInfo["Nombre"]}-${moment(data["Date"]).format("DD-MM-YY")}`,
+        Name: `${boatInfo["Nombre"]}-${moment(data["Date"]).format(
+          "DD-MM-YY"
+        )}`,
         Date: data["Date"],
         Amount: +data["Amount"],
         Boat: data["Boat"],
@@ -103,14 +107,15 @@ export default function UploadBillForm() {
         toast.error("Failed to create the record");
         return;
       }
-      const updatedData = {
+
+      sendBillInfoMessageWebhook({
         file: fileId,
         boatName: boatInfo["Nombre"],
         date: data["Date"],
-        type: data["Type"],
-        amount: data["Amount"]
-      }
-      sendBillInfoMessageWebhook(updatedData)
+        Type: data["Type"],
+        Amount: data["Amount"],
+        boatOwner: boatInfo["Owner"],
+      });
       toast.success("Successfully uploaded!");
 
       setData(initialState);
@@ -155,7 +160,9 @@ export default function UploadBillForm() {
                   />
                 </FormWrapper>
                 <FormWrapper>
-                  <CommonLabel input="text">{t("input.select_boat")}</CommonLabel>
+                  <CommonLabel input="text">
+                    {t("input.select_boat")}
+                  </CommonLabel>
                   <SelectBoat
                     value={data.Boat}
                     onChange={(boat) => setData({ ...data, Boat: boat })}
@@ -164,7 +171,9 @@ export default function UploadBillForm() {
               </div>
               <div className="flex md:flex-row flex-col justify-between w-full md:mt-6 mt-0">
                 <FormWrapper>
-                  <CommonLabel input="text">{t("input.amount_paid")}</CommonLabel>
+                  <CommonLabel input="text">
+                    {t("input.amount_paid")}
+                  </CommonLabel>
                   <CommonInput
                     type="text"
                     name="AmountPaid"
@@ -176,7 +185,9 @@ export default function UploadBillForm() {
                     }
                     required
                   />
-                  <p className="text-black absolute z-10 bottom-[0.5rem] right-[1.2rem]">€</p>
+                  <p className="text-black absolute z-10 bottom-[0.5rem] right-[1.2rem]">
+                    €
+                  </p>
                 </FormWrapper>
                 <FormWrapper>
                   <CommonLabel input="text">{t("input.type")}</CommonLabel>
@@ -184,9 +195,7 @@ export default function UploadBillForm() {
                     id="type"
                     name="type"
                     value={data.Type}
-                    onChange={(e) =>
-                      setData({ ...data, Type: e.target.value })
-                    }
+                    onChange={(e) => setData({ ...data, Type: e.target.value })}
                     data={types}
                     required
                   />
