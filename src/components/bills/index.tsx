@@ -38,7 +38,7 @@ export default function UploadBillForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const [key, setKey] = useState(0);
   var fileId = "";
-  const types = ["Charter/Apa", "Owner"];
+  const types = ["Charter/Apa", "Owner", "Boat"];
   const initialState: Data = {
     Date: moment.utc().format("YYYY-MM-DD"),
     Boat: "",
