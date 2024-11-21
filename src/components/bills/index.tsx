@@ -175,7 +175,7 @@ export default function UploadBillForm() {
                     {t("input.amount_paid")}
                   </CommonLabel>
                   <CommonInput
-                    type="text"
+                    type="number"
                     name="AmountPaid"
                     id="amountpaid"
                     placeholder="Enter amount"
