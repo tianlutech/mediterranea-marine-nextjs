@@ -1,8 +1,6 @@
-"use client";
-
 import React, { useState } from "react";
 import CommonInput from "@/components/common/inputs/input";
-import CommonPdfInputFile from "@/components/common/inputs/pdfInput";
+import CommonUploadMultiplePictures from "@/components/common/inputs/multipleImages";
 import CommonLabel from "../common/containers/label";
 import SubmitButton from "../common/containers/submit-button";
 import CommonSelect from "@/components/common/inputs/selectInput";
@@ -15,12 +13,13 @@ import { Bill, Boat } from "../../models/models";
 import { uploadBill } from "@/services/googleDrive.service";
 import { getBoatInfo } from "@/services/notion.service";
 import * as Sentry from "@sentry/nextjs";
+import { jsPDF } from "jspdf";
 import "react-toastify/dist/ReactToastify.css";
 import { sendBillInfoMessageWebhook } from "@/services/make.service";
 import { useTranslation } from "react-i18next";
 
 interface Data {
-  pdfFile: File;
+  pdfFiles: File[];
   Date: string;
   Amount: string;
   Boat: string;
@@ -44,11 +43,40 @@ export default function UploadBillForm() {
     Boat: "",
     Type: "",
     Amount: "",
-    pdfFile: {} as File,
+    pdfFiles: [],
   };
 
   const [data, setData] = useState(initialState);
   var boatInfo = {} as Boat;
+
+  const convertImagesToSeparatePdfs = async (images: File[]): Promise<File[]> => {
+    try {
+      const pdfFiles: File[] = [];
+
+      for (const image of images) {
+        const pdf = new jsPDF();
+        const imageData = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target?.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(image);
+        });
+
+        pdf.addImage(imageData, "JPEG", 10, 10, 180, 240);
+        const pdfBlob = pdf.output("blob");
+        const pdfFile = new File([pdfBlob], `${image.name.split(".")[0]}.pdf`, {
+          type: "application/pdf",
+        });
+        pdfFiles.push(pdfFile);
+      }
+
+      return pdfFiles;
+    } catch (error) {
+      console.error("Error converting images to separate PDFs:", error);
+      return [];
+    }
+  };
+
   const storeBillPdf = async (file: File, data: Data) => {
     try {
       const [boatDetails] = await Promise.all([getBoatInfo(data.Boat)]);
@@ -67,7 +95,7 @@ export default function UploadBillForm() {
         return "";
       }
       fileId = response.id;
-      const url = `https://drive.google.com/file/d/${response.id}/view`;
+      const url = `${response.id}`;
       return url;
     } catch (error) {
       Sentry.captureException(error);
@@ -79,44 +107,63 @@ export default function UploadBillForm() {
   const submitUploadBillForm = async () => {
     setLoading(true);
     try {
-      if (!data["pdfFile"].name) {
-        toast.error("Please upload a valid PDF file");
+      if (!data["pdfFiles"] || data["pdfFiles"].length === 0) {
+        toast.error("Please upload valid PDF files");
         setLoading(false);
         return;
       }
 
-      const billUrl = await storeBillPdf(data["pdfFile"], data);
+      const pdfFiles = await convertImagesToSeparatePdfs(data["pdfFiles"]);
 
-      if (!billUrl) {
-        toast.error("Error uploading the bill file");
-        return;
-      }
-      const notionObject = new Bill({
-        Name: `${boatInfo["Nombre"]}-${moment(data["Date"]).format(
-          "DD-MM-YY"
-        )}`,
-        Date: data["Date"],
-        Amount: +data["Amount"],
-        Boat: data["Boat"],
-        Type: data["Type"],
-        Bill: billUrl,
-      });
-
-      const res = await createBillRecord(notionObject);
-      if (!res) {
-        toast.error("Failed to create the record");
+      if (pdfFiles.length === 0) {
+        toast.error("Error converting files to PDFs");
+        setLoading(false);
         return;
       }
 
-      sendBillInfoMessageWebhook({
-        file: fileId,
-        boatName: boatInfo["Nombre"],
-        date: data["Date"],
-        Type: data["Type"],
-        Amount: (+data["Amount"]).toFixed(2),
-        boatOwner: boatInfo["Owner"] || "",
-      });
-      toast.success("Successfully uploaded!");
+      const fileIds: string[] = [];
+
+      for (const pdfFile of pdfFiles) {
+        const billUrl = await storeBillPdf(pdfFile, data);
+
+        if (!billUrl) {
+          toast.error(`Error uploading the file: ${pdfFile.name}`);
+          continue;
+        }
+
+        fileIds.push(billUrl);
+
+        const notionObject = new Bill({
+          Name: `${boatInfo["Nombre"]}-${moment(data["Date"]).format(
+            "DD-MM-YY"
+          )}`,
+          Date: data["Date"],
+          Amount: +data["Amount"],
+          Boat: data["Boat"],
+          Type: data["Type"],
+          Bill: billUrl,
+        });
+
+        const res = await createBillRecord(notionObject);
+        if (!res) {
+          toast.error(`Failed to create record for file: ${pdfFile.name}`);
+          continue;
+        }
+      }
+
+      if (fileIds.length > 0) {
+        sendBillInfoMessageWebhook({
+          files: fileIds,
+          boatName: boatInfo["Nombre"],
+          date: data["Date"],
+          Type: data["Type"],
+          Amount: (+data["Amount"]).toFixed(2),
+          boatOwner: boatInfo["Owner"] || "",
+        });
+        toast.success("Successfully uploaded all files!");
+      } else {
+        toast.error("No files were successfully processed");
+      }
 
       setData(initialState);
       setKey((prevKey) => prevKey + 1);
@@ -154,8 +201,6 @@ export default function UploadBillForm() {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setData({ ...data, Date: e.target.value })
                     }
-                    min={1}
-                    step={1}
                     required
                   />
                 </FormWrapper>
@@ -201,11 +246,12 @@ export default function UploadBillForm() {
                   />
                 </FormWrapper>
               </div>
-              <CommonPdfInputFile
+              <CommonUploadMultiplePictures
                 name="Pdf_Bill"
                 label={t("input.picture_of_the_receipt")}
-                onRemove={() => setData({ ...data, pdfFile: {} as File })}
-                onChange={(file: any) => setData({ ...data, pdfFile: file })}
+                onChange={(files: File[]) => {
+                  setData({ ...data, pdfFiles: files });
+                }}
                 required
               />
               <SubmitButton label="Submit" loading={loading} />
