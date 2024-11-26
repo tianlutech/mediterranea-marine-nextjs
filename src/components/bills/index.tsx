@@ -13,11 +13,9 @@ import { Bill, Boat } from "../../models/models";
 import { uploadBill } from "@/services/googleDrive.service";
 import { getBoatInfo } from "@/services/notion.service";
 import * as Sentry from "@sentry/nextjs";
-import { jsPDF } from "jspdf";
 import "react-toastify/dist/ReactToastify.css";
-import { sendBillInfoMessageWebhook } from "@/services/make.service";
 import { useTranslation } from "react-i18next";
-
+import { convertImagesToSeparatePdfs } from "@/services/utils";
 interface Data {
   pdfFiles: File[];
   Date: string;
@@ -48,34 +46,6 @@ export default function UploadBillForm() {
 
   const [data, setData] = useState(initialState);
   var boatInfo = {} as Boat;
-
-  const convertImagesToSeparatePdfs = async (images: File[]): Promise<File[]> => {
-    try {
-      const pdfFiles: File[] = [];
-
-      for (const image of images) {
-        const pdf = new jsPDF();
-        const imageData = await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = (e) => resolve(e.target?.result as string);
-          reader.onerror = reject;
-          reader.readAsDataURL(image);
-        });
-
-        pdf.addImage(imageData, "JPEG", 10, 10, 180, 240);
-        const pdfBlob = pdf.output("blob");
-        const pdfFile = new File([pdfBlob], `${image.name.split(".")[0]}.pdf`, {
-          type: "application/pdf",
-        });
-        pdfFiles.push(pdfFile);
-      }
-
-      return pdfFiles;
-    } catch (error) {
-      console.error("Error converting images to separate PDFs:", error);
-      return [];
-    }
-  };
 
   const storeBillPdf = async (file: File, data: Data) => {
     try {
@@ -121,46 +91,33 @@ export default function UploadBillForm() {
         return;
       }
 
-      const fileIds: string[] = [];
+      const fileUrls = await Promise.all(
+        pdfFiles.map(async (pdfFile) => {
+          const billUrl = await storeBillPdf(pdfFile, data);
+          if (!billUrl) {
+            toast.error(`Error uploading the file: ${pdfFile.name}`);
+            return null;
+          }
+          return billUrl;
+        })
+      );
 
-      for (const pdfFile of pdfFiles) {
-        const billUrl = await storeBillPdf(pdfFile, data);
-
-        if (!billUrl) {
-          toast.error(`Error uploading the file: ${pdfFile.name}`);
-          continue;
-        }
-
-        fileIds.push(billUrl);
-
+      if (fileUrls.length > 0) {
         const notionObject = new Bill({
-          Name: `${boatInfo["Nombre"]}-${moment(data["Date"]).format(
-            "DD-MM-YY"
-          )}`,
+          Name: `${boatInfo["Nombre"]}-${moment(data["Date"]).format("DD-MM-YY")}`,
           Date: data["Date"],
           Amount: +data["Amount"],
           Boat: data["Boat"],
           Type: data["Type"],
-          Bill: billUrl,
+          Bill: fileUrls,
         });
 
         const res = await createBillRecord(notionObject);
         if (!res) {
-          toast.error(`Failed to create record for file: ${pdfFile.name}`);
-          continue;
+          toast.error("Failed to create Notion record");
+        } else {
+          toast.success("Successfully uploaded all files and created Notion record!");
         }
-      }
-
-      if (fileIds.length > 0) {
-        sendBillInfoMessageWebhook({
-          files: fileIds,
-          boatName: boatInfo["Nombre"],
-          date: data["Date"],
-          Type: data["Type"],
-          Amount: (+data["Amount"]).toFixed(2),
-          boatOwner: boatInfo["Owner"] || "",
-        });
-        toast.success("Successfully uploaded all files!");
       } else {
         toast.error("No files were successfully processed");
       }

@@ -103,38 +103,36 @@ export default function CommonUploadMultiplePictures({
           </div>
         </div>
       </div>
-      {files.length > 0 && (
-        <div className="mt-2">
-          {files.map((file, index) => (
-            <div key={index} className="flex mt-2 justify-between items-center p-2 bg-gray-100">
-              <div className="flex justify-center items-center text-center">
-                <div>
-                  {file.type === "application/pdf" ? (
-                    <PdfSvg />
-                  ) : (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      width={20}
-                      height={20}
-                      src={URL.createObjectURL(file)}
-                      alt="file-preview"
-                    />
-                  )}
-                </div>
-                <span className="text-black text-center md:ml-4 ml-2 md:text-base text-xs">
-                  {file.name}
-                </span>
+      <div className="mt-2">
+        {files.map((file, index) => (
+          <div key={index} className="flex mt-2 justify-between items-center p-2 bg-gray-100">
+            <div className="flex justify-center items-center text-center">
+              <div>
+                {file.type === "application/pdf" ? (
+                  <PdfSvg />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    width={20}
+                    height={20}
+                    src={URL.createObjectURL(file)}
+                    alt="file-preview"
+                  />
+                )}
               </div>
-              <button
-                onClick={() => removeFile(file)}
-                className="text-red-600 text-xs"
-              >
-                Remove
-              </button>
+              <span className="text-black text-center md:ml-4 ml-2 md:text-base text-xs">
+                {file.name}
+              </span>
             </div>
-          ))}
-        </div>
-      )}
+            <button
+              onClick={() => removeFile(file)}
+              className="text-red-600 text-xs"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

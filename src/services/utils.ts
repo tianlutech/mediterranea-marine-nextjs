@@ -1,3 +1,5 @@
+import { jsPDF } from "jspdf";
+
 export const deleteUndefined = (list: any) => {
   Object.keys(list)
     .filter((key) => list[key] === undefined)
@@ -64,4 +66,31 @@ export function extractIdFromGoogleDriveLink(link: string) {
     id = match[1];
   }
   return id;
+}
+
+export async function convertImagesToSeparatePdfs(images: File[]): Promise<File[]> {
+  try {
+    const pdfFiles: File[] = await Promise.all(
+      images.map(async (image) => {
+        const pdf = new jsPDF();
+        const imageData = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target?.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(image);
+        });
+
+        pdf.addImage(imageData, "JPEG", 10, 10, 180, 240);
+        const pdfBlob = pdf.output("blob");
+        return new File([pdfBlob], `${image.name.split(".")[0]}.pdf`, {
+          type: "application/pdf",
+        });
+      })
+    );
+
+    return pdfFiles;
+  } catch (error) {
+    console.error("Error converting images to separate PDFs:", error);
+    return [];
+  }
 }
