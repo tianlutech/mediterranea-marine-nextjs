@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import UploadSvg from "@/assets/svgs/UploadSvg";
 import PdfSvg from "@/assets/svgs/pdfSvg";
 import { useTranslation } from "react-i18next";
@@ -13,46 +13,53 @@ export default function CommonUploadMultiplePictures({
   label: string;
   name: string;
   required: boolean;
-  onChange: any;
+  onChange: (files: File[] | null) => void;
   maxSize?: number;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<any[]>([]); // To store multiple files
   const { t } = useTranslation();
 
-  const cancelFile = () => {
+  const cancelFile = useCallback(() => {
     onChange(null);
     setFiles([]);
-  };
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  }, [onChange]);
 
-  const handleFile = async (file: File) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleFile = async (file: File): Promise<File | null> => {
     const fileSizeInBytes = file.size;
     const fileSizeInKilobytes = +(fileSizeInBytes / 1024).toFixed(1);
     const fileSizeInMegabytes = +(fileSizeInKilobytes / 1024).toFixed(1);
 
     if (fileSizeInMegabytes >= maxSize) {
       alert(`File size exceeds the limit of ${maxSize} MB.`);
-      cancelFile();
       return null;
     }
 
     return file;
   };
 
-  // Remove specific file from the list
-  const removeFile = (fileToRemove: File) => {
+  const removeFile = useCallback((fileToRemove: File) => {
     const updatedFiles = files.filter((file) => file !== fileToRemove);
     setFiles(updatedFiles);
-  };
+    onChange(updatedFiles.length > 0 ? updatedFiles : null);
 
-  const onChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  }, [files, onChange]);
+
+  const onChangeFile = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = e.target.files ? Array.from(e.target.files) : [];
     if (selectedFiles.length === 0) {
       cancelFile();
       return;
     }
 
-    const processedFiles: any[] = [];
+    const processedFiles: File[] = [];
     for (let file of selectedFiles) {
       const processedFile = await handleFile(file);
       if (!processedFile) continue;
@@ -63,16 +70,19 @@ export default function CommonUploadMultiplePictures({
     // Append new files to the existing list of files and update state
     const updatedFiles = [...files, ...processedFiles];
     setFiles(updatedFiles);
-    onChange(updatedFiles); // Update the parent with the new list of files
-  };
+    onChange(updatedFiles);
+  }, [files, onChange, cancelFile, handleFile]);
 
-  const onClick = () => {
+  const onClick = useCallback(() => {
     inputRef.current?.click();
-  };
+  }, []);
 
   return (
-    <div className="relative cursor-pointer" >
-      <div className="relative w-full mt-6 border border-gray-300 p-[0.7rem] px-6 rounded-lg" onClick={onClick}>
+    <div className="relative cursor-pointer">
+      <div
+        className="relative w-full mt-6 border border-gray-300 p-[0.7rem] px-6 rounded-lg"
+        onClick={onClick}
+      >
         <label className="block mb-2 text-sm font-medium text-gray-900 absolute z-10 top-[-0.6rem] bg-white left-4 px-2">
           {label}
         </label>
@@ -105,7 +115,10 @@ export default function CommonUploadMultiplePictures({
       </div>
       <div className="mt-2">
         {files.map((file, index) => (
-          <div key={index} className="flex mt-2 justify-between items-center p-2 bg-gray-100">
+          <div
+            key={`${file.name}-${index}`}
+            className="flex mt-2 justify-between items-center p-2 bg-gray-100"
+          >
             <div className="flex justify-center items-center text-center">
               <div>
                 {file.type === "application/pdf" ? (
