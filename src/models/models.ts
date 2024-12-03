@@ -326,8 +326,8 @@ export class Bill extends NotionItem {
   @NotionType("number")
   "Amount": number;
 
-  @NotionType("rich_text")
-  "Bill": string;
+  @NotionType("multi_select")
+  "Bill": string[];
 
   @NotionType("select")
   "Type": string;
