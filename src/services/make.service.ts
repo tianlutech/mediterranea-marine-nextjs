@@ -145,7 +145,7 @@ export async function sendDavidSeabobOfferMessageWebhook(bookingInfo: Booking) {
 }
 
 type BillInfoData = {
-  file: string;
+  files: string[];
   boatName: string;
   date: string;
   Amount: string;
@@ -154,19 +154,26 @@ type BillInfoData = {
 };
 export async function sendBillInfoMessageWebhook(data: BillInfoData) {
   try {
+    const serializedData = {
+      ...data,
+      files: Array.isArray(data.files) ? data.files.join(",") : data.files,
+    };
+
     const queryParams = new URLSearchParams(
-      data as Record<string, string>
+      serializedData as Record<string, string>
     ).toString();
+
     const res = await fetch(`${BILL_UPLOAD_MESSAGE_WEBHOOK}?${queryParams}`, {
       method: "GET",
     });
 
     if (res.status !== 200) {
-      return { error: (res.body as any).error };
+      return { error: (await res.json()).error || "Unknown error" };
     }
+
     return { ok: true };
   } catch (error: any) {
-    console.error(error);
+    console.error("Webhook Error:", error.message);
     return { error: error.message };
   }
 }
