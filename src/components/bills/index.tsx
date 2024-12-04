@@ -16,6 +16,7 @@ import * as Sentry from "@sentry/nextjs";
 import "react-toastify/dist/ReactToastify.css";
 import { useTranslation } from "react-i18next";
 import { convertImagesToSeparatePdfs } from "@/services/utils";
+import { sendBillInfoMessageWebhook } from "@/services/make.service";
 interface Data {
   pdfFiles: File[];
   Date: string;
@@ -121,7 +122,14 @@ export default function UploadBillForm() {
       } else {
         toast.error("No files were successfully processed");
       }
-
+      sendBillInfoMessageWebhook({
+        files: fileUrls as any,
+        boatName: boatInfo["Nombre"],
+        date: data["Date"],
+        Type: data["Type"],
+        Amount: (+data["Amount"]).toFixed(2),
+        boatOwner: boatInfo["Owner"] || "",
+      });
       setData(initialState);
       setKey((prevKey) => prevKey + 1);
     } catch (error) {
@@ -206,7 +214,7 @@ export default function UploadBillForm() {
               <CommonUploadMultiplePictures
                 name="Pdf_Bill"
                 label={t("input.picture_of_the_receipt")}
-                onChange={(files: File[]) => {
+                onChange={(files: any) => {
                   setData({ ...data, pdfFiles: files });
                 }}
                 required
