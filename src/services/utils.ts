@@ -68,7 +68,9 @@ export function extractIdFromGoogleDriveLink(link: string) {
   return id;
 }
 
-export async function convertImagesToSeparatePdfs(images: File[]): Promise<File[]> {
+export async function convertImagesToSeparatePdfs(
+  images: File[]
+): Promise<File[]> {
   try {
     const pdfFiles: File[] = await Promise.all(
       images.map(async (image) => {
@@ -94,3 +96,7 @@ export async function convertImagesToSeparatePdfs(images: File[]): Promise<File[
     return [];
   }
 }
+
+export const driveIdToUrl = (id: string) => {
+  return `https://drive.google.com/file/d/${id}/view`;
+};

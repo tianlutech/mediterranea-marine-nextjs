@@ -192,13 +192,14 @@ const propToNotion: Record<string, (value: any) => NotionProperty | undefined> =
       select: { name: value },
     }),
     date: (value: Date) => {
-      if(!moment(value).isValid()) {
-        return undefined
+      if (!moment(value).isValid()) {
+        return undefined;
       }
-      return ({
-      type: "date",
-      date: { start: moment(value).toISOString() },
-    })},
+      return {
+        type: "date",
+        date: { start: moment(value).toISOString() },
+      };
+    },
     range: ([start, end]: Date[]) => ({
       type: "date",
       date: {
@@ -218,7 +219,7 @@ const propToNotion: Record<string, (value: any) => NotionProperty | undefined> =
     files: (value: string[]) => ({
       type: "files",
       files: value.map((url) => ({
-        name: value,
+        name: url,
         type: "external",
         external: {
           url,

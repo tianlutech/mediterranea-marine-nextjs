@@ -15,7 +15,7 @@ import { getBoatInfo } from "@/services/notion.service";
 import * as Sentry from "@sentry/nextjs";
 import "react-toastify/dist/ReactToastify.css";
 import { useTranslation } from "react-i18next";
-import { convertImagesToSeparatePdfs } from "@/services/utils";
+import { convertImagesToSeparatePdfs, driveIdToUrl } from "@/services/utils";
 import { sendBillInfoMessageWebhook } from "@/services/make.service";
 interface Data {
   pdfFiles: File[];
@@ -106,22 +106,22 @@ export default function UploadBillForm() {
       }
       const filesUploads = await Promise.all<string | null>(
         pdfFiles.map(async (pdfFile) => {
-          const billUrl = await storeBillPdf({
+          const billId = await storeBillPdf({
             file: pdfFile,
             data,
             boatDetails,
           });
-          if (!billUrl) {
+          if (!billId) {
             toast.error(`Error uploading the file: ${pdfFile.name}`);
             return null;
           }
-          return billUrl;
+          return billId;
         })
       );
 
-      const fileUrls = filesUploads.filter((url) => url !== null);
+      const fileIds = filesUploads.filter((id) => id !== null);
 
-      if (fileUrls.length === 0) {
+      if (fileIds.length === 0) {
         toast.error("No files were successfully processed");
         return;
       }
@@ -134,7 +134,7 @@ export default function UploadBillForm() {
         Amount: +data["Amount"],
         Boat: data["Boat"],
         Type: data["Type"],
-        Bill: fileUrls,
+        Bill: fileIds.map((id) => driveIdToUrl(id)),
       });
 
       const res = await createBillRecord(notionObject);
@@ -149,7 +149,7 @@ export default function UploadBillForm() {
       );
 
       sendBillInfoMessageWebhook({
-        files: fileUrls,
+        files: fileIds,
         boatName: boatInfo["Nombre"],
         date: data["Date"],
         Type: data["Type"],
