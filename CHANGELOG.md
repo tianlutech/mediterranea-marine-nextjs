@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.7](https://github.com/tianlutech/mediterranea-marine-nextjs/compare/v1.3.6...v1.3.7) (2024-12-18)
+
+
+### Bug Fixes
+
+* bill files are attached as file to notion ([6a49e1b](https://github.com/tianlutech/mediterranea-marine-nextjs/commit/6a49e1be4f5fc863530a935607addad99feb069b))
+
 ### [1.3.6](https://github.com/tianlutech/mediterranea-marine-nextjs/compare/v1.3.5...v1.3.6) (2024-12-18)
 
 
