@@ -36,7 +36,7 @@ export default function UploadBillForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const [key, setKey] = useState(0);
   var fileId = "";
-  const types = ["Charter/Apa", "Owner", "Boat"];
+  const types = ["Charter&Apa", "Owner", "Boat"];
   const initialState: Data = {
     Date: moment.utc().format("YYYY-MM-DD"),
     Boat: "",
@@ -48,13 +48,16 @@ export default function UploadBillForm() {
   const [data, setData] = useState(initialState);
   var boatInfo = {} as Boat;
 
-  const storeBillPdf = async (file: File, data: Data) => {
+  const storeBillPdf = async ({
+    file,
+    data,
+    boatDetails,
+  }: {
+    file: File;
+    data: Data;
+    boatDetails: Boat;
+  }) => {
     try {
-      const [boatDetails] = await Promise.all([getBoatInfo(data.Boat)]);
-      if (!boatDetails) {
-        toast.error("Error fetching boat details");
-        return "";
-      }
       boatInfo = boatDetails;
       const fileName = `${boatDetails["Nombre"]}-${data.Date}-${data.Type}-${data.Amount}`;
       const response = await uploadBill(
@@ -92,9 +95,22 @@ export default function UploadBillForm() {
         return;
       }
 
-      const fileUrls = await Promise.all(
+      const [boatDetails] = await Promise.all([getBoatInfo(data.Boat)]);
+      if (!boatDetails) {
+        toast.error("Error fetching boat details");
+        return "";
+      }
+      if (!boatDetails["FolderId"]) {
+        toast.error("This boat doesn't have a folder id setup in notion");
+        return "";
+      }
+      const filesUploads = await Promise.all<string | null>(
         pdfFiles.map(async (pdfFile) => {
-          const billUrl = await storeBillPdf(pdfFile, data);
+          const billUrl = await storeBillPdf({
+            file: pdfFile,
+            data,
+            boatDetails,
+          });
           if (!billUrl) {
             toast.error(`Error uploading the file: ${pdfFile.name}`);
             return null;
@@ -103,27 +119,37 @@ export default function UploadBillForm() {
         })
       );
 
-      if (fileUrls.length > 0) {
-        const notionObject = new Bill({
-          Name: `${boatInfo["Nombre"]}-${moment(data["Date"]).format("DD-MM-YY")}`,
-          Date: data["Date"],
-          Amount: +data["Amount"],
-          Boat: data["Boat"],
-          Type: data["Type"],
-          Bill: fileUrls,
-        });
+      const fileUrls = filesUploads.filter((url) => url !== null);
 
-        const res = await createBillRecord(notionObject);
-        if (!res) {
-          toast.error("Failed to create Notion record");
-        } else {
-          toast.success("Successfully uploaded all files and created Notion record!");
-        }
-      } else {
+      if (fileUrls.length === 0) {
         toast.error("No files were successfully processed");
+        return;
       }
+
+      const notionObject = new Bill({
+        Name: `${boatInfo["Nombre"]}-${moment(data["Date"]).format(
+          "DD-MM-YY"
+        )}`,
+        Date: data["Date"],
+        Amount: +data["Amount"],
+        Boat: data["Boat"],
+        Type: data["Type"],
+        Bill: fileUrls,
+      });
+
+      const res = await createBillRecord(notionObject);
+
+      if (!res) {
+        toast.error("Failed to create Notion record");
+        return;
+      }
+
+      toast.success(
+        "Successfully uploaded all files and created Notion record!"
+      );
+
       sendBillInfoMessageWebhook({
-        files: fileUrls as any,
+        files: fileUrls,
         boatName: boatInfo["Nombre"],
         date: data["Date"],
         Type: data["Type"],
@@ -218,6 +244,7 @@ export default function UploadBillForm() {
                   setData({ ...data, pdfFiles: files });
                 }}
                 required
+                maxSize={20}
               />
               <SubmitButton label="Submit" loading={loading} />
             </div>

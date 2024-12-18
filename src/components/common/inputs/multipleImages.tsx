@@ -9,12 +9,14 @@ export default function CommonUploadMultiplePictures({
   required,
   onChange,
   maxSize = 10,
+  maxFiles = 0, // Keep 0 for unlimited files
 }: {
   label: string;
   name: string;
   required: boolean;
   onChange: (files: File[] | null) => void;
   maxSize?: number;
+  maxFiles?: number;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<any[]>([]); // To store multiple files
@@ -29,49 +31,55 @@ export default function CommonUploadMultiplePictures({
   }, [onChange]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleFile = async (file: File): Promise<File | null> => {
+  const fileSize = (file: File): number => {
     const fileSizeInBytes = file.size;
     const fileSizeInKilobytes = +(fileSizeInBytes / 1024).toFixed(1);
     const fileSizeInMegabytes = +(fileSizeInKilobytes / 1024).toFixed(1);
 
-    if (fileSizeInMegabytes >= maxSize) {
-      alert(`File size exceeds the limit of ${maxSize} MB.`);
-      return null;
-    }
-
-    return file;
+    return fileSizeInMegabytes;
   };
 
-  const removeFile = useCallback((fileToRemove: File) => {
-    const updatedFiles = files.filter((file) => file !== fileToRemove);
-    setFiles(updatedFiles);
-    onChange(updatedFiles.length > 0 ? updatedFiles : null);
+  const removeFile = useCallback(
+    (fileToRemove: File) => {
+      const updatedFiles = files.filter((file) => file !== fileToRemove);
+      setFiles(updatedFiles);
+      onChange(updatedFiles.length > 0 ? updatedFiles : null);
 
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
-  }, [files, onChange]);
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+    },
+    [files, onChange]
+  );
 
-  const onChangeFile = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = e.target.files ? Array.from(e.target.files) : [];
-    if (selectedFiles.length === 0) {
-      cancelFile();
-      return;
-    }
+  const onChangeFile = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const selectedFiles = e.target.files ? Array.from(e.target.files) : [];
 
-    const processedFiles: File[] = [];
-    for (let file of selectedFiles) {
-      const processedFile = await handleFile(file);
-      if (!processedFile) continue;
+      if (!!maxFiles && files.length + selectedFiles.length > maxFiles) {
+        alert(t("input.max-files-error", { maxFiles }));
+        return;
+      }
+      if (selectedFiles.length === 0) {
+        return;
+      }
 
-      processedFiles.push(processedFile);
-    }
+      const previous = files.reduce((acc, file) => acc + fileSize(file), 0);
+      const totalSize =
+        previous + selectedFiles.reduce((acc, file) => acc + fileSize(file), 0);
 
-    // Append new files to the existing list of files and update state
-    const updatedFiles = [...files, ...processedFiles];
-    setFiles(updatedFiles);
-    onChange(updatedFiles);
-  }, [files, onChange, cancelFile, handleFile]);
+      if (totalSize > maxSize) {
+        alert(t("input.max-size-error", { size: maxSize }));
+        return;
+      }
+
+      // Append new files to the existing list of files and update state
+      const updatedFiles = [...files, ...selectedFiles];
+      setFiles(updatedFiles);
+      onChange(updatedFiles);
+    },
+    [maxFiles, files, maxSize, onChange, t]
+  );
 
   const onClick = useCallback(() => {
     inputRef.current?.click();
@@ -106,9 +114,12 @@ export default function CommonUploadMultiplePictures({
               <span className="text-gray-500 mt-2">
                 {t("input.file_sizes", { size: maxSize })}
               </span>
-              <span className="text-gray-500">
-                {t("input.accepted_file")}
-              </span>
+              {!!maxFiles && (
+                <span className="text-gray-500 mt-2">
+                  {t("input.max_files", { maxFiles })}
+                </span>
+              )}
+              <span className="text-gray-500">{t("input.accepted_file")}</span>
             </div>
           </div>
         </div>
@@ -135,6 +146,9 @@ export default function CommonUploadMultiplePictures({
               </div>
               <span className="text-black text-center md:ml-4 ml-2 md:text-base text-xs">
                 {file.name}
+              </span>
+              <span className="text-gray-500 text-xs ml-2 mr-1">
+                {fileSize(file)}MB
               </span>
             </div>
             <button

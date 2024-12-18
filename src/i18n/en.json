@@ -70,7 +70,10 @@
     "sign": "Sign",
     "type": "Type",
     "pdf": "Bill pdf",
-    "accepted_file": "Accepted formats: PDF, Images (JPG, PNG, etc.)"
+    "accepted_file": "Accepted formats: PDF, Images (JPG, PNG, etc.)",
+    "max_files": "Max files: {{maxFiles}}",
+    "max-files-error": "You can only upload {{maxFiles}} files",
+    "max-size-error": "The file size shall not be more than {{size}}MB"
   },
   "prepayment_modal": {
     "prepay_your_fuel": "Prepay your fuel",
