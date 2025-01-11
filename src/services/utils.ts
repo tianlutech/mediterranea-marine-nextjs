@@ -74,6 +74,9 @@ export async function convertImagesToSeparatePdfs(
   try {
     const pdfFiles: File[] = await Promise.all(
       images.map(async (image) => {
+        if (image.type === "application/pdf") {
+          return image;
+        }
         const pdf = new jsPDF();
         const imageData = await new Promise<string>((resolve, reject) => {
           const reader = new FileReader();
