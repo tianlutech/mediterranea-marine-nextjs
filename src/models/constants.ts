@@ -8,7 +8,7 @@ export const NOTION_DATABASES = {
   FUEL: "67efc31683b44e61b037d49cc79f49a8",
   BOATS: "54a3f8e4de06416db6f1affc8da49f55",
   CAPTAINS: "ba114e3cae854159803fde2ae3861d71",
-  BILLS: "126f8ec99d21808b971ac3c822f1e178"
+  BILLS: "126f8ec99d21808b971ac3c822f1e178",
 };
 export const MAKE_SCENARIOS = {
   SAVE_PDF: 685739, // https://eu2.make.com/230048/scenarios/685739
@@ -25,10 +25,9 @@ export const DAVID_SEABOB_OFFER_MESSAGE_MAKE_WEBHOOKS = {
   BOOKING_SUBMITTED:
     "https://hook.eu2.make.com/9e8hnn55lkaza5b1e5hbvlaup25p5bfd",
 };
-export const BILL_UPLOAD_MESSAGE_WEBHOOK = "https://hook.eu2.make.com/iprpubxkyn3r7k5xvgpjt9nu83zfdaeh"
+export const BILL_UPLOAD_MESSAGE_WEBHOOK =
+  "https://hook.eu2.make.com/iprpubxkyn3r7k5xvgpjt9nu83zfdaeh";
 export const PDFMONKEY_DOCUMENT_ID = "6A2C6EC1-509F-4688-9282-D942E754E1AC";
-export const WHATSAPP_APPLICATION_ID = "157321974140617";
-export const WHATSAPP_PHONE_ID = "158038010736924";
 export const MILE_RANGES = [0, 25, 35]; // Example mile ranges
 
 export const DEPARTURES_TIMES = [

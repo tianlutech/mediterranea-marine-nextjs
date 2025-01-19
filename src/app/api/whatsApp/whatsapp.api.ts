@@ -1,9 +1,9 @@
-import { WHATSAPP_APPLICATION_ID, WHATSAPP_PHONE_ID } from "@/models/constants";
 import axios from "axios";
 import * as Sentry from "@sentry/nextjs";
 
 const WHATAPP_URL = "https://graph.facebook.com/v19.0";
-
+const WHATSAPP_PHONE_ID = process.env.WHATSAPP_PHONE_ID;
+const WHATSAPP_APPLICATION_ID = process.env.WHATSAPP_APPLICATION_ID;
 const whatappCall = (
   uri: string,
   method: string,
@@ -34,6 +34,10 @@ export async function sendMessage({
     attachment: { type: string; url: string };
   };
 }) {
+  if (!WHATSAPP_PHONE_ID) {
+    return { error: "WHATSAPP_PHONE_ID is not set" };
+  }
+
   const body = {
     messaging_product: "whatsapp",
     to,
@@ -74,14 +78,14 @@ export async function sendMessage({
     const response = await whatappCall(
       "messages",
       "POST",
-      WHATSAPP_PHONE_ID,
+      WHATSAPP_PHONE_ID || "",
       body
     );
     return response.data;
   } catch (error) {
     Sentry.captureException(error);
-
-    return { error };
+    console.error((error as Error).message);
+    return { error: (error as Error).message };
   }
 }
 
@@ -106,7 +110,8 @@ export async function getTemplates(
 
     return response.data;
   } catch (error: any) {
-    console.error(error);
+    console.error(error.message);
+    Sentry.captureException(error);
     return { error: error.message };
   }
 }
