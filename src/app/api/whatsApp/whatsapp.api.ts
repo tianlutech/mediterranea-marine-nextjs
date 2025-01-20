@@ -105,7 +105,7 @@ export async function getTemplates(
     const response = await whatappCall(
       `message_templates?fields=${fields}&category=MARKETING&limit=${limit}`,
       "GET",
-      WHATSAPP_APPLICATION_ID
+      WHATSAPP_APPLICATION_ID || ""
     );
 
     return response.data;
