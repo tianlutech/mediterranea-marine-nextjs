@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.10](https://github.com/tianlutech/mediterranea-marine-nextjs/compare/v1.3.9...v1.3.10) (2025-02-26)
+
+
+### Bug Fixes
+
+* rotate and compress bill images ([98ddf65](https://github.com/tianlutech/mediterranea-marine-nextjs/commit/98ddf655f1fefa7536d3669110f5bff13294179e))
+
 ### [1.3.9](https://github.com/tianlutech/mediterranea-marine-nextjs/compare/v1.3.7...v1.3.9) (2025-02-26)
 
 ### [1.3.8](https://github.com/tianlutech/mediterranea-marine-nextjs/compare/v1.3.7...v1.3.8) (2025-01-20)
