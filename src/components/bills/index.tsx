@@ -15,7 +15,12 @@ import { getBoatInfo } from "@/services/notion.service";
 import * as Sentry from "@sentry/nextjs";
 import "react-toastify/dist/ReactToastify.css";
 import { useTranslation } from "react-i18next";
-import { convertImagesToSeparatePdfs, driveIdToUrl } from "@/services/utils";
+import {
+  compressImageIfNeeded,
+  convertImagesToSeparatePdfs,
+  driveIdToUrl,
+  rotateImageIfNeeded,
+} from "@/services/utils";
 import { sendBillInfoMessageWebhook } from "@/services/make.service";
 interface Data {
   pdfFiles: File[];
@@ -87,7 +92,16 @@ export default function UploadBillForm() {
         return;
       }
 
-      const pdfFiles = await convertImagesToSeparatePdfs(data["pdfFiles"]);
+      const pdfFiles = await Promise.all(
+        data["pdfFiles"].map(async (file) => {
+          if (file.type === "application/pdf") {
+            return file;
+          }
+          const rotatedFile = await rotateImageIfNeeded(file, "vertical");
+          const compressedFile = await compressImageIfNeeded(rotatedFile);
+          return convertImagesToSeparatePdfs(compressedFile);
+        })
+      );
 
       if (pdfFiles.length === 0) {
         toast.error("Error converting files to PDFs");
@@ -125,7 +139,6 @@ export default function UploadBillForm() {
         toast.error("No files were successfully processed");
         return;
       }
-
       const notionObject = new Bill({
         Name: `${boatInfo["Nombre"]}-${moment(data["Date"]).format(
           "DD-MM-YY"

@@ -1,5 +1,6 @@
 import { jsPDF } from "jspdf";
-
+import imageCompression from "browser-image-compression";
+import * as Sentry from "@sentry/nextjs";
 export const deleteUndefined = (list: any) => {
   Object.keys(list)
     .filter((key) => list[key] === undefined)
@@ -68,38 +69,100 @@ export function extractIdFromGoogleDriveLink(link: string) {
   return id;
 }
 
-export async function convertImagesToSeparatePdfs(
-  images: File[]
-): Promise<File[]> {
+export async function convertImagesToSeparatePdfs(image: File): Promise<File> {
   try {
-    const pdfFiles: File[] = await Promise.all(
-      images.map(async (image) => {
-        if (image.type === "application/pdf") {
-          return image;
-        }
-        const pdf = new jsPDF();
-        const imageData = await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = (e) => resolve(e.target?.result as string);
-          reader.onerror = reject;
-          reader.readAsDataURL(image);
-        });
+    const pdf = new jsPDF();
+    const imageData = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target?.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(image);
+    });
 
-        pdf.addImage(imageData, "JPEG", 10, 10, 180, 240);
-        const pdfBlob = pdf.output("blob");
-        return new File([pdfBlob], `${image.name.split(".")[0]}.pdf`, {
-          type: "application/pdf",
-        });
-      })
-    );
-
-    return pdfFiles;
+    pdf.addImage(imageData, "JPEG", 10, 10, 180, 240);
+    const pdfBlob = pdf.output("blob");
+    return new File([pdfBlob], `${image.name.split(".")[0]}.pdf`, {
+      type: "application/pdf",
+    });
   } catch (error) {
     console.error("Error converting images to separate PDFs:", error);
-    return [];
+    return image;
   }
 }
 
 export const driveIdToUrl = (id: string) => {
   return `https://drive.google.com/file/d/${id}/view`;
 };
+export async function rotateImageIfNeeded(
+  file: File,
+  targetOrientation: "horizontal" | "vertical" = "vertical"
+): Promise<File> {
+  // Create image object and wait for it to load
+  const img = await new Promise<HTMLImageElement>((resolve) => {
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    img.onload = () => resolve(img);
+  });
+
+  // Create canvas and rotate if needed
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d")!;
+
+  const needsRotation =
+    (targetOrientation === "vertical" && img.width > img.height) ||
+    (targetOrientation === "horizontal" && img.height > img.width);
+
+  if (!needsRotation) {
+    return file;
+  }
+
+  // Swap width and height for rotation
+  canvas.width = img.height;
+  canvas.height = img.width;
+
+  // Translate and rotate the context
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.drawImage(img, -img.width / 2, -img.height / 2);
+
+  // Convert data URL to Blob
+  const dataUrl = canvas.toDataURL("image/jpeg");
+  const response = await fetch(dataUrl);
+  const blob = await response.blob();
+
+  // Create new File object
+  return new File([blob], file.name, { type: "image/jpeg" });
+}
+
+export async function compressImageIfNeeded(
+  file: File,
+  maxSizeInMB: number = 0.5
+): Promise<File> {
+  // If file is smaller than maxSize or not an image, return original file
+  if (
+    file.size <= maxSizeInMB * 1024 * 1024 ||
+    !file.type.startsWith("image/")
+  ) {
+    return file;
+  }
+
+  const options = {
+    maxSizeMB: maxSizeInMB,
+    maxWidthOrHeight: 2048,
+    useWebWorker: true,
+    fileType: "image/jpeg",
+  };
+
+  try {
+    const compressedFile = await imageCompression(file, options);
+    return new File(
+      [compressedFile],
+      file.name.replace(/\.[^/.]+$/, "") + "_compressed.jpg",
+      { type: "image/jpeg" }
+    );
+  } catch (error) {
+    Sentry.captureException(error);
+    console.error("Error compressing image:", error);
+    return file;
+  }
+}
