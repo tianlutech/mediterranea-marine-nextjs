@@ -9,7 +9,6 @@ import SubmitButton from "../common/containers/submit-button";
 import { useState } from "react";
 import CommonSelect from "@/components/common/inputs/selectInput";
 import * as whatsApp from "@/services/whatsApp.service";
-import SendingWhatsAppModal from "../modals/sendingWhatsAppModal";
 import { WhatsappTemplate } from "@/models/whatsapp";
 import { useFormik } from "formik";
 import Papa from "papaparse";
@@ -19,6 +18,9 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SecretInput from "../common/inputs/secretInput";
 import { verifyValue } from "@/services/verifyValue.service";
+import dynamic from "next/dynamic";
+
+const SendingWhatsAppModal = dynamic(() => import("@/components/modals/sendingWhatsAppModal"), { ssr: false });
 
 const PRICE = 0.0509; // At 2024-01-29
 
@@ -88,7 +90,7 @@ export default function WhatsAppBulkMessagesForm({
         acc.replace(
           `{{${variable}}}`,
           data.default[variable] ||
-            `<span style='color: #999999'>{{${variable}}}</span>`
+          `<span style='color: #999999'>{{${variable}}}</span>`
         ),
       message.replaceAll("\n", "</br>")
     );
@@ -309,9 +311,8 @@ export default function WhatsAppBulkMessagesForm({
                     {inputs.map((variable, index) => (
                       <div key={index} className="mt-8">
                         <FormWrapper>
-                          <CommonLabel input="text">{`{{${
-                            index + 1
-                          }}}`}</CommonLabel>
+                          <CommonLabel input="text">{`{{${index + 1
+                            }}}`}</CommonLabel>
                           <div className="flex gap-4">
                             <div className="flex-1">
                               <CommonSelect
@@ -404,8 +405,8 @@ export default function WhatsAppBulkMessagesForm({
                   label={
                     validContacts.length
                       ? "Send (Cost: ~" +
-                        (validContacts.length * PRICE).toFixed(2) +
-                        "€)"
+                      (validContacts.length * PRICE).toFixed(2) +
+                      "€)"
                       : "No valid contacts detected"
                   }
                   disabled={validContacts.length === 0}
