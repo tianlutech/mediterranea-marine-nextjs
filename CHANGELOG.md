@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.11](https://github.com/tianlutech/mediterranea-marine-nextjs/compare/v1.3.10...v1.3.11) (2025-03-25)
+
+
+### Bug Fixes
+
+* fixed build issues changed next i18n and component import ([e3ffcdf](https://github.com/tianlutech/mediterranea-marine-nextjs/commit/e3ffcdf1c099c8144a1316c556de071880427713))
+
 ### [1.3.10](https://github.com/tianlutech/mediterranea-marine-nextjs/compare/v1.3.9...v1.3.10) (2025-02-26)
 
 
