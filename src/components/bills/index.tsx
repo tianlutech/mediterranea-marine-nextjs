@@ -139,27 +139,32 @@ export default function UploadBillForm() {
         toast.error("No files were successfully processed");
         return;
       }
-      const notionObject = new Bill({
-        Name: `${boatInfo["Nombre"]}-${moment(data["Date"]).format(
-          "DD-MM-YY"
-        )}`,
-        Date: data["Date"],
-        Amount: +data["Amount"],
-        Boat: data["Boat"],
-        Type: data["Type"],
-        Bill: fileIds.map((id) => driveIdToUrl(id)),
-      });
 
-      const res = await createBillRecord(notionObject);
+      // This code is not in use as we stop using notion and we can not upload more documents.
+      // However the code will still pushed on google drive and notify via make
+      if (false) {
+        const notionObject = new Bill({
+          Name: `${boatInfo["Nombre"]}-${moment(data["Date"]).format(
+            "DD-MM-YY"
+          )}`,
+          Date: data["Date"],
+          Amount: +data["Amount"],
+          Boat: data["Boat"],
+          Type: data["Type"],
+          Bill: fileIds.map((id) => driveIdToUrl(id)),
+        });
 
-      if (!res) {
-        toast.error("Failed to create Notion record");
-        return;
+        const res = await createBillRecord(notionObject);
+
+        if (!res) {
+          toast.error("Failed to create Notion record");
+          return;
+        }
+
+        toast.success(
+          "Successfully uploaded all files and created Notion record!"
+        );
       }
-
-      toast.success(
-        "Successfully uploaded all files and created Notion record!"
-      );
 
       sendBillInfoMessageWebhook({
         files: fileIds,
